@@ -22,19 +22,27 @@
 
 ## Features
 - Translated into 28 languages (MTL)
+- Bookmarks are locally stored for offline viewing
 - IPFS Content generation (Add your own config, gateway, etc)
 - Login, Create Posts, Comments, Interact, update profiles as normal
 - *Engravings* (Coming Soon / iOS only), protect your OC against unwarranted reposts
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
+### Known Issues (macOS)
+- Share functionality
+- Bookmarks affect Lemmy's `save` NOT just locally stored
+- Settings are saved without being logged in
+
 ### Timeline
 
-`WIP`
+#### macOS
+
+> `WIP` building an easy to view timeline.
 
 ## Contributing 
 
-Lemur uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated.
+Lemur uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR.
 
 ### Why Granite?
 
