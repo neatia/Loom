@@ -32,7 +32,7 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### Current Sprint (2023-08-03 release)
+### Current Sprint (2023-08-04 release)
 
 - Share functionality (macOS)
 - Bookmarks affect Lemmy's `save` NOT just locally stored (iOS/macOS)
