@@ -31,7 +31,23 @@ import AppKit
  discussion_languages
  */
 
-struct AccountModifyMeta: GranitePayload, Equatable {
+protocol StandardMotify: GranitePayload, Equatable {
+    var showNSFW: Bool { get set }
+    var showScores: Bool { get set }
+    var showBotAccounts: Bool { get set }
+    var sortType: SortType? { get set }
+    var listingType: ListingType? { get set }
+}
+
+struct LocalModifyMeta: StandardMotify {
+    var showNSFW: Bool
+    var showScores: Bool
+    var showBotAccounts: Bool
+    var sortType: SortType?
+    var listingType: ListingType?
+}
+
+struct AccountModifyMeta: StandardMotify {
     var showNSFW: Bool
     var showScores: Bool
     var showBotAccounts: Bool
@@ -94,8 +110,16 @@ struct ProfileSettingsView: View {
         .init(showNSFW: showNSFW, showScores: showScores, showBotAccounts: showBotAccounts, sortType: sortType, listingType: listingType, avatar: avatar, banner: banner, displayName: displayName, bio: bio, lastUpdated: lastUpdated)
     }
     
+    var currentLocalMeta: LocalModifyMeta {
+        .init(showNSFW: showNSFW, showScores: showScores, showBotAccounts: showNSFW, sortType: sortType, listingType: listingType)
+    }
+    
     var changesMade: Bool {
         currentMeta != model && model != nil
+    }
+    
+    var localChangesMade: Bool {
+        currentLocalMeta != localModel && localModel != nil
     }
     
     var model: AccountModifyMeta? {
@@ -105,6 +129,8 @@ struct ProfileSettingsView: View {
             return nil
         }
     }
+    
+    var localModel: LocalModifyMeta?
     
     let showProfileSettings: Bool
     let isModal: Bool
@@ -117,7 +143,11 @@ struct ProfileSettingsView: View {
         self.showProfileSettings = showProfileSettings
         self.isModal = isModal
         self.modal = modal
-        
+        self.localModel = .init(showNSFW: config.state.showNSFW,
+                                showScores: config.state.showScores,
+                                showBotAccounts: config.state.showBotAccounts,
+                                sortType: config.state.sortType,
+                                listingType: config.state.listingType)
         #if os(iOS)
         UITextView.appearance().backgroundColor = .clear
         #else
@@ -207,10 +237,13 @@ struct ProfileSettingsView: View {
                 }
                 .padding(.vertical, .layer4)
             }
-            
         }
         .padding(.top, showProfileSettings ? .layer4 : 0)
         .background(Color.background)
+        .onChange(of: localChangesMade) { status in
+            guard status, offline else { return }
+            updateLocalSettings()
+        }
         .task {
             if offline == false,
                let model {
@@ -499,6 +532,17 @@ extension ProfileSettingsView {
         }
         
         return .init(imageFile: file)
+    }
+}
+
+extension ProfileSettingsView {
+    func updateLocalSettings() {
+        
+        config._state.showNSFW.wrappedValue = currentMeta.showNSFW
+        config._state.showScores.wrappedValue = currentMeta.showScores
+        config._state.sortType.wrappedValue = currentMeta.sortType ?? config.state.sortType
+        config._state.listingType.wrappedValue = currentMeta.listingType ?? config.state.listingType
+        config._state.showBotAccounts.wrappedValue = currentMeta.showBotAccounts
     }
 }
 

@@ -117,6 +117,9 @@ struct SearchBar: View {
                     .toolbar {
                         ToolbarItemGroup(placement: .keyboard) {
                             StandardToolbarView()
+                                .attach({
+                                    conductor.search(query)
+                                }, at: \.search)
                         }
                     }
                     .onTapGesture {
@@ -189,7 +192,7 @@ struct StandardLoadingView: View {
 }
 
 struct StandardToolbarView: View {
-    @EnvironmentObject var conductor: SearchConductor
+    @GraniteAction<Void> var search
     
     var body: some View {
         Group {
@@ -216,7 +219,7 @@ struct StandardToolbarView: View {
             
             Button {
                 GraniteHaptic.light.invoke()
-                conductor.search(conductor.lastQuery)
+                search.perform()
             } label : {
                 Text("MISC_SEARCH")
                     .font(.headline.bold())
