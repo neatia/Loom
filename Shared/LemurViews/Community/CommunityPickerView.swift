@@ -102,7 +102,7 @@ struct CommunityPickerView: View {
                                     .padding(.leading, .layer3)
                             }
                         }
-                                        .environmentObject(currentPager)
+                        .environmentObject(currentPager)
                     }
                     
                 }

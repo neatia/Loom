@@ -5,6 +5,8 @@
 //  Created by PEXAVC on 7/29/23.
 //
 
+//TODO: this should be merged with CommunityCardView
+
 import Foundation
 import Granite
 import GraniteUI
@@ -79,6 +81,38 @@ struct CommunitySidebarCardView: View {
                     }
                 }
                 Spacer()
+                
+                #if os(iOS)
+                Button {
+                    GraniteHaptic.light.invoke()
+                    ModalService.share(urlString: model.community.actor_id)
+                } label: {
+                    Image(systemName: "paperplane")
+                        .font(.headline)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(PlainButtonStyle())
+                #else
+                Menu {
+                    ForEach(NSSharingService
+                        .sharingServices(forItems: [""]),
+                            id: \.title) { item in
+                        Button(action: {
+                            item.perform(withItems: [model.community.actor_id])
+                        }) {
+                            Image(nsImage: item.image)
+                            Text(item.title)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.headline)
+                        .contentShape(Rectangle())
+                }
+                .menuStyle(BorderlessButtonMenuStyle())
+                .menuIndicator(.hidden)
+                .frame(width: 24, height: 24)
+                #endif
             }
             .padding(.layer2)
             .foregroundColor(.foreground)

@@ -79,6 +79,7 @@ struct PostActionsView: View {
                 .buttonStyle(PlainButtonStyle())
             }
             
+            #if os(iOS)
             Button {
                 GraniteHaptic.light.invoke()
                 switch bookmarkKind {
@@ -94,6 +95,7 @@ struct PostActionsView: View {
                 Image(systemName: "paperplane")
             }
             .buttonStyle(PlainButtonStyle())
+            #endif
             
             Divider()
             
