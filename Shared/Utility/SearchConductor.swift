@@ -17,6 +17,7 @@ class SearchConductor: ObservableObject {
     private var task: Task<Void, Error>? = nil
     
     @Published var isEditing: Bool = false
+    //TODO: cleanup, using view @state for this
     @Published var isSearching: Bool = false
     @Published var response: SearchResponse? = nil
     var lastQuery: String = ""
@@ -31,18 +32,6 @@ class SearchConductor: ObservableObject {
     
     init() {
         self.handler = nil
-        
-//        $query
-//            .debounce(for:  .seconds(1), scheduler: DispatchQueue.main)
-//            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-//            .removeDuplicates()
-//            .sink { [weak self] value in
-////                guard value.isNotEmpty else {
-////                    self?.clean()
-////                    return
-////                }
-//                self?.startTimer()
-//            }.store(in: &cancellables)
     }
     
     @discardableResult
@@ -56,13 +45,18 @@ class SearchConductor: ObservableObject {
         self.lastQuery = query
         searchTimer?.cancel()
         searchTimer = nil
-        isSearching = true
+        if isSearching == false {
+            DispatchQueue.main.async { [weak self] in
+                self?.isSearching = true
+            }
+        }
         searchTimer = Timer.publish(every: 1,
                                     on: .main,
                                     in: .common)
           .autoconnect()
           .sink(receiveValue: { [weak self] (output) in
               self?.searchTimer?.cancel()
+//              self?.isSearching = false
               print("[Executing Query] \(query)")
               self?.search(query)
           })
@@ -73,12 +67,14 @@ class SearchConductor: ObservableObject {
         searchTimer?.cancel()
         searchTimer = nil
         self.task?.cancel()
+        //self.isSearching = true
         self.task = Task.detached(priority: .background) { [weak self] in
             let response = await self?.handler?(q)
             DispatchQueue.main.async { [weak self] in
                 GraniteHaptic.light.invoke()
                 self?.response = response
-                self?.isSearching = false
+                //self?.isSearching = false
+                self?.lastQuery = q
             }
         }
     }
@@ -96,63 +92,90 @@ class SearchConductor: ObservableObject {
 
 struct SearchBar: View {
     @EnvironmentObject var conductor: SearchConductor
+    @StateObject var textDebouncer = TextDebouncer()
     
-    @State var query: String = ""
+    @State var isSearching: Bool = false
     
     var body: some View {
         VStack {
             HStack {
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .frame(width: 20, height: 20, alignment: .leading)
-                        .padding(.leading, .layer4)
-                        .foregroundColor(Brand.Colors.grey)
-                    
-                    TextField("MISC_SEARCH",
-                              text: $query)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .font(.headline.bold())
-                    .autocorrectionDisabled(true)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            StandardToolbarView()
-                        }
-                    }
-                    .onTapGesture {
+                if (Device.isMacOS && isSearching == false) || (Device.isMacOS == false) {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .leading)
+                            .padding(.leading, .layer4)
+                            .foregroundColor(Brand.Colors.grey)
                         
+                        TextField("MISC_SEARCH",
+                                  text: $textDebouncer.text)
+                        .textFieldStyle(PlainTextFieldStyle())
+                        .font(.headline.bold())
+                        .autocorrectionDisabled(true)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                StandardToolbarView()
+                                    .attach({
+                                        DispatchQueue.main.async {
+                                            self.isSearching = true
+                                            self.conductor.search(textDebouncer.text)
+                                        }
+                                    }, at: \.search)
+                            }
+                        }
+                        .frame(height: 48)
                     }
-                    .frame(height: 48)
+                    .cornerRadius(6.0)
                 }
-                .cornerRadius(6.0)
+                
                 
                 #if os(macOS)
                 EmptyView()
-                    .onChange(of: query) { value in
-                    let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
-                    guard trimmedValue.isNotEmpty else { return }
-                    conductor.startTimer(trimmedValue)
+                    .onChange(of: textDebouncer.query) { value in
+                    self.isSearching = true
+                    self.conductor.search(value)
                 }
                 #endif
                 
-                if query.isEmpty == false {
+                EmptyView()
+                    .onChange(of: conductor.lastQuery) { _ in
+                    isSearching = false
+                }
+                
+                if textDebouncer.text.isEmpty == false {
                     Group {
-                        Button(action: {
-                            GraniteHaptic.light.invoke()
-                            conductor.clean()
-                            
+                        HStack(spacing: .layer1) {
                             #if os(iOS)
-                            hideKeyboard()
+                            if isSearching {
+                                ProgressView()
+                                    .padding(.trailing, .layer4)
+                            }
+                            #else
+                            if conductor.lastQuery != textDebouncer.query {
+                                ProgressView()
+                                    .scaleEffect(0.6)
+                            }
                             #endif
                             
-                            query = ""
-                        }) {
-                            Text("MISC_CANCEL")
-                                .font(.footnote.bold())
-                                .foregroundColor(.foreground)
+                            //TODO: should probably maintain and cancel should actually invoke cancelling search
+                            if Device.isMacOS {
+                                Button(action: {
+                                    GraniteHaptic.light.invoke()
+                                    conductor.clean()
+                                    
+#if os(iOS)
+                                    hideKeyboard()
+#endif
+                                }) {
+                                    Text("MISC_CANCEL")
+                                        .font(.footnote.bold())
+                                        .foregroundColor(.foreground)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding(.trailing, .layer4)
+                            }
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.trailing, .layer4)
+                        .frame(height: Device.isMacOS == false && isSearching ? 48 : nil)
                         //                        .transition(.move(edge: .trailing))
                         //                        .animation(.default)
                     }
@@ -189,7 +212,7 @@ struct StandardLoadingView: View {
 }
 
 struct StandardToolbarView: View {
-    @EnvironmentObject var conductor: SearchConductor
+    @GraniteAction<Void> var search
     
     var body: some View {
         Group {
@@ -216,7 +239,7 @@ struct StandardToolbarView: View {
             
             Button {
                 GraniteHaptic.light.invoke()
-                conductor.search(conductor.lastQuery)
+                search.perform()
             } label : {
                 Text("MISC_SEARCH")
                     .font(.headline.bold())
@@ -229,5 +252,25 @@ struct StandardToolbarView: View {
             }
             .buttonStyle(PlainButtonStyle())
         }
+    }
+}
+
+class TextDebouncer : ObservableObject {
+    @Published var query = ""
+    @Published var text = ""
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        #if os(macOS)
+        $text
+            .debounce(for: .seconds(1.2), scheduler: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] value in
+                let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+                guard trimmedValue.isNotEmpty else { return }
+                self?.query = trimmedValue
+            } )
+            .store(in: &cancellables)
+        #endif
     }
 }

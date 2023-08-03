@@ -123,20 +123,17 @@ struct SearchAllView: View {
                                 ForEach(model.comments) { cModel in
                                     CommentCardView(model: cModel,
                                                     isPreview: true)
-//                                    .attach( { commentView in
-//                                        showDrawer.perform(commentView)
-//                                    }, at: \.showDrawer)
                                     .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
                                     .frame(height: 240)
-                                    
+
                                     if cModel.id != model.comments.last?.id {
-                                        
+
                                         Divider()
                                             .padding(.horizontal, .layer2)
                                     }
                                 }
-                                
-                                
+
+
                                 Spacer().frame(width: .layer4)
                             }
                         }

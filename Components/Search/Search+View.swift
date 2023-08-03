@@ -71,6 +71,8 @@ extension Search: View {
 //                        _state.showDrawer.wrappedValue = true
 //                    }, at: \.showDrawer)
                     .background(Color.alternateBackground)
+            } else {
+                Spacer()
             }
         }
         .graniteNavigation(backgroundColor: Color.background, disable: Device.isMacOS) {
@@ -100,8 +102,5 @@ extension Search: View {
         .onAppear {
             conductor.startTimer("")
         }
-//        .showDrawer(_state.showDrawer,
-//                    commentView: state.commentView,
-//                    postView: nil)
     }
 }

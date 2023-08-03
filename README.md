@@ -32,19 +32,11 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### Current Sprint (2023-08-04 release)
-
-- Share functionality (macOS)
-- Bookmarks affect Lemmy's `save` NOT just locally stored (iOS/macOS)
-- Settings are saved without being logged in (iOS/macOS)
-
-### Timeline
-
-> `WIP` building an easy to view timeline for *major features*.
+### [Patch notes // Developer updates](https://lemmy.world/post/2596001)
 
 ## Contributing 
 
-Lemur uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR.
+Lemur uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
 
 ### Why Granite?
 
@@ -78,7 +70,7 @@ In an attempt to build a community around Lemur as well, feel free to explore th
 
 ### Support
 
-The goal is to eventually have this be community driven. In the interim if you like my work and think these contributions are truly beneficial, feel free to support future updates and similar endeavors! 
+The goal is to eventually have this be community driven. Until then, if you like my work and think these contributions are truly beneficial, feel free to support future updates and similar endeavors! 
 
 **Bitcoin:** bc1q83fh4mvd3crsux7mc39s4kkuf8rdy294y2stt0 
 
