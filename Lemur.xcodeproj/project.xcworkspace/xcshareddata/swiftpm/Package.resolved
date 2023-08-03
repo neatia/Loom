@@ -1,0 +1,77 @@
+{
+  "pins" : [
+    {
+      "identity" : "granite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/Granite.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "4b50fea1a6e3ddbd2bab647ab244649de797fd9c"
+      }
+    },
+    {
+      "identity" : "highlightr",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/raspu/Highlightr.git",
+      "state" : {
+        "revision" : "93199b9e434f04bda956a613af8f571933f9f037",
+        "version" : "2.1.2"
+      }
+    },
+    {
+      "identity" : "ipfskit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/ipfskit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "757e86c5d468635ab88e30d3bfb896a27ec34618"
+      }
+    },
+    {
+      "identity" : "lemmykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/LemmyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "b7d41f7229c922dd676c4727693bab069479bdd4"
+      }
+    },
+    {
+      "identity" : "markdownview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MarkdownView",
+      "state" : {
+        "branch" : "main",
+        "revision" : "75b55c4192a95633e440c6bd417c1f89712e7296"
+      }
+    },
+    {
+      "identity" : "nuke",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kean/Nuke",
+      "state" : {
+        "branch" : "main",
+        "revision" : "3f9523969984bd8a53b94a16a46b7c8005a05e82"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-cmark.git",
+      "state" : {
+        "revision" : "29d9c97e6310b87c4799268eaa2fc76164b2dbd8",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "swift-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-markdown.git",
+      "state" : {
+        "revision" : "68b2fed9fb12fb71ac81e537f08bed430b189e35",
+        "version" : "0.2.0"
+      }
+    }
+  ],
+  "version" : 2
+}
