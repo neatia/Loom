@@ -57,14 +57,14 @@ struct CardActionsView: View {
                             .Interact
                             .Meta(intent: .blockPerson(person)))
                 } label: {
-                    Text("\(isBlocked ? "MISC_UNBLOCK" : "MISC_BLOCK") @\(person.name)")
+                    Text(isBlocked ? "MISC_UNBLOCK".localized("@\(person.name)", formatted: true) : "MISC_BLOCK".localized("@\(person.name)", formatted: true))
                 }
                 .buttonStyle(PlainButtonStyle())
                 
                 Button(role: .destructive) {
                     GraniteHaptic.light.invoke()
                 } label: {
-                    Text("MISC_REPORT @\(person.name)")
+                    Text("MISC_REPORT".localized("@\(person.name)", formatted: true))
                 }
                 .buttonStyle(PlainButtonStyle())
             } else if let community {
@@ -72,7 +72,7 @@ struct CardActionsView: View {
                     GraniteHaptic.light.invoke()
                     
                 } label: {
-                    Text("\(isBlocked ? "MISC_UNBLOCK" : "MISC_BLOCK") !\(community.name)")
+                    Text(isBlocked ? "MISC_UNBLOCK".localized("!\(community.name)", formatted: true) : "MISC_BLOCK".localized("!\(community.name)", formatted: true))
                 }
                 .buttonStyle(PlainButtonStyle())
             }

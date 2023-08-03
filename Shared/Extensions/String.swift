@@ -28,3 +28,10 @@ extension Int {
         "\(self)"
     }
 }
+
+extension String {
+    //TODO: choose direction of format
+    func localized(_ value: String, formatted: Bool = false) -> String {
+        String(format: NSLocalizedString("\(self)\(formatted ? " %@" : "")", comment: ""), value)
+    }
+}

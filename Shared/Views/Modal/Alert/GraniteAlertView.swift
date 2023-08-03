@@ -62,6 +62,7 @@ public struct GraniteAlertView : GraniteModal {
                 
                 if let message = message {
                     Text(message)
+                        .multilineTextAlignment(.center)
                         .padding(.vertical, style.alertVerticalPadding)
                         .padding(.horizontal, style.alertHorizontalPadding)
                         .fixedSize(horizontal: false, vertical: true)

@@ -147,7 +147,7 @@ struct PostActionsView: View {
                                     .Meta(intent: .blockPerson(person)))
                         }
                     } label: {
-                        Text("MISC_BLOCK \("@"+person.name)")
+                        Text("MISC_BLOCK".localized("@"+person.name, formatted: true))
                     }
                     .buttonStyle(PlainButtonStyle())
                 }

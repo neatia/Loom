@@ -6,6 +6,8 @@ import GraniteUI
 import MarkdownView
 
 struct CommentCardView: View {
+    @Environment(\.graniteEvent) var interact
+    
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
     
@@ -53,6 +55,7 @@ struct CommentCardView: View {
                     HeaderCardAvatarView(model, badge: (postView == nil ? .noBadge : .post(postView!)), showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
                         HeaderCardView(model, badge: shouldLinkToPost ? (postView == nil ? nil : .post(postView!)) : nil)
+                            .graniteEvent(interact)
                         content
                     }
                 }

@@ -61,7 +61,7 @@ extension AccountService {
                     
                     guard let result else { return }
                     
-                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: .init(result.blocked ? "MISC_BLOCKED \("@"+result.person_view.person.name)" : "MISC_UNBLOCKED \("@"+result.person_view.person.name)"), event: .success), intent: .blockPerson(result.person_view.person)))
+                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPerson(result.person_view.person)))
                     
                     response.send(InteractResponse.Meta(intent: .updatePersonBlockStatus(result)))
                 }
@@ -75,7 +75,7 @@ extension AccountService {
                     
                     guard let result else { return }
                     
-                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: .init(result.blocked ? "MISC_BLOCKED \("@"+result.person_view.person.name)" : "MISC_UNBLOCKED \("@"+result.person_view.person.name)"), event: .success), intent: .blockPersonFromPost(model.updateBlock(result.blocked, personView: result.person_view))))
+                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPersonFromPost(model.updateBlock(result.blocked, personView: result.person_view))))
                     
                     response.send(InteractResponse.Meta(intent: .updatePersonBlockStatus(result)))
                 }
@@ -88,7 +88,7 @@ extension AccountService {
                     
                     guard let result else { return }
                     
-                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: .init(result.blocked ? "MISC_BLOCKED \("@"+result.person_view.person.name)" : "MISC_UNBLOCKED \("@"+result.person_view.person.name)"), event: .success), intent:  .blockPersonFromComment(model.updateBlock(result.blocked, personView: result.person_view))))
+                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent:  .blockPersonFromComment(model.updateBlock(result.blocked, personView: result.person_view))))
                     
                     //We send the same intent for these since we are simply updating the blocklist
                     response.send(InteractResponse.Meta(intent: .updatePersonBlockStatus(result)))

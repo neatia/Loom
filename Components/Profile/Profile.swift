@@ -22,6 +22,25 @@ struct Profile: GraniteComponent {
                     }
                 }
             }
+        
+        
+        account
+            .center
+            .interact
+            .listen(.broadcast) { value in
+                if let response = value as? AccountService.Interact.ResponseMeta {
+                    switch response.intent {
+                    case .removePost(let model):
+                        pager.update(item: .init(commentView: nil, postView: model, isMention: false, isReply: false))
+                    case .removeComment(let model):
+                        //TODO: or censor? w/ restore?
+                        pager.remove(item: .init(commentView: model, postView: nil, isMention: false, isReply: false))
+                    default:
+                        break
+                    }
+                    modal.presentModal(GraniteToastView(response.notification))
+                }
+            }
     }
     
     let isMe: Bool

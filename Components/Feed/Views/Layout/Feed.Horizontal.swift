@@ -28,7 +28,6 @@ extension Feed {
                                 sidebar: true)
             .attach({ communityView in
                 DispatchQueue.main.async {
-                    print("Hello World")
                     self.config._state.feedCommunityContext.wrappedValue = .viewCommunityView(communityView)
                 }
             }, at: \.pickedCommunity)

@@ -13,6 +13,8 @@ struct InfoIconView: View {
     var text: LocalizedStringKey
     var modal: ModalService
     var body: some View {
+        //TODO: modal bug with macOS (maxHeight)
+        #if os(iOS)
         VStack {
             Text("i")
                 .font(.caption2.bold())
@@ -20,11 +22,14 @@ struct InfoIconView: View {
         }
         .onTapGesture {
             GraniteHaptic.light.invoke()
-            modal.present(GraniteAlertView(message: text) {
+            modal.presentModal(GraniteAlertView(message: text) {
                 
                 GraniteAlertAction(title: "MISC_DONE")
             })
         }
+        #else
+        EmptyView()
+        #endif
     }
 }
 

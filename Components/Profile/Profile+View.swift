@@ -16,9 +16,11 @@ extension Profile: View {
                 if let model = details.commentView,
                    !filterOverviewPosts {
                     CommentCardView(model: model, showAvatar: details.isReply || details.isMention )
+                        .graniteEvent(account.center.interact)
                 } else if let model = details.postView,
                           !filterOverviewComments {
                     PostCardView(model: model, style: .style2, showAvatar: false)
+                        .graniteEvent(account.center.interact)
                 }
             }
             .environmentObject(pager)
