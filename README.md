@@ -8,6 +8,9 @@
 
 <p align="center">An app with "Threads" that does not collect your data. Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations.</p>
 
+## Testflight (iOS)
+
+- https://testflight.apple.com/join/owwIagmV
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
@@ -29,16 +32,15 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### Known Issues (macOS)
-- Share functionality
-- Bookmarks affect Lemmy's `save` NOT just locally stored
-- Settings are saved without being logged in
+### Current Sprint (2023-08-03 release)
+
+- Share functionality (macOS)
+- Bookmarks affect Lemmy's `save` NOT just locally stored (iOS/macOS)
+- Settings are saved without being logged in (iOS/macOS)
 
 ### Timeline
 
-#### macOS
-
-> `WIP` building an easy to view timeline.
+> `WIP` building an easy to view timeline for *major features*.
 
 ## Contributing 
 
