@@ -162,7 +162,7 @@ extension CommentCardView {
     var contentBody: some View {
         Group {
             if isPreview {
-                ScrollView {
+                ScrollView(showsIndicators: false) {
                     MarkdownView(text: model.comment.content)
                         .markdownViewRole(.editor)
                 }
@@ -173,29 +173,5 @@ extension CommentCardView {
                     .markdownViewRole(.editor)
             }
         }
-//        HStack {
-//
-//            //            Markdown(content: .constant(model.comment.content),
-//            //                     theme: colorScheme)
-//            //                .markdownStyle(
-//            //                    MarkdownStyle(
-//            //                    padding: 0,
-//            //                    paddingTop: 0,
-//            //                    paddingBottom: 0,
-//            //                    paddingLeft: 0,
-//            //                    paddingRight: 0,
-//            //                    size: Device.isMacOS == false ? .el2 : .normal
-//            //                  ))
-//            //                .frame(maxWidth: .infinity, minHeight: minHeight)
-//            //            VStack(alignment: .leading, spacing: 0) {
-//            //                Text(model.comment.content)
-//            //                    .font(.headline.bold())
-//            //                    .opacity(0.9)
-//            //            }
-//
-//            Spacer()
-//        }
     }
-    
-    
 }

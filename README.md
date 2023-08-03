@@ -70,7 +70,7 @@ In an attempt to build a community around Lemur as well, feel free to explore th
 
 ### Support
 
-The goal is to eventually have this be community driven. In the interim if you like my work and think these contributions are truly beneficial, feel free to support future updates and similar endeavors! 
+The goal is to eventually have this be community driven. Until then, if you like my work and think these contributions are truly beneficial, feel free to support future updates and similar endeavors! 
 
 **Bitcoin:** bc1q83fh4mvd3crsux7mc39s4kkuf8rdy294y2stt0 
 
