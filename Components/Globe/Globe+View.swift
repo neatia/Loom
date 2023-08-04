@@ -55,6 +55,7 @@ extension Globe: View {
                     .padding(.top, Device.isMacOS ? .layer5 : .layer4)
                     .padding(.leading, .layer4)
                     .padding(.trailing, .layer4)
+                    
                     accountsView
                 }
                 
@@ -64,6 +65,7 @@ extension Globe: View {
                     .id(isTabSelected)
                     .padding(.top, .layer5)
             }
+            
             #endif
             
         }
@@ -103,7 +105,7 @@ extension Globe: View {
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: state.accountModuleSize))],
                       alignment: .leading,
-                      spacing: 0) {
+                      spacing: .layer4) {
                 
                 addView
                 
@@ -129,7 +131,6 @@ extension Globe: View {
                     .buttonStyle(PlainButtonStyle())
                     .frame(width: state.accountModuleSize, height: state.accountModuleSize)
                 }
-                
                 Spacer()
             }.padding(.layer4)
         }

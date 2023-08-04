@@ -210,7 +210,10 @@ extension Settings: View {
             }
         }
         .padding(.top, Device.isMacOS ? .layer5 : .layer4)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+        .addGraniteSheet(modal.sheetManager,
+                         modalManager: modal.modalSheetManager,
+                         background: Color.clear)
+        .addGraniteModal(modal.modalManager)
     }
 }
 

@@ -32,13 +32,9 @@ extension Feed: View {
         .onChange(of: config.state.feedCommunityContext) { context in
             switch context {
             case .viewCommunity(let model):
-                _ = Task.detached {
-                    let communityView = await Lemmy.community(community: model)
-                    self._state.community.wrappedValue = model
-                    self._state.communityView.wrappedValue = communityView
-                    await self.pager.fetch(force: true)
-                }
+                self.fetchCommunity(model, reset: true)
             case .viewCommunityView(let model):
+                let community = model.community
                 self._state.community.wrappedValue = model.community
                 self._state.communityView.wrappedValue = model
                 self.pager.fetch(force: true)
@@ -55,12 +51,23 @@ extension Feed: View {
                                               sort: selectedSort,
                                               useBase: true)
                 return posts
-            }.fetch()
+            }
             
-            if config.state.style == .compact || config.state.style == .unknown {
-                if let community = state.community {
-                    let communityView = await Lemmy.community(community: community)
-                    _state.communityView.wrappedValue = communityView
+            switch config.state.style {
+            case .expanded:
+                switch config.state.feedCommunityContext {
+                case .viewCommunity(let community):
+                    fetchCommunity(community, reset: true)
+                case .viewCommunityView(let communityView):
+                    fetchCommunity(communityView.community, reset: true)
+                default:
+                    pager.fetch()
+                }
+            default:
+                if state.community == nil {
+                    pager.fetch()
+                } else {
+                    fetchCommunity(reset: true)
                 }
             }
         }

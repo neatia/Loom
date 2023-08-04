@@ -62,7 +62,11 @@ extension Feed {
     
     var subheaderTitle: String {
         if let community = state.community {
-            return community.actor_id.host
+            if community.actor_id.host != LemmyKit.host {
+                return community.name+"@"+community.actor_id.host
+            } else {
+                return community.actor_id.host
+            }
         } else {
             return LemmyKit.host
         }
@@ -73,6 +77,24 @@ extension Feed {
     }
     var hasCommunityBanner: Bool {
         isCommunity && state.community?.banner != nil
+    }
+    
+    func fetchCommunity(_ model: Community? = nil, reset: Bool = false) {
+        let community: Community? = model ?? state.community
+        
+        guard let community else { return }
+        _ = Task.detached {
+            let communityView = await Lemmy.community(community: community)
+            
+            DispatchQueue.main.async {
+                self._state.community.wrappedValue = model
+                self._state.communityView.wrappedValue = communityView
+            }
+            
+            if reset {
+                await self.pager.fetch(force: true)
+            }
+        }
     }
 }
 
