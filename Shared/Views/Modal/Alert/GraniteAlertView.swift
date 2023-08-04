@@ -55,6 +55,7 @@ public struct GraniteAlertView : GraniteModal {
                     Text(title)
                         .font(self.titleFont ?? .headline)
                         .padding(.top, style.alertVerticalPadding)
+                        .foregroundColor(.foreground)
                     
                     Spacer()
                         .frame(height: 10)
@@ -66,6 +67,7 @@ public struct GraniteAlertView : GraniteModal {
                         .padding(.vertical, style.alertVerticalPadding)
                         .padding(.horizontal, style.alertHorizontalPadding)
                         .fixedSize(horizontal: false, vertical: true)
+                        .foregroundColor(.foreground)
                 }
                 
                 Divider()

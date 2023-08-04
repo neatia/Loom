@@ -36,15 +36,19 @@ extension Home: View {
     }
     
     var bottomPadding: CGFloat {
-        if isBottom && Device.isMacOS == false {
+        if isBottom && Device.isExpandedLayout == false {
             return 20
+        } else if Device.isMacOS {
+            return 24
+        } else if Device.isiPad {
+            return 36
         } else {
-            return Device.isMacOS ? 24 : 10
+            return 10
         }
     }
     
     var topPadding: CGFloat {
-        if Device.isMacOS {
+        if Device.isExpandedLayout {
             return 24
         } else {
             return 0
@@ -54,13 +58,15 @@ extension Home: View {
     var tabBarTopPadding: CGFloat {
         if Device.isMacOS {
             return 36
+        } else if Device.isiPad {
+            return 16
         } else {
             return 0
         }
     }
     
     var tabBarBottomPadding: CGFloat {
-        if Device.isMacOS {
+        if Device.isExpandedLayout {
             return 24
         } else {
             return 0
@@ -72,7 +78,7 @@ extension Home: View {
         GraniteTabView(.init(height: tabViewHeight,
                              paddingTabs: .init(top: tabBarTopPadding, leading: 0, bottom: tabBarBottomPadding, trailing: 0),
                              paddingIcons: .init(top: topPadding, leading: 0, bottom: bottomPadding, trailing: 0),
-                             landscape: Device.isMacOS) {
+                             landscape: Device.isExpandedLayout) {
             
             Color.background.fitToContainer()
             
@@ -103,7 +109,7 @@ extension Home: View {
             }
             #endif
             
-            GraniteTab(split: Device.isMacOS,
+            GraniteTab(split: Device.isExpandedLayout,
                        last: true) {
                 Settings()
             } icon: {
@@ -113,7 +119,7 @@ extension Home: View {
         }
         .edgesIgnoringSafeArea([.top, .bottom])
         .padding(.top, safeAreaTop)
-        .graniteNavigation(backgroundColor: Color.background, disable: Device.isMacOS) {
+        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
                 .font(.title2)

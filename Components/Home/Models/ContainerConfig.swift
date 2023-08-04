@@ -47,11 +47,15 @@ extension ContainerConfig {
     }
     
     public static var iPhoneScreenWidth: CGFloat {
-        #if canImport(UIKit)
-        return UIScreen.main.bounds.width
-        #else
-        return 360
-        #endif
+        if Device.isiPad {
+            return 360
+        } else {
+            #if canImport(UIKit)
+            return UIScreen.main.bounds.width
+            #else
+            return 360
+            #endif
+        }
     }
     
     public static var iPhoneScreenHeight: CGFloat {

@@ -65,10 +65,6 @@ struct CommunitySidebarCardView: View {
                     }
                     
                     HStack(spacing: .layer1) {
-                        
-//                        Text("!"+model.community.name)
-//                            .font(.caption)
-//                            .cornerRadius(4)
                         Text("@" + model.community.actor_id.host)
                             .font(.caption2)
                             .padding(.vertical, 2)

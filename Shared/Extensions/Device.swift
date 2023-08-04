@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 struct Device {
     static var isMacOS: Bool {
@@ -14,5 +17,17 @@ struct Device {
         #else
         return false
         #endif
+    }
+    
+    static var isiPad: Bool {
+        #if os(iOS)
+        return UIDevice.current.userInterfaceIdiom == .pad
+        #else
+        return false
+        #endif
+    }
+    
+    static var isExpandedLayout: Bool {
+        isMacOS || isiPad
     }
 }

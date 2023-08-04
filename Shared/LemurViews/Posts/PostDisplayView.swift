@@ -35,7 +35,6 @@ struct PostDisplayView: View {
             HeaderView(model, shouldRoutePost: false, badge: .noBadge)
                 .padding(.horizontal, .layer3)
                 .padding(.bottom, .layer4)
-                .padding(.top, 0)// Device.isMacOS ? .layer1 : 0)
 
             Divider()
             
@@ -215,16 +214,6 @@ extension PostDisplayView {
                         .frame(maxWidth: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenWidth * 0.8)
                     
                     Spacer()
-                    
-//                    if model.post.body != nil {
-//                        Button {
-//                            GraniteHaptic.light.invoke()
-//                            expandLinkPreview.toggle()
-//                        } label: {
-//                            Image(systemName: expandLinkPreview ? "rectangle.compress.vertical" : "rectangle.expand.vertical")
-//                                .font(Device.isMacOS ? .title : .title2)
-//                        }.buttonStyle(PlainButtonStyle())
-//                    }
                 }
             }
         }

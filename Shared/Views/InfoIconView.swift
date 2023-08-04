@@ -14,7 +14,6 @@ struct InfoIconView: View {
     var modal: ModalService
     var body: some View {
         //TODO: modal bug with macOS (maxHeight)
-        #if os(iOS)
         VStack {
             Text("i")
                 .font(.caption2.bold())
@@ -27,9 +26,6 @@ struct InfoIconView: View {
                 GraniteAlertAction(title: "MISC_DONE")
             })
         }
-        #else
-        EmptyView()
-        #endif
     }
 }
 

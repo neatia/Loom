@@ -29,7 +29,7 @@ extension Feed {
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                                 .font(.headline.bold())
-                                .offset(y: (Device.isMacOS && hasCommunityBanner == false) ? -3 : 0)
+                                .offset(y: (Device.isExpandedLayout && hasCommunityBanner == false) ? -3 : 0)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
@@ -83,7 +83,7 @@ extension Feed {
             .frame(height: hasCommunityBanner ? 48 : 36)
             .padding(.leading, .layer4)
             .padding(.trailing, .layer4)
-            .padding(.vertical, Device.isMacOS ? 0 : .layer2)
+            .padding(.vertical, Device.isExpandedLayout ? 0 : .layer2)
             
             Divider()
         }

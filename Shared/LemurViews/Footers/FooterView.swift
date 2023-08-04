@@ -73,7 +73,7 @@ struct FooterView: View {
         self.commentCount = model.commentCount
         self.replyCount = nil
         self.font = isHeader ? .title3 : .headline
-        self.secondaryFont = Device.isMacOS ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
+        self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
         self.canExpand = false
         self.bookmarkKind = .post(model)
         self.isHeader = isHeader
@@ -93,7 +93,7 @@ struct FooterView: View {
         self.commentCount = 0
         self.replyCount = model.replyCount
         self.font = isHeader ? .title3 : .headline
-        self.secondaryFont = Device.isMacOS ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
+        self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
         self.canExpand = true
         self.bookmarkKind = .comment(model, postView)
         self.routeTitle = nil

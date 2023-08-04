@@ -12,8 +12,22 @@ import GraniteUI
 import LemmyKit
 
 extension Feed {
-    var minFrameWidth: CGFloat {
-        200 + ContainerConfig.iPhoneScreenWidth + 500 + 4
+    var minFrameWidth: CGFloat? {
+        if Device.isMacOS {
+            return 480
+        } else if Device.isiPad {
+            return 360
+        } else {
+            return nil
+        }
+    }
+    
+    var maxFrameWidth: CGFloat? {
+        if Device.isMacOS {
+            return config._state.wrappedValue.closeFeedDisplayView ? nil : 480
+        } else {
+            return nil
+        }
     }
     
     var minFrameWidthClosed: CGFloat {
@@ -34,7 +48,7 @@ extension Feed {
             .frame(width: 240)
             Divider()
             verticalLayout
-                .frame(minWidth: 480, maxWidth: config._state.wrappedValue.closeFeedDisplayView ? nil : 480)
+                .frame(minWidth: minFrameWidth, maxWidth: maxFrameWidth)
             if config._state.wrappedValue.closeFeedDisplayView == false {
                 switch config._state.wrappedValue.feedContext {
                 case .viewPost(let model):
@@ -46,7 +60,6 @@ extension Feed {
                     Spacer()
                 }
             }
-            
             if config._state.wrappedValue.feedContext != .idle {
                 Divider()
                 

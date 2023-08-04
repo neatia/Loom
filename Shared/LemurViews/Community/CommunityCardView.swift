@@ -62,14 +62,14 @@ struct CommunityCardView: View {
                             .cornerRadius(4)
                         
                         Spacer()
-                    }
+                    }.scrollOnOverflow()
                     
                     HStack(spacing: .layer1) {
                         Text("!"+model.community.name)
-                            .font(.headline)
+                            .font(.subheadline)
                             .cornerRadius(4)
                         Text("@" + model.community.actor_id.host)
-                            .font(.caption)
+                            .font(.caption2)
                             .padding(.vertical, .layer1)
                             .padding(.horizontal, .layer1)
                             .background(Color.tertiaryBackground)

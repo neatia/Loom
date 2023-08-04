@@ -27,6 +27,7 @@ struct PostActionsView: View {
     var isCompact: Bool = false
     
     @Relay var bookmark: BookmarkService
+    @Relay var config: ConfigService
     
     var modelIsRemoved: Bool {
         switch bookmarkKind {
@@ -44,7 +45,15 @@ struct PostActionsView: View {
             if let name = community?.name {
                 Button {
                     GraniteHaptic.light.invoke()
-                    enableCommunityRoute = true
+                    if Device.isExpandedLayout {
+                        let community: Community? = community ?? postView?.community
+                        
+                        guard let community else { return }
+                        
+                        config._state.feedCommunityContext.wrappedValue = .viewCommunity(community)
+                    } else {
+                        enableCommunityRoute = true
+                    }
                 } label: {
                     Text("!\(name)")
                     Image(systemName: "arrow.right.circle")
@@ -55,7 +64,12 @@ struct PostActionsView: View {
             if postView != nil {
                 Button {
                     GraniteHaptic.light.invoke()
-                    enablePostRoute = true
+                    if Device.isExpandedLayout {
+                        guard let postView else { return }
+                        config._state.feedContext.wrappedValue = .viewPost(postView)
+                    } else {
+                        enablePostRoute = true
+                    }
                 } label: {
                     Text("POST_ACTIONS_GO_TO_POST")
                     Image(systemName: "arrow.right.circle")
@@ -173,7 +187,7 @@ struct PostActionsView: View {
             }
         } label: {
             Image(systemName: "ellipsis")
-                .font(Device.isMacOS ? .subheadline : .footnote.bold())
+                .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
                 .frame(width: Device.isMacOS ? 16 : 24, height: isCompact ? 12 : 24)
                 .contentShape(Rectangle())
                 .foregroundColor(.foreground)

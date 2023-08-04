@@ -37,15 +37,15 @@ struct WriteView: View {
             case .full:
                 horizontalContent
             case .replyPost, .replyComment:
-                #if os(macOS)
-                horizontalContent
-                #else
-                //This is buggy in sheets
-                //the keyboard toolbar requires another NavigationView
-                //to propagate changes.
-                verticalContent
-                    .graniteNavigation(backgroundColor: Color.background)
-                #endif
+                if Device.isExpandedLayout {
+                    horizontalContent
+                } else {
+                    //This is buggy in sheets
+                    //the keyboard toolbar requires another NavigationView
+                    //to propagate changes.
+                    verticalContent
+                        .graniteNavigation(backgroundColor: Color.background)
+                }
             }
         }
         .onAppear {
@@ -81,6 +81,7 @@ extension WriteView {
                         .font(.title3.bold())
                         .scrollContentBackground(Visibility.hidden)
                         .padding(.layer3)
+                        .frame(maxWidth: .infinity)
                 } else {
                     TextEditor(text: $content)
                         .textFieldStyle(PlainTextFieldStyle())
@@ -88,6 +89,7 @@ extension WriteView {
                         .background(.clear)
                         .font(.title3.bold())
                         .padding(.layer3)
+                        .frame(maxWidth: .infinity)
                 }
                 
                 Divider()
@@ -121,34 +123,6 @@ extension WriteView {
             
             if minimize == false {
                 ScrollView {
-                    //                ZStack {
-                    //                    if minimize == false {
-                    //                        VStack(alignment: .leading, spacing: 0) {
-                    //                            MarkdownView(text: $content)
-                    //                                .markdownViewRole(.editor)
-                    //                        }
-                    //                    }
-                    //
-                    //                    if minimize {
-                    //                        VStack {
-                    //                            HStack {
-                    //                                Spacer()
-                    //
-                    //                                Button {
-                    //                                    GraniteHaptic.light.invoke()
-                    //                                    minimize = false
-                    //                                } label : {
-                    //                                    Image(systemName: "arrow.up.and.down.square.fill")
-                    //                                        .font(.title2)
-                    //                                }
-                    //                                .buttonStyle(PlainButtonStyle())
-                    //                            }
-                    //                            .padding(.top, .layer1)
-                    //
-                    //                            Spacer()
-                    //                        }
-                    //                    }
-                    //                }
                     VStack(alignment: .leading, spacing: 0) {
                         MarkdownView(text: $content)
                             .markdownViewRole(.editor)

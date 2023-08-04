@@ -130,6 +130,8 @@ struct ProfileSettingsView: View {
         }
     }
     
+    @State var isUpdating: Bool = false
+    
     var localModel: LocalModifyMeta?
     
     let showProfileSettings: Bool
@@ -153,11 +155,13 @@ struct ProfileSettingsView: View {
         #else
         
         #endif
+        
+        config.preload()
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if showProfileSettings && offline == false {
+            if offline == false {
                 HStack(spacing: .layer4) {
                     VStack {
                         Spacer()
@@ -171,14 +175,28 @@ struct ProfileSettingsView: View {
                     VStack {
                         Spacer()
                         if changesMade {
-                            Button {
-                                GraniteHaptic.light.invoke()
-                                config.center.update.send(currentMeta)
-                            } label: {
-                                Text("MISC_UPDATE")
-                                    .foregroundColor(Device.isMacOS ? .white : .accentColor)
+                            if isUpdating {
+                                #if os(iOS)
+                                ProgressView()
+                                #else
+                                ProgressView()
+                                    .scaleEffect(0.6)
+                                #endif
+                            } else {
+                                Button {
+                                    GraniteHaptic.light.invoke()
+                                    config.center.update.send(currentMeta)
+                                    isUpdating = true
+                                } label: {
+                                    Text("MISC_UPDATE")
+                                        .foregroundColor(Device.isMacOS ? .white : .accentColor)
+                                }
+                                .buttonStyle(PlainButtonStyle())
                             }
-                            .buttonStyle(PlainButtonStyle())
+                        } else {
+                            Color.clear.onAppear {
+                                isUpdating = false
+                            }
                         }
                     }
                 }
@@ -415,6 +433,8 @@ struct ProfileSettingsView: View {
         
         }
         .padding(.layer4)
+        
+        
     }
 }
 
@@ -537,7 +557,6 @@ extension ProfileSettingsView {
 
 extension ProfileSettingsView {
     func updateLocalSettings() {
-        
         config._state.showNSFW.wrappedValue = currentMeta.showNSFW
         config._state.showScores.wrappedValue = currentMeta.showScores
         config._state.sortType.wrappedValue = currentMeta.sortType ?? config.state.sortType
