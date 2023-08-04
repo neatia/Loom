@@ -7,7 +7,8 @@ import Security
 extension AccountService {
     enum AuthIntent {
         case login(String, String, String?)
-        case register(String, String)
+        //TODO: needs to account for applications, verify pass
+        case register(String, String, String?, String?)
     }
     struct Auth: GraniteReducer {
         typealias Center = AccountService.Center
@@ -42,7 +43,18 @@ extension AccountService {
                     
                     response.send(AuthResponse.Meta(jwt: info, username: username, host: LemmyKit.host, addToProfiles: addToProfiles))
                 }
-            case .register:
+            case .register(let username, let password, let captchaUUID, let captchaAnswer):
+                _ = Task.detached {
+                    let info = await Lemmy.register(username: username, password: password, password_verify: password, show_nsfw: false, captcha_uuid: captchaUUID, captcha_answer: captchaAnswer)
+                    
+                    guard info != nil else {
+                        beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
+                        
+                        return
+                    }
+                    
+                    response.send(AuthResponse.Meta(jwt: info, username: username, host: LemmyKit.host, addToProfiles: addToProfiles))
+                }
                 break
             }
         }

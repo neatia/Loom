@@ -226,6 +226,7 @@ extension PostCardView {
                 HStack(spacing: .layer2) {
                     Text(String(body.previewBody) + "\(body.count < 120 ? " " : "... ")")
                         .font(Device.isExpandedLayout ? .callout : .footnote)
+                        //TODO: localize
                         .foregroundColor(.foreground) + Text("\(body.count < 120 ? "" : "Read more")")
                         .font(Device.isExpandedLayout ? .callout.italic() : .footnote.italic())
                         .foregroundColor(.secondaryForeground.opacity(0.9))
