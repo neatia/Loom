@@ -73,7 +73,7 @@ struct FooterView: View {
         self.commentCount = model.commentCount
         self.replyCount = nil
         self.font = isHeader ? .title3 : .headline
-        self.secondaryFont = Device.isMacOS ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
+        self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
         self.canExpand = false
         self.bookmarkKind = .post(model)
         self.isHeader = isHeader
@@ -93,7 +93,7 @@ struct FooterView: View {
         self.commentCount = 0
         self.replyCount = model.replyCount
         self.font = isHeader ? .title3 : .headline
-        self.secondaryFont = Device.isMacOS ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
+        self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
         self.canExpand = true
         self.bookmarkKind = .comment(model, postView)
         self.routeTitle = nil
@@ -215,6 +215,7 @@ extension FooterView {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
+                #if os(iOS)
                 Button {
                     GraniteHaptic.light.invoke()
                     if let commentView {
@@ -228,6 +229,35 @@ extension FooterView {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
+                #else
+                Menu {
+                    ForEach(NSSharingService.sharingServices(forItems: [""]), id: \.title ) { item in
+                        Button(action: {
+                            if let commentView {
+                                var text: String = commentView.comment.content
+                                text += "\n\n\(commentView.comment.ap_id)"
+                                item.perform(withItems: [text])
+                            } else if let postView {
+                                var text: String = postView.post.name
+                                if let body = postView.post.body {
+                                    text += "\n\n\(body)"
+                                }
+                                text += "\n\n\(postView.post.ap_id)"
+                                item.perform(withItems: [text])
+                            }
+                        }) {
+                            Image(nsImage: item.image)
+                            Text(item.title)
+                        }
+                    }
+                } label: {
+                    Image(systemName: "paperplane")
+                        .font(font)
+                        .contentShape(Rectangle())
+                }
+                .menuStyle(BorderlessButtonMenuStyle())
+                .menuIndicator(.hidden)
+                #endif
                 
                 Spacer()
             }

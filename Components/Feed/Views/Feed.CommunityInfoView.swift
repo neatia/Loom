@@ -55,7 +55,7 @@ extension Feed {
                 }
             } label: {
                 Image(systemName: "ellipsis")
-                    .font(Device.isMacOS ? .title : .title3)
+                    .font(Device.isExpandedLayout ? .title : .title3)
                     .contentShape(Rectangle())
                     .foregroundColor(.foreground)
             }

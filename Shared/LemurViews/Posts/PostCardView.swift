@@ -225,9 +225,10 @@ extension PostCardView {
                let body = model.post.body {
                 HStack(spacing: .layer2) {
                     Text(String(body.previewBody) + "\(body.count < 120 ? " " : "... ")")
-                        .font(Device.isMacOS ? .callout : .footnote)
+                        .font(Device.isExpandedLayout ? .callout : .footnote)
+                        //TODO: localize
                         .foregroundColor(.foreground) + Text("\(body.count < 120 ? "" : "Read more")")
-                        .font(Device.isMacOS ? .callout.italic() : .footnote.italic())
+                        .font(Device.isExpandedLayout ? .callout.italic() : .footnote.italic())
                         .foregroundColor(.secondaryForeground.opacity(0.9))
                     Spacer()
                 }

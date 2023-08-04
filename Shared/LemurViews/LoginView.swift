@@ -9,6 +9,7 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
+import LemmyKit
 
 struct LoginView: View {
     @GraniteAction<Void> var cancel
@@ -19,9 +20,18 @@ struct LoginView: View {
     @State var username: String = ""
     @State var password: String = ""
     @State var token2FA: String = ""
+    @State var captcha: String = ""
+    @State var captchaResponse: CaptchaResponse? = nil
     @State var host: String = ""
     
     @Relay var account: AccountService
+    
+    enum Kind {
+        case login
+        case signup
+    }
+    
+    @State var kind: Kind = .login
     
     var body: some View {
         VStack {
@@ -153,8 +163,15 @@ extension LoginView {
             HStack(spacing: .layer4) {
                 VStack {
                     Spacer()
-                    Text("AUTH_LOGIN")
-                        .font(.title.bold())
+                    switch kind {
+                    case .login:
+                        Text("AUTH_LOGIN")
+                            .font(.title.bold())
+                    case .signup:
+                        Text("AUTH_SIGNUP")
+                            .font(.title.bold())
+                        
+                    }
                 }
                 
                 Spacer()
@@ -178,7 +195,6 @@ extension LoginView {
                 .autocorrectionDisabled()
             
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
-            //TextField("Enter your password", text: $password)
                 .textFieldStyle(.plain)
                 .frame(height: 60)
                 .padding(.horizontal, .layer4)
@@ -189,16 +205,58 @@ extension LoginView {
                 )
                 .padding(.bottom, .layer4)
             
-            TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)
-                .textFieldStyle(.plain)
+            if kind == .login {
+                TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)
+                    .textFieldStyle(.plain)
+                    .frame(height: 60)
+                    .padding(.horizontal, .layer4)
+                    .font(.title3.bold())
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundColor(Color.tertiaryBackground)
+                    )
+                    .padding(.bottom, .layer4)
+            } else {
+                HStack {
+                    if let captchaResponse,
+                       let imageData = Data(base64Encoded: captchaResponse.png, options: .ignoreUnknownCharacters),
+                       let image = GraniteImage(data: imageData) {
+                        
+                        PhotoView(image: image)
+                            .clipped()
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .foregroundColor(Color.tertiaryBackground)
+                            )
+                            .padding(.trailing, .layer2)
+                    } else {
+                        ProgressView()
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .foregroundColor(Color.tertiaryBackground)
+                            )
+                            .padding(.trailing, .layer2)
+                    }
+                    
+                    TextField("", text: $captcha)
+                        .textFieldStyle(.plain)
+                        .frame(height: 60)
+                        .padding(.horizontal, .layer4)
+                        .font(.title3.bold())
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .foregroundColor(Color.tertiaryBackground)
+                        )
+                }
                 .frame(height: 60)
-                .padding(.horizontal, .layer4)
-                .font(.title3.bold())
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(Color.tertiaryBackground)
-                )
                 .padding(.bottom, .layer4)
+                .task {
+                    guard captchaResponse == nil else { return }
+                    let captcha = await Lemmy.captcha()
+                    captchaResponse = captcha?.ok
+                }
+            }
+                
             
             #if os(macOS)
             Spacer()
@@ -209,15 +267,20 @@ extension LoginView {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    account
-                        .center
-                        .auth
-                        .send(AccountService
-                            .Auth
-                            .Meta(intent: .login(self.username,
-                                                 self.password,
-                                                 self.token2FA.isEmpty ? nil : self.token2FA),
-                                  addToProfiles: self.addToProfiles))
+                    switch kind {
+                    case .signup:
+                        kind = .login
+                    case .login:
+                        account
+                            .center
+                            .auth
+                            .send(AccountService
+                                .Auth
+                                .Meta(intent: .login(self.username,
+                                                     self.password,
+                                                     self.token2FA.isEmpty ? nil : self.token2FA),
+                                      addToProfiles: self.addToProfiles))
+                    }
                 } label: {
                     Text("AUTH_LOGIN")
                         .font(.headline)
@@ -227,7 +290,21 @@ extension LoginView {
                 
                 Button {
                     GraniteHaptic.light.invoke()
-                    
+                    switch kind {
+                    case .login:
+                        kind = .signup
+                    case .signup:
+                        account
+                            .center
+                            .auth
+                            .send(AccountService
+                                .Auth
+                                .Meta(intent: .register(self.username,
+                                                        self.password,
+                                                        self.captchaResponse?.uuid,
+                                                        self.captcha.isEmpty ? nil : self.captcha),
+                                      addToProfiles: self.addToProfiles))
+                    }
                 } label: {
                     Text("AUTH_SIGNUP")
                         .font(.headline)
@@ -236,6 +313,7 @@ extension LoginView {
                 
                 Spacer()
             }
+            .padding(.top, Device.isMacOS ? 0 : .layer3)
             
             #if os(iOS)
             Spacer()

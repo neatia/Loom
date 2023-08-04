@@ -59,7 +59,7 @@ struct PEXApp: App {
                                                          isMain: true) {
                     Home()
                         .background(Color.background)
-                        .onAppear {
+                        .task {
                             //TODO: possible resizing race?
                             
                             config.center.boot.send()

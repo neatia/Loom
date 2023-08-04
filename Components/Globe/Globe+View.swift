@@ -1,6 +1,7 @@
 import Granite
 import GraniteUI
 import SwiftUI
+import LemmyKit
 
 extension Globe: View {
     public var view: some View {
@@ -40,30 +41,34 @@ extension Globe: View {
                 }
             }
             #elseif os(macOS)
-            HStack(spacing: 0) {
-                VStack(spacing: 0) {
-                    HStack(spacing: .layer4) {
-                        VStack {
+            VStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    VStack(spacing: 0) {
+                        HStack(spacing: .layer4) {
+                            VStack {
+                                Spacer()
+                                Text("TITLE_ACCOUNTS")
+                                    .font(.title.bold())
+                            }
+                            
                             Spacer()
-                            Text("TITLE_ACCOUNTS")
-                                .font(.title.bold())
                         }
+                        .frame(height: 36)
+                        .padding(.top, Device.isMacOS ? .layer5 : .layer4)
+                        .padding(.leading, .layer4)
+                        .padding(.trailing, .layer4)
                         
-                        Spacer()
+                        accountsView
                     }
-                    .frame(height: 36)
-                    .padding(.top, Device.isMacOS ? .layer5 : .layer4)
-                    .padding(.leading, .layer4)
-                    .padding(.trailing, .layer4)
-                    accountsView
+                    
+                    Divider()
+                    
+                    blockedView
+                        .id(isTabSelected)
+                        .padding(.top, .layer5)
                 }
-                
-                Divider()
-                
-                blockedView
-                    .id(isTabSelected)
-                    .padding(.top, .layer5)
             }
+            
             #endif
             
         }
@@ -71,6 +76,7 @@ extension Globe: View {
                          modalManager: modal.modalSheetManager,
                          background: Color.clear)
         .addGraniteModal(modal.modalManager)
+        
     }
     
     var addView: some View {
@@ -103,7 +109,7 @@ extension Globe: View {
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: state.accountModuleSize))],
                       alignment: .leading,
-                      spacing: 0) {
+                      spacing: .layer4) {
                 
                 addView
                 
@@ -129,7 +135,6 @@ extension Globe: View {
                     .buttonStyle(PlainButtonStyle())
                     .frame(width: state.accountModuleSize, height: state.accountModuleSize)
                 }
-                
                 Spacer()
             }.padding(.layer4)
         }

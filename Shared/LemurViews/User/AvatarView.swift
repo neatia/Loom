@@ -42,7 +42,7 @@ struct AvatarView: View {
             case .small:
                 return .title3
             case .mini:
-                return Device.isMacOS ? .headline : .footnote
+                return Device.isExpandedLayout ? .headline : .footnote
             }
         }
     }

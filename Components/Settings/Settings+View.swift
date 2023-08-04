@@ -150,6 +150,7 @@ extension Settings: View {
                 }
                 
                 Spacer()
+                    .frame(maxHeight: .infinity)
                 
                 
                 HStack(spacing: 4) {
@@ -162,6 +163,7 @@ extension Settings: View {
                             }
                         }
                     
+                //TODO: For AppStore Release
 //                    Text("MISC_PRIVACY_POLICY")
 //                        .font(Fonts.live(.footnote, .regular))
 //                        .foregroundColor(.accentColor)
@@ -208,7 +210,10 @@ extension Settings: View {
             }
         }
         .padding(.top, Device.isMacOS ? .layer5 : .layer4)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+        .addGraniteSheet(modal.sheetManager,
+                         modalManager: modal.modalSheetManager,
+                         background: Color.clear)
+        .addGraniteModal(modal.modalManager)
     }
 }
 

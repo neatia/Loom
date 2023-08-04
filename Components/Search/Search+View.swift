@@ -83,7 +83,7 @@ extension Search: View {
                 .contentShape(Rectangle())
                 .offset(x: -2)
         }
-        .padding(.top, Device.isMacOS ? .layer3 : .layer2)
+        .padding(.top, Device.isExpandedLayout ? .layer3 : .layer2)
         .foregroundColor(.foreground)
         .background(Color.background)
         .task {

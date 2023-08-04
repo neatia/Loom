@@ -16,10 +16,11 @@ extension ConfigService {
             account.center.boot.send()
             content.center.boot.send()
             
-            if state.style == .unknown || state.style == .expanded {
-                #if os(macOS)
-                ConfigService.expandWindow(close: state.closeFeedDisplayView)
-                #endif
+            if state.style == .unknown {
+                if Device.isExpandedLayout {
+                    state.style = .expanded
+                    ConfigService.expandWindow(close: state.closeFeedDisplayView)
+                }
             }
         }
     }

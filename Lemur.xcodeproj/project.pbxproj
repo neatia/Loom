@@ -120,6 +120,9 @@
 		712BEB6329074FEC00D257B7 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712BEB6229074FEC00D257B7 /* UIScreen.swift */; };
 		712BEB6429074FEC00D257B7 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712BEB6229074FEC00D257B7 /* UIScreen.swift */; };
 		712C0D742A7C46F600DBDCC9 /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = 712C0D732A7C46F600DBDCC9 /* MarkdownView */; };
+		712C0D7D2A7CA32500DBDCC9 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */; };
+		712C0D7E2A7CA32500DBDCC9 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */; };
+		712C0D902A7CA65D00DBDCC9 /* LemmyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 712C0D8F2A7CA65D00DBDCC9 /* LemmyKit */; };
 		7145EF0D28D43F1D00BFD19A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF0C28D43F1D00BFD19A /* Date.swift */; };
 		7145EF0E28D43F1D00BFD19A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF0C28D43F1D00BFD19A /* Date.swift */; };
 		7145EF1928D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */; };
@@ -355,8 +358,6 @@
 		71C9F8EF2A60B7F40089D7EA /* Settings+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8EA2A60B7F40089D7EA /* Settings+View.swift */; };
 		71C9F8F02A60B7F40089D7EA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8EB2A60B7F40089D7EA /* Settings.swift */; };
 		71C9F8F12A60B7F40089D7EA /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8EB2A60B7F40089D7EA /* Settings.swift */; };
-		71C9F8F42A60B8C30089D7EA /* LemmyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71C9F8F32A60B8C30089D7EA /* LemmyKit */; };
-		71C9F8F62A60B8D70089D7EA /* LemmyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71C9F8F52A60B8D70089D7EA /* LemmyKit */; };
 		71C9F8FE2A60B9460089D7EA /* ConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8FB2A60B9460089D7EA /* ConfigService.swift */; };
 		71C9F8FF2A60B9460089D7EA /* ConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8FB2A60B9460089D7EA /* ConfigService.swift */; };
 		71C9F9002A60B9460089D7EA /* ConfigService+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8FC2A60B9460089D7EA /* ConfigService+Center.swift */; };
@@ -583,6 +584,7 @@
 		712BEB5A29074CFB00D257B7 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		712BEB5B29074CFB00D257B7 /* CameraContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContentView.swift; sourceTree = "<group>"; };
 		712BEB6229074FEC00D257B7 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
+		712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		7145EF0C28D43F1D00BFD19A /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+SafeArea.swift"; sourceTree = "<group>"; };
 		714FA06129FF11E1002E4A7C /* InfoIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoIconView.swift; sourceTree = "<group>"; };
@@ -808,7 +810,6 @@
 				71F0423D2A6A6BB100788CDC /* IPFSKit in Frameworks */,
 				71E35C932954484A0094DB31 /* Granite in Frameworks */,
 				715797762A7B83A100B7FEC9 /* IPFSKit in Frameworks */,
-				71C9F8F62A60B8D70089D7EA /* LemmyKit in Frameworks */,
 				715797792A7B843100B7FEC9 /* MarkdownView in Frameworks */,
 				7157976E2A7B833400B7FEC9 /* Granite in Frameworks */,
 				715797732A7B835500B7FEC9 /* LemmyKit in Frameworks */,
@@ -827,12 +828,12 @@
 			files = (
 				71CB6C2C2A6AF99400084ECC /* IPFSKit in Frameworks */,
 				71258D1F2A55E134007E52FC /* Granite in Frameworks */,
-				71C9F8F42A60B8C30089D7EA /* LemmyKit in Frameworks */,
 				71C1776F2A64A0C800A11B03 /* NukeVideo in Frameworks */,
 				71258D212A55E134007E52FC /* GraniteUI in Frameworks */,
 				712C0D742A7C46F600DBDCC9 /* MarkdownView in Frameworks */,
 				71C1776D2A64A0C800A11B03 /* NukeUI in Frameworks */,
 				71C177692A64A0C800A11B03 /* Nuke in Frameworks */,
+				712C0D902A7CA65D00DBDCC9 /* LemmyKit in Frameworks */,
 				71C1776B2A64A0C800A11B03 /* NukeExtensions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1239,6 +1240,7 @@
 				71A28D95295231E600EAE8EE /* Dictionary.swift */,
 				71A28D92295231E600EAE8EE /* Double.swift */,
 				7161D2FA29540AD00070FE59 /* View+Overlay.swift */,
+				712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */,
 				7166E9CB2A744A06004F88D7 /* View+Background.swift */,
 				7145EF0C28D43F1D00BFD19A /* Date.swift */,
 				7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */,
@@ -1897,7 +1899,6 @@
 			packageProductDependencies = (
 				71E35C922954484A0094DB31 /* Granite */,
 				71E35C942954484D0094DB31 /* GraniteUI */,
-				71C9F8F52A60B8D70089D7EA /* LemmyKit */,
 				71C5FF6D2A646BE100F99A84 /* Nuke */,
 				71C5FF6F2A646BE100F99A84 /* NukeExtensions */,
 				71C5FF712A646BE100F99A84 /* NukeUI */,
@@ -1929,13 +1930,13 @@
 			packageProductDependencies = (
 				71258D1E2A55E134007E52FC /* Granite */,
 				71258D202A55E134007E52FC /* GraniteUI */,
-				71C9F8F32A60B8C30089D7EA /* LemmyKit */,
 				71C177682A64A0C800A11B03 /* Nuke */,
 				71C1776A2A64A0C800A11B03 /* NukeExtensions */,
 				71C1776C2A64A0C800A11B03 /* NukeUI */,
 				71C1776E2A64A0C800A11B03 /* NukeVideo */,
 				71CB6C2B2A6AF99400084ECC /* IPFSKit */,
 				712C0D732A7C46F600DBDCC9 /* MarkdownView */,
+				712C0D8F2A7CA65D00DBDCC9 /* LemmyKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Lemur.app */;
@@ -2137,6 +2138,7 @@
 				710283B52A2A54C300010877 /* HorizontalValueSliderStyle.swift in Sources */,
 				7166E9CF2A7472E3004F88D7 /* AccountService.Interact.swift in Sources */,
 				710283B32A2A54C300010877 /* AnyValueSliderStyle.swift in Sources */,
+				712C0D7D2A7CA32500DBDCC9 /* CGPoint.swift in Sources */,
 				71B7A1F12A691470003E6D4D /* ShinyView.swift in Sources */,
 				710283972A2A54C300010877 /* AnyPointSliderStyle.swift in Sources */,
 				710283832A2A54C300010877 /* RangeSlider.swift in Sources */,
@@ -2448,6 +2450,7 @@
 				710283C02A2A54C300010877 /* ValueTrackConfiguration.swift in Sources */,
 				71C69E252A70469900B54AD6 /* Search+View.swift in Sources */,
 				71A28D99295231E600EAE8EE /* Color.swift in Sources */,
+				712C0D7E2A7CA32500DBDCC9 /* CGPoint.swift in Sources */,
 				71A4A1172A61C39600689DF2 /* Bookmark.swift in Sources */,
 				71C9F8D72A60B7C10089D7EA /* Feed+Center.swift in Sources */,
 				71F042252A6A3AD700788CDC /* Write.swift in Sources */,
@@ -2773,6 +2776,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2808,6 +2812,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3070,6 +3075,11 @@
 			package = 715797772A7B843100B7FEC9 /* XCRemoteSwiftPackageReference "MarkdownView" */;
 			productName = MarkdownView;
 		};
+		712C0D8F2A7CA65D00DBDCC9 /* LemmyKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 715797712A7B835500B7FEC9 /* XCRemoteSwiftPackageReference "LemmyKit" */;
+			productName = LemmyKit;
+		};
 		7157976D2A7B833400B7FEC9 /* Granite */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7157976C2A7B833400B7FEC9 /* XCRemoteSwiftPackageReference "Granite" */;
@@ -3134,14 +3144,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71C5FF6C2A646BE100F99A84 /* XCRemoteSwiftPackageReference "Nuke" */;
 			productName = NukeVideo;
-		};
-		71C9F8F32A60B8C30089D7EA /* LemmyKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LemmyKit;
-		};
-		71C9F8F52A60B8D70089D7EA /* LemmyKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LemmyKit;
 		};
 		71CB6C2B2A6AF99400084ECC /* IPFSKit */ = {
 			isa = XCSwiftPackageProductDependency;

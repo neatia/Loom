@@ -62,14 +62,14 @@ struct CommunityCardView: View {
                             .cornerRadius(4)
                         
                         Spacer()
-                    }
+                    }.scrollOnOverflow()
                     
                     HStack(spacing: .layer1) {
                         Text("!"+model.community.name)
-                            .font(.headline)
+                            .font(.subheadline)
                             .cornerRadius(4)
                         Text("@" + model.community.actor_id.host)
-                            .font(.caption)
+                            .font(.caption2)
                             .padding(.vertical, .layer1)
                             .padding(.horizontal, .layer1)
                             .background(Color.tertiaryBackground)
@@ -81,6 +81,39 @@ struct CommunityCardView: View {
                 
                 if fullWidth {
                     Spacer()
+                    
+                    #if os(iOS)
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        ModalService.share(urlString: model.community.actor_id)
+                    } label: {
+                        Image(systemName: "paperplane")
+                            .font(.headline)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.trailing, .layer2)
+                    #else
+                    Menu {
+                        ForEach(NSSharingService
+                            .sharingServices(forItems: [""]),
+                                id: \.title) { item in
+                            Button(action: {
+                                print(model.community.actor_id)
+                    //                                        item.perform(withItems: [""])
+                            }) {
+                                Image(nsImage: item.image)
+                                Text(item.title)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .font(.headline)
+                            .contentShape(Rectangle())
+                    }
+                    .menuStyle(BorderlessButtonMenuStyle())
+                    .menuIndicator(.hidden)
+                    #endif
                 }
             }
             .padding(.layer3)

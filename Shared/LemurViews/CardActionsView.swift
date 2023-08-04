@@ -78,7 +78,7 @@ struct CardActionsView: View {
             }
         } label: {
             Image(systemName: "ellipsis")
-                .font(Device.isMacOS ? .subheadline : .footnote.bold())
+                .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
                 .frame(width: 24, height: 24)
                 .contentShape(Rectangle())
                 .foregroundColor(.foreground)

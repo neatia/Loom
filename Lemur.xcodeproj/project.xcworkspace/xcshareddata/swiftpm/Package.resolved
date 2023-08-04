@@ -6,7 +6,7 @@
       "location" : "https://github.com/pexavc/Granite.git",
       "state" : {
         "branch" : "main",
-        "revision" : "4b50fea1a6e3ddbd2bab647ab244649de797fd9c"
+        "revision" : "66a34181d2795d2b1d06d5e07319aaa38b3c03fd"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/pexavc/LemmyKit",
       "state" : {
         "branch" : "main",
-        "revision" : "b7d41f7229c922dd676c4727693bab069479bdd4"
+        "revision" : "f63981e0f05bd7d8a8041d5518f63c28822300a8"
       }
     },
     {
@@ -51,7 +51,7 @@
       "location" : "https://github.com/kean/Nuke",
       "state" : {
         "branch" : "main",
-        "revision" : "3f9523969984bd8a53b94a16a46b7c8005a05e82"
+        "revision" : "29d3a7e0c687f97fe35b584f60b93fc547d3dade"
       }
     },
     {

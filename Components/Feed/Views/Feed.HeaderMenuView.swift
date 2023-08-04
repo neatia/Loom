@@ -94,6 +94,6 @@ extension Feed {
             Spacer()
         }
         .padding(.top, hasCommunityBanner ? .layer1 : 0)
-        .offset(x: (hasCommunityBanner == false && Device.isMacOS) ? -2 : 0, y: 0)
+        .offset(x: (hasCommunityBanner == false && Device.isExpandedLayout) ? -2 : 0, y: 0)
     }
 }

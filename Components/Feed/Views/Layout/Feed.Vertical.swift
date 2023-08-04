@@ -16,7 +16,7 @@ extension Feed {
         VStack(spacing: 0) {
             PagerScrollView(PostView.self,
                             alternateAddPosition: true,
-                            useList: false) {//Device.isMacOS) {
+                            useList: false) {
                 headerView
             } inlineBody: {
                 EmptyView()

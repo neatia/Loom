@@ -64,10 +64,7 @@ class GraniteModalWindow : NSWindow {
         func updateNSView(_ nsView: View, context: Context) {
             //Nothing to do
         }
-        
-        
     }
-    
 }
 
 #endif

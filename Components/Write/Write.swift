@@ -34,12 +34,10 @@ struct Write: GraniteComponent {
     init(kind: Write.Kind? = nil) {
         if let kind {
             self.kind = kind
-        } else {
-            #if os(macOS)
+        } else if Device.isExpandedLayout {
             self.kind = .full
-            #else
+        } else {
             self.kind = .compact
-            #endif
         }
     }
 }

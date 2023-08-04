@@ -2,15 +2,12 @@
 
 <h1 align="center">Lemur (iOS & macOS) Beta</h1>
 
+<a href="https://testflight.apple.com/join/owwIagmV"><h2 align="center">Testflight (iOS)</h2></a>
 
-<p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="85%" /></p>
+<p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
 
 
 <p align="center">An app with "Threads" that does not collect your data. Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations.</p>
-
-## Testflight (iOS)
-
-- https://testflight.apple.com/join/owwIagmV
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
@@ -58,7 +55,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 
 In an attempt to build a community around Lemur as well, feel free to explore the places below!
 
-- [@lemmy.world](https://lemmy.world)
+- [@lemmy.world](https://lemmy.world/c/lemur)
 - Matrix Spaces: `!cYiAYEKIMRaZcuuudA:matrix.org`
 
 ### Contact

@@ -38,14 +38,14 @@ extension Feed {
              
              Button {
                  GraniteHaptic.light.invoke()
-                 modal.presentSheet(style: Device.isMacOS ? .sheet : .cover) {
+                 modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
                      Search(state.community)
                          .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                  }
              } label: {
                  Image(systemName: "magnifyingglass")
                      .renderingMode(.template)
-                     .font(Device.isMacOS ? .title2 : .title3)
+                     .font(Device.isExpandedLayout ? .title2 : .title3)
                      .frame(width: 24, height: 24)
                      .contentShape(Rectangle())
                      .foregroundColor(.foreground)
@@ -60,7 +60,7 @@ extension Feed {
              .buttonStyle(PlainButtonStyle())
          }
          .frame(height: hasCommunityBanner ? 48 : 36)
-         .padding(.top, (Device.isMacOS && state.community == nil) ? .layer5 : .layer3)
+         .padding(.top, (Device.isExpandedLayout && state.community == nil) ? .layer5 : .layer3)
          .padding(.bottom, .layer2)
          .padding(.leading, .layer4)
          .padding(.trailing, .layer4)
