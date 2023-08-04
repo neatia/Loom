@@ -3,6 +3,7 @@
 <h1 align="center">Lemur (iOS & macOS) Beta</h1>
 
 <a href="https://testflight.apple.com/join/owwIagmV"><h2 align="center">Testflight (iOS)</h2></a>
+<p align="center">https://testflight.apple.com/join/owwIagmV</p>
 
 <p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
 
