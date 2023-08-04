@@ -2782,7 +2782,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Lemur;
 				SDKROOT = iphoneos;
@@ -2818,7 +2818,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Lemur;
 				SDKROOT = iphoneos;
@@ -2850,7 +2850,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Lemur;
 				SDKROOT = macosx;
@@ -2880,7 +2880,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Lemur;
 				SDKROOT = macosx;

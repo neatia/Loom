@@ -2,10 +2,10 @@
 
 <h1 align="center">Lemur (iOS & macOS) Beta</h1>
 
+<p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
+
 <a href="https://testflight.apple.com/join/owwIagmV"><h2 align="center">Testflight (iOS)</h2></a>
 <p align="center">https://testflight.apple.com/join/owwIagmV</p>
-
-<p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
 
 
 <p align="center">An app with "Threads" that does not collect your data. Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations.</p>
