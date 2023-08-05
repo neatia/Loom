@@ -49,7 +49,7 @@ extension Feed {
             Divider()
             verticalLayout
                 .frame(minWidth: minFrameWidth, maxWidth: maxFrameWidth)
-            if config._state.wrappedValue.closeFeedDisplayView == false {
+            if config._state.closeFeedDisplayView.wrappedValue == false {
                 switch config._state.wrappedValue.feedContext {
                 case .viewPost(let model):
                     Divider()
@@ -60,11 +60,11 @@ extension Feed {
                     Spacer()
                 }
             }
-            if config._state.wrappedValue.feedContext != .idle {
+            if config._state.feedContext.wrappedValue != .idle {
                 Divider()
                 
                 Button {
-                    config._state.wrappedValue.closeFeedDisplayView.toggle()
+                    config._state.closeFeedDisplayView.wrappedValue.toggle()
                 } label: {
                     
                     closeView

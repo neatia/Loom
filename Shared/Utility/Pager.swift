@@ -158,7 +158,9 @@ class Pager<Model: Pageable>: ObservableObject {
         
         if force {
             pageIndex = 1
-            hasMore = true
+            DispatchQueue.main.async { [weak self] in
+                self?.hasMore = true
+            }
         }
         
         guard self.isFetching == false else {
@@ -168,7 +170,9 @@ class Pager<Model: Pageable>: ObservableObject {
             return
         }
         
-        self.isFetching = true
+        DispatchQueue.main.async { [weak self] in
+            self?.isFetching = true
+        }
         
         self.timerCancellable = Timer.publish(every: 5,
                                               on: .main,
@@ -278,6 +282,8 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     
     let useList: Bool
     
+    let cacheEnabled: Bool
+    
     //TODO: create style struct for these extra props
     init(_ model: Model.Type,
          hideDivider: Bool = false,
@@ -285,6 +291,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
          contentBGColor: Color = .clear,
          verticalPadding: CGFloat = 0,
          useList: Bool = false,
+         cacheEnabled: Bool = true,
          @ViewBuilder header: @escaping (() -> Header) = { EmptyView() },
          @ViewBuilder inlineBody: @escaping (() -> AddContent) = { EmptyView() },
          @ViewBuilder content: @escaping (Model) -> Content) {
@@ -296,6 +303,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         self.contentBGColor = contentBGColor
         self.verticalPadding = verticalPadding
         self.useList = useList
+        self.cacheEnabled = cacheEnabled
     }
     
     var body: some View {
@@ -345,13 +353,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     }
                     
                     ForEach(pager.currentItems) { item in
-
-//                        content(item)
-//
-//                        if !hideDivider,
-//                           item.id != pager.lastItem?.id {
-//                            Divider()
-//                        }
                         cache(item)
                     }
                     
@@ -406,19 +407,21 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             VStack(spacing: 0) {
                 content(item)
                     .padding(.vertical, verticalPadding)
-                    .setupPlainListRow()
+                    //.setupPlainListRow()
                 
                 if !hideDivider,
                    item.id != pager.lastItem?.id {
                     Divider()
-                        .setupPlainListRow()
+                        //.setupPlainListRow()
                 }
             }
             .background(contentBGColor)
         )
         
-        cache.viewCache[item.id] = view
-        cache.flush()
+        if cacheEnabled {
+            cache.viewCache[item.id] = view
+            cache.flush()
+        }
         
         return view
     }

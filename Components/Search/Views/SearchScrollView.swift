@@ -16,10 +16,10 @@ struct SearchScrollView: View {
     var query: String
     @Binding var response: SearchResponse?
     
-    @StateObject var pagerPosts: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
-    @StateObject var pagerComments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
-    @StateObject var pagerUsers: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS")
-    @StateObject var pagerCommunities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    var pagerPosts: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    var pagerComments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    var pagerUsers: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS")
+    var pagerCommunities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
     
     var searchType: SearchType
     var community: Community?

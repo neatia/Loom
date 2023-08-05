@@ -8,21 +8,9 @@ extension Globe: View {
         VStack(spacing: 0) {
             
             #if os(iOS)
-            HStack(spacing: .layer4) {
-                VStack {
-                    Spacer()
-                    Text("TITLE_ACCOUNTS")
-                        .font(.title.bold())
-                }
-                
-                Spacer()
-            }
-            .frame(height: 36)
-            .padding(.top, Device.isMacOS ? .layer5 : .layer4)
-            .padding(.leading, .layer4)
-            .padding(.trailing, .layer4)
             VStack(spacing: 0) {
-                accountsView
+                mainView
+                
                 Picker("", selection: _state.socialViewOptions) {
                     Text("TITLE_COMMUNITIES").tag(0)
                     Text("TITLE_BLOCKED").tag(1)
@@ -43,23 +31,7 @@ extension Globe: View {
             #elseif os(macOS)
             VStack(spacing: 0) {
                 HStack(spacing: 0) {
-                    VStack(spacing: 0) {
-                        HStack(spacing: .layer4) {
-                            VStack {
-                                Spacer()
-                                Text("TITLE_ACCOUNTS")
-                                    .font(.title.bold())
-                            }
-                            
-                            Spacer()
-                        }
-                        .frame(height: 36)
-                        .padding(.top, Device.isMacOS ? .layer5 : .layer4)
-                        .padding(.leading, .layer4)
-                        .padding(.trailing, .layer4)
-                        
-                        accountsView
-                    }
+                    mainView
                     
                     Divider()
                     

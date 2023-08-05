@@ -1,7 +1,10 @@
+
+import SwiftUI
+import Combine
+
 #if os(iOS)
 
 import Foundation
-import SwiftUI
 
 // Heavily influenced and adopted from
 // https://github.com/globulus/swiftui-pull-to-refresh/blob/main/Sources/SwiftUIPullToRefresh/SwiftUIPullToRefresh.swift
@@ -199,6 +202,9 @@ public struct GraniteScrollView<Content : View> : View {
     @State private var progress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
     
+    let detector: CurrentValueSubject<CGFloat, Never>
+    let publisher: AnyPublisher<CGFloat, Never>
+    
     public init(_ axes : Axis.Set = .vertical,
                 showsIndicators: Bool = false,
                 onRefresh : RefreshHandler? = nil,
@@ -209,6 +215,13 @@ public struct GraniteScrollView<Content : View> : View {
         self.onRefresh = onRefresh
         self.onReachedEdge = onReachedEdge
         self.content = content()
+        
+        let detector = CurrentValueSubject<CGFloat, Never>(0)
+                self.publisher = detector
+                    .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+                    .dropFirst()
+                    .eraseToAnyPublisher()
+                self.detector = detector
     }
     
     var progressBody: some View {
@@ -245,6 +258,7 @@ public struct GraniteScrollView<Content : View> : View {
                 }
                 
                 content
+                    .environment(\.graniteScrollStopped, publisher)
                     .overlay(onRefresh != nil ? progressBody : nil, alignment: .top)
             }
         }
@@ -262,6 +276,8 @@ public struct GraniteScrollView<Content : View> : View {
             if status == .idle {
                 status = .dragging
             }
+            
+            detector.send(values.first?.y ?? 0)
 
             DispatchQueue.main.async {
                 let movingY = values.first { $0.type == .moving }?.y ?? 0
@@ -310,4 +326,15 @@ private struct PullIndicator : View {
             .frame(width: 12, height: 12)
     }
     
+}
+
+private struct GraniteScrollStoppedKey: EnvironmentKey {
+    static let defaultValue: AnyPublisher<CGFloat, Never>? = nil
+}
+
+extension EnvironmentValues {
+    var graniteScrollStopped: AnyPublisher<CGFloat, Never>? {
+        get { self[GraniteScrollStoppedKey.self] }
+        set { self[GraniteScrollStoppedKey.self] = newValue }
+    }
 }

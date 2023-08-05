@@ -22,7 +22,7 @@ struct ThreadView: View {
     
     @State var breadCrumbs: [CommentView] = []
     
-    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var currentModel: CommentView {
         breadCrumbs.last ?? model

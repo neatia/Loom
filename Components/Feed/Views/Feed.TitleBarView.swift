@@ -23,6 +23,9 @@ extension Feed {
                          Color.background.opacity(0.75)
                              .cornerRadius(4)
                      }
+                     .onTapGesture {
+                         config._state.feedCommunityContext.wrappedValue = .idle
+                     }
                  Text(headerTitle)
                      .font(.title.bold())
                      .padding(.horizontal, hasCommunityBanner ? 6 : 0)

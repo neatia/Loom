@@ -28,7 +28,7 @@ struct PostDisplayView: View {
     
     @State var enableCommunityRoute: Bool = false
     
-    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

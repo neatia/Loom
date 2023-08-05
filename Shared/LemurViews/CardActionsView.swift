@@ -86,7 +86,7 @@ struct CardActionsView: View {
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
         .frame(width: 24, height: 24)
-        .scaleEffect(x: -1, y: 1)
+        //.scaleEffect(x: -1, y: 1)
         .addHaptic()
     }
 }

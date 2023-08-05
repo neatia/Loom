@@ -160,9 +160,9 @@ public struct LinkPreview: View {
                     LinkPreviewCache.shared.metadataCache[cacheKey] = meta
                     LinkPreviewCache.shared.flush()
                 }
-                withAnimation(.spring()) {
+                //withAnimation(.spring()) {
                     self.metaData = meta
-                }
+                //}
             }
         }
     }

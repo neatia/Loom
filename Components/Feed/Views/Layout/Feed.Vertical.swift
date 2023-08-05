@@ -16,7 +16,8 @@ extension Feed {
         VStack(spacing: 0) {
             PagerScrollView(PostView.self,
                             alternateAddPosition: true,
-                            useList: false) {
+                            useList: false,
+                            cacheEnabled: true) {
                 headerView
             } inlineBody: {
                 EmptyView()
@@ -25,13 +26,13 @@ extension Feed {
                              isFrontPage: state.community == nil,
                              style: .style2,
                              linkPreviewType: config.state.linkPreviewMetaData ? .large : .largeNoMetadata)
-                .attach({
-                    GraniteHaptic.light.invoke()
-                    modal.presentSheet {
-                        PostContentView(postView: postView)
-                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-                    }
-                }, at: \.showContent)
+//                .attach({
+//                    GraniteHaptic.light.invoke()
+//                    modal.presentSheet {
+//                        PostContentView(postView: postView)
+//                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+//                    }
+//                }, at: \.showContent)
                 .graniteEvent(account.center.interact)
             }.environmentObject(pager)
         }

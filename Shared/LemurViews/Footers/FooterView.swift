@@ -85,8 +85,8 @@ struct FooterView: View {
         
         self.isComposable = isComposable
         
-        content.preload()
-        config.preload()
+//        content.preload()
+//        config.preload()
     }
     
     init(_ model: CommentView, postView: PostView? = nil, isHeader: Bool = false, style: FeedStyle = .style1, isComposable: Bool = false) {
@@ -106,8 +106,8 @@ struct FooterView: View {
         
         self.isComposable = isComposable
         
-        content.preload()
-        config.preload()
+//        content.preload()
+//        config.preload()
     }
     
     var body: some View {
@@ -131,7 +131,7 @@ extension FooterView {
                     switch bookmarkKind {
                     case .post(let postView):
                         content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
-                    case .comment(var commentView, _):
+                    case .comment(let commentView, _):
                         content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
                     }
                 } label : {

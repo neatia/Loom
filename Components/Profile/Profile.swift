@@ -8,7 +8,7 @@ struct Profile: GraniteComponent {
     @Relay var modal: ModalService
     @Relay var account: AccountService
     
-    @StateObject var pager: Pager<PersonDetailsPageable> = .init(emptyText: "EMPTY_STATE_MISC")
+    var pager: Pager<PersonDetailsPageable> = .init(emptyText: "EMPTY_STATE_MISC")
     
     var listeners: Void {
         account

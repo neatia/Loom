@@ -94,6 +94,7 @@ struct PostCardView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         HeaderCardView(model, badge: .noBadge, isCompact: isCompact)
                             .graniteEvent(interact)
+                        
                         content
                     }
                 }
@@ -118,6 +119,7 @@ extension PostCardView {
                     .censor(shouldCensor, kind: censorKind)
                     .padding(.top, shouldCensor ? .layer2 : 0)
             }
+            
             if isPreview && !isCompact {
                 Spacer()
             }

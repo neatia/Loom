@@ -10,7 +10,7 @@ struct Feed: GraniteComponent {
     @Relay var modal: ModalService
     @Relay var account: AccountService
     
-    @StateObject var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
     
     var listeners: Void {
         account

@@ -34,7 +34,6 @@ extension Feed: View {
             case .viewCommunity(let model):
                 self.fetchCommunity(model, reset: true)
             case .viewCommunityView(let model):
-                let community = model.community
                 self._state.community.wrappedValue = model.community
                 self._state.communityView.wrappedValue = model
                 self.pager.fetch(force: true)
