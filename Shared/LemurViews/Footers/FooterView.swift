@@ -160,26 +160,6 @@ extension FooterView {
                     .contentShape(Rectangle())
                 }.buttonStyle(PlainButtonStyle())
                 
-//                if let replyCount {
-//                    if replyCount > 0 {
-//                        Button {
-//                            switch bookmarkKind {
-//                            case .comment(let commentView, _):
-//                                showComments.perform(commentView.comment.id)
-//                            default:
-//                                break
-//                            }
-//                        } label: {
-//                            HStack(spacing: .layer1) {
-//                                Text("\(replyCount)")
-//                                    .font(font)
-//                                Text("repl\(replyCount > 1 ? "ies" : "y")")
-//                                    .font(font)
-//                            }.contentShape(Rectangle())
-//                        }.buttonStyle(PlainButtonStyle())
-//                            .foregroundColor(.foreground)
-//                    }
-//                } else {
                 if case let .post(postView) = bookmarkKind {
                     HStack(spacing: .layer1) {
                         Image(systemName: "bubble.left")
@@ -192,15 +172,6 @@ extension FooterView {
                                         isFrontPage: false)
                     }
                 }
-                
-    //            Color.clear.frame(maxWidth: .infinity)
-    //                .contentShape(Rectangle())
-    //                .modifier(TapAndLongPressModifier(tapAction: {  },
-    //                                                  longPressAction: {
-    //                    guard canExpand else { return }
-    //                    GraniteHaptic.light.invoke()
-    //                    expand.perform()
-    //                }))
                 
                 if isHeader == false || bookmarkKind.isComment || Device.isMacOS == false {
                     Button {

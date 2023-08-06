@@ -111,6 +111,7 @@ struct AvatarView: View {
                             .offset(x: 0, y: -1)
                     }
                 }
+                .animation(nil, value: true)
             } else {
                 Image(systemName: "person\(isCommunity ? ".3" : "")")
                     .font(avatarSize)

@@ -28,6 +28,7 @@ struct PostActionsView: View {
     
     @Relay var bookmark: BookmarkService
     @Relay var config: ConfigService
+    @Relay var layout: LayoutService
     
     var modelIsRemoved: Bool {
         switch bookmarkKind {
@@ -50,7 +51,7 @@ struct PostActionsView: View {
                         
                         guard let community else { return }
                         
-                        config._state.feedCommunityContext.wrappedValue = .viewCommunity(community)
+                        layout._state.feedCommunityContext.wrappedValue = .viewCommunity(community)
                     } else {
                         enableCommunityRoute = true
                     }
@@ -66,7 +67,7 @@ struct PostActionsView: View {
                     GraniteHaptic.light.invoke()
                     if Device.isExpandedLayout {
                         guard let postView else { return }
-                        config._state.feedContext.wrappedValue = .viewPost(postView)
+                        layout._state.feedContext.wrappedValue = .viewPost(postView)
                     } else {
                         enablePostRoute = true
                     }

@@ -5,12 +5,12 @@ import Combine
 
 struct Feed: GraniteComponent {
     @Command var center: Center
+    
     @Relay var config: ConfigService
-    @Relay var content: ContentService
     @Relay var modal: ModalService
     @Relay var account: AccountService
     
-    var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    @StateObject var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
     
     var listeners: Void {
         account

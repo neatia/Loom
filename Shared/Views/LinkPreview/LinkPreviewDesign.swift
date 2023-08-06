@@ -8,10 +8,8 @@
 import SwiftUI
 import LinkPresentation
 import Granite
+import UniformTypeIdentifiers
 
-#if os(iOS)
-import MobileCoreServices
-#endif
 
 struct LinkPreviewDesign: View {
     
@@ -79,16 +77,44 @@ struct LinkPreviewDesign: View {
                 largeType
             }
         }
-        .task {
-            containerSize = LinkPreviewCache.shared.sizeCache[cacheKey]
-        }
         .onAppear {
-            if cachedImage == nil {
-                getImage()
+            guard cachedImage == nil else {
+                return
             }
-//            if icon == nil {
-//                getIcon()
-//            }
+            _ = Task {
+                containerSize = LinkPreviewCache.shared.sizeCache[cacheKey]
+                let type = String(describing: UTType.image)
+                guard let imageProvider = metaData.imageProvider else {
+                    return
+                }
+                if imageProvider.hasItemConformingToTypeIdentifier(type) {
+                    guard let item = try? await imageProvider.loadItem(forTypeIdentifier: type) else {
+                        return
+                    }
+                    
+                    if item is GraniteImage {
+                        image = item as? GraniteImage
+                    }
+                    
+                    if item is URL {
+                        guard let url = item as? URL,
+                              let data = try? Data(contentsOf: url) else { return }
+                        
+                        image = GraniteImage(data: data)
+                    }
+                    
+                    if item is Data {
+                        guard let data = item as? Data else { return }
+                        
+                        image = GraniteImage(data: data)
+                    }
+                    
+                    if LinkPreviewCache.shared.cache {
+                        LinkPreviewCache.shared.imageCache[cacheKey] = image
+                    }
+                }
+            }
+            
         }
     }
     
@@ -239,95 +265,106 @@ struct LinkPreviewDesign: View {
             }
             
             if type != .largeNoMetadata {
-                HStack(spacing: 8){
-                    VStack(alignment: .leading, spacing: 0){
-                        if let title = metaData.title {
-                            Text(title)
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                                .multilineTextAlignment(.leading)
-                                .foregroundColor(primaryFontColor)
-                                .lineLimit(titleLineLimit)
-                                .padding(.bottom, image == nil ? 0 : 4)
+                HStack {
+                    HStack(spacing: 8){
+                        VStack(alignment: .leading, spacing: 0){
+                            if let title = metaData.title {
+                                Text(title)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .multilineTextAlignment(.leading)
+                                    .foregroundColor(primaryFontColor)
+                                    .lineLimit(titleLineLimit)
+                                    .padding(.bottom, image == nil ? 0 : 4)
+                            }
+                            
+                            if let url = metaData.url?.host {
+                                Text("\(url)")
+                                    .foregroundColor(secondaryFontColor)
+                                    .font(.footnote)
+                            }
                         }
                         
-                        if let url = metaData.url?.host {
-                            Text("\(url)")
+                        if cachedImage != nil {
+                            Spacer()
+                        }
+                        else {
+                            Image(systemName: "arrow.up.forward.app.fill")
+                                .resizable()
                                 .foregroundColor(secondaryFontColor)
-                                .font(.footnote)
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 24, height: 24, alignment: .center)
                         }
                     }
-                    
-                    if cachedImage != nil {
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        Rectangle()
+                            .foregroundColor(backgroundColor)
+                    )
+                    if cachedImage == nil {
                         Spacer()
                     }
-                    else {
-                        Image(systemName: "arrow.up.forward.app.fill")
-                            .resizable()
-                            .foregroundColor(secondaryFontColor)
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24, alignment: .center)
-                    }
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(
-                    Rectangle()
-                        .foregroundColor(backgroundColor)
-                )
             }
         }
         .cornerRadius(12)
     }
     
-    func getImage(){
-        guard image == nil,
-              let metadataURL = metaData.url else {
-            return
-        }
-        
-        let IMAGE_TYPE = kUTTypeImage as String
-        
-        LinkPreviewCache.shared.imageOperationQueue.addOperation {
-            metaData.imageProvider?.loadFileRepresentation(forTypeIdentifier: IMAGE_TYPE, completionHandler: { (url, imageProviderError) in
-                if imageProviderError != nil {
-                    
-                }
-                guard let url else { return }
-                let data = url.path
-                
-                let image = GraniteImage(contentsOfFile: (data))
-                self.image = image
-                
-                if LinkPreviewCache.shared.cache {
-                    LinkPreviewCache.shared.imageCache[cacheKey] = image
-                }
-            })
-        }
-    }
-    func getIcon(){
-        guard let metadataURL = metaData.url else {
-            return
-        }
-        
-        let IMAGE_TYPE = kUTTypeImage as String
-        
-        LinkPreviewCache.shared.iconOperationQueue.addOperation {
-            metaData.iconProvider?.loadFileRepresentation(forTypeIdentifier: IMAGE_TYPE, completionHandler: { (url, imageProviderError) in
-                if imageProviderError != nil {
-                    
-                }
-                guard let url else { return }
-                let data = url.path
-                
-                self.icon = GraniteImage(contentsOfFile: (data))
-                
-                if LinkPreviewCache.shared.cache {
-                    LinkPreviewCache.shared.iconCache[cacheKey] = image
-                }
-            })
-        }
-    }
+//    func getImage(){
+//        guard image == nil,
+//              let metadataURL = metaData.url else {
+//            return
+//        }
+//
+//        let IMAGE_TYPE = kUTTypeImage as String
+//
+////        LinkPreviewCache.shared.imageOperationQueue.addOperation {
+////            while !LinkPreviewCache.shared.canFetchImage {}
+////            LinkPreviewCache.shared.canFetchImage = false
+//
+//            DispatchQueue.main.async {
+//                metaData.imageProvider?.loadFileRepresentation(forTypeIdentifier: IMAGE_TYPE, completionHandler: { (url, imageProviderError) in
+////                    LinkPreviewCache.shared.canFetchImage = true
+//                    if imageProviderError != nil {
+//
+//                    }
+//                    guard let url else { return }
+//                    let data = url.path
+//
+//                    let image = GraniteImage(contentsOfFile: (data))
+//                    self.image = image
+//
+//                    if LinkPreviewCache.shared.cache {
+//                        LinkPreviewCache.shared.imageCache[cacheKey] = image
+//                    }
+//                })
+//            }
+////        }
+//    }
+//    func getIcon(){
+//        guard let metadataURL = metaData.url else {
+//            return
+//        }
+//
+//        let IMAGE_TYPE = kUTTypeImage as String
+//
+//        LinkPreviewCache.shared.iconOperationQueue.addOperation {
+//            metaData.iconProvider?.loadFileRepresentation(forTypeIdentifier: IMAGE_TYPE, completionHandler: { (url, imageProviderError) in
+//                if imageProviderError != nil {
+//
+//                }
+//                guard let url else { return }
+//                let data = url.path
+//
+//                self.icon = GraniteImage(contentsOfFile: (data))
+//
+//                if LinkPreviewCache.shared.cache {
+//                    LinkPreviewCache.shared.iconCache[cacheKey] = image
+//                }
+//            })
+//        }
+//    }
 }
 
 

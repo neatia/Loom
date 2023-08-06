@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Granite
 
-class LazyScrollViewCache {
+class LazyScrollViewCache<Content: View> {
     var operationQueue: OperationQueue = .init()
     
     init() {
@@ -18,7 +18,7 @@ class LazyScrollViewCache {
     }
     
     var viewIds: [String] = []
-    var viewCache: [String : AnyView] = [:]
+    var viewCache: [String : Content] = [:]
     let limit: Int = 120
     let flushSize: Int = 12 //page size?
     var isFlushing: Bool = false
@@ -43,7 +43,7 @@ class LazyScrollViewCache {
 
 struct LazyScrollView<Model: Pageable, Content: View>: View {
     
-    let cache: LazyScrollViewCache = .init()
+    let cache: LazyScrollViewCache<Content> = .init()
     
     let models: [Model]
     let content: (Model) -> Content
@@ -72,9 +72,7 @@ struct LazyScrollView<Model: Pageable, Content: View>: View {
             return view
         }
         
-        let view: AnyView = AnyView(
-            content(item)
-        )
+        let view: Content = content(item)
         
         cache.viewCache[item.id] = view
         cache.flush()

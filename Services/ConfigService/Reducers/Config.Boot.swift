@@ -8,6 +8,7 @@ extension ConfigService {
         
         @Relay var account: AccountService
         @Relay var content: ContentService
+        @Relay var layout: LayoutService
         
         func reduce(state: inout Center.State) {
             LemmyKit.baseUrl = state.config.baseUrl
@@ -16,11 +17,18 @@ extension ConfigService {
             account.center.boot.send()
             content.center.boot.send()
             
-            if state.style == .unknown {
+            layout.preload()
+            
+            if layout.state.style == .unknown {
                 if Device.isExpandedLayout {
-                    state.style = .expanded
-                    ConfigService.expandWindow(close: state.closeFeedDisplayView)
+                    layout._state.style.wrappedValue = .expanded
+                } else {
+                    layout._state.style.wrappedValue = .compact
                 }
+            }
+            
+            if layout.state.style == .expanded {
+                LayoutService.expandWindow(close: layout.state.closeFeedDisplayView)
             }
         }
     }

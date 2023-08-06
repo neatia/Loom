@@ -15,11 +15,13 @@ import NukeUI
 
 struct PostCardView: View {
     @Environment(\.graniteEvent) var interact
+    @Environment(\.pagerMetadata) var contentMetadata
     
     @GraniteAction<Void> var showContent
     @GraniteAction<PostView> var reply
     
     @Relay var config: ConfigService
+    @Relay var layout: LayoutService
     
     var model: PostView
     var isFrontPage: Bool = true
@@ -27,6 +29,8 @@ struct PostCardView: View {
     var style: FeedStyle = .style1
     var showAvatar: Bool = true
     var isCompact: Bool = false
+    var topPadding: CGFloat = .layer5
+    var bottomPadding: CGFloat = .layer5
     
     var linkPreviewType: LinkPreviewType = .large
     
@@ -66,7 +70,7 @@ struct PostCardView: View {
     
     //horizontal experience
     var isSelected: Bool {
-        switch config.state.feedContext {
+        switch layout.state.feedContext {
         case .viewPost(let model):
             return self.model.id == model.id
         default:
@@ -98,7 +102,8 @@ struct PostCardView: View {
                         content
                     }
                 }
-                .padding(.vertical, isPreview ? (isCompact ? .layer3 : 0) : .layer5)
+                .padding(.top, isPreview ? (isCompact ? .layer3 : 0) : topPadding)
+                .padding(.bottom, isPreview ? (isCompact ? .layer3 : 0) : bottomPadding)
                 .padding(.leading, isCompact ? .layer2 : .layer3)
                 .padding(.trailing, isCompact ? .layer2 : .layer4)
                 .backgroundIf(isSelected,
@@ -110,16 +115,18 @@ struct PostCardView: View {
 
 extension PostCardView {
     var content: some View {
-        VStack(alignment: .leading, spacing: .layer3) {
+        Group {
             switch style {
             case .style1:
                 contentBody
+                    .padding(.bottom, .layer3)
             case .style2:
                 contentBodyStacked
                     .censor(shouldCensor, kind: censorKind)
                     .padding(.top, shouldCensor ? .layer2 : 0)
+                    .padding(.bottom, .layer3)
             }
-            
+
             if isPreview && !isCompact {
                 Spacer()
             }
@@ -134,15 +141,15 @@ extension PostCardView {
             }
         }
         .padding(.leading, style == .style1 ? (CGFloat.layer4 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-        .overlayIf(style == .style1) {
-            GeometryReader { proxy in
-                Rectangle()
-                    .frame(width: 2,
-                           height: proxy.size.height)
-                    .cornerRadius(8)
-                    .opacity(0.5)
-            }
-        }
+//        .overlayIf(style == .style1) {
+//            GeometryReader { proxy in
+//                Rectangle()
+//                    .frame(width: 2,
+//                           height: proxy.size.height)
+//                    .cornerRadius(8)
+//                    .opacity(0.5)
+//            }
+//        }
         .fixedSize(horizontal: false, vertical: isPreview ? false : true)
     }
     
@@ -188,26 +195,28 @@ extension PostCardView {
     }
     
     var contentBodyStacked: some View {
-        
-        VStack(spacing: .layer2) {
+        Group {
             if isPreview {
                 ScrollView {
                     contentMetaBody
                 }
+                .padding(.bottom, .layer2)
             } else {
                 contentMetaBody
+                    .padding(.bottom, .layer2)
             }
             
-            if let thumbUrl = model.post.url,
-               let url = URL(string: thumbUrl) {
-                
-                HStack {
-                    LinkPreview(url: url)
-                        .type(linkPreviewType)
-                        .frame(maxWidth: Device.isMacOS ? 350 : nil)
-                    
-                    Spacer()
-                }
+            if let contentMetadata {
+                ContentMetadataView(metadata: contentMetadata)
+                    .frame(maxWidth: Device.isMacOS ? 350 : nil)
+                    .padding(.bottom, .layer2)
+//                HStack {
+////                    LinkPreview(url: url)
+////                        .type(linkPreviewType)
+////                        .frame(maxWidth: Device.isMacOS ? 350 : nil)
+//
+//                    Spacer()
+//                }
             }
         }
     }
@@ -217,7 +226,7 @@ extension PostCardView {
             HStack {
                 Text(model.post.name)
                     .font(.body)
-                    .padding(.bottom, .layer1)
+                    .padding(.bottom, model.post.body != nil ? .layer1 : 0)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.foreground.opacity(0.9))
                 Spacer()
@@ -240,10 +249,10 @@ extension PostCardView {
         }
         .frame(maxWidth: .infinity)
         .contentShape(Rectangle())
-        .onTapIf(config.state.style == .expanded) {
-            config._state.wrappedValue.feedContext = .viewPost(model)
+        .onTapIf(layout.state.style == .expanded) {
+            layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .routeIf(config.state.style == .compact || config.state.style == .unknown,
+        .routeIf(layout.state.style == .compact || layout.state.style == .unknown,
                  style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
             PostDisplayView(model: model,
                             isFrontPage: self.isFrontPage)

@@ -72,7 +72,6 @@ struct PostDisplayView: View {
                     }, at: \.reply)
             }
             .environmentObject(comments)
-            .padding(.bottom, comments.isEmpty ? .layer4 : 0)
         }
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)

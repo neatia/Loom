@@ -25,6 +25,12 @@ struct PEXApp: App {
         #if os(iOS)
         config.center.boot.send()
         #endif
+        
+        if Device.isExpandedLayout {
+            LayoutService.style = .expanded
+        } else {
+            LayoutService.style = .compact
+        }
     }
     
     var body: some Scene {

@@ -42,7 +42,7 @@ extension BookmarkService {
                 
                 state.postDomains.insert(domain)
                 
-                state.posts[domain]?.addedDates[model.id] = Date()
+                state.posts[domain]?.ids.insert(model.id, at: 0)
             case .comment(let model, let postView):
                 guard let domain = model.creator.domain else {
                     return
@@ -62,7 +62,7 @@ extension BookmarkService {
                 
                 state.commentDomains.insert(domain)
                 
-                state.comments[domain]?.addedDates[model.id] = Date()
+                state.comments[domain]?.ids.insert(model.id, at: 0)
             }
             
             state.lastUpdate = .init()

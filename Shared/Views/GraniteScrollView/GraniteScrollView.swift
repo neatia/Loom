@@ -196,32 +196,22 @@ public struct GraniteScrollView<Content : View> : View {
     private let showsIndicators : Bool
     private let onRefresh : RefreshHandler?
     private let onReachedEdge : ReachedEdgeHandler?
-    private let content : Content
+    private let content : () -> Content
     
     @State private var status : Status = .idle
     @State private var progress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
     
-    let detector: CurrentValueSubject<CGFloat, Never>
-    let publisher: AnyPublisher<CGFloat, Never>
-    
     public init(_ axes : Axis.Set = .vertical,
                 showsIndicators: Bool = false,
                 onRefresh : RefreshHandler? = nil,
                 onReachedEdge : ReachedEdgeHandler? = nil,
-                @ViewBuilder content: () -> Content) {
+                @ViewBuilder content: @escaping () -> Content) {
         self.axes = axes
         self.showsIndicators = showsIndicators
         self.onRefresh = onRefresh
         self.onReachedEdge = onReachedEdge
-        self.content = content()
-        
-        let detector = CurrentValueSubject<CGFloat, Never>(0)
-                self.publisher = detector
-                    .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
-                    .dropFirst()
-                    .eraseToAnyPublisher()
-                self.detector = detector
+        self.content = content
     }
     
     var progressBody: some View {
@@ -246,72 +236,30 @@ public struct GraniteScrollView<Content : View> : View {
     }
     
     public var body: some View {
-        ScrollView(axes, showsIndicators: showsIndicators) {
+        VisibilityTrackingScrollView(action: handleVisibilityChanged) {
+//        ScrollView(showsIndicators: false) {
             VStack(spacing: 0) {
-                GraniteScrollViewPositionIndicator(type: .moving)
-                    .frame(height: 0)
-                //TODO: macOS compatible reader
+//                Color.clear
+//                    .trackVisibility(id: "graniteScrollView.reached.top")
+
+                content()
                 
-                if status != .idle {
-                    Color.clear
-                        .frame(height: status == .loading ? style.threshold : style.threshold * CGFloat(progress))
-                }
-                
-                content
-                    .environment(\.graniteScrollStopped, publisher)
-                    .overlay(onRefresh != nil ? progressBody : nil, alignment: .top)
+                Color.clear
+                    .trackVisibility(id: "graniteScrollView.reached.bottom")
             }
         }
-        .background(GraniteScrollViewPositionIndicator(type: .fixed))
-        .onPreferenceChange(GraniteScrollViewPositionIndicator.PositionPreferenceKey.self) { values in
-            guard status != .loading, onRefresh != nil else {
-                return
+    }
+    
+    func handleVisibilityChanged(_ id: String, change: VisibilityChange, tracker: VisibilityTracker<String>) {
+        switch change {
+            case .shown:
+            if id == "graniteScrollView.reached.top" {
+                onReachedEdge?(.top)
+            } else if id == "graniteScrollView.reached.bottom" {
+                onReachedEdge?(.bottom)
             }
-           
-            guard startDraggingOffset == .zero else {
-                status = .idle
-                return
-            }
-            
-            if status == .idle {
-                status = .dragging
-            }
-            
-            detector.send(values.first?.y ?? 0)
-
-            DispatchQueue.main.async {
-                let movingY = values.first { $0.type == .moving }?.y ?? 0
-                let fixedY = values.first { $0.type == .fixed }?.y ?? 0
-                let offset : CGFloat = movingY - fixedY
-                
-                guard offset > 0 else {
-                    return
-                }
-
-                progress = Double(min(max(abs(offset) / style.threshold, 0.0), 1.0))
-                
-                if offset > style.threshold && status == .dragging {
-                    status = .primed
-                }
-                else if offset < style.threshold && status == .primed {
-                    withAnimation(.linear(duration: 0.2)) {
-                        status = .loading
-                    }
-                    
-                    onRefresh? {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
-                            withAnimation {
-                                self.status = .idle
-                                self.progress = 0
-                            }
-                        }
-                      
-                    }
-                }
-            }
-        }
-        .onTapGesture {
-            
+            case .hidden:
+                break
         }
     }
     
@@ -337,4 +285,148 @@ extension EnvironmentValues {
         get { self[GraniteScrollStoppedKey.self] }
         set { self[GraniteScrollStoppedKey.self] = newValue }
     }
+}
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  Created by Sam Deane on 27/07/22.
+//  All code (c) 2022 - present day, Elegant Chaos Limited.
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+import SwiftUI
+
+public enum VisibilityChange {
+    case hidden
+    case shown
+}
+
+public class VisibilityTracker<ID: Hashable>: ObservableObject {
+    /// The global bounds of the container view.
+    public var containerBounds: CGRect
+    
+    /// Dictionary containing the offset of every visible view.
+    public var visibleViews: [ID:CGFloat]
+    
+    /// Ids of the visible views, sorted by offset.
+    /// The first item is the top view, the last one, the bottom view.
+    public var sortedViewIDs: [ID]
+    
+    /// Action to perform when a view becomes visible or is hidden.
+    public var action: Action
+    
+    /// The id of the top visible view.
+    public var topVisibleView: ID? { sortedViewIDs.first }
+    
+    /// The id of the bottom visible view.
+    public var bottomVisibleView: ID? { sortedViewIDs.last }
+
+    /// Action callback signature.
+    public typealias Action = (ID, VisibilityChange, VisibilityTracker<ID>) -> ()
+
+    public init(action: @escaping Action) {
+        self.containerBounds = .zero
+        self.visibleViews = [:]
+        self.sortedViewIDs = []
+        self.action = action
+    }
+    
+    public func reportContainerBounds(_ bounds: CGRect) {
+        containerBounds = bounds
+    }
+    
+    public func reportContentBounds(_ bounds: CGRect, id: ID) {
+        let topLeft = bounds.origin
+        let size = bounds.size
+        let bottomRight = CGPoint(x: topLeft.x + size.width, y: topLeft.y + size.height)
+        let isVisible = containerBounds.contains(topLeft) || containerBounds.contains(bottomRight)
+        let wasVisible = visibleViews[id] != nil
+
+        if isVisible {
+            visibleViews[id] = bounds.origin.y - containerBounds.origin.y
+            sortViews()
+            if !wasVisible {
+                action(id, .shown, self)
+            }
+        } else {
+            if wasVisible {
+                visibleViews.removeValue(forKey: id)
+                sortViews()
+                action(id, .hidden, self)
+            }
+        }
+    }
+    
+    func sortViews() {
+        let sortedPairs = visibleViews.sorted(by: { $0.1 < $1.1 })
+        sortedViewIDs = sortedPairs.map { $0.0 }
+    }
+}
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  Created by Sam Deane on 27/07/22.
+//  All code (c) 2022 - present day, Elegant Chaos Limited.
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+import SwiftUI
+
+struct ContentVisibilityTrackingModifier<ID: Hashable>: ViewModifier {
+    @EnvironmentObject var visibilityTracker: VisibilityTracker<ID>
+    
+    let id: ID
+    
+    func body(content: Content) -> some View {
+        content
+            .id(id)
+            .background(
+                GeometryReader { proxy in
+                    report(proxy: proxy)
+                }
+            )
+    }
+    
+    func report(proxy: GeometryProxy) -> Color {
+        visibilityTracker.reportContentBounds(proxy.frame(in: .global), id: id)
+        return Color.clear
+    }
+}
+
+public extension View {
+    func trackVisibility<ID: Hashable>(id: ID) -> some View {
+        self
+            .modifier(ContentVisibilityTrackingModifier(id: id))
+    }
+}
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  Created by Sam Deane on 27/07/22.
+//  All code (c) 2022 - present day, Elegant Chaos Limited.
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+import SwiftUI
+
+public struct VisibilityTrackingScrollView<Content, ID>: View where Content: View, ID: Hashable {
+    @ViewBuilder let content: Content
+    
+    @State var visibilityTracker: VisibilityTracker<ID>
+    
+    public init(action: @escaping VisibilityTracker<ID>.Action, @ViewBuilder content: () -> Content) {
+        self.content = content()
+        self._visibilityTracker = .init(initialValue: VisibilityTracker<ID>(action: action))
+    }
+    
+    public var body: some View {
+        ScrollView {
+            content
+                .environmentObject(visibilityTracker)
+        }
+        .background(
+            GeometryReader { proxy in
+                report(proxy: proxy)
+            }
+        )
+    }
+    
+    func report(proxy: GeometryProxy) -> Color {
+        visibilityTracker.reportContainerBounds(proxy.frame(in: .global))
+        return Color.clear
+    }
+    
 }

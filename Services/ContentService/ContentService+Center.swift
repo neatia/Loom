@@ -16,7 +16,7 @@ extension ContentService {
         @Event var interact: Interact.Reducer
         @Event var interactResponse: InteractResponse.Reducer
         
-        @Store(persist: "persistence.content.Lemur.0015", autoSave: true) public var state: State
+        @Store(persist: "persistence.content.Lemur.0018", autoSave: true) public var state: State
     }
 }
 

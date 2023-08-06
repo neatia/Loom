@@ -9,7 +9,10 @@ struct GraniteScrollViewPositionIndicator: View {
     
     struct Position: Equatable {
         let type: PositionType
-        let y: CGFloat
+        let frame: CGRect
+        var y: CGFloat {
+            frame.minY
+        }
     }
     
     struct PositionPreferenceKey: PreferenceKey {
@@ -27,7 +30,7 @@ struct GraniteScrollViewPositionIndicator: View {
     var body: some View {
         GeometryReader { proxy in
             Color.clear
-                .preference(key: PositionPreferenceKey.self, value: [Position(type: type, y: proxy.frame(in: .global).minY)])
+                .preference(key: PositionPreferenceKey.self, value: [Position(type: type, frame: proxy.frame(in: .global))])
         }
     }
 }
