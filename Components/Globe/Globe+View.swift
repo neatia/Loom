@@ -78,37 +78,42 @@ extension Globe: View {
     
     var accountsView: some View {
         ScrollView([.vertical]) {
-            
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: state.accountModuleSize))],
-                      alignment: .leading,
-                      spacing: .layer4) {
-                
-                addView
-                
-                ForEach(Array(account.state.profiles)) { meta in
+            HStack {
+                LazyHGrid(rows: [GridItem(.flexible())],
+                          alignment: .top,
+                          spacing: .layer4) {
                     
-                    Button {
-                        GraniteHaptic.light.invoke()
+                    addView
+                    
+                    ForEach(Array(account.state.profiles)) { meta in
                         
-                        modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
+                        Button {
+                            GraniteHaptic.light.invoke()
                             
-                            GraniteAlertAction(title: "MISC_NO")
-                            GraniteAlertAction(title: "MISC_YES") {
-                                config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
-                            }
-                        })
-                        
-                    } label: {
-                        AccountModuleView(model: meta,
-                                          size: .init(width: state.accountModuleSize, height: state.accountModuleSize),
-                                          isActive: account.state.meta?.id == meta.id)
-                        .id(account.state.meta)
+                            modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
+                                
+                                GraniteAlertAction(title: "MISC_NO")
+                                GraniteAlertAction(title: "MISC_YES") {
+                                    config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
+                                }
+                            })
+                            
+                        } label: {
+                            AccountModuleView(model: meta,
+                                              size: .init(width: state.accountModuleSize, height: state.accountModuleSize),
+                                              isActive: account.state.meta?.id == meta.id)
+                            .id(account.state.meta)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .frame(width: state.accountModuleSize, height: state.accountModuleSize)
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .frame(width: state.accountModuleSize, height: state.accountModuleSize)
+                    Spacer()
+                        .frame(maxWidth: .infinity)
                 }
+                .padding(.layer4)
+                
                 Spacer()
-            }.padding(.layer4)
+            }
         }
     }
     

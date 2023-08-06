@@ -42,17 +42,21 @@ public struct GraniteScrollView<Content : View> : View {
     @State private var fetchMoreProgress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
     
+    private let bgColor: Color
+    
     public init(_ axes : Axis.Set = .vertical,
                 showsIndicators: Bool = false,
                 onRefresh : RefreshHandler? = nil,
                 onFetchMore : FetchMoreHandler? = nil,
                 onReachedEdge : ReachedEdgeHandler? = nil,
+                bgColor: Color = .clear,
                 @ViewBuilder content: () -> Content) {
         self.axes = axes
         self.showsIndicators = showsIndicators
         self.onRefresh = onRefresh
         self.onFetchMore = onFetchMore
         self.onReachedEdge = onReachedEdge
+        self.bgColor = bgColor
         self.content = content()
     }
     
@@ -202,16 +206,20 @@ public struct GraniteScrollView<Content : View> : View {
     @State private var progress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
     
+    private let bgColor: Color
+    
     public init(_ axes : Axis.Set = .vertical,
                 showsIndicators: Bool = false,
                 onRefresh : RefreshHandler? = nil,
                 onReachedEdge : ReachedEdgeHandler? = nil,
+                bgColor: Color = .clear,
                 @ViewBuilder content: @escaping () -> Content) {
         self.axes = axes
         self.showsIndicators = showsIndicators
         self.onRefresh = onRefresh
         self.onReachedEdge = onReachedEdge
         self.content = content
+        self.bgColor = bgColor
     }
     
     var progressBody: some View {
@@ -244,7 +252,7 @@ public struct GraniteScrollView<Content : View> : View {
 
                 content()
                 
-                Color.clear
+                bgColor
                     .trackVisibility(id: "graniteScrollView.reached.bottom")
             }
         }

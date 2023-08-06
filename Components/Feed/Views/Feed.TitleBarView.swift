@@ -38,6 +38,23 @@ extension Feed {
              
              VStack(alignment: .trailing, spacing: 0) {
                  Spacer()
+                 if Device.isExpandedLayout {
+                     AccountView()
+                         .attach({
+                             GraniteHaptic.light.invoke()
+                             modal.presentSheet {
+                                 LoginView()
+                             }
+                         }, at: \.login)
+                         .offset(y: hasCommunityBanner ? -1 : 0)
+                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                         .backgroundIf(hasCommunityBanner) {
+                             Color.background.opacity(0.75)
+                                 .cornerRadius(4)
+                         }
+                         .padding(.bottom, .layer2)
+                 }
                  Button {
                      GraniteHaptic.light.invoke()
                      modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
@@ -63,7 +80,5 @@ extension Feed {
          .frame(height: hasCommunityBanner ? 48 : 36)
          .padding(.top, (Device.isExpandedLayout && state.community == nil) ? .layer5 : .layer3)
          .padding(.bottom, .layer2)
-         .padding(.leading, .layer4)
-         .padding(.trailing, .layer4)
     }
 }

@@ -16,6 +16,7 @@ extension Feed {
         VStack(alignment: .leading, spacing: 0) {
             //            Spacer()
             titleBarView
+                .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             HStack(spacing: 0) {
                 headerMenuView
                     .frame(maxHeight: .infinity)
@@ -38,52 +39,52 @@ extension Feed {
                             Color.background.opacity(0.75)
                                 .cornerRadius(4)
                         }
-                        .padding(.trailing, .layer2)
+                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
                     } else {
-#if os(iOS)
-                        ProgressView()
-                            .padding(.horizontal, hasCommunityBanner ? 4 : 0)
-                            .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                            .backgroundIf(hasCommunityBanner) {
-                                Color.background.opacity(0.75)
-                                    .cornerRadius(6)
-                            }
-                            .padding(.trailing, .layer2)
-#else
-                        ProgressView()
-                            .offset(y: hasCommunityBanner ? -2 : 0)
-                            .padding(.horizontal, hasCommunityBanner ? 4 : 0)
-                            .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                            .backgroundIf(hasCommunityBanner) {
-                                Color.background.opacity(0.75)
-                                    .cornerRadius(6)
-                            }
-                            .scaleEffect(0.5)
-                            .padding(.trailing, hasCommunityBanner ? 0 : .layer2)
-#endif
+                        if Device.isExpandedLayout {
+                            ProgressView()
+                                .offset(y: hasCommunityBanner ? -2 : 0)
+                                .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                                .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                                .backgroundIf(hasCommunityBanner) {
+                                    Color.background.opacity(0.75)
+                                        .cornerRadius(6)
+                                }
+                                .scaleEffect(0.5)
+                                .offset(x: .layer1)
+                        } else {
+                            ProgressView()
+                                .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                                .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                                .backgroundIf(hasCommunityBanner) {
+                                    Color.background.opacity(0.75)
+                                        .cornerRadius(6)
+                                }
+                                .padding(.trailing, .layer2)
+                        }
                     }
                 }
-                
-                AccountView()
-                    .attach({
-                        GraniteHaptic.light.invoke()
-                        modal.presentSheet {
-                            LoginView()
+                if Device.isExpandedLayout == false {
+                    AccountView()
+                        .attach({
+                            GraniteHaptic.light.invoke()
+                            modal.presentSheet {
+                                LoginView()
+                            }
+                        }, at: \.login)
+                        .offset(y: hasCommunityBanner ? -1 : 0)
+                        .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+                        .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                        .backgroundIf(hasCommunityBanner) {
+                            Color.background.opacity(0.75)
+                                .cornerRadius(4)
                         }
-                    }, at: \.login)
-                    .offset(y: hasCommunityBanner ? -1 : 0)
-                    .padding(.horizontal, hasCommunityBanner ? 6 : 0)
-                    .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                    .backgroundIf(hasCommunityBanner) {
-                        Color.background.opacity(0.75)
-                            .cornerRadius(4)
-                    }
-                    .padding(.bottom, hasCommunityBanner ? 0 : .layer1)
+                        .padding(.bottom, hasCommunityBanner ? 0 : .layer1)
+                }
             }
             .frame(height: hasCommunityBanner ? 48 : 36)
-            .padding(.leading, .layer4)
-            .padding(.trailing, .layer4)
             .padding(.vertical, Device.isExpandedLayout ? 0 : .layer2)
+            .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             
             Divider()
         }

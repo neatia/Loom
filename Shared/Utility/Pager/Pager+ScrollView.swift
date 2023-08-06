@@ -94,7 +94,8 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     }
     
     var normalScrollView: some View {
-        GraniteScrollView(onRefresh: pager.refresh(_:)) {
+        GraniteScrollView(onRefresh: pager.refresh(_:),
+                          bgColor: contentBGColor) {
 
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
 

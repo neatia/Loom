@@ -45,6 +45,14 @@ struct LocalModifyMeta: StandardMotify {
     var showBotAccounts: Bool
     var sortType: SortType?
     var listingType: ListingType?
+    
+    static func ==(lhs: LocalModifyMeta, rhs: LocalModifyMeta) -> Bool {
+        lhs.showNSFW == rhs.showNSFW &&
+        lhs.showScores == rhs.showScores &&
+        lhs.showBotAccounts == rhs.showBotAccounts &&
+        lhs.sortType == rhs.sortType &&
+        lhs.listingType == rhs.listingType
+    }
 }
 
 struct AccountModifyMeta: StandardMotify {
@@ -256,8 +264,8 @@ struct ProfileSettingsView: View {
         }
         .padding(.top, showProfileSettings ? .layer4 : 0)
         .background(Color.background)
-        .onChange(of: localChangesMade) { status in
-            guard status, offline else { return }
+        .onChange(of: currentLocalMeta) { status in
+            guard offline else { return }
             updateLocalSettings()
         }
         .task {

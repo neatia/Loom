@@ -49,6 +49,8 @@ extension Globe {
             .padding(.top, Device.isMacOS ? .layer5 : .layer4)
             .padding(.leading, .layer4)
             .padding(.trailing, .layer4)
+            .padding(.bottom, .layer4)
+            Divider()
             
             switch state.tab {
             case .accounts:
@@ -59,5 +61,6 @@ extension Globe {
                 }
             }
         }
+        .frame(maxWidth: .infinity)
     }
 }
