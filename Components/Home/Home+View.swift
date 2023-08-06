@@ -82,7 +82,7 @@ extension Home: View {
             
             Color.background.fitToContainer()
             
-        }, currentTab: 1) {
+        }, currentTab: 0) {
             GraniteTab {
                 Feed()
             } icon: {

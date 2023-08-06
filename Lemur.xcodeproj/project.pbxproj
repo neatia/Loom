@@ -491,6 +491,10 @@
 		71EB91BE2A8028400091EE5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91BC2A8028400091EE5B /* Numbers.swift */; };
 		71EB91C12A8037D40091EE5B /* Granite in Frameworks */ = {isa = PBXBuildFile; productRef = 71EB91C02A8037D40091EE5B /* Granite */; };
 		71EB91C32A8037D40091EE5B /* GraniteUI in Frameworks */ = {isa = PBXBuildFile; productRef = 71EB91C22A8037D40091EE5B /* GraniteUI */; };
+		71EB91C52A803F240091EE5B /* InstanceMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C42A803F240091EE5B /* InstanceMetaView.swift */; };
+		71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C42A803F240091EE5B /* InstanceMetaView.swift */; };
+		71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */; };
+		71EB91CA2A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */; };
 		71F042092A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */; };
 		71F0420A2A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */; };
 		71F0420C2A69D39600788CDC /* ContentService.Interact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F0420B2A69D39600788CDC /* ContentService.Interact.swift */; };
@@ -826,6 +830,8 @@
 		71EAF49D2A7DD0DD0034FCB9 /* EdgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeView.swift; sourceTree = "<group>"; };
 		71EAF49E2A7DD0DE0034FCB9 /* EdgeMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeMapView.swift; sourceTree = "<group>"; };
 		71EB91BC2A8028400091EE5B /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
+		71EB91C42A803F240091EE5B /* InstanceMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceMetaView.swift; sourceTree = "<group>"; };
+		71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCommunityPickerView.swift; sourceTree = "<group>"; };
 		71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Profile.Add.swift; sourceTree = "<group>"; };
 		71F0420B2A69D39600788CDC /* ContentService.Interact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentService.Interact.swift; sourceTree = "<group>"; };
 		71F042152A6A3AD100788CDC /* Globe+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Globe+Center.swift"; sourceTree = "<group>"; };
@@ -1905,6 +1911,7 @@
 				71C69E532A70747E00B54AD6 /* CommunityCardView.swift */,
 				71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */,
 				71CB6C352A6B7E2000084ECC /* CommunityPickerView.swift */,
+				71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */,
 				7166E9C82A74457A004F88D7 /* CommunitySidebarView.swift */,
 			);
 			path = Community;
@@ -1929,6 +1936,7 @@
 			isa = PBXGroup;
 			children = (
 				71EAF46C2A7D99C30034FCB9 /* GlobeExplorerView.swift */,
+				71EB91C42A803F240091EE5B /* InstanceMetaView.swift */,
 				71EAF46F2A7D9A310034FCB9 /* Globe.Accounts.swift */,
 			);
 			path = Views;
@@ -2412,6 +2420,7 @@
 				71E5F3BF2A7320EE00299558 /* ScrollView+Overflow.swift in Sources */,
 				7197FB172964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,
 				71B7A1E62A68FEA8003E6D4D /* AccountService.Boot.swift in Sources */,
+				71EB91C52A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71F778CF2A71C99900C9C5C4 /* Profile.TitleBarView.swift in Sources */,
 				717090E92A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
 				710283C12A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
@@ -2530,6 +2539,7 @@
 				710283A92A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
 				717090EE2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
 				710283CD2A2A54C300010877 /* DefaultThumb.swift in Sources */,
+				71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
 				710283A32A2A54C300010877 /* HorizontalRangeTrack.swift in Sources */,
 				7197FB132964B4C0005EBBA4 /* GraniteToastViewEvent.swift in Sources */,
 				71C69E542A70747E00B54AD6 /* CommunityCardView.swift in Sources */,
@@ -2638,6 +2648,7 @@
 				71C9F8D52A60B7C10089D7EA /* Feed+View.swift in Sources */,
 				71A28D9B295231E600EAE8EE /* Array.swift in Sources */,
 				71F778B32A719C6A00C9C5C4 /* HeaderCardView.swift in Sources */,
+				71EB91CA2A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
 				710283BC2A2A54C300010877 /* HorizontalValueTrack.swift in Sources */,
 				71DF107828CC697600559DBC /* NumberFormatter.swift in Sources */,
 				71FBA7F8296D16110090B630 /* GraniteScrollView+Reader.swift in Sources */,
@@ -2654,6 +2665,7 @@
 				71DF107628CC697600559DBC /* Style.swift in Sources */,
 				7166E9CA2A74457A004F88D7 /* CommunitySidebarView.swift in Sources */,
 				71F0421E2A6A3AD100788CDC /* Globe.swift in Sources */,
+				71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71CB6C342A6B742200084ECC /* Write.Import.swift in Sources */,
 				710283B42A2A54C300010877 /* AnyValueSliderStyle.swift in Sources */,
 				7197FB182964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,

@@ -210,13 +210,6 @@ extension PostCardView {
                 ContentMetadataView(metadata: contentMetadata)
                     .frame(maxWidth: Device.isMacOS ? 350 : nil)
                     .padding(.bottom, .layer2)
-//                HStack {
-////                    LinkPreview(url: url)
-////                        .type(linkPreviewType)
-////                        .frame(maxWidth: Device.isMacOS ? 350 : nil)
-//
-//                    Spacer()
-//                }
             }
         }
     }

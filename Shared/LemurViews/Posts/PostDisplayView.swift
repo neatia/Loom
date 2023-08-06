@@ -231,7 +231,7 @@ extension PostDisplayView {
 }
 
 
-extension View {
+fileprivate extension View {
     func showDrawer(_ condition: Binding<Bool>,
                     commentView: CommentView?,
                     postView: PostView?) -> some View {

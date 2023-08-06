@@ -18,36 +18,28 @@ struct SurfaceView: View {
     
     var body: some View {
         VStack {
-                // 2
             GeometryReader { geometry in
-                    // 3
                 ZStack {
                     MapView(selection: self.selection, mesh: self.mesh)
                         .scaleEffect(self.zoomScale)
-                        // 4
                         .offset(
                             x: self.portalPosition.x + self.dragOffset.width,
                             y: self.portalPosition.y + self.dragOffset.height)
                         .animation(.easeIn)
-                }
-                .gesture(DragGesture()
+                }.gesture(DragGesture()
                             .onChanged { value in
                     self.processDragChange(value, containerSize: geometry.size)
                 }
                             .onEnded { value in
                     self.processDragEnd(value)
-                })
-                .gesture(MagnificationGesture()
+                }).gesture(MagnificationGesture()
                             .onChanged { value in
-                        // 1
                     if self.initialZoomScale == nil {
                         self.initialZoomScale = self.zoomScale
                         self.initialPortalPosition = self.portalPosition
                     }
                     self.processScaleChange(value)
-                }
-                            .onEnded { value in
-                        // 2
+                }.onEnded { value in
                     self.processScaleChange(value)
                     self.initialZoomScale = nil
                     self.initialPortalPosition  = nil

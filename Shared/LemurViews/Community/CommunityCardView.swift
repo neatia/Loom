@@ -11,6 +11,7 @@ import GraniteUI
 import SwiftUI
 import LemmyKit
 
+//TODO: merge with SidebarCardView
 struct CommunityCardView: View {
     var model: CommunityView
     var showCounts: Bool = true
@@ -113,6 +114,7 @@ struct CommunityCardView: View {
                     }
                     .menuStyle(BorderlessButtonMenuStyle())
                     .menuIndicator(.hidden)
+                    .frame(width: 24, height: 24)
                     #endif
                 }
             }

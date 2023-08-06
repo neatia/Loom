@@ -32,4 +32,13 @@ struct Globe: GraniteComponent {
                 }
             }
     }
+    
+    init() {
+        #if os(iOS)
+        let width = ContainerConfig.iPhoneScreenWidth
+        //3 cells with layer4 padding in between
+        let moduleWith = (width / 3) - (.layer4 * 2)
+        _center = .init(.init(accountModuleSize: moduleWith))
+        #endif
+    }
 }

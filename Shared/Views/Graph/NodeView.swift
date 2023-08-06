@@ -34,14 +34,13 @@ struct NodeView: View {
                     .padding(.top, .layer1)
                 }
                 
-            }
-            .padding(.horizontal, .layer2))
-            .frame(width: style.size.width, height: style.size.height, alignment: .center)
+            })
+            .frame(width: style.size.width + (Device.isMacOS ? 0 : 8), height: style.size.height, alignment: .center)
     }
 }
 
 struct NodeViewStyle: GraniteModel {
-    var color: Color = .alternateBackground.opacity(0.6)
+    var color: Color = .background
     var foregroundColor: Color = .foreground
     var strokeColor: Color = .secondaryForeground
     var size: CGSize = .init(width: 100, height: 50)

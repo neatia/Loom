@@ -7,46 +7,50 @@ extension Globe: View {
     public var view: some View {
         VStack(spacing: 0) {
             
-            #if os(iOS)
-            VStack(spacing: 0) {
-                mainView
-                
-                Picker("", selection: _state.socialViewOptions) {
-                    Text("TITLE_COMMUNITIES").tag(0)
-                    Text("TITLE_BLOCKED").tag(1)
-                        .autocapitalization(.words)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, .layer3)
-                .padding(.bottom, .layer4)
-                
-                if state.socialViewOptions == 0 {
-                    socialViews
-                        .id(isTabSelected)
-                } else {
-                    blockedView
-                        .id(isTabSelected)
-                }
-            }
-            #elseif os(macOS)
-            VStack(spacing: 0) {
-                switch state.tab {
-                case .explorer:
+            if Device.isExpandedLayout == false {
+                VStack(spacing: 0) {
                     mainView
-                default:
-                    HStack(spacing: 0) {
+                    switch state.tab {
+                    case .explorer:
+                        EmptyView()
+                    default:
+                        Picker("", selection: _state.socialViewOptions) {
+                            Text("TITLE_COMMUNITIES").tag(0)
+                            Text("TITLE_BLOCKED").tag(1)
+                                .autocapitalization(.words)
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.horizontal, .layer3)
+                        .padding(.bottom, .layer4)
+                        
+                        if state.socialViewOptions == 0 {
+                            socialViews
+                                .id(isTabSelected)
+                        } else {
+                            blockedView
+                                .id(isTabSelected)
+                        }
+                    }
+                    
+                }
+            } else {
+                VStack(spacing: 0) {
+                    switch state.tab {
+                    case .explorer:
                         mainView
-                        
-                        Divider()
-                        
-                        blockedView
-                            .id(isTabSelected)
-                            .padding(.top, .layer5)
+                    default:
+                        HStack(spacing: 0) {
+                            mainView
+                            
+                            Divider()
+                            
+                            blockedView
+                                .id(isTabSelected)
+                                .padding(.top, .layer5)
+                        }
                     }
                 }
             }
-            
-            #endif
             
         }
         .addGraniteSheet(modal.sheetManager,
@@ -113,7 +117,6 @@ extension Globe: View {
                         .frame(width: state.accountModuleSize, height: state.accountModuleSize)
                     }
                     Spacer()
-                        .frame(maxWidth: .infinity)
                 }
                 .padding(.layer4)
                 
