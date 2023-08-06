@@ -17,14 +17,3 @@ struct NodeMapView: View {
         }
     }
 }
-
-struct NodeMapView_Previews: PreviewProvider {
-    static let node1 = Node(position: CGPoint(x: -100, y: -30), text: "hello")
-    static let node2 = Node(position: CGPoint(x: 100, y: 30), text: "world")
-    @State static var nodes = [node1, node2]
-    
-    static var previews: some View {
-        let selection = SelectionHandler()
-        return NodeMapView(selection: selection, nodes: $nodes)
-    }
-}

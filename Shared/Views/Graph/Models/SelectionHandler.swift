@@ -15,7 +15,7 @@ class SelectionHandler: ObservableObject {
     
     func selectNode(_ node: Node) {
         selectedNodeIDs = [node.id]
-        editingText = node.text
+        editingText = node.meta.title
     }
     
     func isNodeSelected(_ node: Node) -> Bool {

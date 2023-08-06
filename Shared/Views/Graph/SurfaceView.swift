@@ -57,14 +57,6 @@ struct SurfaceView: View {
     }
 }
 
-struct SurfaceView_Previews: PreviewProvider {
-    static var previews: some View {
-        let mesh = Mesh.sampleMesh()
-        let selection = SelectionHandler()
-        return SurfaceView(mesh: mesh, selection: selection)
-    }
-}
-
 private extension SurfaceView {
         // 1
     func distance(from pointA: CGPoint, to pointB: CGPoint) -> CGFloat {
@@ -84,7 +76,7 @@ private extension SurfaceView {
             let dist =  distance(from: point, to: endPoint) / zoomScale
             
                 //3
-            if dist < NodeView.width / 2.0 {
+            if dist < node.style.size.width / 2.0 {
                 return node
             }
         }

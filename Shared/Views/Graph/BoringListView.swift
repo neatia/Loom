@@ -13,21 +13,12 @@ struct BoringListView: View {
     
     var body: some View {
         List(mesh.nodes, id: \.id) { node in
-            Text(node.text)
+            Text(node.meta.title)
                 .padding(EdgeInsets(
                     top: 0,
                     leading: self.indent(node),
                     bottom: 0,
                     trailing: 0))
         }
-    }
-}
-
-struct BoringListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let mesh = Mesh.sampleMesh()
-        let selection =  SelectionHandler()
-        
-        return BoringListView(mesh: mesh, selection: selection)
     }
 }

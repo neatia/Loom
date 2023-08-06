@@ -30,14 +30,19 @@ extension Globe: View {
             }
             #elseif os(macOS)
             VStack(spacing: 0) {
-                HStack(spacing: 0) {
+                switch state.tab {
+                case .explorer:
                     mainView
-                    
-                    Divider()
-                    
-                    blockedView
-                        .id(isTabSelected)
-                        .padding(.top, .layer5)
+                default:
+                    HStack(spacing: 0) {
+                        mainView
+                        
+                        Divider()
+                        
+                        blockedView
+                            .id(isTabSelected)
+                            .padding(.top, .layer5)
+                    }
                 }
             }
             

@@ -50,6 +50,7 @@ extension Globe {
             .padding(.leading, .layer4)
             .padding(.trailing, .layer4)
             .padding(.bottom, .layer4)
+            
             Divider()
             
             switch state.tab {

@@ -8,11 +8,12 @@ typealias NodeID = UUID
 struct Node: Identifiable, GraniteModel {
     var id: NodeID = NodeID()
     var position: CGPoint = .zero
-    var text: String = ""
+    var meta: NodeViewMeta = .init()
+    var style: NodeViewStyle = .init()
     
     var visualID: String {
         return id.uuidString
-        + "\(text.hashValue)"
+        + "\(meta.title.hashValue)"
     }
 }
 

@@ -7,7 +7,7 @@ extension Globe {
             var socialViewOptions: Int = 0
             var accountModuleSize: CGFloat = 126
             var columns: Int = 0
-            var tab: Tab = .accounts
+            var tab: Tab = .explorer
         }
         
         @Store public var state: State

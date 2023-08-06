@@ -1,41 +1,63 @@
-
+import Granite
 import SwiftUI
 
 struct NodeView: View {
-    static let width = CGFloat(100)
-    static let height = CGFloat(50)
-        // 1
+    
     @State var node: Node
-        //2
+    
+    var style: NodeViewStyle {
+        node.style
+    }
+    
     @ObservedObject var selection: SelectionHandler
-        //3
+    
     var isSelected: Bool {
         return selection.isNodeSelected(node)
     }
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .fill(Color.yellow)
-            .overlay(RoundedRectangle(cornerRadius: 20)
-                        .stroke(isSelected ? Color.red : Color.black, lineWidth: isSelected ? 5 : 3))
-            .overlay(Text(node.text)
-                        .multilineTextAlignment(.center)
-                        .padding(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8)))
-            .frame(width: NodeView.width, height: NodeView.height, alignment: .center)
+        RoundedRectangle(cornerRadius: .layer2)
+            .fill(isSelected ? style.foregroundColor : style.color)
+            .overlay(RoundedRectangle(cornerRadius: .layer2)
+                .stroke(isSelected ? style.strokeColor : Color.clear, lineWidth: isSelected ? 5 : 3))
+            .overlay(VStack(alignment: .leading,
+                            spacing: 0) {
+                Text(node.meta.title)
+                    .font(.headline.bold())
+                    .lineLimit(1)
+                    .foregroundColor(isSelected ? style.color : style.foregroundColor)
+                
+                if let subtitle = node.meta.subtitle {
+                    Text(subtitle)
+                        .font(.footnote)
+                        .foregroundColor(isSelected ? style.color : style.foregroundColor)
+                    .padding(.top, .layer1)
+                }
+                
+            }
+            .padding(.horizontal, .layer2))
+            .frame(width: style.size.width, height: style.size.height, alignment: .center)
     }
 }
 
-struct NodeView_Previews: PreviewProvider {
-    static var previews: some View {
-        let selection1 = SelectionHandler()
-        let node1 = Node(text: "hello world")
-        let selection2 = SelectionHandler()
-        let node2 = Node(text: "I'm selected, look at me")
-        selection2.selectNode(node2)
-        
-        return VStack {
-            NodeView(node: node1, selection: selection1)
-            NodeView(node: node2, selection: selection2)
-        }
+struct NodeViewStyle: GraniteModel {
+    var color: Color = .alternateBackground.opacity(0.6)
+    var foregroundColor: Color = .foreground
+    var strokeColor: Color = .secondaryForeground
+    var size: CGSize = .init(width: 100, height: 50)
+    var isMain: Bool = false
+    
+    enum CodingKeys: CodingKey {
+        case size
+    }
+}
+
+struct NodeViewMeta: GraniteModel {
+    var title: String
+    var subtitle: String?
+    
+    init(title: String = "unknown", subtitle: String? = nil) {
+        self.title = title
+        self.subtitle = subtitle
     }
 }

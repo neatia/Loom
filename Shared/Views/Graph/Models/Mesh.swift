@@ -13,7 +13,7 @@ class Mesh: ObservableObject, Identifiable {
     
     init() {
         self.editingText = ""
-        let root = Node(text: "root")
+        let root = Node(meta: .root)
         rootNodeID = root.id
         addNode(root)
     }
@@ -23,9 +23,8 @@ class Mesh: ObservableObject, Identifiable {
             rebuildLinks()
         }
     }
+    
     @Published var links: [EdgeProxy] = []
-    
-    
     
     func rebuildLinks() {
         links = edges.compactMap { edge in
@@ -57,9 +56,10 @@ class Mesh: ObservableObject, Identifiable {
 }
 
 extension Mesh {
-    func updateNodeText(_ srcNode: Node, string: String) {
+    func updateNodeMeta(_ srcNode: Node, style: NodeViewStyle = .init(), meta: NodeViewMeta) {
         var newNode = srcNode
-        newNode.text = string
+        newNode.meta = meta
+        newNode.style = style
         replace(srcNode, with: newNode)
     }
     
@@ -100,9 +100,12 @@ extension Mesh {
 }
 
 extension Mesh {
-    @discardableResult func addChild(_ parent: Node, at point: CGPoint? = nil) -> Node {
+    @discardableResult
+    func addChild(_ parent: Node,
+                  meta: NodeViewMeta? = nil,
+                  at point: CGPoint? = nil) -> Node {
         let target = point ?? parent.position
-        let child = Node(position: target, text: "child")
+        let child = Node(position: target, meta: meta ?? .child)
         addNode(child)
         connect(parent, to: child)
         rebuildLinks()

@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 typealias AnimatablePoint = AnimatablePair<CGFloat, CGFloat>
