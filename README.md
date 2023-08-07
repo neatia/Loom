@@ -30,7 +30,7 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### [Changelog // Developer updates](https://lemmy.world/post/2596001)
+### [Changelog // Developer updates](https://lemmy.world/post/2779700)
 
 ## Contributing 
 
