@@ -26,10 +26,28 @@ struct Globe: GraniteComponent {
         account
             .center
             .boot
-            .listen { value in
+            .listen(.broadcast) { value in
                 if let meta = value as? StandardNotificationMeta {
                     modal.presentModal(GraniteToastView(meta))
                 }
             }
+        
+        config
+            .center
+            .restart
+            .listen(.broadcast) { value in
+                if let meta = value as? StandardNotificationMeta {
+                    modal.presentModal(GraniteToastView(meta))
+                }
+            }
+    }
+    
+    init() {
+        #if os(iOS)
+        let width = ContainerConfig.iPhoneScreenWidth
+        //3 cells with layer4 padding in between
+        let moduleWith = (width / 3) - (.layer4 * 2)
+        _center = .init(.init(accountModuleSize: moduleWith))
+        #endif
     }
 }

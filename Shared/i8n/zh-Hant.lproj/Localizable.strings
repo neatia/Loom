@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@帖子";
 "%@ COMMENTS_COUNT" = "%@評論";
 "MISC_TITLE" = "標題";
+"MISC_READ_MORE" = "閱讀更多";
+"MISC_CONNECT" = "連接";
+"MISC_EXPLORE" = "探索";
+"ALERT_WORK_IN_PROGRESS" = "工作正在進行中";
+"ALERT_BETA_FEATURE" = "貝塔";
+"TITLE_WHATS_NEW" = "什麼是新的";

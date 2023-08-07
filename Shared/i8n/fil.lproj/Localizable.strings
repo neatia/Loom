@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ mga post";
 "%@ COMMENTS_COUNT" = "%@ mga komento";
 "MISC_TITLE" = "Pamagat";
+"MISC_READ_MORE" = "Magbasa pa";
+"MISC_CONNECT" = "Kumonekta";
+"MISC_EXPLORE" = "Galugarin";
+"ALERT_WORK_IN_PROGRESS" = "Kasalukuyang ginagawa";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Anong bago";

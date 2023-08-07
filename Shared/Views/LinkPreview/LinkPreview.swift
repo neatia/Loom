@@ -1,6 +1,43 @@
 import SwiftUI
 import LinkPresentation
 import Granite
+/**
+Gets and sets to this dictionary-like type are atomic.
+
+Does not fully implement correct value semantics for copy
+operations, since the contained queue is a reference type
+and will be shared among copies of this object
+
+*/
+struct AtomicDictionary<KeyType:Hashable,ValueType>
+{
+  private var internalDictionary:Dictionary<KeyType,ValueType> = [:]
+    private let queue = DispatchQueue.init(label: "atomic.dict")
+  
+  /* provide subscript accessors */
+  subscript(key: KeyType) -> ValueType? {
+    get {
+      var value : ValueType?
+        self.queue.sync() { () -> Void in
+        value = self.internalDictionary[key]
+      }
+      return value
+    }
+    
+    set {
+        setValue(value: newValue, forKey: key)
+    }
+  }
+  
+  mutating func setValue(value: ValueType?, forKey key: KeyType) {
+    // use a dispatch barrier so writes are serialized
+      
+      queue.sync(flags: .barrier) {
+          self.internalDictionary[key] = value
+          
+      }
+  }
+}
 
 class LinkPreviewCache {
     static let shared: LinkPreviewCache = .init()
@@ -8,20 +45,23 @@ class LinkPreviewCache {
     var imageOperationQueue: OperationQueue = .init()
     var iconOperationQueue: OperationQueue = .init()
     init() {
-        operationQueue.underlyingQueue = .main
+        operationQueue.underlyingQueue = .main//global(qos: .background)
         operationQueue.maxConcurrentOperationCount = 1
         
-        imageOperationQueue.underlyingQueue = .main
+        imageOperationQueue.underlyingQueue = .main//global(qos: .background)
         imageOperationQueue.maxConcurrentOperationCount = 1
         
         iconOperationQueue.underlyingQueue = .main
         iconOperationQueue.maxConcurrentOperationCount = 1
     }
     
+    var canFetchImage: Bool = true
+    var canFetch: Bool = true
     var cache: Bool = true
     var cacheKeys: [String] = []
     var metadataCache: [String: LPLinkMetadata?] = [:]
     var imageCache: [String: GraniteImage] = [:]
+    
     var iconCache: [String: GraniteImage] = [:]
     var sizeCache: [String: CGSize] = [:]
     
@@ -68,7 +108,7 @@ public struct LinkPreview: View {
     }
     
     @State private var isPresented: Bool = false
-    @State private var metaData: LPLinkMetadata?
+    @State private var metaData: LPLinkMetadata? = nil
     
     #if os(iOS)
     var backgroundColor: Color = Color(.systemGray5)
@@ -102,7 +142,7 @@ public struct LinkPreview: View {
                 })
                     .buttonStyle(LinkButton())
                     .universalWebCover(isPresented: $isPresented, url: url)
-                    //.animation(.spring(), value: metaData)
+                    .animation(.spring(), value: metaData)
             }
             else {
                 HStack {
@@ -139,10 +179,26 @@ public struct LinkPreview: View {
                     Spacer()
                 }
                 .onAppear {
-                    if cachedMetadata == nil {
-                        getMetaData(url: url)
+                    guard cachedMetadata == nil else {
+                        return
+                    }
+                    _ = Task {
+                        let provider = LPMetadataProvider()
+                        let metadata = try? await provider.startFetchingMetadata(for: url)
+                        
+                        if LinkPreviewCache.shared.cache {
+                            LinkPreviewCache.shared.cacheKeys.append(cacheKey)
+                            LinkPreviewCache.shared.metadataCache[cacheKey] = metadata
+                        }
+                        
+                        self.metaData = metadata
                     }
                 }
+//                .onAppear {
+//                    if cachedMetadata == nil {
+//                        getMetaData(url: url)
+//                    }
+//                }
                 .universalWebCover(isPresented: $isPresented, url: url)
                 
             }
@@ -150,48 +206,40 @@ public struct LinkPreview: View {
     }
     
     func getMetaData(url: URL) {
-        let provider = LPMetadataProvider()
-        
-        LinkPreviewCache.shared.operationQueue.addOperation { 
+//        LinkPreviewCache.shared.operationQueue.addOperation {
+////            while !LinkPreviewCache.shared.canFetch {}
+////            LinkPreviewCache.shared.canFetch = false
+//            DispatchQueue.main.async {
+//                let provider = LPMetadataProvider()
+//                provider.startFetchingMetadata(for: url) { meta, err in
+//                    LinkPreviewCache.shared.canFetch = true
+//                    guard let meta = meta else {return}
+//                    if LinkPreviewCache.shared.cache {
+//                        LinkPreviewCache.shared.cacheKeys.append(cacheKey)
+//                        LinkPreviewCache.shared.metadataCache[cacheKey] = meta
+//                        LinkPreviewCache.shared.flush()
+//                    }
+//                    //withAnimation(.spring()) {
+//                    self.metaData = meta
+//                    //}
+//                }
+//            }
+//        }
+        DispatchQueue.main.async {
+            let provider = LPMetadataProvider()
             provider.startFetchingMetadata(for: url) { meta, err in
+                LinkPreviewCache.shared.canFetch = true
                 guard let meta = meta else {return}
                 if LinkPreviewCache.shared.cache {
                     LinkPreviewCache.shared.cacheKeys.append(cacheKey)
                     LinkPreviewCache.shared.metadataCache[cacheKey] = meta
                     LinkPreviewCache.shared.flush()
                 }
-                withAnimation(.spring()) {
-                    self.metaData = meta
-                }
+                //withAnimation(.spring()) {
+                self.metaData = meta
+                //}
             }
         }
     }
 }
 
-extension View {
-    func universalWebCover(isPresented condition: Binding<Bool>,
-                        url: URL) -> some View {
-        #if os(iOS)
-        self.fullScreenCover(isPresented: condition) {
-            SfSafariView(url: url)
-                .edgesIgnoringSafeArea(.all)
-        }
-        #else
-        self.sheet(isPresented: condition) {
-            PostContentView(url)
-                .frame(width: 600, height: 400)
-        }
-        #endif
-    }
-}
-
-
-
-struct LinkButton: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1)
-            .opacity(configuration.isPressed ? 0.9 : 1)
-            .animation(.spring(), value: configuration.isPressed)
-    }
-}

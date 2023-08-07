@@ -11,29 +11,6 @@ extension ConfigService {
             //Feed
             var linkPreviewMetaData: Bool = false
             
-            #if os(macOS)
-            var style: Style = .expanded
-            #elseif os(iOS)
-            var style: Style = .unknown
-            #endif
-            
-            var feedContext: FeedContext = .idle {
-                didSet {
-                    switch feedContext {
-                    case .viewPost:
-                        self.closeFeedDisplayView = false
-                    default:
-                        break
-                    }
-                }
-            }
-            var feedCommunityContext: FeedCommunityContext = .idle
-            var closeFeedDisplayView: Bool = true {
-                didSet {
-                    ConfigService.expandWindow(close: closeFeedDisplayView)
-                }
-            }
-            
             //Write
             var enableIPFS: Bool = false {
                 didSet {
@@ -58,47 +35,11 @@ extension ConfigService {
         @Event var restart: Restart.Reducer
         @Event var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Lemur.0015", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.config.Lemur.0017", autoSave: true) public var state: State
     }
     
     struct Preferences {
-        static var pageLimit: Int = 30
-    }
-    
-    enum Style: GraniteModel {
-        case compact
-        case expanded
-        case unknown
-    }
-    
-    enum FeedContext: GraniteModel, Hashable {
-        case viewPost(PostView)
-        case idle
-        
-        func hash(into hasher: inout Hasher) {
-            switch self {
-            case .viewPost(let model):
-                hasher.combine(model.id)
-            default:
-                hasher.combine("\(self)")
-            }
-        }
-    }
-    
-    enum FeedCommunityContext: GraniteModel {
-        case viewCommunityView(CommunityView)
-        case viewCommunity(Community)
-        case idle
-    }
-    
-    static func expandWindow(close: Bool = false) {
-        #if os(macOS)
-        if close {
-            GraniteNavigationWindow.shared.updateWidth(720, id: "main")
-        } else {
-            GraniteNavigationWindow.shared.updateWidth(1200, id: "main")
-        }
-        #endif
+        static var pageLimit: Int = 10
     }
     
     static func configureIPFS(_ gatewayUrl: String) {

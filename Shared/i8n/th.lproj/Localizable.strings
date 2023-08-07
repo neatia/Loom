@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ โพสต์";
 "%@ COMMENTS_COUNT" = "%@ ความคิดเห็น";
 "MISC_TITLE" = "ชื่อ";
+"MISC_READ_MORE" = "อ่านเพิ่มเติม";
+"MISC_CONNECT" = "เชื่อมต่อ";
+"MISC_EXPLORE" = "สำรวจ";
+"ALERT_WORK_IN_PROGRESS" = "อยู่ระหว่างดำเนินการ";
+"ALERT_BETA_FEATURE" = "เบต้า";
+"TITLE_WHATS_NEW" = "มีอะไรใหม่";

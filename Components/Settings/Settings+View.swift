@@ -29,33 +29,33 @@ extension Settings: View {
             
             ScrollView(showsIndicators: false) {
                 
-                VStack(alignment: .leading, spacing: 0) {
-                    Spacer()
-                    HStack {
-                        Text("TITLE_FEED")
-                            .font(.title2.bold())
-                        
-                        Spacer()
-                    }
-                    
-                    HStack {
-                        VStack(alignment: .leading, spacing: 0) {
-                            Toggle(isOn: config._state.linkPreviewMetaData) {
-                                Text("SETTINGS_FEED_LINK_DETAILS")
-                                    .font(.headline)
-                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
-                            }
-                        }
-                        .padding(.vertical, .layer3)
-                        
-                     
-                        #if os(macOS)
-                        Spacer()
-                        #endif
-                    }
-                }
-                .padding(.top, .layer4)
-                .padding(.horizontal, .layer4)
+//                VStack(alignment: .leading, spacing: 0) {
+//                    Spacer()
+//                    HStack {
+//                        Text("TITLE_FEED")
+//                            .font(.title2.bold())
+//
+//                        Spacer()
+//                    }
+//
+//                    HStack {
+//                        VStack(alignment: .leading, spacing: 0) {
+//                            Toggle(isOn: config._state.linkPreviewMetaData) {
+//                                Text("SETTINGS_FEED_LINK_DETAILS")
+//                                    .font(.headline)
+//                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
+//                            }
+//                        }
+//                        .padding(.vertical, .layer3)
+//
+//
+//                        #if os(macOS)
+//                        Spacer()
+//                        #endif
+//                    }
+//                }
+//                .padding(.top, .layer4)
+//                .padding(.horizontal, .layer4)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer()
@@ -69,6 +69,7 @@ extension Settings: View {
                         
                         Spacer()
                     }
+                    .padding(.top, .layer4)
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
@@ -149,8 +150,11 @@ extension Settings: View {
                                         modal: modal)
                 }
                 
+                DebugSettingsView()
+                    .graniteEvent(config.center.restart)
+                
                 Spacer()
-                    .frame(maxHeight: .infinity)
+                    .frame(height: 80)
                 
                 
                 HStack(spacing: 4) {
@@ -209,7 +213,7 @@ extension Settings: View {
 //                .foregroundColor(.foreground)
             }
         }
-        .padding(.top, Device.isMacOS ? .layer5 : .layer4)
+        .padding(.top, ContainerConfig.generalViewTopPadding)
         .addGraniteSheet(modal.sheetManager,
                          modalManager: modal.modalSheetManager,
                          background: Color.clear)

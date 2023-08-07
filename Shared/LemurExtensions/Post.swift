@@ -62,4 +62,12 @@ extension PostView {
         }
         return nil
     }
+    
+    var thumbUrl: URL? {
+        guard let url = post.thumbnail_url else {
+            return nil
+        }
+        
+        return URL(string: url)
+    }
 }

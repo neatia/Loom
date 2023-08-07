@@ -28,7 +28,7 @@ struct PostDisplayView: View {
     
     @State var enableCommunityRoute: Bool = false
     
-    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -72,7 +72,6 @@ struct PostDisplayView: View {
                     }, at: \.reply)
             }
             .environmentObject(comments)
-            .padding(.bottom, comments.isEmpty ? .layer4 : 0)
         }
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
@@ -232,7 +231,7 @@ extension PostDisplayView {
 }
 
 
-extension View {
+fileprivate extension View {
     func showDrawer(_ condition: Binding<Bool>,
                     commentView: CommentView?,
                     postView: PostView?) -> some View {

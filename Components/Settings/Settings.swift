@@ -15,15 +15,15 @@ struct Settings: GraniteComponent {
     
     @Environment(\.graniteTabSelected) var isTabSelected
     
-    var listeners: Void {
-        account
-            .center
-            .update
-            .listen { value in
-                if let meta = value as? StandardNotificationMeta {
-                    modal.dismissSheet()
-                    modal.presentModal(GraniteToastView(meta))
-                }
-            }
-    }
+//    var listeners: Void {
+//        account
+//            .center
+//            .update
+//            .listen { value in
+//                if let meta = value as? StandardNotificationMeta {
+//                    modal.dismissSheet()
+//                    modal.presentModal(GraniteToastView(meta))
+//                }
+//            }
+//    }
 }

@@ -43,19 +43,27 @@ extension Bookmark {
     }
     
     var postViews: [PostView] {
-        Array(service.state.posts.values.flatMap { Array($0.map.values) })
+        Array(service.state.posts.values.flatMap { obj in
+            
+            obj.ids.compactMap { obj.map[$0] }
+            
+        })
     }
     
     var postIDs: [String] {
-        Array(service.state.posts.values.flatMap { Array($0.map.keys) })
+        Array(service.state.posts.values.flatMap { $0.ids })
     }
     
     var commentViews: [CommentView] {
-        Array(service.state.comments.values.flatMap { Array($0.map.values) })
+        Array(service.state.comments.values.flatMap { obj in
+            
+            obj.ids.compactMap { obj.map[$0] }
+            
+        })
     }
     
     var commentIDs: [String] {
-        Array(service.state.comments.values.flatMap { Array($0.map.keys) })
+        Array(service.state.comments.values.flatMap { $0.ids })
     }
     
     func postForComment(_ commentView: CommentView) -> PostView? {

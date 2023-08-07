@@ -7,10 +7,6 @@ import Foundation
 extension Home: View {
     var safeAreaTop: CGFloat {
         #if os(iOS)
-//        if #available(iOS 11.0, *),
-//           let keyWindow = UIApplication.shared.keyWindow {
-//            return keyWindow.safeAreaInsets.top
-//        }
         return .layer1
         #endif
         return 0
@@ -28,7 +24,7 @@ extension Home: View {
     }
     
     var tabViewHeight: CGFloat {
-        if Device.isMacOS {
+        if Device.isExpandedLayout {
             return 56
         } else {
             return 84

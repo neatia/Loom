@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ objava";
 "%@ COMMENTS_COUNT" = "%@ komentara";
 "MISC_TITLE" = "Titula";
+"MISC_READ_MORE" = "Čitaj više";
+"MISC_CONNECT" = "Spojiti";
+"MISC_EXPLORE" = "Istražiti";
+"ALERT_WORK_IN_PROGRESS" = "Radovi u tijeku";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Što ima novog";

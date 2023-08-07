@@ -22,73 +22,30 @@ extension Feed {
         }
     }
     
-    var maxFrameWidth: CGFloat? {
-        if Device.isMacOS {
-            return config._state.wrappedValue.closeFeedDisplayView ? nil : 480
-        } else {
-            return nil
-        }
-    }
-    
     var minFrameWidthClosed: CGFloat {
-        200 + ContainerConfig.iPhoneScreenWidth + 4
+        200 + ContainerConfig.iPhoneScreenWidth + .layer1
     }
     
     //Primarily for macOS
     var horizontalLayout: some View {
         HStack(spacing: 0) {
-            CommunityPickerView(modal: false,
-                                verticalPadding: 0,
-                                sidebar: true)
-            .attach({ communityView in
+            FeedSidebar() {
+                headerView
+            }
+            .attach({ model in
                 DispatchQueue.main.async {
-                    self.config._state.feedCommunityContext.wrappedValue = .viewCommunityView(communityView)
+                    self._state.community.wrappedValue = model.community
+                    self._state.communityView.wrappedValue = model
+                    self.pager.fetch(force: true)
                 }
             }, at: \.pickedCommunity)
             .frame(width: 240)
             Divider()
-            verticalLayout
-                .frame(minWidth: minFrameWidth, maxWidth: maxFrameWidth)
-            if config._state.wrappedValue.closeFeedDisplayView == false {
-                switch config._state.wrappedValue.feedContext {
-                case .viewPost(let model):
-                    Divider()
-                    PostDisplayView(model: model,
-                                    isFrontPage: true)
-                    .id(model.id)
-                default:
-                    Spacer()
-                }
-            }
-            if config._state.wrappedValue.feedContext != .idle {
-                Divider()
-                
-                Button {
-                    config._state.wrappedValue.closeFeedDisplayView.toggle()
-                } label: {
-                    
-                    closeView
-                }.buttonStyle(PlainButtonStyle())
-            }
+            FeedMainView(isFrontPage: state.community != nil)
+                .graniteEvent(account.center.interact)
+                .environmentObject(pager)
+                .frame(minWidth: minFrameWidth, maxWidth: nil)
+            FeedExtendedView()
         }
-    }
-    
-    var closeView: some View {
-        ZStack {
-            Color.background
-            
-            VStack {
-                Spacer()
-                
-                HStack(spacing: 0) {
-                    Image(systemName: "chevron.\(config._state.wrappedValue.closeFeedDisplayView ? "right" : "left").2")
-                        .font(.title3)
-                }
-                
-                Spacer()
-            }
-        }
-        .frame(maxHeight: .infinity)
-        .frame(width: 36)
     }
 }

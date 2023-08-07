@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ postitust";
 "%@ COMMENTS_COUNT" = "%@ kommentaari";
 "MISC_TITLE" = "Pealkiri";
+"MISC_READ_MORE" = "Loe rohkem";
+"MISC_CONNECT" = "Ühendage";
+"MISC_EXPLORE" = "Uurige";
+"ALERT_WORK_IN_PROGRESS" = "Töö käib";
+"ALERT_BETA_FEATURE" = "Beeta";
+"TITLE_WHATS_NEW" = "Mis on uut";

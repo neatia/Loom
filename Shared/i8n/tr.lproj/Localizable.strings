@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ gönderiler";
 "%@ COMMENTS_COUNT" = "%@ yorumlar";
 "MISC_TITLE" = "Başlık";
+"MISC_READ_MORE" = "Devamını oku";
+"MISC_CONNECT" = "Bağlamak";
+"MISC_EXPLORE" = "Keşfetmek";
+"ALERT_WORK_IN_PROGRESS" = "devam eden çalışma";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Ne var ne yok";

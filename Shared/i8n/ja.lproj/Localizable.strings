@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@投稿数";
 "%@ COMMENTS_COUNT" = "%@コメント";
 "MISC_TITLE" = "タイトル";
+"MISC_READ_MORE" = "続きを読む";
+"MISC_CONNECT" = "接続";
+"MISC_EXPLORE" = "探検";
+"ALERT_WORK_IN_PROGRESS" = "作業中です";
+"ALERT_BETA_FEATURE" = "ベータ";
+"TITLE_WHATS_NEW" = "新着情報";

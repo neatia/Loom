@@ -16,15 +16,23 @@ struct PEXApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #endif
     
-    @Relay var config: ConfigService
+    var config: ConfigService = .init()
     
     let pubDidFinishLaunching = NotificationCenter.default
             .publisher(for: NSNotification.Name("nyc.stoic.Lemur.DidFinishLaunching"))
     
     init() {
+        config.preload()
+        
         #if os(iOS)
         config.center.boot.send()
         #endif
+        
+        if Device.isExpandedLayout {
+            LayoutService.style = .expanded
+        } else {
+            LayoutService.style = .compact
+        }
     }
     
     var body: some Scene {
@@ -33,20 +41,6 @@ struct PEXApp: App {
             Home()
             
             #elseif os(macOS)
-            
-            /*
-             Home()
-                 .preferredColorScheme(.dark)
-                 .frame(minWidth: 800,
-                        minHeight: 600)
-                 .background(Brand.Colors.black)
-                 .onReceive(pubDidFinishLaunching) { _ in
-                     GraniteNavigationWindow.backgroundColor = NSColor(Brand.Colors.black)
-                     
-                     config.center.boot.send()
-                 }
-             
-             */
             
             EmptyComponent()
             .onReceive(pubDidFinishLaunching) { _ in
@@ -60,17 +54,7 @@ struct PEXApp: App {
                     Home()
                         .background(Color.background)
                         .task {
-                            //TODO: possible resizing race?
-                            
                             config.center.boot.send()
-//                            
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                if config.state.style == .expanded || config.state.style == .unknown {
-//                                    #if os(macOS)
-//                                    ConfigService.expandWindow(close: config.state.closeFeedDisplayView)
-//                                    #endif
-//                                }
-//                            }
                         }
                 }
             }
@@ -78,6 +62,7 @@ struct PEXApp: App {
         }
     }
 }
+
 struct EmptyComponent: GraniteComponent {
     struct Center: GraniteCenter {
         

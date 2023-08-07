@@ -1,6 +1,6 @@
 <p align="center"><img src="https://gateway.ipfs.io/ipfs/QmUR5vx55UVCeo1gWSk5zmoc5hKh4XXf1mrFrU3pBQpy2r" height="120px" /></p>
 
-<h1 align="center">Lemur (iOS & macOS) Beta</h1>
+<h1 align="center">Loom (iOS & macOS) Beta</h1>
 
 <p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
 
@@ -30,11 +30,11 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### [Patch notes // Developer updates](https://lemmy.world/post/2596001)
+### [Changelog // Developer updates](https://lemmy.world/post/2596001)
 
 ## Contributing 
 
-Lemur uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
+Loom uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
 
 ### Why Granite?
 
@@ -54,9 +54,9 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 
 ## Discussion
 
-In an attempt to build a community around Lemur as well, feel free to explore the places below!
+In an attempt to build a community around Loom as well, feel free to explore the places below!
 
-- [@lemmy.world](https://lemmy.world/c/lemur)
+- [@lemmy.world](https://lemmy.world/c/loom)
 - Matrix Spaces: `!cYiAYEKIMRaZcuuudA:matrix.org`
 
 ### Contact

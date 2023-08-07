@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ αναρτήσεις";
 "%@ COMMENTS_COUNT" = "%@ σχόλια";
 "MISC_TITLE" = "Τίτλος";
+"MISC_READ_MORE" = "Διαβάστε περισσότερα";
+"MISC_CONNECT" = "Συνδέω-συωδεομαι";
+"MISC_EXPLORE" = "Εξερευνώ";
+"ALERT_WORK_IN_PROGRESS" = "Εργασία σε εξέλιξη";
+"ALERT_BETA_FEATURE" = "Βήτα";
+"TITLE_WHATS_NEW" = "Τι νέα";

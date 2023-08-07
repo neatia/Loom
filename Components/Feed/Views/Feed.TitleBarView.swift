@@ -12,7 +12,7 @@ import GraniteUI
 
 extension Feed {
     var titleBarView: some View {
-         HStack(spacing: 0) {
+        HStack(alignment: .bottom, spacing: 0) {
              VStack(alignment: .leading, spacing: hasCommunityBanner ? 2 : 0) {
                  Spacer()
                  Text(subheaderTitle)
@@ -36,33 +36,49 @@ extension Feed {
              .foregroundColor(.foreground)
              Spacer()
              
-             Button {
-                 GraniteHaptic.light.invoke()
-                 modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
-                     Search(state.community)
-                         .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+             VStack(alignment: .trailing, spacing: 0) {
+                 Spacer()
+                 if Device.isExpandedLayout {
+                     AccountView()
+                         .attach({
+                             GraniteHaptic.light.invoke()
+                             modal.presentSheet {
+                                 LoginView()
+                             }
+                         }, at: \.login)
+                         .offset(y: hasCommunityBanner ? -1 : 0)
+                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                         .backgroundIf(hasCommunityBanner) {
+                             Color.background.opacity(0.75)
+                                 .cornerRadius(4)
+                         }
+                         .padding(.bottom, .layer2)
                  }
-             } label: {
-                 Image(systemName: "magnifyingglass")
-                     .renderingMode(.template)
-                     .font(Device.isExpandedLayout ? .title2 : .title3)
-                     .frame(width: 24, height: 24)
-                     .contentShape(Rectangle())
-                     .foregroundColor(.foreground)
-                     .padding(.horizontal, hasCommunityBanner ? 4 : 0)
-                     .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                     .offset(y: -1)
-             }
-             .backgroundIf(hasCommunityBanner) {
-                 Color.background.opacity(0.75)
-                     .cornerRadius(4)
-             }
-             .buttonStyle(PlainButtonStyle())
+                 Button {
+                     GraniteHaptic.light.invoke()
+                     modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
+                         Search(state.community)
+                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                     }
+                 } label: {
+                     Image(systemName: "magnifyingglass")
+                         .font(.title2)
+                         .foregroundColor(.foreground)
+                         .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                         .contentShape(Rectangle())
+                 }
+                 .backgroundIf(hasCommunityBanner) {
+                     Color.background.opacity(0.75)
+                         .cornerRadius(4)
+                 }
+                 .buttonStyle(PlainButtonStyle())
+                 .padding(.bottom, Device.isExpandedLayout ? .layer1 : .layer2)
+             }.frame(maxHeight: .infinity)
          }
          .frame(height: hasCommunityBanner ? 48 : 36)
-         .padding(.top, (Device.isExpandedLayout && state.community == nil) ? .layer5 : .layer3)
+         .padding(.top, state.community == nil ? ContainerConfig.generalViewTopPadding : .layer3)
          .padding(.bottom, .layer2)
-         .padding(.leading, .layer4)
-         .padding(.trailing, .layer4)
     }
 }

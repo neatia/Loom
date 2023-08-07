@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@帖子";
 "%@ COMMENTS_COUNT" = "%@评论";
 "MISC_TITLE" = "标题";
+"MISC_READ_MORE" = "阅读更多";
+"MISC_CONNECT" = "连接";
+"MISC_EXPLORE" = "探索";
+"ALERT_WORK_IN_PROGRESS" = "工作正在进行中";
+"ALERT_BETA_FEATURE" = "贝塔";
+"TITLE_WHATS_NEW" = "什么是新的";

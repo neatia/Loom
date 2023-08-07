@@ -45,6 +45,14 @@ struct LocalModifyMeta: StandardMotify {
     var showBotAccounts: Bool
     var sortType: SortType?
     var listingType: ListingType?
+    
+    static func ==(lhs: LocalModifyMeta, rhs: LocalModifyMeta) -> Bool {
+        lhs.showNSFW == rhs.showNSFW &&
+        lhs.showScores == rhs.showScores &&
+        lhs.showBotAccounts == rhs.showBotAccounts &&
+        lhs.sortType == rhs.sortType &&
+        lhs.listingType == rhs.listingType
+    }
 }
 
 struct AccountModifyMeta: StandardMotify {
@@ -111,7 +119,7 @@ struct ProfileSettingsView: View {
     }
     
     var currentLocalMeta: LocalModifyMeta {
-        .init(showNSFW: showNSFW, showScores: showScores, showBotAccounts: showNSFW, sortType: sortType, listingType: listingType)
+        .init(showNSFW: showNSFW, showScores: showScores, showBotAccounts: showBotAccounts, sortType: sortType, listingType: listingType)
     }
     
     var changesMade: Bool {
@@ -132,7 +140,7 @@ struct ProfileSettingsView: View {
     
     @State var isUpdating: Bool = false
     
-    var localModel: LocalModifyMeta?
+    @State var localModel: LocalModifyMeta?
     
     let showProfileSettings: Bool
     let isModal: Bool
@@ -155,8 +163,6 @@ struct ProfileSettingsView: View {
         #else
         
         #endif
-        
-        config.preload()
     }
     
     var body: some View {
@@ -258,8 +264,8 @@ struct ProfileSettingsView: View {
         }
         .padding(.top, showProfileSettings ? .layer4 : 0)
         .background(Color.background)
-        .onChange(of: localChangesMade) { status in
-            guard status, offline else { return }
+        .onChange(of: currentLocalMeta) { status in
+            guard offline else { return }
             updateLocalSettings()
         }
         .task {
@@ -562,6 +568,10 @@ extension ProfileSettingsView {
         config._state.sortType.wrappedValue = currentMeta.sortType ?? config.state.sortType
         config._state.listingType.wrappedValue = currentMeta.listingType ?? config.state.listingType
         config._state.showBotAccounts.wrappedValue = currentMeta.showBotAccounts
+        
+        if offline {
+            self.localModel = self.currentLocalMeta
+        }
     }
 }
 

@@ -5,8 +5,8 @@ import Combine
 
 struct Feed: GraniteComponent {
     @Command var center: Center
+    
     @Relay var config: ConfigService
-    @Relay var content: ContentService
     @Relay var modal: ModalService
     @Relay var account: AccountService
     
@@ -53,6 +53,13 @@ struct Feed: GraniteComponent {
                         break
                     }
                 }
+            }
+        
+        config
+            .center
+            .restart
+            .listen(.broadcast) { _ in
+                pager.fetch(force: true)
             }
     }
     

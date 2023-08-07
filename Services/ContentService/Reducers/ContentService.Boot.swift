@@ -13,7 +13,10 @@ extension ContentService.Center {
         typealias Center = ContentService.Center
         
         func reduce(state: inout Center.State) {
-            
+            state.allPosts = [:]
+            state.allComments = [:]
+            state.allCommunities = [:]
+            state.userContent = [:]
         }
     }
 }

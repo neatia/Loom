@@ -34,7 +34,7 @@ struct AccountView: View {
                 Button {
                     login.perform()
                 } label: {
-                    Text("Login")
+                    Text("AUTH_LOGIN")
                         .font(.headline)
                         .foregroundColor(.foreground)
                 }

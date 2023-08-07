@@ -85,8 +85,8 @@ struct FooterView: View {
         
         self.isComposable = isComposable
         
-        content.preload()
-        config.preload()
+        //        content.preload()
+        //        config.preload()
     }
     
     init(_ model: CommentView, postView: PostView? = nil, isHeader: Bool = false, style: FeedStyle = .style1, isComposable: Bool = false) {
@@ -106,8 +106,8 @@ struct FooterView: View {
         
         self.isComposable = isComposable
         
-        content.preload()
-        config.preload()
+        //        content.preload()
+        //        config.preload()
     }
     
     var body: some View {
@@ -123,6 +123,26 @@ struct FooterView: View {
 }
 
 extension FooterView {
+    func modifyBookmark() {
+        switch bookmarkKind {
+        case .post(let model):
+            if bookmark.contains(bookmarkKind) {
+                content.center.interact.send(ContentService.Interact.Meta(kind: .unsavePost(model)))
+            } else {
+                content.center.interact.send(ContentService.Interact.Meta(kind: .savePost(model)))
+            }
+        case .comment(let model, _):
+            if bookmark.contains(bookmarkKind) {
+                content.center.interact.send(ContentService.Interact.Meta(kind: .unsaveComment(model)))
+            } else {
+                content.center.interact.send(ContentService.Interact.Meta(kind: .saveComment(model)))
+            }
+        }
+        bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
+    }
+}
+
+extension FooterView {
     var stacked: some View {
         VStack(spacing: .layer3) {
             HStack(spacing: .layer4) {
@@ -131,7 +151,7 @@ extension FooterView {
                     switch bookmarkKind {
                     case .post(let postView):
                         content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
-                    case .comment(var commentView, _):
+                    case .comment(let commentView, _):
                         content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
                     }
                 } label : {
@@ -160,26 +180,6 @@ extension FooterView {
                     .contentShape(Rectangle())
                 }.buttonStyle(PlainButtonStyle())
                 
-//                if let replyCount {
-//                    if replyCount > 0 {
-//                        Button {
-//                            switch bookmarkKind {
-//                            case .comment(let commentView, _):
-//                                showComments.perform(commentView.comment.id)
-//                            default:
-//                                break
-//                            }
-//                        } label: {
-//                            HStack(spacing: .layer1) {
-//                                Text("\(replyCount)")
-//                                    .font(font)
-//                                Text("repl\(replyCount > 1 ? "ies" : "y")")
-//                                    .font(font)
-//                            }.contentShape(Rectangle())
-//                        }.buttonStyle(PlainButtonStyle())
-//                            .foregroundColor(.foreground)
-//                    }
-//                } else {
                 if case let .post(postView) = bookmarkKind {
                     HStack(spacing: .layer1) {
                         Image(systemName: "bubble.left")
@@ -193,19 +193,10 @@ extension FooterView {
                     }
                 }
                 
-    //            Color.clear.frame(maxWidth: .infinity)
-    //                .contentShape(Rectangle())
-    //                .modifier(TapAndLongPressModifier(tapAction: {  },
-    //                                                  longPressAction: {
-    //                    guard canExpand else { return }
-    //                    GraniteHaptic.light.invoke()
-    //                    expand.perform()
-    //                }))
-                
                 if isHeader == false || bookmarkKind.isComment || Device.isMacOS == false {
                     Button {
                         GraniteHaptic.light.invoke()
-                        bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
+                        modifyBookmark()
                     } label: {
                         
                         Image(systemName: "bookmark\(bookmark.contains(bookmarkKind) ? ".fill" : "")")
@@ -215,7 +206,7 @@ extension FooterView {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                #if os(iOS)
+#if os(iOS)
                 Button {
                     GraniteHaptic.light.invoke()
                     if let commentView {
@@ -229,7 +220,7 @@ extension FooterView {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
-                #else
+#else
                 Menu {
                     ForEach(NSSharingService.sharingServices(forItems: [""]), id: \.title ) { item in
                         Button(action: {
@@ -257,7 +248,7 @@ extension FooterView {
                 }
                 .menuStyle(BorderlessButtonMenuStyle())
                 .menuIndicator(.hidden)
-                #endif
+#endif
                 
                 Spacer()
             }
@@ -406,21 +397,21 @@ extension FooterView {
                 }
             }
             
-//            Color.clear.frame(maxWidth: .infinity)
-//                .contentShape(Rectangle())
-//                .modifier(TapAndLongPressModifier(tapAction: {  },
-//                                                  longPressAction: {
-//                    guard canExpand else { return }
-//                    GraniteHaptic.light.invoke()
-//                    expand.perform()
-//                }))
+            //            Color.clear.frame(maxWidth: .infinity)
+            //                .contentShape(Rectangle())
+            //                .modifier(TapAndLongPressModifier(tapAction: {  },
+            //                                                  longPressAction: {
+            //                    guard canExpand else { return }
+            //                    GraniteHaptic.light.invoke()
+            //                    expand.perform()
+            //                }))
             
             Spacer()
             
             if isHeader == false || bookmarkKind.isComment {
                 Button {
                     GraniteHaptic.light.invoke()
-                    bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
+                    modifyBookmark()
                 } label: {
                     
                     Image(systemName: "bookmark.square\(bookmark.contains(bookmarkKind) ? ".fill" : "")")

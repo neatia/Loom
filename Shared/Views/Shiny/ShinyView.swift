@@ -15,6 +15,16 @@ public extension View {
     func shiny(_ surface: Gradient = .rainbow) -> some View {
         return ShinyView(surface, content: self).environmentObject(MotionManager.main)
     }
+    
+    func shinyIf(_ condition: Bool, surface: Gradient = .rainbow) -> some View {
+        Group {
+            if condition {
+                self.shiny(surface)
+            } else {
+                self
+            }
+        }
+    }
 }
 
 internal struct ShinyView<Content>: View where Content: View {
