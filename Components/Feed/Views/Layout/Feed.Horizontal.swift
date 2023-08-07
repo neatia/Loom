@@ -41,7 +41,7 @@ extension Feed {
             }, at: \.pickedCommunity)
             .frame(width: 240)
             Divider()
-            FeedMainView(isFrontPage: state.community != nil)
+            FeedMainView(isFrontPage: state.community == nil)
                 .graniteEvent(account.center.interact)
                 .environmentObject(pager)
                 .frame(minWidth: minFrameWidth, maxWidth: nil)

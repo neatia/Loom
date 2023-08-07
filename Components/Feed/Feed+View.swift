@@ -34,8 +34,11 @@ extension Feed: View {
             
             if let community = state.community {
                 let communityView = await Lemmy.community(community: community,
-                                                          useBase: false)
-                _state.communityView.wrappedValue = communityView
+                                                          useBase: state.community == nil)
+                if let communityView {
+                    _state.community.wrappedValue = communityView.community
+                    _state.communityView.wrappedValue = communityView
+                }
             }
             
             pager.hook { page in
@@ -44,7 +47,7 @@ extension Feed: View {
                                               page: page,
                                               limit: ConfigService.Preferences.pageLimit,
                                               sort: selectedSort,
-                                              useBase: false)
+                                              useBase: state.community == nil)
                 return posts
             }.fetch()
         }

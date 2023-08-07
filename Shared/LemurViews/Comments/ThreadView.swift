@@ -72,9 +72,10 @@ struct ThreadView: View {
             comments.hook { page in
                 let comments = await Lemmy
                     .comments(currentModel.post,
-                              comment: currentModel.comment,
+                              comment: currentModel.comment, community: currentModel.community,
                               page: page,
-                              type: .all)
+                              type: .all,
+                              useBase: false)
                 
                 return comments.filter { $0.comment.id != currentModel.comment.id }
             }.fetch()

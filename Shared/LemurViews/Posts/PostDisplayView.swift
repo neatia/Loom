@@ -85,10 +85,10 @@ struct PostDisplayView: View {
         .task {
             comments.hook { page in
                 return await Lemmy.comments(model.post,
-                                     community: (isFrontPage ? nil : model.community),
-                                     page: page,
-                                     type: .all,
-                                     useBase: false)
+                                            community: model.community,
+                                            page: page,
+                                            type: .all,
+                                            useBase: isFrontPage)
             }.fetch()
         }
     }
