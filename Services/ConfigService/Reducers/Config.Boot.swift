@@ -37,7 +37,8 @@ extension ConfigService {
         typealias Center = ConfigService.Center
         
         struct Meta: GranitePayload {
-            var accountMeta: AccountMeta
+            var accountMeta: AccountMeta?
+            var host: String?
         }
         
         @Payload var meta: Meta?
@@ -48,13 +49,23 @@ extension ConfigService {
         func reduce(state: inout Center.State) {
             guard let meta else { return }
             
-            LemmyKit.baseUrl = meta.accountMeta.host
+            if let host = meta.host {
+                LemmyKit.baseUrl = host
+                state.config = .init(baseUrl: host)
+            } else if let accountMeta = meta.accountMeta {
+                LemmyKit.baseUrl = accountMeta.host
+                state.config = .init(baseUrl: accountMeta.host)
+                
+                account.center.boot.send(AccountService.Boot.Meta(accountMeta: accountMeta))
+            }
+                
+            guard meta.host != nil || meta.accountMeta != nil else { return }
             
-            state.config = .init(baseUrl: meta.accountMeta.host)
+            let host: String = (meta.host ?? meta.accountMeta?.host) ?? ""
             
-            account.center.boot.send(AccountService.Boot.Meta(accountMeta: meta.accountMeta))
             content.center.boot.send()
-            //TODO: probably re-login flow here
+            
+            broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(host)", event: .normal))
         }
     }
 }

@@ -2,7 +2,7 @@
 //  LocalCommunityPickerView.swift
 //  Lemur
 //
-//  Created by Ritesh Pakala on 8/6/23.
+//  Created by PEXAVC on 8/6/23.
 //
 
 import Foundation

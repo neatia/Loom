@@ -495,6 +495,8 @@
 		71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C42A803F240091EE5B /* InstanceMetaView.swift */; };
 		71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */; };
 		71EB91CA2A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */; };
+		71EB91CF2A80A75B0091EE5B /* DebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91CE2A80A75B0091EE5B /* DebugSettingsView.swift */; };
+		71EB91D02A80A75B0091EE5B /* DebugSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91CE2A80A75B0091EE5B /* DebugSettingsView.swift */; };
 		71F042092A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */; };
 		71F0420A2A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */; };
 		71F0420C2A69D39600788CDC /* ContentService.Interact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F0420B2A69D39600788CDC /* ContentService.Interact.swift */; };
@@ -629,8 +631,8 @@
 		71071F212A660D8E003AEC62 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
 		711B3F722885D43700F3080D /* PEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEXApp.swift; sourceTree = "<group>"; };
 		711B3F742885D43B00F3080D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		711B3F792885D43B00F3080D /* Lemur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemur.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		711B3F7F2885D43B00F3080D /* Lemur.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lemur.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		711B3F792885D43B00F3080D /* Loom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		711B3F7F2885D43B00F3080D /* Loom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		711B3F812885D43B00F3080D /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
 		711B3F862885D43B00F3080D /* Tests iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		711B3F8A2885D43B00F3080D /* Tests_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_iOS.swift; sourceTree = "<group>"; };
@@ -689,7 +691,7 @@
 		717C8FBD2A6FD51C00DF6037 /* Feed.TitleBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.TitleBarView.swift; sourceTree = "<group>"; };
 		717D388A2887A44D00165D7D /* Home+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+View.swift"; sourceTree = "<group>"; };
 		717E613228A0D69B009A2B1A /* Home._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home._.swift; sourceTree = "<group>"; };
-		719725FD28CC864400A64334 /* Lemur--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Lemur--iOS--Info.plist"; sourceTree = "<group>"; };
+		719725FD28CC864400A64334 /* Loom--iOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--iOS--Info.plist"; sourceTree = "<group>"; };
 		7197FAF02964B4BF005EBBA4 /* GraniteModalManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteModalManager.swift; sourceTree = "<group>"; };
 		7197FAF12964B4BF005EBBA4 /* GraniteModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteModal.swift; sourceTree = "<group>"; };
 		7197FAF32964B4BF005EBBA4 /* GraniteAlertAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteAlertAction.swift; sourceTree = "<group>"; };
@@ -832,6 +834,7 @@
 		71EB91BC2A8028400091EE5B /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		71EB91C42A803F240091EE5B /* InstanceMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceMetaView.swift; sourceTree = "<group>"; };
 		71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCommunityPickerView.swift; sourceTree = "<group>"; };
+		71EB91CE2A80A75B0091EE5B /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
 		71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Profile.Add.swift; sourceTree = "<group>"; };
 		71F0420B2A69D39600788CDC /* ContentService.Interact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentService.Interact.swift; sourceTree = "<group>"; };
 		71F042152A6A3AD100788CDC /* Globe+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Globe+Center.swift"; sourceTree = "<group>"; };
@@ -893,7 +896,7 @@
 		71FCDD0F2A75EC9B000A6309 /* Feed.Horizontal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.Horizontal.swift; sourceTree = "<group>"; };
 		71FCDD132A75ECF9000A6309 /* LayoutEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEnvironment.swift; sourceTree = "<group>"; };
 		71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySidebarCardView.swift; sourceTree = "<group>"; };
-		71FCDD402A760E32000A6309 /* Lemur--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Lemur--macOS--Info.plist"; sourceTree = "<group>"; };
+		71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--macOS--Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1185,8 +1188,8 @@
 			children = (
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
-				719725FD28CC864400A64334 /* Lemur--iOS--Info.plist */,
-				71FCDD402A760E32000A6309 /* Lemur--macOS--Info.plist */,
+				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
+				71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */,
 				711B3F712885D43700F3080D /* Shared */,
 				711B3FB62885D48000F3080D /* Services */,
 				711B3FB52885D47C00F3080D /* Components */,
@@ -1219,8 +1222,8 @@
 		711B3F7A2885D43B00F3080D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				711B3F792885D43B00F3080D /* Lemur.app */,
-				711B3F7F2885D43B00F3080D /* Lemur.app */,
+				711B3F792885D43B00F3080D /* Loom.app */,
+				711B3F7F2885D43B00F3080D /* Loom.app */,
 				711B3F862885D43B00F3080D /* Tests iOS.xctest */,
 				711B3F922885D43B00F3080D /* Tests macOS.xctest */,
 			);
@@ -1355,6 +1358,7 @@
 			isa = PBXGroup;
 			children = (
 				71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */,
+				71EB91CE2A80A75B0091EE5B /* DebugSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2087,9 +2091,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		711B3F782885D43B00F3080D /* Lemur (iOS) */ = {
+		711B3F782885D43B00F3080D /* Loom (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 711B3FA22885D43B00F3080D /* Build configuration list for PBXNativeTarget "Lemur (iOS)" */;
+			buildConfigurationList = 711B3FA22885D43B00F3080D /* Build configuration list for PBXNativeTarget "Loom (iOS)" */;
 			buildPhases = (
 				711B3F752885D43B00F3080D /* Sources */,
 				711B3F762885D43B00F3080D /* Frameworks */,
@@ -2099,7 +2103,7 @@
 			);
 			dependencies = (
 			);
-			name = "Lemur (iOS)";
+			name = "Loom (iOS)";
 			packageProductDependencies = (
 				71C5FF6D2A646BE100F99A84 /* Nuke */,
 				71C5FF6F2A646BE100F99A84 /* NukeExtensions */,
@@ -2113,12 +2117,12 @@
 				715797782A7B843100B7FEC9 /* MarkdownView */,
 			);
 			productName = "PEX (iOS)";
-			productReference = 711B3F792885D43B00F3080D /* Lemur.app */;
+			productReference = 711B3F792885D43B00F3080D /* Loom.app */;
 			productType = "com.apple.product-type.application";
 		};
-		711B3F7E2885D43B00F3080D /* Lemur (macOS) */ = {
+		711B3F7E2885D43B00F3080D /* Loom (macOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 711B3FA52885D43B00F3080D /* Build configuration list for PBXNativeTarget "Lemur (macOS)" */;
+			buildConfigurationList = 711B3FA52885D43B00F3080D /* Build configuration list for PBXNativeTarget "Loom (macOS)" */;
 			buildPhases = (
 				711B3F7B2885D43B00F3080D /* Sources */,
 				711B3F7C2885D43B00F3080D /* Frameworks */,
@@ -2128,7 +2132,7 @@
 			);
 			dependencies = (
 			);
-			name = "Lemur (macOS)";
+			name = "Loom (macOS)";
 			packageProductDependencies = (
 				71C177682A64A0C800A11B03 /* Nuke */,
 				71C1776A2A64A0C800A11B03 /* NukeExtensions */,
@@ -2141,7 +2145,7 @@
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 			);
 			productName = "PEX (macOS)";
-			productReference = 711B3F7F2885D43B00F3080D /* Lemur.app */;
+			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
 			productType = "com.apple.product-type.application";
 		};
 		711B3F852885D43B00F3080D /* Tests iOS */ = {
@@ -2206,7 +2210,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 711B3F702885D43700F3080D /* Build configuration list for PBXProject "Lemur" */;
+			buildConfigurationList = 711B3F702885D43700F3080D /* Build configuration list for PBXProject "Loom" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -2253,8 +2257,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				711B3F782885D43B00F3080D /* Lemur (iOS) */,
-				711B3F7E2885D43B00F3080D /* Lemur (macOS) */,
+				711B3F782885D43B00F3080D /* Loom (iOS) */,
+				711B3F7E2885D43B00F3080D /* Loom (macOS) */,
 				711B3F852885D43B00F3080D /* Tests iOS */,
 				711B3F912885D43B00F3080D /* Tests macOS */,
 			);
@@ -2379,6 +2383,7 @@
 				71AF14672A2E807300EEBD4B /* Disclaimer.swift in Sources */,
 				71D028002A6F1AD400EA781A /* AccountService.Profile.swift in Sources */,
 				71C9F8E42A60B7E10089D7EA /* Profile.swift in Sources */,
+				71EB91CF2A80A75B0091EE5B /* DebugSettingsView.swift in Sources */,
 				7102839D2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71A28E2D295237AE00EAE8EE /* Run.swift in Sources */,
 				71CB6C362A6B7E2000084ECC /* CommunityPickerView.swift in Sources */,
@@ -2793,6 +2798,7 @@
 				71F778CD2A71C5EA00C9C5C4 /* Profile.HeaderView.swift in Sources */,
 				71C69E582A70DC1400B54AD6 /* SearchScrollView.swift in Sources */,
 				712427B92A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
+				71EB91D02A80A75B0091EE5B /* DebugSettingsView.swift in Sources */,
 				71F0423A2A6A682C00788CDC /* Write.Create.swift in Sources */,
 				71CB6C302A6B1F8D00084ECC /* WriteView.swift in Sources */,
 				71FCDD112A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
@@ -2864,12 +2870,12 @@
 /* Begin PBXTargetDependency section */
 		711B3F882885D43B00F3080D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 711B3F782885D43B00F3080D /* Lemur (iOS) */;
+			target = 711B3F782885D43B00F3080D /* Loom (iOS) */;
 			targetProxy = 711B3F872885D43B00F3080D /* PBXContainerItemProxy */;
 		};
 		711B3F942885D43B00F3080D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 711B3F7E2885D43B00F3080D /* Lemur (macOS) */;
+			target = 711B3F7E2885D43B00F3080D /* Loom (macOS) */;
 			targetProxy = 711B3F932885D43B00F3080D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -3032,8 +3038,8 @@
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Lemur--iOS--Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Lemur;
+				INFOPLIST_FILE = "Loom--iOS--Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Loom;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures for encoding";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -3048,9 +3054,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
-				PRODUCT_NAME = Lemur;
+				PRODUCT_NAME = Loom;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -3068,8 +3074,8 @@
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Lemur--iOS--Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Lemur;
+				INFOPLIST_FILE = "Loom--iOS--Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Loom;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures for encoding";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -3084,9 +3090,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
-				PRODUCT_NAME = Lemur;
+				PRODUCT_NAME = Loom;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -3108,17 +3114,17 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Lemur--macOS--Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Lemur;
+				INFOPLIST_FILE = "Loom--macOS--Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Loom;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
-				PRODUCT_NAME = Lemur;
+				PRODUCT_NAME = Loom;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -3138,17 +3144,17 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Lemur--macOS--Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = Lemur;
+				INFOPLIST_FILE = "Loom--macOS--Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Loom;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
-				PRODUCT_NAME = Lemur;
+				PRODUCT_NAME = Loom;
 				SDKROOT = macosx;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -3237,7 +3243,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		711B3F702885D43700F3080D /* Build configuration list for PBXProject "Lemur" */ = {
+		711B3F702885D43700F3080D /* Build configuration list for PBXProject "Loom" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				711B3FA02885D43B00F3080D /* Debug */,
@@ -3246,7 +3252,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		711B3FA22885D43B00F3080D /* Build configuration list for PBXNativeTarget "Lemur (iOS)" */ = {
+		711B3FA22885D43B00F3080D /* Build configuration list for PBXNativeTarget "Loom (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				711B3FA32885D43B00F3080D /* Debug */,
@@ -3255,7 +3261,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		711B3FA52885D43B00F3080D /* Build configuration list for PBXNativeTarget "Lemur (macOS)" */ = {
+		711B3FA52885D43B00F3080D /* Build configuration list for PBXNativeTarget "Loom (macOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				711B3FA62885D43B00F3080D /* Debug */,

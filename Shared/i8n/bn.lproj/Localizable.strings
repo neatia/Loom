@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ পোস্ট";
 "%@ COMMENTS_COUNT" = "%@ মন্তব্য";
 "MISC_TITLE" = "শিরোনাম";
+"MISC_READ_MORE" = "আরও পড়ুন";
+"MISC_CONNECT" = "সংযোগ করুন";
+"MISC_EXPLORE" = "অন্বেষণ";
+"ALERT_WORK_IN_PROGRESS" = "কাজ চলছে";
+"ALERT_BETA_FEATURE" = "বেটা";
+"TITLE_WHATS_NEW" = "নতুন কি";

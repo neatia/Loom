@@ -50,42 +50,6 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
     }
 }
 
-struct PagerFooterManualLoadingView<Model: Pageable>: View {
-    @EnvironmentObject private var pager: Pager<Model>
-    
-    var hasMore: Bool {
-        pager.hasMore && pager.items.count >= pager.pageSize
-    }
-    
-    var body: some View {
-        
-        VStack {
-            Spacer()
-            if pager.isFetching {
-                #if os(iOS)
-                ProgressView()
-                #else
-                ProgressView()
-                    .scaleEffect(0.6)
-                #endif
-            } else if hasMore {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    pager.fetch()
-                } label: {
-                    //TODO: localize
-                    Text("Load more")
-                        .font(.headline.bold())
-                }.buttonStyle(PlainButtonStyle())
-            } else {
-                EmptyView()
-            }
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, minHeight: hasMore ? 60 : 0, maxHeight: (hasMore ? 60 : 0))
-    }
-}
-
 struct PagerLoadingView<Model: Pageable>: View {
     @EnvironmentObject private var pager: Pager<Model>
     

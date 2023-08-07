@@ -8,7 +8,7 @@ struct EdgeMapView: View {
         ZStack {
             ForEach(edges) { edge in
                 EdgeView(edge: edge)
-                    .stroke(Color.background, lineWidth: 2.0)
+                    .stroke(Color.foreground, lineWidth: 2.0)
             }
         }
     }

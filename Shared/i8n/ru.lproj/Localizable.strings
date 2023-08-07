@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ сообщений";
 "%@ COMMENTS_COUNT" = "%@ комментариев";
 "MISC_TITLE" = "Заголовок";
+"MISC_READ_MORE" = "Читать далее";
+"MISC_CONNECT" = "Соединять";
+"MISC_EXPLORE" = "Исследовать";
+"ALERT_WORK_IN_PROGRESS" = "Работа в процессе";
+"ALERT_BETA_FEATURE" = "Бета";
+"TITLE_WHATS_NEW" = "Что нового";

@@ -152,6 +152,23 @@ extension ContentService {
                     
                     broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result, model)))
                 }
+            case .savePost(let model):
+                _ = Task.detached {
+                    let result = await Lemmy.savePost(model.post, save: true)
+                    //Toast?
+                }
+            case .unsavePost(let model):
+                _ = Task.detached {
+                    let result = await Lemmy.savePost(model.post, save: false)
+                }
+            case .saveComment(let model):
+                _ = Task.detached {
+                    let result = await Lemmy.saveComment(model.comment, save: true)
+                }
+            case .unsaveComment(let model):
+                _ = Task.detached {
+                    let result = await Lemmy.saveComment(model.comment, save: false)
+                }
             default:
                 break
             }

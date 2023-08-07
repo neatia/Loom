@@ -17,7 +17,8 @@ struct InfoIconView: View {
         VStack {
             Text("i")
                 .font(.caption2.bold())
-                .background(Circle().strokeBorder(.white, lineWidth: 1).frame(width: 16, height: 16))
+                .foregroundColor(.foreground)
+                .background(Circle().strokeBorder(.foreground, lineWidth: 1).frame(width: 16, height: 16))
         }
         .onTapGesture {
             GraniteHaptic.light.invoke()

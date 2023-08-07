@@ -35,8 +35,7 @@ extension Globe {
                 } label: {
                     VStack {
                         Spacer()
-                        //TODO: localize
-                        Text("Explore")
+                        Text("MISC_EXPLORE")
                             .font(state.tab == .explorer ? .title.bold() : .title2.bold())
                             .opacity(state.tab == .explorer ? 1.0 : 0.6)
                     }
@@ -46,7 +45,7 @@ extension Globe {
                 Spacer()
             }
             .frame(height: 36)
-            .padding(.top, Device.isMacOS ? .layer5 : .layer4)
+            .padding(.top, ContainerConfig.generalViewTopPadding)
             .padding(.leading, .layer4)
             .padding(.trailing, .layer4)
             .padding(.bottom, .layer4)
@@ -59,6 +58,7 @@ extension Globe {
             case .explorer:
                 GeometryReader { proxy in
                     GlobeExplorerView(radius: (proxy.size.width / 2) - (.layer4 * 2))
+                        .graniteEvent(config.center.restart)
                 }
             }
         }

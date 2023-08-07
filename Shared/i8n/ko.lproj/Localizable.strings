@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ 게시물";
 "%@ COMMENTS_COUNT" = "%@ 댓글";
 "MISC_TITLE" = "제목";
+"MISC_READ_MORE" = "더 읽어보기";
+"MISC_CONNECT" = "연결하다";
+"MISC_EXPLORE" = "탐구하다";
+"ALERT_WORK_IN_PROGRESS" = "진행중인 작업";
+"ALERT_BETA_FEATURE" = "베타";
+"TITLE_WHATS_NEW" = "새로운 기능";

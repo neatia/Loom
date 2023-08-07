@@ -30,7 +30,7 @@ extension Feed {
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                                 .font(.headline.bold())
-                                .offset(y: (Device.isExpandedLayout && hasCommunityBanner == false) ? -3 : 0)
+                                .offset(y: (hasCommunityBanner == false) ? -3 : 0)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
@@ -39,7 +39,7 @@ extension Feed {
                             Color.background.opacity(0.75)
                                 .cornerRadius(4)
                         }
-                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
+                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
                     } else {
                         if Device.isExpandedLayout {
                             ProgressView()

@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ indlæg";
 "%@ COMMENTS_COUNT" = "%@ kommentarer";
 "MISC_TITLE" = "Titel";
+"MISC_READ_MORE" = "Læs mere";
+"MISC_CONNECT" = "Forbinde";
+"MISC_EXPLORE" = "Udforske";
+"ALERT_WORK_IN_PROGRESS" = "Arbejde der er i gang";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Hvad er nyt";

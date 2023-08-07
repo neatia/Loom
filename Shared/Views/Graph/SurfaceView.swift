@@ -20,29 +20,45 @@ struct SurfaceView: View {
         VStack {
             GeometryReader { geometry in
                 ZStack {
+                    Color.alternateBackground
+                        .gesture(DragGesture()
+                        .onChanged { value in
+                            isDraggingMesh = true
+                            dragOffset = value.translation
+                        }
+                        .onEnded { value in
+                            isDraggingMesh = false
+                            dragOffset = .zero
+                            
+                            portalPosition = CGPoint(
+                                x: portalPosition.x + value.translation.width,
+                                y: portalPosition.y + value.translation.height)
+                        })
+                        .simultaneousGesture(MagnificationGesture()
+                            .onChanged { value in
+                                if self.initialZoomScale == nil {
+                                    self.initialZoomScale = self.zoomScale
+                                    self.initialPortalPosition = self.portalPosition
+                                }
+                                self.processScaleChange(value)
+                            }.onEnded { value in
+                                self.processScaleChange(value)
+                                self.initialZoomScale = nil
+                                self.initialPortalPosition  = nil
+                            })
+                    
                     MapView(selection: self.selection, mesh: self.mesh)
                         .scaleEffect(self.zoomScale)
                         .offset(
                             x: self.portalPosition.x + self.dragOffset.width,
                             y: self.portalPosition.y + self.dragOffset.height)
-                        .animation(.easeIn)
+//                        .animation(.easeIn(duration: 0.5), value: self.selection.selectedNodeIDs.count)
                 }.gesture(DragGesture()
                             .onChanged { value in
                     self.processDragChange(value, containerSize: geometry.size)
                 }
                             .onEnded { value in
-                    self.processDragEnd(value)
-                }).gesture(MagnificationGesture()
-                            .onChanged { value in
-                    if self.initialZoomScale == nil {
-                        self.initialZoomScale = self.zoomScale
-                        self.initialPortalPosition = self.portalPosition
-                    }
-                    self.processScaleChange(value)
-                }.onEnded { value in
-                    self.processScaleChange(value)
-                    self.initialZoomScale = nil
-                    self.initialPortalPosition  = nil
+                    self.processDragEnd(value, containerSize: geometry.size)
                 })
             }
         }
@@ -93,7 +109,7 @@ private extension SurfaceView {
                 point: value.startLocation,
                 parent: containerSize) {
                 isDraggingMesh = false
-                selection.selectNode(node)
+                selection.selectNodeForDragging(node)
                     // 2
                 selection.startDragging(mesh)
             } else {
@@ -110,7 +126,7 @@ private extension SurfaceView {
     }
     
         // 4
-    func processDragEnd(_ value: DragGesture.Value) {
+    func processDragEnd(_ value: DragGesture.Value, containerSize: CGSize) {
         isDragging = false
         dragOffset = .zero
         
@@ -119,6 +135,17 @@ private extension SurfaceView {
                 x: portalPosition.x + value.translation.width,
                 y: portalPosition.y + value.translation.height)
         } else {
+            if let node = hitTest(
+                point: value.startLocation,
+                parent: containerSize) {
+                
+                if distance(from: value.startLocation, to: value.predictedEndLocation) < 2 {
+                    
+                    selection.selectNode(node)
+                }
+                
+            }
+                
             processNodeTranslation(value.translation)
             selection.stopDragging(mesh)
         }

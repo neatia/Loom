@@ -34,7 +34,7 @@ extension AccountService {
                 state.meta = nil
                 
                 print("[No Account Found] id: \(AccountService.keychainAuthToken + meta.username), service: \(AccountService.keychainService + LemmyKit.baseUrl)")
-                beam.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host)", event: .normal))
+                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host)", event: .normal))
                 return
             }
             
@@ -43,7 +43,7 @@ extension AccountService {
             _ = Task.detached {
                 _ = await Lemmy.site()
                 print("[Account Restored]")
-                beam.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host + " @\(meta.username)")", event: .success))
+                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host + " @\(meta.username)")", event: .success))
                 details.send(Meta(accountMeta: meta))
             }
         }

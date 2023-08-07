@@ -28,6 +28,7 @@ struct PostActionsView: View {
     
     @Relay var bookmark: BookmarkService
     @Relay var config: ConfigService
+    @Relay var content: ContentService
     @Relay var layout: LayoutService
     
     var modelIsRemoved: Bool {
@@ -86,6 +87,20 @@ struct PostActionsView: View {
                let bookmarkKind {
                 Button {
                     GraniteHaptic.light.invoke()
+                    switch bookmarkKind {
+                    case .post(let model):
+                        if bookmark.contains(bookmarkKind) {
+                            content.center.interact.send(ContentService.Interact.Meta(kind: .unsavePost(model)))
+                        } else {
+                            content.center.interact.send(ContentService.Interact.Meta(kind: .savePost(model)))
+                        }
+                    case .comment(let model, _):
+                        if bookmark.contains(bookmarkKind) {
+                            content.center.interact.send(ContentService.Interact.Meta(kind: .unsaveComment(model)))
+                        } else {
+                            content.center.interact.send(ContentService.Interact.Meta(kind: .saveComment(model)))
+                        }
+                    }
                     bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
                 } label: {
                     Text(.init(bookmark.contains(bookmarkKind) ? "ACTIONS_REMOVE_BOOKMARK" : "MISC_BOOKMARK"))

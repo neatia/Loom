@@ -54,6 +54,13 @@ struct Feed: GraniteComponent {
                     }
                 }
             }
+        
+        config
+            .center
+            .restart
+            .listen(.broadcast) { _ in
+                pager.fetch(force: true)
+            }
     }
     
     init(_ community: Community? = nil) {

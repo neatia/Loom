@@ -227,11 +227,11 @@ extension PostCardView {
             
             if model.postURL == nil,
                let body = model.post.body {
+                let readMoreText: LocalizedStringKey = "MISC_READ_MORE"
                 HStack(spacing: .layer2) {
                     Text(String(body.previewBody) + "\(body.count < 120 ? " " : "... ")")
                         .font(Device.isExpandedLayout ? .callout : .footnote)
-                        //TODO: localize
-                        .foregroundColor(.foreground) + Text("\(body.count < 120 ? "" : "Read more")")
+                        .foregroundColor(.foreground) + Text(body.count < 120 ? "" : readMoreText)
                         .font(Device.isExpandedLayout ? .callout.italic() : .footnote.italic())
                         .foregroundColor(.secondaryForeground.opacity(0.9))
                     Spacer()

@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ مشاركة";
 "%@ COMMENTS_COUNT" = "%@ تعليقات";
 "MISC_TITLE" = "عنوان";
+"MISC_READ_MORE" = "اقرأ أكثر";
+"MISC_CONNECT" = "يتصل";
+"MISC_EXPLORE" = "يستكشف";
+"ALERT_WORK_IN_PROGRESS" = "أعمال جارية";
+"ALERT_BETA_FEATURE" = "بيتا";
+"TITLE_WHATS_NEW" = "ما هو الجديد";

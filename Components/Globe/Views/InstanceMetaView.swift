@@ -2,7 +2,7 @@
 //  InstanceMetaView.swift
 //  Lemur
 //
-//  Created by Ritesh Pakala on 8/6/23.
+//  Created by PEXAVC on 8/6/23.
 //
 
 import Foundation
@@ -14,6 +14,8 @@ import MarkdownView
 import NukeUI
 
 struct InstanceMetaView: View {
+    @Environment(\.graniteEvent) var restart
+    
     var node: Node
     
     var name: String? {
@@ -62,6 +64,10 @@ struct InstanceMetaView: View {
         }
     }
     
+    var host: String {
+        "https://" + title
+    }
+    
     @State var metadata: Lemmy.Metadata?
     @State var siteMetaData: SiteMetadata?
     @State var task: Task<Void, Error>? = nil
@@ -76,6 +82,10 @@ struct InstanceMetaView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            if Device.isExpandedLayout == false {
+                connectView
+            }
+            
             HStack(spacing: .layer4) {
                 if let iconURL {
                     AvatarView(iconURL)
@@ -117,7 +127,7 @@ struct InstanceMetaView: View {
                     }
                 }
             }.clipped())
-            .padding(.vertical, Device.isExpandedLayout ? .layer4 : .layer5)
+            .padding(.bottom, Device.isExpandedLayout ? .layer4 : .layer5)
             .padding(.horizontal, .layer4)
             
             Divider()
@@ -132,15 +142,13 @@ struct InstanceMetaView: View {
                     .padding(.layer3)
             }
             
-            LocalCommunityPreview(url: "https://" + title)
+            LocalCommunityPreview(url: host)
+            
+            if Device.isExpandedLayout {
+                connectView
+            }
             
             Spacer()
-        }
-        .onChange(of: metadata) { newValue in
-//            self.task?.cancel()
-//            self.task = Task {
-//                await getMetadata()
-//            }
         }
         .task {
             await getMetadata()
@@ -151,13 +159,27 @@ struct InstanceMetaView: View {
         if isBase {
             metadata = LemmyKit.current.metadata
         } else {
-            guard let response = await Lemmy.metadata(url: "https://" + title) else { return }
+            guard let response = await Lemmy.metadata(url: host) else { return }
             self.siteMetaData = response.metadata
         }
     }
     
-    func getLocalCommunities() async {
-        
+    var connectView: some View {
+        Button {
+            GraniteHaptic.light.invoke()
+            restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))
+        } label: {
+            Text("Connect")
+                .font(.headline.bold())
+                .lineLimit(1)
+                .foregroundColor(Color.black)
+                .padding(.horizontal, .layer2)
+                .padding(.vertical, .layer1)
+                .background(RoundedRectangle(cornerRadius: .layer2)
+                    .fill(Brand.Colors.yellow))
+        }
+        .buttonStyle(PlainButtonStyle())
+        .padding(.vertical, .layer5)
     }
 }
 

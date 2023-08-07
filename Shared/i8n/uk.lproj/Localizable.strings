@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ публікацій";
 "%@ COMMENTS_COUNT" = "%@ коментарів";
 "MISC_TITLE" = "Назва";
+"MISC_READ_MORE" = "Читати далі";
+"MISC_CONNECT" = "Підключитися";
+"MISC_EXPLORE" = "Досліджуйте";
+"ALERT_WORK_IN_PROGRESS" = "В роботі";
+"ALERT_BETA_FEATURE" = "Бета";
+"TITLE_WHATS_NEW" = "Що нового";

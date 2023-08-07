@@ -150,8 +150,11 @@ extension Settings: View {
                                         modal: modal)
                 }
                 
+                DebugSettingsView()
+                    .graniteEvent(config.center.restart)
+                
                 Spacer()
-                    .frame(maxHeight: .infinity)
+                    .frame(height: 80)
                 
                 
                 HStack(spacing: 4) {
@@ -210,7 +213,7 @@ extension Settings: View {
 //                .foregroundColor(.foreground)
             }
         }
-        .padding(.top, Device.isMacOS ? .layer5 : .layer4)
+        .padding(.top, ContainerConfig.generalViewTopPadding)
         .addGraniteSheet(modal.sheetManager,
                          modalManager: modal.modalSheetManager,
                          background: Color.clear)

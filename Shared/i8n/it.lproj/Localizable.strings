@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ post";
 "%@ COMMENTS_COUNT" = "%@ commenti";
 "MISC_TITLE" = "Titolo";
+"MISC_READ_MORE" = "Per saperne di più";
+"MISC_CONNECT" = "Collegare";
+"MISC_EXPLORE" = "Esplorare";
+"ALERT_WORK_IN_PROGRESS" = "Lavori in corso";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Cosa c'è di nuovo";

@@ -40,8 +40,8 @@ struct NodeView: View {
 }
 
 struct NodeViewStyle: GraniteModel {
-    var color: Color = .background
-    var foregroundColor: Color = .foreground
+    var color: Color = .foreground
+    var foregroundColor: Color = .background
     var strokeColor: Color = .secondaryForeground
     var size: CGSize = .init(width: 100, height: 50)
     var isMain: Bool = false

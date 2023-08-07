@@ -22,6 +22,8 @@ struct PEXApp: App {
             .publisher(for: NSNotification.Name("nyc.stoic.Lemur.DidFinishLaunching"))
     
     init() {
+        config.preload()
+        
         #if os(iOS)
         config.center.boot.send()
         #endif

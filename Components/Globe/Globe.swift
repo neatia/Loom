@@ -26,7 +26,16 @@ struct Globe: GraniteComponent {
         account
             .center
             .boot
-            .listen { value in
+            .listen(.broadcast) { value in
+                if let meta = value as? StandardNotificationMeta {
+                    modal.presentModal(GraniteToastView(meta))
+                }
+            }
+        
+        config
+            .center
+            .restart
+            .listen(.broadcast) { value in
                 if let meta = value as? StandardNotificationMeta {
                     modal.presentModal(GraniteToastView(meta))
                 }

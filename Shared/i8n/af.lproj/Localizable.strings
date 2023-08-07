@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ plasings";
 "%@ COMMENTS_COUNT" = "%@ opmerkings";
 "MISC_TITLE" = "Titel";
+"MISC_READ_MORE" = "Lees meer";
+"MISC_CONNECT" = "Koppel";
+"MISC_EXPLORE" = "Verken";
+"ALERT_WORK_IN_PROGRESS" = "Werk aan die gang";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Wat's nuut";

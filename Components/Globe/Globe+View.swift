@@ -17,7 +17,6 @@ extension Globe: View {
                         Picker("", selection: _state.socialViewOptions) {
                             Text("TITLE_COMMUNITIES").tag(0)
                             Text("TITLE_BLOCKED").tag(1)
-                                .autocapitalization(.words)
                         }
                         .pickerStyle(.segmented)
                         .padding(.horizontal, .layer3)
@@ -46,7 +45,7 @@ extension Globe: View {
                             
                             blockedView
                                 .id(isTabSelected)
-                                .padding(.top, .layer5)
+                                .padding(.top, ContainerConfig.generalViewTopPadding)
                         }
                     }
                 }

@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ inlägg";
 "%@ COMMENTS_COUNT" = "%@ kommentarer";
 "MISC_TITLE" = "Titel";
+"MISC_READ_MORE" = "Läs mer";
+"MISC_CONNECT" = "Ansluta";
+"MISC_EXPLORE" = "Utforska";
+"ALERT_WORK_IN_PROGRESS" = "Pågående arbete";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Vad är nytt";

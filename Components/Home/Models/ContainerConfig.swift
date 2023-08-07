@@ -65,6 +65,16 @@ extension ContainerConfig {
         return 812
         #endif
     }
+    
+    public static var generalViewTopPadding: CGFloat {
+        if Device.isMacOS {
+            return .layer5
+        } else if Device.isiPad {
+            return .layer1
+        } else {
+            return .layer4
+        }
+    }
 }
 public struct ContainerStyle {
     static var idealWidth: CGFloat = 375

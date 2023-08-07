@@ -18,7 +18,7 @@ extension Bookmark: View {
                     Spacer()
                 }
                 .frame(height: 36)
-                .padding(.top, Device.isExpandedLayout ? .layer5 : .layer4)
+                .padding(.top, ContainerConfig.generalViewTopPadding)
                 .padding(.leading, .layer4)
                 .padding(.trailing, .layer4)
             }

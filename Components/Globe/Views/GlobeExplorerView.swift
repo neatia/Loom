@@ -13,6 +13,7 @@ import LemmyKit
 struct GlobeExplorerView: View {
     var radius: CGFloat = 50
     @Relay var explorer: ExplorerService
+    @Environment(\.graniteEvent) var restart
     
     @State var mesh: Mesh? = nil
     @StateObject var selection: SelectionHandler = .init()
@@ -28,11 +29,29 @@ struct GlobeExplorerView: View {
             } else if let mesh {
                 SurfaceView(mesh: mesh,
                             selection: selection)
-                .showDrawer(selectedNode != nil,
-                            node: mesh.nodeWithID(selectedNode ?? .init()))
+                    .showDrawer(selectedNode != nil,
+                                node: mesh.nodeWithID(selectedNode ?? .init()),
+                                event: restart)
             }
         }
-        .background(Color.alternateBackground)
+        //TODO: reusable
+        .overlay(
+            VStack {
+                HStack {
+                    HStack {
+                        Text("⚠️ ") + Text("ALERT_WORK_IN_PROGRESS")
+                    }
+                    .padding(.vertical, .layer1)
+                    .padding(.horizontal, .layer2)
+                    .background(Color.tertiaryBackground.cornerRadius(8))
+                    Spacer()
+                }
+                Spacer()
+            }
+            .padding(.layer4)
+            .allowsHitTesting(false)
+        
+        )
         .task {
             explorer.preload()
             
@@ -45,6 +64,7 @@ struct GlobeExplorerView: View {
             setup()
             
         }
+        .clipped()
         .onAppear {
             
             guard let mesh else { return }
@@ -68,6 +88,7 @@ struct GlobeExplorerView: View {
                 Divider()
                 
                 InstanceMetaView(node: node)
+                    .graniteEvent(restart)
                     .id(selectedNode)
                     .frame(maxWidth: ContainerConfig.iPhoneScreenWidth)
             }
@@ -158,7 +179,8 @@ extension NodeViewMeta {
 
 fileprivate extension View {
     func showDrawer(_ condition: Bool,
-                    node: Node?) -> some View {
+                    node: Node?,
+                    event: EventExecutable? = nil) -> some View {
         self.overlayIf(condition && node != nil, alignment: .top) {
             Group {
                 #if os(iOS)
@@ -176,6 +198,7 @@ fileprivate extension View {
                                     .padding(.top, .layer5)
                                 
                                 InstanceMetaView(node: node)
+                                    .graniteEvent(event)
                                 Spacer()
                             }
                             .frame(height: UIScreen.main.bounds.height - 100)

@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ bài đăng";
 "%@ COMMENTS_COUNT" = "%@ bình luận";
 "MISC_TITLE" = "Tiêu đề";
+"MISC_READ_MORE" = "Đọc thêm";
+"MISC_CONNECT" = "Kết nối";
+"MISC_EXPLORE" = "Khám phá";
+"ALERT_WORK_IN_PROGRESS" = "Công việc đang tiến hành";
+"ALERT_BETA_FEATURE" = "bản thử nghiệm";
+"TITLE_WHATS_NEW" = "Có gì mới";

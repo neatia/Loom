@@ -74,11 +74,11 @@ extension Feed {
                          .cornerRadius(4)
                  }
                  .buttonStyle(PlainButtonStyle())
-                 .padding(.bottom, .layer1)
+                 .padding(.bottom, Device.isExpandedLayout ? .layer1 : .layer2)
              }.frame(maxHeight: .infinity)
          }
          .frame(height: hasCommunityBanner ? 48 : 36)
-         .padding(.top, (Device.isExpandedLayout && state.community == nil) ? .layer5 : .layer3)
+         .padding(.top, state.community == nil ? ContainerConfig.generalViewTopPadding : .layer3)
          .padding(.bottom, .layer2)
     }
 }

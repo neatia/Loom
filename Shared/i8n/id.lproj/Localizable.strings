@@ -137,3 +137,9 @@
 "%@ POSTS_COUNT" = "%@ postingan";
 "%@ COMMENTS_COUNT" = "%@ komentar";
 "MISC_TITLE" = "Judul";
+"MISC_READ_MORE" = "Baca selengkapnya";
+"MISC_CONNECT" = "Menghubung";
+"MISC_EXPLORE" = "Mengeksplorasi";
+"ALERT_WORK_IN_PROGRESS" = "Pekerjaan sedang berlangsung";
+"ALERT_BETA_FEATURE" = "Beta";
+"TITLE_WHATS_NEW" = "Apa yang baru";
