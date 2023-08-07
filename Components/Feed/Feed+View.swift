@@ -44,7 +44,7 @@ extension Feed: View {
                                               page: page,
                                               limit: ConfigService.Preferences.pageLimit,
                                               sort: selectedSort,
-                                              useBase: true)
+                                              useBase: false)
                 return posts
             }.fetch()
         }

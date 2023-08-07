@@ -30,7 +30,7 @@ extension Feed {
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                                 .font(.headline.bold())
-                                .offset(y: (hasCommunityBanner == false) ? -3 : 0)
+                                .offset(y: (hasCommunityBanner == false) ? (Device.isExpandedLayout ? -3 : -1) : 0)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
