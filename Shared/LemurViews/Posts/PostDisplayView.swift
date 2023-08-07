@@ -51,6 +51,7 @@ struct PostDisplayView: View {
                 EmptyView()
             } inlineBody: {
                 content
+                    .background(Color.background)
             } content: { comment in
                 CommentCardView(model: comment, postView: model)
                     .attach({ model in
@@ -72,6 +73,7 @@ struct PostDisplayView: View {
                     }, at: \.reply)
             }
             .environmentObject(comments)
+            .background(Color.alternateBackground)
         }
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
@@ -85,7 +87,8 @@ struct PostDisplayView: View {
                 return await Lemmy.comments(model.post,
                                      community: (isFrontPage ? nil : model.community),
                                      page: page,
-                                     type: .all)
+                                     type: .all,
+                                     useBase: false)
             }.fetch()
         }
     }

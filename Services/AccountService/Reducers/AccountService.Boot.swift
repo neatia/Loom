@@ -41,7 +41,13 @@ extension AccountService {
             LemmyKit.auth = token
             
             _ = Task.detached {
-                _ = await Lemmy.site()
+                let result = await Lemmy.site()
+                
+                guard let result else {
+                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "MISC_ERROR_2", event: .error))
+                    return
+                }
+                
                 print("[Account Restored]")
                 broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host + " @\(meta.username)")", event: .success))
                 details.send(Meta(accountMeta: meta))

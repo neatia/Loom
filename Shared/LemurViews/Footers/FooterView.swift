@@ -385,9 +385,11 @@ extension FooterView {
                 HStack(spacing: .layer1) {
                     Image(systemName: "bubble.left")
                         .font(font)
-                    Text("\(commentCount)")
-                        .font(font)
+                    Text("\(commentCount) ")
+                        .font(font) + Text("LISTING_TYPE_LOCAL")
+                        .font(font.smaller)
                 }
+                .textCase(.lowercase)
                 .foregroundColor(.foreground)
                 .routeIf(bookmarkKind.postViewModel != nil,
                          title: routeTitle ?? "",

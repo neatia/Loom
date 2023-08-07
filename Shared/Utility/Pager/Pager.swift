@@ -170,15 +170,16 @@ class Pager<Model: Pageable>: ObservableObject {
             self?.insertionQueue.addOperation { [weak self] in
                 let lastModel = models.last
                 
-                if !force,
-                   let lastItem = self?.lastItem,
-                   models.contains(lastItem) {
-                    self?.hasMore = false
-                }
-                
-                if models.isEmpty {
-                    self?.hasMore = false
-                }
+                //TODO: These are not gaurunteeable
+//                if !force,
+//                   let lastItem = self?.lastItem,
+//                   models.contains(lastItem) {
+//                    self?.hasMore = false
+//                }
+//
+//                if models.isEmpty {
+//                    self?.hasMore = false
+//                }
                 
                 self?.lastItem = lastModel
                 

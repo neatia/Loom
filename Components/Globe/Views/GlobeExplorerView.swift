@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Granite
+import GraniteUI
 import LemmyKit
 
 struct GlobeExplorerView: View {
@@ -40,16 +41,28 @@ struct GlobeExplorerView: View {
                 HStack {
                     HStack {
                         Text("⚠️ ") + Text("ALERT_WORK_IN_PROGRESS")
+                        
                     }
                     .padding(.vertical, .layer1)
                     .padding(.horizontal, .layer2)
                     .background(Color.tertiaryBackground.cornerRadius(8))
                     Spacer()
+                    
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        setup()
+                        
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.headline.bold())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.vertical, .layer1)
+                    .padding(.horizontal, .layer2)
                 }
                 Spacer()
             }
             .padding(.layer4)
-            .allowsHitTesting(false)
         
         )
         .task {
@@ -101,8 +114,9 @@ struct GlobeExplorerView: View {
         mesh.updateNodeMeta(mesh.rootNode(),
                             style: .baseInstance,
                             meta: .baseInstance)
-        
-        let instances = explorer.state.linkedInstances.prefix(12)
+        let count = explorer.state.linkedInstances.count
+        let random = 0.randomBetween(count)
+        let instances = Array(explorer.state.linkedInstances[random..<min(count, random + 12)])
         var lastR: CGFloat = .zero
         for (i, instance) in instances.enumerated() {
             let ratio = CGFloat(i) / CGFloat(instances.count)

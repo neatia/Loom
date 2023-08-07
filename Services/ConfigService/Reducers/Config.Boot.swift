@@ -65,7 +65,9 @@ extension ConfigService {
             
             content.center.boot.send()
             
-            broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(host)", event: .normal))
+            if meta.accountMeta == nil {
+                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(host)", event: .normal))
+            }
         }
     }
 }

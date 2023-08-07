@@ -109,6 +109,8 @@ struct InstanceMetaView: View {
                 Spacer()
             }
             .frame(height: bannerURL != nil ? 62 : 36)
+            .padding(.bottom, Device.isExpandedLayout ? .layer4 : .layer5)
+            .padding(.horizontal, .layer4)
             .background(Color.background.overlayIf(bannerURL != nil) {
                 Group {
                     if let url = bannerURL {
@@ -127,8 +129,6 @@ struct InstanceMetaView: View {
                     }
                 }
             }.clipped())
-            .padding(.bottom, Device.isExpandedLayout ? .layer4 : .layer5)
-            .padding(.horizontal, .layer4)
             
             Divider()
                 .padding(.top, Device.isMacOS ? .layer2 : 0)

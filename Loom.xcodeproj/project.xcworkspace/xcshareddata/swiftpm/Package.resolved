@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "lemmykit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/LemmyKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "ea8f2eedff836621b81ff67de7a002b109a8a8aa"
-      }
-    },
-    {
       "identity" : "markdownview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MarkdownView",

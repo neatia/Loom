@@ -60,10 +60,11 @@ struct CommunityCardView: View {
                     HStack(spacing: .layer1) {
                         Text(model.community.title)
                             .font(showCounts ? .headline.bold() : .footnote.bold())
+                            .lineLimit(1)
                             .cornerRadius(4)
                         
                         Spacer()
-                    }.scrollOnOverflow()
+                    }//.scrollOnOverflow()
                     
                     HStack(spacing: .layer1) {
                         Text("!"+model.community.name)

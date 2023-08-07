@@ -29,19 +29,15 @@ extension Feed: View {
             communityInfoView
         })
         .background(Color.background)
-//        .onChange(of: config.state.feedCommunityContext) { context in
-//            switch context {
-//            case .viewCommunity(let model):
-//                self.fetchCommunity(model, reset: true)
-//            case .viewCommunityView(let model):
-//                self._state.community.wrappedValue = model.community
-//                self._state.communityView.wrappedValue = model
-//                self.pager.fetch(force: true)
-//            default:
-//                break
-//            }
-//        }
         .task {
+            guard pager.isEmpty else { return }
+            
+            if let community = state.community {
+                let communityView = await Lemmy.community(community: community,
+                                                          useBase: false)
+                _state.communityView.wrappedValue = communityView
+            }
+            
             pager.hook { page in
                 let posts = await Lemmy.posts(state.community,
                                               type: selectedListing,
@@ -51,24 +47,6 @@ extension Feed: View {
                                               useBase: true)
                 return posts
             }.fetch()
-            
-//            switch config.state.style {
-//            case .expanded:
-//                switch config.state.feedCommunityContext {
-//                case .viewCommunity(let community):
-//                    fetchCommunity(community, reset: true)
-//                case .viewCommunityView(let communityView):
-//                    fetchCommunity(communityView.community, reset: true)
-//                default:
-//                    pager.fetch()
-//                }
-//            default:
-//                if state.community == nil {
-//                    pager.fetch()
-//                } else {
-//                    fetchCommunity(reset: true)
-//                }
-//            }
         }
     }
 }

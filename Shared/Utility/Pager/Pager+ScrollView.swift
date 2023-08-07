@@ -139,7 +139,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             if edge == .bottom,
                pager.hasMore,
                pager.isFetching == false {
-                
                 pager.fetch()
                 
             }
