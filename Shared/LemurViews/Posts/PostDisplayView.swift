@@ -148,10 +148,10 @@ extension PostDisplayView {
             VStack(spacing: 0) {
                 Picker("", selection: $threadLocation) {
                     Text(LemmyKit.host).tag(FetchType.base)
-                    if model.isBaseResource == false && model.isPeerResource == false {
+                    if model.isBaseResource == false {
                         Text(model.community.actor_id.host).tag(FetchType.source)
                     }
-                    if model.isBaseResource == false && model.isPeerResource {
+                    if model.isPeerResource {
                         Text(model.creator.actor_id.host).tag(FetchType.peer(model.creator.actor_id.host))
                     }
                 }
