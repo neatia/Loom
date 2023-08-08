@@ -19,12 +19,12 @@ struct PostCardView: View {
     
     @GraniteAction<Void> var showContent
     @GraniteAction<PostView> var reply
+    @GraniteAction<Community> var viewCommunity
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
     
     var model: PostView
-    var isFrontPage: Bool = true
     var isPreview: Bool = false
     var style: FeedStyle = .style1
     var showAvatar: Bool = true
@@ -81,9 +81,12 @@ struct PostCardView: View {
     var body: some View {
         Group {
             switch style {
-            case .style1://TODO: remove?
+            case .style1:
                 VStack(alignment: .leading, spacing: .layer3) {
                     HeaderView(model, badge: .noBadge)
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
                     content
                         .padding(.leading, .layer3 + AvatarView.containerPadding)
                     
@@ -96,8 +99,13 @@ struct PostCardView: View {
                         HeaderCardAvatarView(model, showAvatar: showAvatar)
                     }
                     VStack(alignment: .leading, spacing: 0) {
-                        HeaderCardView(model, badge: .noBadge, isCompact: isCompact)
-                            .graniteEvent(interact)
+                        HeaderCardView(model,
+                                       badge: .noBadge,
+                                       isCompact: isCompact)
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
+                        .graniteEvent(interact)
                         
                         content
                     }
@@ -134,7 +142,9 @@ extension PostCardView {
             case .removed, .blocked:
                 EmptyView()
             default:
-                FooterView(model, style: self.style)
+                FooterView(postView: model,
+                           commentView: nil,
+                           style: self.style)
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
@@ -247,8 +257,7 @@ extension PostCardView {
         }
         .routeIf(layout.state.style == .compact || layout.state.style == .unknown,
                  style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-            PostDisplayView(model: model,
-                            isFrontPage: self.isFrontPage)
+            PostDisplayView(model: model)
         }
     }
     

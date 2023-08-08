@@ -27,6 +27,9 @@ extension Feed {
             var sortingOrListingChanged: Int {
                 selectedListing + selectedSorting + selectedTimeCategory
             }
+            
+            var location: FetchType = .base
+            var peerLocation: FetchType? = nil
         }
         
         @Store public var state: State
@@ -62,10 +65,17 @@ extension Feed {
     
     var subheaderTitle: String {
         if let community = state.community {
-            if community.actor_id.host != LemmyKit.host {
-                return community.name+"@"+community.actor_id.host
-            } else {
+            switch state.location {
+            case .peer(let host):
+                return host+"@"+community.actor_id.host
+            case .source:
                 return community.actor_id.host
+            case .base:
+                if LemmyKit.host == state.community?.actor_id.host {
+                    return LemmyKit.host
+                } else {
+                    return LemmyKit.host+"@"+community.actor_id.host
+                }
             }
         } else {
             return LemmyKit.host
@@ -84,7 +94,8 @@ extension Feed {
         
         guard let community else { return }
         _ = Task.detached {
-            let communityView = await Lemmy.community(community: community)
+            let communityView = await Lemmy.community(community: community,
+                                                      location: state.location)
             
             DispatchQueue.main.async {
                 self._state.community.wrappedValue = model

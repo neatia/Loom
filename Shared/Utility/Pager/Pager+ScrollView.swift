@@ -66,12 +66,14 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 }
                 header()
                     .padding(.top, useList && alternateAddPosition == false ? 20 : 0)
-                if !alternateAddPosition {
-                    addContent()
+                VStack(spacing: 0) {
+                    if !alternateAddPosition {
+                        addContent()
+                    }
+                    PagerLoadingView<Model>(label: pager.emptyText)
+                        .environmentObject(pager)
+                        .frame(maxHeight: .infinity)
                 }
-                PagerLoadingView<Model>(label: pager.emptyText)
-                    .environmentObject(pager)
-                    .frame(maxHeight: .infinity)
             } else {
                 if useSimple {
                     if Device.isExpandedLayout == false {
@@ -139,7 +141,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             if edge == .bottom,
                pager.hasMore,
                pager.isFetching == false {
-                
                 pager.fetch()
                 
             }

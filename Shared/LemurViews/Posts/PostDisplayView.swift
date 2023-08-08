@@ -15,9 +15,9 @@ import Combine
 import MarkdownView
 
 struct PostDisplayView: View {
+    @GraniteAction<Community> var viewCommunity
     
     let model: PostView
-    var isFrontPage: Bool = true
     var style: FeedStyle = .style2
     
     @State var showDrawer: Bool = false
@@ -28,11 +28,17 @@ struct PostDisplayView: View {
     
     @State var enableCommunityRoute: Bool = false
     
-    var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    //important to maintain handler
+    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    
+    @State var threadLocation: FetchType = .base
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HeaderView(model, shouldRoutePost: false, badge: .noBadge)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
                 .padding(.horizontal, .layer3)
                 .padding(.bottom, .layer4)
 
@@ -57,6 +63,9 @@ struct PostDisplayView: View {
                         self.showDrawer = true
                         self.commentModel = model
                     }, at: \.showDrawer)
+                    .attach({ community in
+                        viewCommunity.perform(community)
+                    }, at: \.viewCommunity)
                     .attach({ (model, update) in
                         modal.presentSheet {
                             Reply(kind: .replyComment(model))
@@ -81,11 +90,13 @@ struct PostDisplayView: View {
                     commentView: commentModel,
                     postView: model)
         .task {
+            threadLocation = model.post.location ?? .base
             comments.hook { page in
                 return await Lemmy.comments(model.post,
-                                     community: (isFrontPage ? nil : model.community),
-                                     page: page,
-                                     type: .all)
+                                            community: model.community,
+                                            page: page,
+                                            type: .all,
+                                            location: threadLocation)
             }.fetch()
         }
     }
@@ -93,7 +104,6 @@ struct PostDisplayView: View {
 
 extension PostDisplayView {
     
-    @MainActor
     var content: some View {
         VStack(alignment: .leading, spacing: 0) {
             if model.hasContent {
@@ -113,7 +123,10 @@ extension PostDisplayView {
                 }
             }
             
-            FooterView(model, isHeader: true, isComposable: true)
+            FooterView(postView: model,
+                       commentView: nil,
+                       isHeader: true,
+                       isComposable: true)
                 .attach({ model in
                     modal.presentSheet {
                         Reply(kind: .replyPost(model))
@@ -131,8 +144,26 @@ extension PostDisplayView {
                 .padding(.vertical, .layer4)
             
             Divider()
+            
+            VStack(spacing: 0) {
+                Picker("", selection: $threadLocation) {
+                    Text(LemmyKit.host).tag(FetchType.base)
+                    if model.isBaseResource == false && model.isPeerResource == false {
+                        Text(model.community.actor_id.host).tag(FetchType.source)
+                    }
+                    if model.isBaseResource == false && model.isPeerResource {
+                        Text(model.creator.actor_id.host).tag(FetchType.peer(model.creator.actor_id.host))
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, .layer3)
+                .onChange(of: threadLocation) { _ in
+                    comments.fetch(force: true)
+                }
+            }
+            .padding(.vertical, .layer4)
         }
-        //.fixedSize(horizontal: false, vertical: true)
+        .fixedSize(horizontal: false, vertical: true)
     }
     
     @MainActor

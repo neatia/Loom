@@ -14,13 +14,7 @@ extension Globe: View {
                     case .explorer:
                         EmptyView()
                     default:
-                        Picker("", selection: _state.socialViewOptions) {
-                            Text("TITLE_COMMUNITIES").tag(0)
-                            Text("TITLE_BLOCKED").tag(1)
-                        }
-                        .pickerStyle(.segmented)
-                        .padding(.horizontal, .layer3)
-                        .padding(.bottom, .layer4)
+                        accountsPickerView
                         
                         if state.socialViewOptions == 0 {
                             socialViews
@@ -127,18 +121,20 @@ extension Globe: View {
     var socialViews: some View {
         HStack(spacing: 0) {
             VStack(spacing: 0) {
-                HStack(spacing: .layer4) {
-                    VStack {
+                if Device.isExpandedLayout {
+                    HStack(spacing: .layer4) {
+                        VStack {
+                            Spacer()
+                            Text("TITLE_COMMUNITIES")
+                                .font(.title2.bold())
+                        }
+                        
                         Spacer()
-                        Text("TITLE_COMMUNITIES")
-                            .font(.title2.bold())
                     }
-                    
-                    Spacer()
+                    .frame(height: 36)
+                    .padding(.leading, .layer4)
+                    .padding(.trailing, .layer4)
                 }
-                .frame(height: 36)
-                .padding(.leading, .layer4)
-                .padding(.trailing, .layer4)
                 
                 CommunityPickerView(modal: false, verticalPadding: 0)
                     .id(config.center.state.config)
@@ -148,24 +144,67 @@ extension Globe: View {
     
     var blockedView: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
-                VStack {
-                    Spacer()
+            if Device.isExpandedLayout {
+                HStack(spacing: .layer4) {
+                    VStack {
+                        Spacer()
+                        
+                        Text("TITLE_BLOCKED")
+                            .font(Device.isMacOS ? .title.bold() : .title2.bold())
+                    }
                     
-                    Text("TITLE_BLOCKED")
-                        .font(Device.isMacOS ? .title.bold() : .title2.bold())
+                    Spacer()
                 }
-                
-                Spacer()
+                .frame(height: 36)
+                .padding(.leading, .layer4)
+                .padding(.trailing, .layer4)
             }
-            .frame(height: 36)
-            .padding(.leading, .layer4)
-            .padding(.trailing, .layer4)
             
             BlockedPickerView(meta: account.state.meta,
                               modal: false,
                               verticalPadding: 0)
             .graniteEvent(account.center.interact)
         }
+    }
+}
+
+extension Globe {
+    var accountsPickerView: some View {
+        HStack(spacing: .layer4) {
+            Button {
+                guard state.socialViewOptions != 0 else { return }
+                GraniteHaptic.light.invoke()
+                _state.socialViewOptions.wrappedValue = 0
+            } label: {
+                VStack {
+                    Spacer()
+                    Text("TITLE_COMMUNITIES")
+                        .font(state.socialViewOptions == 0 ? .title.bold() : .title2.bold())
+                        .opacity(state.socialViewOptions == 0 ? 1.0 : 0.6)
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Button {
+                guard state.socialViewOptions != 1 else { return }
+                GraniteHaptic.light.invoke()
+                _state.socialViewOptions.wrappedValue = 1
+            } label: {
+                VStack {
+                    Spacer()
+                    Text("TITLE_BLOCKED")
+                        .font(state.socialViewOptions == 1 ? .title.bold() : .title2.bold())
+                        .opacity(state.socialViewOptions == 1 ? 1.0 : 0.6)
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            Spacer()
+        }
+        .frame(height: 36)
+        .padding(.top, ContainerConfig.generalViewTopPadding)
+        .padding(.leading, .layer4)
+        .padding(.trailing, .layer4)
+        .padding(.bottom, .layer3)
     }
 }

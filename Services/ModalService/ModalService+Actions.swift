@@ -94,6 +94,7 @@ extension ModalService {
         let parentController = UIApplication.shared.topViewController ?? UIApplication.shared.windows.first?.rootViewController
         
         if Device.isiPad {
+            controller.popoverPresentationController?.sourceView = parentController?.view
             controller.popoverPresentationController?.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2, width: 0, height: 0)
             controller.popoverPresentationController?.permittedArrowDirections = []
         }

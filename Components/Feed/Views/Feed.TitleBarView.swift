@@ -14,6 +14,23 @@ extension Feed {
     var titleBarView: some View {
         HStack(alignment: .bottom, spacing: 0) {
              VStack(alignment: .leading, spacing: hasCommunityBanner ? 2 : 0) {
+                 if Device.isExpandedLayout {
+                     AccountView()
+                         .attach({
+                             GraniteHaptic.light.invoke()
+                             modal.presentSheet {
+                                 LoginView()
+                             }
+                         }, at: \.login)
+                         .offset(y: hasCommunityBanner ? -1 : 0)
+                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                         .backgroundIf(hasCommunityBanner) {
+                             Color.background.opacity(0.75)
+                                 .cornerRadius(4)
+                         }
+                 }
+                 
                  Spacer()
                  Text(subheaderTitle)
                      .font(.footnote)
@@ -38,23 +55,6 @@ extension Feed {
              
              VStack(alignment: .trailing, spacing: 0) {
                  Spacer()
-                 if Device.isExpandedLayout {
-                     AccountView()
-                         .attach({
-                             GraniteHaptic.light.invoke()
-                             modal.presentSheet {
-                                 LoginView()
-                             }
-                         }, at: \.login)
-                         .offset(y: hasCommunityBanner ? -1 : 0)
-                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
-                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                         .backgroundIf(hasCommunityBanner) {
-                             Color.background.opacity(0.75)
-                                 .cornerRadius(4)
-                         }
-                         .padding(.bottom, .layer2)
-                 }
                  Button {
                      GraniteHaptic.light.invoke()
                      modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {

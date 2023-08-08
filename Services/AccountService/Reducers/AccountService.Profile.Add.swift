@@ -39,22 +39,23 @@ extension AccountService {
 
                 guard let data = token?.data(using: .utf8),
                       let info = client.user else {
-                    beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
+                    broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
                     return
                 }
 
                 do {
                     try AccountService.insertToken(data, identifier: AccountService.keychainAuthToken + meta.username, service: AccountService.keychainService + meta.host)
                     
-                    beam.send(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_ADD_ACCOUNT_SUCCESS \(meta.username)", event: .success))
+                    broadcast.send(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_ADD_ACCOUNT_SUCCESS \(meta.username)", event: .success))
                     
                     response.send(AddProfileResponse.Meta(info: info, host: meta.host))
                 } catch let error {
                     
                     #if DEBUG
-                    beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "Could not save into keychain", event: .error))
+                    broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "Could not save into keychain", event: .error))
                     #endif
-                    print("keychain: \(error)")
+                    
+                    LoomLog("keychain: \(error)", level: .error)
                 }
             }
         }

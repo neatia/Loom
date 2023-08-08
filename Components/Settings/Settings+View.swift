@@ -392,15 +392,9 @@ extension WebViewCoordinator: WKNavigationDelegate {
         
         switch navigationAction.request.url?.absoluteString {
         case "about:srcdoc":
-            
-            print("{TEST} \(navigationAction.request.url)")
-            print("-- \(navigationAction.navigationType)")
             decisionHandler(.cancel)
             setLoading(false)
         case "about:blank":
-            
-            print("{TEST} \(navigationAction.request.url)")
-            print("-- \(navigationAction.navigationType)")
             decisionHandler(.cancel)
             setLoading(false)
         default:

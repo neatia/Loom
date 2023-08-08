@@ -12,6 +12,7 @@ import SwiftUI
 import LemmyKit
 
 struct PostActionsView: View {
+    @GraniteAction<Community> var viewCommunity
     @Environment(\.graniteEvent) var interact
     
     @Binding var enableCommunityRoute: Bool
@@ -52,7 +53,7 @@ struct PostActionsView: View {
                         
                         guard let community else { return }
                         
-                        layout._state.feedCommunityContext.wrappedValue = .viewCommunity(community)
+                        viewCommunity.perform(community)
                     } else {
                         enableCommunityRoute = true
                     }

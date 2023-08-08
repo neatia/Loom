@@ -14,7 +14,7 @@ struct Globe: GraniteComponent {
         account
             .center
             .addProfile
-            .listen { value in
+            .listen(.broadcast) { value in
                 if let meta = value as? StandardErrorMeta {
                     modal.presentModal(GraniteToastView(meta), target: .sheet)
                 } else if let meta = value as? StandardNotificationMeta {

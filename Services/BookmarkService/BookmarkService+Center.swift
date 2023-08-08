@@ -11,12 +11,15 @@ extension BookmarkService {
             var postDomains: Set<String> = .init()
             var commentDomains: Set<String> = .init()
             
+            var datesPosts: [String: Date] = [:]
+            var datesComments: [String: Date] = [:]
+            
             var lastUpdate: Date = .init()
         }
         
         @Event var modify: Modify.Reducer
         
-        @Store(persist: "persistence.bookmark.Lemur.0006", autoSave: true) public var state: State
+        @Store(persist: "persistence.bookmark.Lemur.0008", autoSave: true) public var state: State
     }
     
     func contains(_ kind: Kind) -> Bool {
@@ -60,35 +63,31 @@ extension BookmarkService {
 
 class BookmarkPosts: Equatable, Codable {
     static func == (lhs: BookmarkPosts, rhs: BookmarkPosts) -> Bool {
-        lhs.domain == rhs.domain && lhs.map == rhs.map && lhs.ids == rhs.ids
+        lhs.domain == rhs.domain && lhs.map == rhs.map
     }
     
     let domain: String
     var map: PostMap
-    var ids: [String] = []
     
     init(_ domain: String) {
         self.domain = domain
         self.map = [:]
-        self.ids = []
     }
 }
 
 class BookmarkComments: Equatable, Codable {
     static func == (lhs: BookmarkComments, rhs: BookmarkComments) -> Bool {
-        lhs.domain == rhs.domain && lhs.map == rhs.map && lhs.ids == rhs.ids
+        lhs.domain == rhs.domain && lhs.map == rhs.map
     }
     
     let domain: String
     var map: CommentMap
     var postMap: [PostId: PostView]
-    var ids: [String] = []
     
     init(_ domain: String) {
         self.domain = domain
         self.map = [:]
         self.postMap = [:]
-        self.ids = []
     }
 }
 

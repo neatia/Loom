@@ -47,6 +47,9 @@ struct SearchAllView: View {
                                 ForEach(model.communities) { model in
                                     CommunityCardView(model: model)
                                         .frame(maxWidth: ContainerConfig.iPhoneScreenWidth * 0.9)
+                                        .route(window: .resizable(600, 500)) {
+                                            Feed(model.community)
+                                        }
                                 }
                                 
                                 Spacer().frame(width: .layer4)

@@ -72,9 +72,10 @@ struct ThreadView: View {
             comments.hook { page in
                 let comments = await Lemmy
                     .comments(currentModel.post,
-                              comment: currentModel.comment,
+                              comment: currentModel.comment, community: currentModel.community,
                               page: page,
-                              type: .all)
+                              type: .all,
+                              location: currentModel.comment.location)
                 
                 return comments.filter { $0.comment.id != currentModel.comment.id }
             }.fetch()
@@ -107,7 +108,9 @@ extension ThreadView {
                 .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.5)
             #endif
             
-            FooterView(currentModel, postView: postView, isHeader: true)
+            FooterView(postView: postView,
+                       commentView: currentModel,
+                       isHeader: true)
         }
         .fixedSize(horizontal: false, vertical: true)
     }

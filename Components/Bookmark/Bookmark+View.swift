@@ -62,9 +62,13 @@ extension Bookmark: View {
             
             switch state.kind {
             case .posts:
+                let postViews = postViews
                 LazyScrollView(postViews) { postView in
                     VStack(spacing: 0) {
-                        PostCardView(model: postView, isFrontPage: false, style: .style2, isCompact: showHeader == false, linkPreviewType: .largeNoMetadata)
+                        PostCardView(model: postView,
+                                     style: .style2,
+                                     isCompact: showHeader == false,
+                                     linkPreviewType: .largeNoMetadata)
                             .attach({
                                 GraniteHaptic.light.invoke()
                                 modal.presentSheet {
@@ -79,15 +83,16 @@ extension Bookmark: View {
                     }
                 }
             case .comments:
+                let commentViews = commentViews
                 LazyScrollView(commentViews) { commentView in
                     VStack(spacing: 0) {
                         CommentCardView(model: commentView, postView: postForComment(commentView), shouldLinkToPost: true, isBookmark: true)
                         
-                        if commentView.id != commentIDs.last {
+                        if commentView.id != commentViews.last?.id {
                             Divider()
                         }
                     }
-                }
+                }.background(Color.alternateBackground)
             }
         }
         .addGraniteSheet(modal.sheetManager, background: Color.clear)

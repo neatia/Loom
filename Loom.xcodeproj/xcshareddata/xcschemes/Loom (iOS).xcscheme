@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "711B3F782885D43B00F3080D"
-               BuildableName = "Lemur.app"
+               BuildableName = "Loom.app"
                BlueprintName = "Loom (iOS)"
                ReferencedContainer = "container:Loom.xcodeproj">
             </BuildableReference>
@@ -55,11 +55,18 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "711B3F782885D43B00F3080D"
-            BuildableName = "Lemur.app"
+            BuildableName = "Loom.app"
             BlueprintName = "Loom (iOS)"
             ReferencedContainer = "container:Loom.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "OS_ACTIVITY_MODE"
+            value = "disable"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -72,7 +79,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "711B3F782885D43B00F3080D"
-            BuildableName = "Lemur.app"
+            BuildableName = "Loom.app"
             BlueprintName = "Loom (iOS)"
             ReferencedContainer = "container:Loom.xcodeproj">
          </BuildableReference>

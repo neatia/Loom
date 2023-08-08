@@ -38,7 +38,7 @@ extension Profile {
                             .frame(width: 24, height: 24)
                             .contentShape(Rectangle())
                             .foregroundColor(.foreground)
-                            .route(title: "", style: .init(size: .init(width: 400, height: 500))) {
+                            .route(window: .resizable(400, 500)) {
                                 ProfileSettingsView(isModal: true, modal: modal)
                             }
                         

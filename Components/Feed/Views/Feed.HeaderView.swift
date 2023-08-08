@@ -30,16 +30,16 @@ extension Feed {
                         } label: {
                             Image(systemName: "arrow.counterclockwise")
                                 .font(.headline.bold())
-                                .offset(y: (hasCommunityBanner == false) ? -3 : 0)
+                                .offset(y: (hasCommunityBanner == false) ? (Device.isExpandedLayout ? -3 : -1) : 0)
                         }
                         .buttonStyle(PlainButtonStyle())
-                        .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+                        .padding(.horizontal, hasCommunityBanner ? 4 : 0)
                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
                         .backgroundIf(hasCommunityBanner) {
                             Color.background.opacity(0.75)
                                 .cornerRadius(4)
                         }
-                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
+                        .padding(.trailing, Device.isExpandedLayout ? 0 : (hasCommunityBanner ? .layer2 : 0))
                     } else {
                         if Device.isExpandedLayout {
                             ProgressView()

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:/Users/ritesh/Documents/neatia/repositories/Lemur/Loom.xcodeproj">
+      location = "self:">
    </FileRef>
 </Workspace>

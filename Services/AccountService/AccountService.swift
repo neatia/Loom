@@ -29,10 +29,6 @@ struct AccountService: GraniteService {
         guard status == errSecSuccess else {
             if status == errSecDuplicateItem {
                 let status = SecItemUpdate(query, attributes)
-                
-                if status != errSecSuccess {
-                    throw KeychainError.duplicateItem
-                }
             } else {
                 throw KeychainError.unexpectedStatus(status)
             }
