@@ -14,9 +14,12 @@ import LemmyKit
 extension Feed {
     var verticalLayout: some View {
         VStack(spacing: 0) {
-            FeedMainView(isFrontPage: state.community == nil) {
+            FeedMainView(location: state.location) {
                 headerView
             }
+            .attach({ community in
+                fetchCommunity(community, reset: true)
+            }, at: \.viewCommunity)
             .graniteEvent(account.center.interact)
             .environmentObject(pager)
         }

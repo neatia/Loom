@@ -6,6 +6,7 @@ import GraniteUI
 import MarkdownView
 
 struct CommentCardView: View {
+    @GraniteAction<Community> var viewCommunity
     @Environment(\.graniteEvent) var interact
     
     @GraniteAction<CommentView> var showDrawer
@@ -44,6 +45,9 @@ struct CommentCardView: View {
                            shouldRouteCommunity: shouldRouteCommunity,
                            shouldRoutePost: shouldLinkToPost,
                            badge: shouldLinkToPost ? (postView == nil ? .noBadge : .post(postView!)) : nil)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
                     .padding(.trailing, .layer3)
                     .padding(.bottom, .layer3)
                 content
@@ -55,6 +59,9 @@ struct CommentCardView: View {
                     HeaderCardAvatarView(model, badge: (postView == nil ? .noBadge : .post(postView!)), showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
                         HeaderCardView(model, badge: shouldLinkToPost ? (postView == nil ? nil : .post(postView!)) : nil)
+                            .attach({ community in
+                                viewCommunity.perform(community)
+                            }, at: \.viewCommunity)
                             .graniteEvent(interact)
                         content
                     }
@@ -136,7 +143,9 @@ extension CommentCardView {
                 }))
             }
             #endif
-            FooterView(model, postView: postView, style: self.style)
+            FooterView(postView: postView,
+                       commentView: model,
+                       style: self.style)
                 .attach({ id in
                     guard isPreview == false else { return }
                     showDrawer.perform(model)

@@ -16,6 +16,7 @@ import Combine
 struct HeaderCardView: View {
     @Environment(\.graniteEvent) var interact
     
+    @GraniteAction<Community> var viewCommunity
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     
@@ -54,7 +55,14 @@ struct HeaderCardView: View {
     typealias Crumb = (Int, Person)
     let crumbs: [Crumb]
     
-    init(_ model: PostView, crumbs: [PostView] = [], shouldRouteCommunity: Bool = true, shouldRoutePost: Bool = true, badge: HeaderView.Badge? = nil, isCompact: Bool = false) {
+    let location: FetchType
+    
+    init(_ model: PostView,
+         crumbs: [PostView] = [],
+         shouldRouteCommunity: Bool = true,
+         shouldRoutePost: Bool = true,
+         badge: HeaderView.Badge? = nil,
+         isCompact: Bool = false) {
         self.headline = model.creator.name
         self.subheadline = model.post.local ? nil : model.creator.domain
         self.subtitle = nil
@@ -78,10 +86,17 @@ struct HeaderCardView: View {
         
         self.isCompact = isCompact
         
+        self.location = model.post.location ?? .base
+        
         Colors.update(model.community.name)
     }
     
-    init(_ model: CommentView, crumbs: [CommentView] = [], shouldRouteCommunity: Bool = true, shouldRoutePost: Bool = true, badge: HeaderView.Badge? = nil, isCompact: Bool = false) {
+    init(_ model: CommentView,
+         crumbs: [CommentView] = [],
+         shouldRouteCommunity: Bool = true,
+         shouldRoutePost: Bool = true,
+         badge: HeaderView.Badge? = nil,
+         isCompact: Bool = false) {
         self.headline = model.creator.name
         self.subheadline = model.comment.local ? nil : model.creator.domain
         self.subtitle = nil
@@ -110,6 +125,8 @@ struct HeaderCardView: View {
         }
         
         self.isCompact = isCompact
+        
+        self.location = model.comment.location ?? .base
     }
     
     var body: some View {
@@ -125,23 +142,15 @@ struct HeaderCardView: View {
             
             Spacer()
             
-            
-            //TODO: add a route declarative view?
-            GraniteRoute()
-                .routeTarget($enableRoute, style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                Group {
-                    if let community {
-                        Feed(community)
-                    }
+            if let community {
+                GraniteRoute($enableRoute, window: .resizable(600, 500)) {
+                    Feed(community)
                 }
             }
             
-            GraniteRoute()
-                .routeTarget($enablePostViewRoute, style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                Group {
-                    if let postView {
-                        PostDisplayView(model: postView, isFrontPage: true)
-                    }
+            if let postView {
+                GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
+                    PostDisplayView(model: postView)
                 }
             }
             
@@ -183,6 +192,9 @@ struct HeaderCardView: View {
                                 postView: shouldRoutePost ? postView : nil,
                                 person: person,
                                 bookmarkKind: bookmarkKind)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
                 .graniteEvent(interact)
             }
             

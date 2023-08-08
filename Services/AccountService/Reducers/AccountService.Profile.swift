@@ -64,9 +64,9 @@ extension AccountService {
                 
                 do {
                     try AccountService.insertToken(data, identifier: AccountService.keychainAuthToken + username, service: AccountService.keychainService + host)
-                    print("{TEST} inserted data into keychain")
+                    LoomLog("inserted into keychain", level: .debug)
                 } catch let error {
-                    print("{TEST} keychain: \(error)")
+                    LoomLog("keychain: \(error)", level: .error)
                 }
                 
                 if let user = LemmyKit.current.user?.local_user_view.person {
@@ -84,7 +84,7 @@ extension AccountService {
         
         func reduce(state: inout Center.State) {
             guard let user = LemmyKit.current.user, let host = state.meta?.host else {
-                print("[AccountService] No user found")
+                LoomLog("no user found", level: .debug)
                 state.meta = nil
                 return
             }

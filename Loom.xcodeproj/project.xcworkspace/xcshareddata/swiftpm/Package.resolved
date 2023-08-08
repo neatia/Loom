@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "granite",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/Granite.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "87b74f5b03cfc84f40d350f39ec32217bda1d55a"
-      }
-    },
-    {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raspu/Highlightr.git",

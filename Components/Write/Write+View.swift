@@ -6,10 +6,9 @@ import LemmyKit
 extension Write: View {
     public var view: some View {
         VStack(spacing: 0) {
-            GraniteRoute()
-                .routeTarget(_state.showPost) {
-                    PostDisplayView(model: state.createdPostView ?? .mock)
-                }
+            GraniteRoute(_state.showPost) {
+                PostDisplayView(model: state.createdPostView ?? .mock)
+            }
             
             HStack(spacing: .layer3) {
 //                #if os(macOS)

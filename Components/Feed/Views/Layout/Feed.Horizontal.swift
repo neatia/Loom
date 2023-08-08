@@ -41,11 +41,17 @@ extension Feed {
             }, at: \.pickedCommunity)
             .frame(width: 240)
             Divider()
-            FeedMainView(isFrontPage: state.community == nil)
+            FeedMainView(location: state.location)
+                .attach({ community in
+                    fetchCommunity(community, reset: true)
+                }, at: \.viewCommunity)
                 .graniteEvent(account.center.interact)
                 .environmentObject(pager)
                 .frame(minWidth: minFrameWidth, maxWidth: nil)
-            FeedExtendedView()
+            FeedExtendedView(location: state.location)
+                .attach({ community in
+                    fetchCommunity(community, reset: true)
+                }, at: \.viewCommunity)
         }
     }
 }

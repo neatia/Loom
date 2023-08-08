@@ -110,6 +110,7 @@ class Pager<Model: Pageable>: ObservableObject {
         guard hasMore || force else { return }
         
         if force {
+            LoomLog("Forcing fetch", level: .debug)
             pageIndex = 1
             DispatchQueue.main.async { [weak self] in
                 self?.hasMore = true
@@ -117,6 +118,7 @@ class Pager<Model: Pageable>: ObservableObject {
         }
         
         guard self.isFetching == false else {
+            LoomLog("Fetch in progress", level: .error)
             if force {
                 clean()
             }
@@ -139,13 +141,20 @@ class Pager<Model: Pageable>: ObservableObject {
         
         self.task?.cancel()
         self.task = Task(priority: .background) { [weak self] in
-            let models: [Model] = (await self?.handler?(self?.pageIndex)) ?? []
+            guard let handler = self?.handler else {
+                LoomLog("Fetch failed | no handler", level: .error)
+                self?.clean()
+                return
+            }
+            
+            let models: [Model] = (await handler(self?.pageIndex))
             
             guard let this = self else { return }
             
+            LoomLog("Fetch succeeded | \(models.count) items", level: .debug)
+            
             let thumbURLs: [(String, URL?)] = models.compactMap { ($0.id, $0.thumbUrl) }
                 
-            
             if thumbURLs.isEmpty {
                 insertModels(models, force: force)
             } else {
@@ -155,7 +164,7 @@ class Pager<Model: Pageable>: ObservableObject {
                         let time = CFAbsoluteTimeGetCurrent()
                         this.itemMetadatas[id] = await this.getLPMetadata(url: url)
                         if this.itemMetadatas[id] != nil {
-                            print("Got thumb: \(CFAbsoluteTimeGetCurrent() - time)")
+                            LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time)", level: .info)
                         }
                     }
                     this.insertModels(models, force: force)
@@ -171,15 +180,15 @@ class Pager<Model: Pageable>: ObservableObject {
                 let lastModel = models.last
                 
                 //TODO: These are not gaurunteeable
-//                if !force,
-//                   let lastItem = self?.lastItem,
-//                   models.contains(lastItem) {
-//                    self?.hasMore = false
-//                }
-//
-//                if models.isEmpty {
-//                    self?.hasMore = false
-//                }
+                if !force,
+                   let lastItem = self?.lastItem,
+                   models.contains(lastItem) {
+                    self?.hasMore = false
+                }
+
+                if models.isEmpty {
+                    self?.hasMore = false
+                }
                 
                 self?.lastItem = lastModel
                 

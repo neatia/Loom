@@ -32,24 +32,22 @@ extension Feed: View {
         .task {
             guard pager.isEmpty else { return }
             
-            if let community = state.community {
-                let communityView = await Lemmy.community(community: community,
-                                                          useBase: state.community == nil)
-                if let communityView {
-                    _state.community.wrappedValue = communityView.community
-                    _state.communityView.wrappedValue = communityView
-                }
-            }
-            
             pager.hook { page in
                 let posts = await Lemmy.posts(state.community,
                                               type: selectedListing,
                                               page: page,
                                               limit: ConfigService.Preferences.pageLimit,
                                               sort: selectedSort,
-                                              useBase: state.community == nil)
+                                              location: state.location)
+                
                 return posts
-            }.fetch()
+            }
+            
+            if let community = state.community {
+                fetchCommunity(community, reset: true)
+            } else {
+                pager.fetch()
+            }
         }
     }
 }

@@ -44,7 +44,7 @@ struct WriteView: View {
                     //the keyboard toolbar requires another NavigationView
                     //to propagate changes.
                     verticalContent
-                        .graniteNavigation(backgroundColor: Color.background)
+                        //.graniteNavigation(backgroundColor: Color.background)
                 }
             }
         }

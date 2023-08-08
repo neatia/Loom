@@ -51,56 +51,57 @@ struct FooterView: View {
     let commentCount: Int
     let replyCount: Int?
     
+    let isHeader: Bool
+    let canExpand: Bool
+    
     let font: Font
     let secondaryFont: Font
     
-    let canExpand: Bool
-    
-    let isHeader: Bool
+    let routeTitle: String?
     
     let bookmarkKind: BookmarkService.Kind
-    let routeTitle: String?
+    
+    var postView: PostView?
+    var commentView: CommentView?
     
     var style: FeedStyle
     
-    var postView: PostView?
+    var location: FetchType
     
-    var commentView: CommentView?
-    
-    var isComposable: Bool = false
-    
-    init(_ model: PostView, isHeader: Bool = false, style: FeedStyle = .style1, isComposable: Bool = false) {
-        self.commentCount = model.commentCount
-        self.replyCount = nil
-        self.font = isHeader ? .title3 : .headline
-        self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
-        self.canExpand = false
-        self.bookmarkKind = .post(model)
-        self.isHeader = isHeader
-        self.routeTitle = model.post.name
-        
-        self.postView = model
-        
-        self.style = style
-        
-        self.isComposable = isComposable
-        
-        //        content.preload()
-        //        config.preload()
+    var isBase: Bool {
+        location == .base
     }
     
-    init(_ model: CommentView, postView: PostView? = nil, isHeader: Bool = false, style: FeedStyle = .style1, isComposable: Bool = false) {
-        self.commentCount = 0
-        self.replyCount = model.replyCount
+    var isComposable: Bool
+    
+    init(postView: PostView?,
+         commentView: CommentView?,
+         isHeader: Bool = false,
+         style: FeedStyle = .style1,
+         isComposable: Bool = false) {
+        if let commentView {
+            self.commentCount = 0
+            self.replyCount = commentView.replyCount
+            self.bookmarkKind = .comment(commentView, postView)
+            self.location = commentView.comment.location ?? .base
+        } else if let postView {
+            self.commentCount = postView.commentCount
+            self.replyCount = nil
+            self.bookmarkKind = .post(postView)
+            self.location = postView.post.location ?? .base
+        } else {
+            fatalError("Requires either a post or comment view")
+        }
+        
+        self.isHeader = isHeader
+        self.canExpand = false
+        
         self.font = isHeader ? .title3 : .headline
         self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
-        self.canExpand = true
-        self.bookmarkKind = .comment(model, postView)
-        self.routeTitle = nil
-        self.isHeader = isHeader
         
+        self.routeTitle = postView?.post.name
         self.postView = postView
-        self.commentView = model
+        self.commentView = commentView
         
         self.style = style
         
@@ -186,10 +187,8 @@ extension FooterView {
                             .font(font)
                     }
                     .foregroundColor(.foreground)
-                    .route(title: routeTitle ?? "",
-                           style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                        PostDisplayView(model: postView,
-                                        isFrontPage: false)
+                    .route(window: .resizable(600, 500)) {
+                        PostDisplayView(model: postView)
                     }
                 }
                 
@@ -286,6 +285,15 @@ extension FooterView {
                     }
                 }
                 
+                if isBase == false {
+                    Text("•")
+                        .font(.footnote)
+                        .padding(.horizontal, .layer2)
+                    
+                    Image(systemName: "globe.americas")
+                        .font(.caption)
+                }
+                
                 Spacer()
                 
                 if isComposable {
@@ -322,13 +330,13 @@ extension FooterView {
                     content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
                 }
             } label : {
-                HStack(spacing: .layer1) {
+                HStack(spacing: .layer2) {
                     Image(systemName: "arrow.up")
                         .font(font.bold())
                     
                     if config.state.showScores {
                         Text("\(upvoteCount)")
-                            .font(font)
+                            .font(font.smaller)
                     }
                 }
                 .padding(.trailing, .layer4)
@@ -345,13 +353,13 @@ extension FooterView {
                     content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView)))
                 }
             } label : {
-                HStack(spacing: .layer1) {
+                HStack(spacing: .layer2) {
                     Image(systemName: "arrow.down")
                         .font(font.bold())
                     
                     if config.state.showScores {
                         Text("\(downvoteCount)")
-                            .font(font)
+                            .font(font.smaller)
                     }
                 }
                 .padding(.trailing, .layer4)
@@ -382,11 +390,10 @@ extension FooterView {
                         .foregroundColor(.foreground)
                 }
             } else {
-                HStack(spacing: .layer1) {
+                HStack(spacing: .layer2) {
                     Image(systemName: "bubble.left")
                         .font(font)
                     Text("\(commentCount) ")
-                        .font(font) + Text("LISTING_TYPE_LOCAL")
                         .font(font.smaller)
                 }
                 .textCase(.lowercase)
@@ -394,8 +401,7 @@ extension FooterView {
                 .routeIf(bookmarkKind.postViewModel != nil,
                          title: routeTitle ?? "",
                          style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                    PostDisplayView(model: bookmarkKind.postViewModel!,
-                                    isFrontPage: false)
+                    PostDisplayView(model: bookmarkKind.postViewModel!)
                 }
             }
             

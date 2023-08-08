@@ -8,13 +8,15 @@
 import Foundation
 import Granite
 import SwiftUI
-
+import LemmyKit
 
 struct FeedExtendedView: View {
+    @GraniteAction<Community> var viewCommunity
     @Relay var layout: LayoutService
     
-    init() {
-        //layout.preload()
+    let location: FetchType
+    init(location: FetchType) {
+        self.location = location
     }
     
     var body: some View {
@@ -33,8 +35,10 @@ struct FeedExtendedView: View {
                 switch layout.state.feedContext {
                 case .viewPost(let model):
                     Divider()
-                    PostDisplayView(model: model,
-                                    isFrontPage: true)
+                    PostDisplayView(model: model)
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
                     .id(model.id)
                 default:
                     Spacer()

@@ -104,17 +104,19 @@ extension Settings {
                             key = ""
                             secret = ""
                             
+                            //TODO: reuse
                             do {
                                 try AccountService.deleteToken(identifier: AccountService.keychainIPFSKeyToken, service: AccountService.keychainService)
                                 
                                 try AccountService.deleteToken(identifier: AccountService.keychainIPFSSecretToken, service: AccountService.keychainService)
                                 
-                                print("{TEST} inserted data into keychain")
+                                LoomLog("inserted ipfs data into keychain", level: .debug)
                                 
                                 config._state.ipfsGatewayUrl.wrappedValue = gateway
                                 config._state.isIPFSAvailable.wrappedValue = true
                             } catch let error {
-                                print("{TEST} keychain: \(error)")
+                                
+                                LoomLog("keychain: \(error)", level: .error)
                             }
                             
                             config._state.isIPFSAvailable.wrappedValue = false
@@ -139,14 +141,14 @@ extension Settings {
                                 
                                 try AccountService.insertToken(secretData, identifier: AccountService.keychainIPFSSecretToken, service: AccountService.keychainService)
                                 
-                                print("{TEST} inserted data into keychain")
+                                LoomLog("inserted ipfs data into keychain", level: .debug)
                                 
                                 IPFSKit.gateway = InfuraGateway(key, secret: secret, gateway: gateway)
                                 
                                 config._state.ipfsGatewayUrl.wrappedValue = gateway
                                 config._state.isIPFSAvailable.wrappedValue = true
                             } catch let error {
-                                print("{TEST} keychain: \(error)")
+                                LoomLog("keychain: \(error)", level: .error)
                             }
                             
                             

@@ -11,14 +11,15 @@ import SwiftUI
 import LemmyKit
 
 struct FeedMainView<Content: View>: View {
+    @GraniteAction<Community> var viewCommunity
     @EnvironmentObject var pager: Pager<PostView>
     @Environment(\.graniteEvent) var interact
     
-    let isFrontPage: Bool
+    let location: FetchType
     let header: () -> Content
-    init(isFrontPage: Bool,
+    init(location: FetchType,
          @ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
-        self.isFrontPage = isFrontPage
+        self.location = location
         self.header = header
     }
     
@@ -32,11 +33,13 @@ struct FeedMainView<Content: View>: View {
                 EmptyView()
             } content: { postView in
                 PostCardView(model: postView,
-                             isFrontPage: isFrontPage,
                              style: .style2,
                              topPadding: .layer5,
                              bottomPadding: pager.lastItem?.id == postView.id ? 0 : .layer5,
                              linkPreviewType: .largeNoMetadata)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
 //                }, at: \.showContent)
                 .graniteEvent(interact)
             }.environmentObject(pager)

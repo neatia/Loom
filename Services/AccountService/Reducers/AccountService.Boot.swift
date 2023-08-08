@@ -23,7 +23,7 @@ extension AccountService {
         
         func reduce(state: inout Center.State) {
             guard let meta = meta?.accountMeta ?? state.meta else {
-                print("[No account in state] \(meta?.accountMeta == nil) \(state.meta == nil)")
+                LoomLog("[No account in state] \(meta?.accountMeta == nil) \(state.meta == nil)", level: .debug)
                 return
             }
             
@@ -33,7 +33,7 @@ extension AccountService {
                 state.authenticated = false
                 state.meta = nil
                 
-                print("[No Account Found] id: \(AccountService.keychainAuthToken + meta.username), service: \(AccountService.keychainService + LemmyKit.baseUrl)")
+                LoomLog("[No Account Found] id: \(AccountService.keychainAuthToken + meta.username), service: \(AccountService.keychainService + LemmyKit.baseUrl)", level: .debug)
                 broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host)", event: .normal))
                 return
             }
@@ -48,7 +48,8 @@ extension AccountService {
                     return
                 }
                 
-                print("[Account Restored]")
+                LoomLog("[Account Restored]", level: .debug)
+                
                 broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host + " @\(meta.username)")", event: .success))
                 details.send(Meta(accountMeta: meta))
             }

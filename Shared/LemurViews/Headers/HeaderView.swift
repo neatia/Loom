@@ -33,6 +33,7 @@ struct HeaderView: View {
         case none
     }
     
+    @GraniteAction<Community> var viewCommunity
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     
@@ -188,22 +189,15 @@ struct HeaderView: View {
             
             Spacer()
             
-            //TODO: add a route declarative view?
-            EmptyView()
-                .routeTarget($enableRoute, style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                Group {
-                    if let community {
-                        Feed(community)
-                    }
+            if let community {
+                GraniteRoute($enableRoute, window: .resizable(600, 500)) {
+                    Feed(community)
                 }
             }
             
-            EmptyView()
-                .routeTarget($enablePostViewRoute, style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                Group {
-                    if let postView {
-                        PostDisplayView(model: postView, isFrontPage: true)
-                    }
+            if let postView {
+                GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
+                    PostDisplayView(model: postView)
                 }
             }
             
@@ -224,6 +218,9 @@ struct HeaderView: View {
                                 postView: shouldRoutePost ? postView : nil,
                                 person: person,
                                 bookmarkKind: bookmarkKind)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
             }
         }
     }
