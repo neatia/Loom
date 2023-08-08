@@ -14,6 +14,7 @@ extension Write {
         @Relay var config: ConfigService
         
         func reduce(state: inout Center.State) {
+            config.preload()
             
             let title = state.title
             let content = state.content.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -44,7 +45,7 @@ extension Write {
                                                        url: url?.isEmpty == true ? nil : url,
                                                        body: content + subcontent,
                                                        community: community)
-                    
+
                     guard let value else {
                         beam.send(StandardNotificationMeta(title: "MISC_ERROR_2", message: "ALERT_CREATE_POST_FAILED \("!"+community.name)", event: .error))
                         return
@@ -102,10 +103,11 @@ extension Write {
             }
             
             let response = await IPFS.upload(data)
-            
             guard let ipfsURL = IPFSKit.gateway?.genericURL(for: response) else {
                 return nil
             }
+            
+            LoomLog("\(ipfsURL)", level: .debug)
             
             let url = ipfsURL.absoluteString
             subcontent += "\n\n[preserved](\(ipfsURL.absoluteString))"

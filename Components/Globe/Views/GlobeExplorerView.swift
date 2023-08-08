@@ -34,6 +34,8 @@ struct GlobeExplorerView: View {
                                 node: mesh.nodeWithID(selectedNode ?? .init()),
                                 event: restart)
             }
+            
+            //GlobeView()
         }
         //TODO: reusable
         .overlay(
@@ -41,17 +43,17 @@ struct GlobeExplorerView: View {
                 HStack {
                     HStack {
                         Text("⚠️ ") + Text("ALERT_WORK_IN_PROGRESS")
-                        
+
                     }
                     .padding(.vertical, .layer1)
                     .padding(.horizontal, .layer2)
                     .background(Color.tertiaryBackground.cornerRadius(8))
                     Spacer()
-                    
+
                     Button {
                         GraniteHaptic.light.invoke()
                         setup()
-                        
+
                     } label: {
                         Image(systemName: "arrow.counterclockwise")
                             .font(.headline.bold())
@@ -63,7 +65,7 @@ struct GlobeExplorerView: View {
                 Spacer()
             }
             .padding(.layer4)
-        
+
         )
         .task {
             explorer.preload()

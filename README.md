@@ -70,6 +70,6 @@ In an attempt to build a community around Loom as well, feel free to explore the
 
 The goal is to eventually have this be community driven. Until then, if you like my work and think these contributions are truly beneficial, feel free to support future updates and similar endeavors! 
 
-**Bitcoin:** bc1q83fh4mvd3crsux7mc39s4kkuf8rdy294y2stt0 
+**ETH:** 0x9223F7F36cA5F052044fe1edE65E23C9F7dEB655 
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/pexavc)

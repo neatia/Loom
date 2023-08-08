@@ -132,7 +132,7 @@ extension Settings {
                             GraniteHaptic.light.invoke()
                             
                             guard let secretData = secret.data(using: .utf8),
-                                  let keyData = secret.data(using: .utf8) else {
+                                  let keyData = key.data(using: .utf8) else {
                                 return
                             }
                             
