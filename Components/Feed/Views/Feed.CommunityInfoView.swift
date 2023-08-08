@@ -1,6 +1,6 @@
 //
 //  Feed.CommunityInfoView.swift
-//  Lemur (iOS)
+//  Loom (iOS)
 //
 //  Created by PEXAVC on 7/25/23.
 //

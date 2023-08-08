@@ -1,6 +1,6 @@
 //
 //  GlobeExplorer.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 8/4/23.
 //
@@ -19,23 +19,25 @@ struct GlobeExplorerView: View {
     @State var mesh: Mesh? = nil
     @StateObject var selection: SelectionHandler = .init()
     
+    let globe: GlobeView = .init()
+    
     var selectedNode: NodeID? {
         selection.selectedNodeIDs.first ?? mesh?.rootNodeID
     }
     
     var body: some View {
         VStack {
-            if Device.isExpandedLayout {
-                landscapeView
-            } else if let mesh {
-                SurfaceView(mesh: mesh,
-                            selection: selection)
-                    .showDrawer(selectedNode != nil,
-                                node: mesh.nodeWithID(selectedNode ?? .init()),
-                                event: restart)
-            }
+//            if Device.isExpandedLayout {
+//                landscapeView
+//            } else if let mesh {
+//                SurfaceView(mesh: mesh,
+//                            selection: selection)
+//                    .showDrawer(selectedNode != nil,
+//                                node: mesh.nodeWithID(selectedNode ?? .init()),
+//                                event: restart)
+//            }
             
-            //GlobeView()
+            globe
         }
         //TODO: reusable
         .overlay(
@@ -82,8 +84,9 @@ struct GlobeExplorerView: View {
         .clipped()
         .onAppear {
             
-            guard let mesh else { return }
-            selection.selectNode(mesh.rootNode())
+            globe.run()
+//            guard let mesh else { return }
+//            selection.selectNode(mesh.rootNode())
         }
     }
     

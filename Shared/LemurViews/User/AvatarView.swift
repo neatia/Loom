@@ -1,6 +1,6 @@
 //
 //  AvatarView.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/13/23.
 //

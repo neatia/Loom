@@ -1,6 +1,6 @@
 //
 //  Write.Generate.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/22/23.
 //
@@ -44,7 +44,7 @@ extension Write.Generate {
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <!--Basic meta info -->
-<meta name="keywords" content="lemur, ipfs, lemmy, federated, content">
+<meta name="keywords" content="Loom, ipfs, lemmy, federated, content">
 <meta name="author" content="\(author)" />
 <meta name="description" content="">
 

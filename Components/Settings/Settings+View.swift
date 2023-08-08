@@ -162,7 +162,7 @@ extension Settings: View {
                         .font(Fonts.live(.footnote, .regular))
                         .foregroundColor(.accentColor)
                         .onTapGesture {
-                            if let url = URL(string: "https://github.com/neatia/lemur") {
+                            if let url = URL(string: "https://github.com/neatia/Loom") {
                                 openURL(url)
                             }
                         }

@@ -34,6 +34,6 @@ extension ExplorerService {
 //            return .init(nodes: nodes, links: links)
 //        }
         
-        @Store(persist: "persistence.lemur.explorer.0010", autoSave: true) public var state: State
+        @Store(persist: "persistence.Loom.explorer.0010", autoSave: true) public var state: State
     }
 }

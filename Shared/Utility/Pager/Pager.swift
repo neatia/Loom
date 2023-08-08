@@ -1,6 +1,6 @@
 //
 //  Pager.swift
-//  Lemur (iOS)
+//  Loom (iOS)
 //
 //  Created by PEXAVC on 7/24/23.
 //

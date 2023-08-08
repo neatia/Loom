@@ -121,6 +121,12 @@
 		712C0D7D2A7CA32500DBDCC9 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */; };
 		712C0D7E2A7CA32500DBDCC9 /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */; };
 		712C0D902A7CA65D00DBDCC9 /* LemmyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 712C0D8F2A7CA65D00DBDCC9 /* LemmyKit */; };
+		713129B22A82BEF700C6B31D /* GlobeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B12A82BEF700C6B31D /* GlobeScene.swift */; };
+		713129B32A82BEF700C6B31D /* GlobeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B12A82BEF700C6B31D /* GlobeScene.swift */; };
+		713129B52A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B42A82FC2200C6B31D /* GlobeScene.Helpers.swift */; };
+		713129B62A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B42A82FC2200C6B31D /* GlobeScene.Helpers.swift */; };
+		713129B82A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B72A82FC5000C6B31D /* GlobeScene.Objects.swift */; };
+		713129B92A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B72A82FC5000C6B31D /* GlobeScene.Objects.swift */; };
 		7145EF0D28D43F1D00BFD19A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF0C28D43F1D00BFD19A /* Date.swift */; };
 		7145EF0E28D43F1D00BFD19A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF0C28D43F1D00BFD19A /* Date.swift */; };
 		7145EF1928D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */; };
@@ -133,8 +139,6 @@
 		714B487F2A8188DA00AC6199 /* ResourceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B487D2A8188DA00AC6199 /* ResourceContext.swift */; };
 		714B48812A81A5D600AC6199 /* Locateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48802A81A5D600AC6199 /* Locateable.swift */; };
 		714B48822A81A5D600AC6199 /* Locateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48802A81A5D600AC6199 /* Locateable.swift */; };
-		714B488E2A8238A400AC6199 /* DotGlobe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48862A8238A400AC6199 /* DotGlobe.swift */; };
-		714B488F2A8238A400AC6199 /* DotGlobe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48862A8238A400AC6199 /* DotGlobe.swift */; };
 		714B48902A8238A400AC6199 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48872A8238A400AC6199 /* EarthNode.swift */; };
 		714B48912A8238A400AC6199 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48872A8238A400AC6199 /* EarthNode.swift */; };
 		714B48922A8238A400AC6199 /* earth-dark.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 714B48892A8238A400AC6199 /* earth-dark.jpg */; };
@@ -669,6 +673,9 @@
 		712BEB5B29074CFB00D257B7 /* CameraContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContentView.swift; sourceTree = "<group>"; };
 		712BEB6229074FEC00D257B7 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		713129B12A82BEF700C6B31D /* GlobeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobeScene.swift; sourceTree = "<group>"; };
+		713129B42A82FC2200C6B31D /* GlobeScene.Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobeScene.Helpers.swift; sourceTree = "<group>"; };
+		713129B72A82FC5000C6B31D /* GlobeScene.Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobeScene.Objects.swift; sourceTree = "<group>"; };
 		7145EF0C28D43F1D00BFD19A /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+SafeArea.swift"; sourceTree = "<group>"; };
 		714B48772A816CF900AC6199 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -676,7 +683,6 @@
 		714B487D2A8188DA00AC6199 /* ResourceContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceContext.swift; sourceTree = "<group>"; };
 		714B48802A81A5D600AC6199 /* Locateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locateable.swift; sourceTree = "<group>"; };
 		714B48832A81B6C300AC6199 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
-		714B48862A8238A400AC6199 /* DotGlobe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotGlobe.swift; sourceTree = "<group>"; };
 		714B48872A8238A400AC6199 /* EarthNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarthNode.swift; sourceTree = "<group>"; };
 		714B48892A8238A400AC6199 /* earth-dark.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "earth-dark.jpg"; sourceTree = "<group>"; };
 		714B488A2A8238A400AC6199 /* StarsParticles.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = StarsParticles.scnp; sourceTree = "<group>"; };
@@ -1388,23 +1394,25 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		714B48842A8238A400AC6199 /* DotGlobe */ = {
+		714B48842A8238A400AC6199 /* Globe */ = {
 			isa = PBXGroup;
 			children = (
-				714B48852A8238A400AC6199 /* UIKit */,
+				714B48852A8238A400AC6199 /* Scene */,
 				714B48882A8238A400AC6199 /* Assets */,
 				714B488C2A8238A400AC6199 /* SwiftUI */,
 			);
-			path = DotGlobe;
+			path = Globe;
 			sourceTree = "<group>";
 		};
-		714B48852A8238A400AC6199 /* UIKit */ = {
+		714B48852A8238A400AC6199 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				714B48862A8238A400AC6199 /* DotGlobe.swift */,
+				713129B12A82BEF700C6B31D /* GlobeScene.swift */,
+				713129B42A82FC2200C6B31D /* GlobeScene.Helpers.swift */,
+				713129B72A82FC5000C6B31D /* GlobeScene.Objects.swift */,
 				714B48872A8238A400AC6199 /* EarthNode.swift */,
 			);
-			path = UIKit;
+			path = Scene;
 			sourceTree = "<group>";
 		};
 		714B48882A8238A400AC6199 /* Assets */ = {
@@ -1522,7 +1530,7 @@
 		719725F628CC7F0300A64334 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				714B48842A8238A400AC6199 /* DotGlobe */,
+				714B48842A8238A400AC6199 /* Globe */,
 				71EAF45E2A7D98EB0034FCB9 /* Graph */,
 				71B7A1EB2A691460003E6D4D /* Shiny */,
 				71C5FF612A64688A00F99A84 /* Drawer */,
@@ -2404,7 +2412,6 @@
 				71EAF4942A7DD0C00034FCB9 /* Edge.swift in Sources */,
 				7197FB192964B4C0005EBBA4 /* GraniteSheetContainerView.swift in Sources */,
 				71A28E23295237AE00EAE8EE /* TapAndLongPressModifier.swift in Sources */,
-				714B488E2A8238A400AC6199 /* DotGlobe.swift in Sources */,
 				71622E902A6E3DED006233F3 /* AdaptsToKeyboard.swift in Sources */,
 				7102838B2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
 				71C5FF6B2A64688B00F99A84 /* Drawer+Computed.swift in Sources */,
@@ -2420,8 +2427,11 @@
 				710283BD2A2A54C300010877 /* EnviromnentValues+ValueTrackConfiguration.swift in Sources */,
 				71F778C52A71ABAC00C9C5C4 /* CensorView.swift in Sources */,
 				71F042282A6A3AD700788CDC /* Write+Center.swift in Sources */,
+				713129B52A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */,
 				7166E9EB2A751441004F88D7 /* UserInfo.swift in Sources */,
 				710283912A2A54C300010877 /* VerticalRangeSliderStyle.swift in Sources */,
+				713129B82A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */,
+				713129B22A82BEF700C6B31D /* GlobeScene.swift in Sources */,
 				71C8BE7B2A7F3F14008694C7 /* FeedMainView.swift in Sources */,
 				71FBA7FD296D16110090B630 /* GraniteScrollView.swift in Sources */,
 				710283C92A2A54C300010877 /* LinearRangeMath.swift in Sources */,
@@ -2675,6 +2685,7 @@
 				7197FB282964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71A4A1202A61C41000689DF2 /* AccountService.swift in Sources */,
 				710283CA2A2A54C300010877 /* LinearRangeMath.swift in Sources */,
+				713129B32A82BEF700C6B31D /* GlobeScene.swift in Sources */,
 				710283A22A2A54C300010877 /* RangeTrackConfiguration.swift in Sources */,
 				71A28E03295233A300EAE8EE /* Brand.swift in Sources */,
 				71C9F9252A60ECEF0089D7EA /* ThreadView.swift in Sources */,
@@ -2773,6 +2784,7 @@
 				71A4A1332A6352CA00689DF2 /* CGFloat.swift in Sources */,
 				710283CC2A2A54C300010877 /* DefaultHorizontalValueView.swift in Sources */,
 				71B7A1F02A691470003E6D4D /* Gradient.swift in Sources */,
+				713129B62A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */,
 				71D027FE2A6F15FE00EA781A /* AccountModuleView.swift in Sources */,
 				71C9F90F2A60BCF50089D7EA /* PostCardView.swift in Sources */,
 				71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
@@ -2814,6 +2826,7 @@
 				7197FB142964B4C0005EBBA4 /* GraniteToastViewEvent.swift in Sources */,
 				7197FB062964B4C0005EBBA4 /* GraniteModal.swift in Sources */,
 				71AF14682A2E807300EEBD4B /* Disclaimer.swift in Sources */,
+				713129B92A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */,
 				714B487F2A8188DA00AC6199 /* ResourceContext.swift in Sources */,
 				71B7A1E42A68FE81003E6D4D /* AccountMeta.swift in Sources */,
 				7197FB082964B4C0005EBBA4 /* GraniteAlertAction.swift in Sources */,
@@ -2844,7 +2857,6 @@
 				71D028012A6F1AD400EA781A /* AccountService.Profile.swift in Sources */,
 				71B21B822A6C791E005B3BFB /* GraniteStandardView.swift in Sources */,
 				71F778D72A72187000C9C5C4 /* Config.Update.swift in Sources */,
-				714B488F2A8238A400AC6199 /* DotGlobe.swift in Sources */,
 				71C9F9012A60B9460089D7EA /* ConfigService+Center.swift in Sources */,
 				71622E912A6E3DED006233F3 /* AdaptsToKeyboard.swift in Sources */,
 				7197FB162964B4C0005EBBA4 /* GraniteModalContainerView.swift in Sources */,

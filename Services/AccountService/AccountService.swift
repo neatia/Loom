@@ -4,11 +4,11 @@ import Foundation
 struct AccountService: GraniteService {
     @Service(.online) var center: Center
     
-    static var keychainAuthToken: String = "nyc.stoic.lemur.app.auth.token"
-    static var keychainService: String = "nyc.stoic.lemmy.lemur.app.keychain"
+    static var keychainAuthToken: String = "nyc.stoic.Loom.app.auth.token"
+    static var keychainService: String = "nyc.stoic.lemmy.Loom.app.keychain"
     
-    static var keychainIPFSKeyToken: String = "nyc.stoic.lemmy.lemur.app.ipfs.key.token"
-    static var keychainIPFSSecretToken: String = "nyc.stoic.lemmy.lemur.app.ipfs.secret.token"
+    static var keychainIPFSKeyToken: String = "nyc.stoic.lemmy.Loom.app.ipfs.key.token"
+    static var keychainIPFSSecretToken: String = "nyc.stoic.lemmy.Loom.app.ipfs.secret.token"
     
     static func insertToken(_ token: Data,
                             identifier: String,

@@ -1,6 +1,6 @@
 //
 //  Profile.InlineView.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/29/23.
 //

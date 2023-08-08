@@ -1,6 +1,6 @@
 //
 //  Write.Generate.Passage.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/22/23.
 //
@@ -14,7 +14,7 @@ extension Write.Generate {
     }
     
     static var quote: String { """
-    <div class='epigraph'><p>Lemur is an app client for Lemmy. Meant for writers to share thoughts on a many-to-many social network. While persisting their works on IPFS.</p><p class='attribution'><a href="https://twitter.com/pexavc">@PEXAVC</a></p></div>
+    <div class='epigraph'><p>Loom is an app client for Lemmy. Meant for writers to share thoughts on a many-to-many social network. While persisting their works on IPFS.</p><p class='attribution'><a href="https://twitter.com/pexavc">@PEXAVC</a></p></div>
     """
     }
     
@@ -53,7 +53,7 @@ extension Write.Generate {
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <!--Basic meta info -->
-    <meta name="keywords" content="lemur, ipfs, lemmy, federated, content">
+    <meta name="keywords" content="Loom, ipfs, lemmy, federated, content">
     <meta name="author" content="\(author)" />
     <meta name="description" content="">
     
@@ -184,7 +184,7 @@ extension Write.Generate {
       </style>
     </head>
     <body>
-    <h1 class="title"><a href="https://lemmy.world/c/lemur" class="hilite" title="posted from Lemur"></a></h1>
+    <h1 class="title"><a href="https://lemmy.world/c/Loom" class="hilite" title="posted from Loom"></a></h1>
     <p class="byline" style="float: right"></a></p>
     
     <div class="content">

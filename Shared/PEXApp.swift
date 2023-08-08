@@ -19,7 +19,7 @@ struct PEXApp: App {
     var config: ConfigService = .init()
     
     let pubDidFinishLaunching = NotificationCenter.default
-            .publisher(for: NSNotification.Name("nyc.stoic.Lemur.DidFinishLaunching"))
+            .publisher(for: NSNotification.Name("nyc.stoic.Loom.DidFinishLaunching"))
     
     init() {
         config.preload()
@@ -79,7 +79,7 @@ struct EmptyComponent: GraniteComponent {
 extension EmptyComponent: View {
     var view: some View {
         ZStack {
-            Text("Lemur")
+            Text("Loom")
         }
     }
 }
