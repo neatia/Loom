@@ -10,7 +10,7 @@ import SceneKit
 import SwiftUI
 
 extension GlobeScene {
-    class func makeCylinder(from: SCNVector3, to: SCNVector3) -> SCNNode
+    class func makeCylinder(from: SCNVector3, to: SCNVector3) -> (node: SCNNode, radius: CGFloat)
     {
         let lookAt = to - from
         let height = lookAt.length()
@@ -21,7 +21,8 @@ extension GlobeScene {
         let z = x.cross(vector: y).normalized()
         let transform = SCNMatrix4(x: x, y: y, z: z, w: from)
         
-        let thickness: CGFloat = 0.02
+        //param?
+        let thickness: CGFloat = 0.005
         let radius: CGFloat = CGFloat(height) / 2
         
         let geometry = SCNTube(innerRadius: radius - (thickness / 2), outerRadius: radius, height: thickness)
@@ -35,13 +36,14 @@ extension GlobeScene {
         transform
         #endif
         
-        childNode.eulerAngles = .init((Float.pi / 4), Float.pi / 2, 0)
+        childNode.runAction(SCNAction.rotateBy(x: .pi / 2, y: 0, z: 0, duration: 0.0))
         
-        geometry.firstMaterial?.diffuse.contents = GenericColor(Color.yellow)
-        geometry.firstMaterial?.fillMode = .lines
+        //childNode.eulerAngles = .init((Float.pi / 4), Float.pi / 2, 0)
+        
+        geometry.firstMaterial?.fillMode = .fill
         geometry.firstMaterial?.lightingModel = SCNMaterial.LightingModel.constant
         
-        return childNode
+        return (childNode, radius)
     }
 }
 

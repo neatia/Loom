@@ -30,6 +30,10 @@ extension NSImage {
 public typealias GenericBezierPath = UIBezierPath
 #endif
 
+public protocol GlobeNode {
+    var nodeId: String { get }
+}
+
 class GlobeScene {
     let action: SCNAction = SCNAction.repeatForever(SCNAction.rotateBy(x: -2, y: 2, z: 0, duration: 36))
     let actionWarmer: SCNAction = SCNAction.rotateBy(x: -2, y: 2, z: 0, duration: 1.0)
@@ -134,9 +138,34 @@ class GlobeScene {
     }
     
     private var dotCount = 12500
+    private var data: [GlobeNode]
+    private var root: Int
+    public var isReady: Bool = false
     
-    func setup() {
-        setupScene()
+    init(_ data: [GlobeNode] = [], rootIndex root: Int = 0) {
+        self.data = data
+        self.root = root
+        self.isReady = data.isNotEmpty
+    }
+    
+    private func initialize(_ data: [GlobeNode], rootIndex root: Int) {
+        self.data = data
+        self.root = root
+        self.isReady = data.isNotEmpty
+    }
+    
+    func setup(_ data: [GlobeNode] = []) {
+        if sceneView == nil {
+            setupScene()
+        }
+        
+        guard isReady else {
+            self.initialize(data, rootIndex: root)
+            return
+        }
+        
+        LoomLog("setting up Globe", level: .debug)
+        
         if enablesParticles {
             setupParticles()
         }
@@ -154,7 +183,7 @@ class GlobeScene {
         
         sceneView.scene = scene
         
-        sceneView.showsStatistics = true
+        //sceneView.showsStatistics = true
         sceneView.backgroundColor = .black
         sceneView.allowsCameraControl = true
     }
@@ -183,7 +212,6 @@ class GlobeScene {
         cameraNode.camera = SCNCamera()
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 5)
         
-        
         sceneView.scene?.rootNode.addChildNode(cameraNode)
     }
     
@@ -193,48 +221,66 @@ class GlobeScene {
     }
     
     private func setupDotGeometry() {
-        self.generateTextureMap(radius: CGFloat(earthRadius)) { textureMap in
+        self.generateTextureMap(radius: CGFloat(earthRadius)) { [weak self] (map, indices) in
+            var mutableIndices: [Int] = indices
             let dotColor = GenericColor(white: 1, alpha: 1)
             
-            // threshold to determine if the pixel in the earth-dark.jpg represents terrain (0.03 represents rgb(7.65,7.65,7.65), which is almost black)
-            let threshold: CGFloat = 0.03
             
             let dotGeometry = SCNSphere(radius: dotRadius)
             
             dotGeometry.firstMaterial?.diffuse.contents = dotColor
             dotGeometry.firstMaterial?.lightingModel = SCNMaterial.LightingModel.constant
             
-            var positions = [SCNVector3]()
-            var dotNodes = [SCNNode]()
             var connectionNodes = [SCNNode]()
             var textNodes = [SCNNode]()
             
-            for i in 0...textureMap.count - 1 {
-                let u = textureMap[i].x
-                let v = textureMap[i].y
+            //Root node setup
+            var rootNode: GlobeNode = data.remove(at: root)
+            
+            let rootNodeIndex: Int = 0.randomBetween(indices.count)//customizable
+            let rootSCNNode: SCNNode = SCNNode(geometry: dotGeometry)
+            rootSCNNode.name = rootNode.nodeId
+            
+            let rootNodeDotIndex = mutableIndices.remove(at: rootNodeIndex)
+            rootSCNNode.position = map[rootNodeDotIndex].position
+            
+            let node: SCNNode = .text(withString: "!", color: .red)
+            node.position = rootSCNNode.position
+            textNodes.append(node)
+            //
+            
+            var positions: [SCNVector3] = [rootSCNNode.position]
+            var dotNodes: [SCNNode] = [rootSCNNode]
+            
+            let segment = max(data.count, indices.count) / min(data.count, indices.count)
+            
+            for (index, i) in indices.enumerated() {
+                let dotNode = SCNNode(geometry: dotGeometry)
+                dotNode.position = map[i].position
+                positions.append(dotNode.position)
                 
-                let pixelColor = self.getPixelColor(x: Int(u), y: Int(v))
-                
-                if pixelColor.red < threshold && pixelColor.green < threshold && pixelColor.blue < threshold {
-                    let dotNode = SCNNode(geometry: dotGeometry)
-                    dotNode.position = textureMap[i].position
-                    positions.append(dotNode.position)
+                //TODO: % is not fully accurate will miss some
+                //children nodes
+                if index % segment == 0,
+                          data.isNotEmpty {
                     
-                    //Test
-                    if dotNodes.count == 500, dotNodes.count - 500 >= 0 {
-                        let line = GlobeScene.makeCylinder(from: positions[dotNodes.count - 500], to: dotNode.position)
-                        
-                        let node: SCNNode = .text(withString: "!", color: .yellow)
-                        node.position = dotNode.position
-                        textNodes.append(node)
-                        let node3: SCNNode = .text(withString: "!", color: .yellow)
-                        node3.position = dotNodes[dotNodes.count - 500].position
-                        textNodes.append(node3)
-                        
-                        connectionNodes.append(line)
-                    }
-                    dotNodes.append(dotNode)
+                    let node = data.removeFirst()
+                    dotNode.name = node.nodeId
+                    //LoomLog("linking: \(node.nodeId)", level: .debug)
+                    let line = GlobeScene.makeCylinder(from: dotNode.position, to: rootSCNNode.position)
+                    line.node.name = node.nodeId
+                    line.node.geometry?.firstMaterial?.diffuse.contents = GenericColor(Brand.Colors.yellow.opacity(0.75))
+                    
+                    connectionNodes.append(line.node)
+                    
+                    let textNode: SCNNode = .text(withString: "@"+node.nodeId, color: .yellow, fontSize: 0.05, addAboveExistingNode: line.node)
+                    textNode.position.z += line.radius
+                    textNode.runAction(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 0.0))
+                    textNodes.append(textNode)
                 }
+                
+                
+                dotNodes.append(dotNode)
             }
             
             DispatchQueue.main.async { [weak self] in
@@ -256,9 +302,9 @@ class GlobeScene {
                     pointCloudNode.addChildNode(connectNode)
                 }
                 
-                for textNode in textNodes {
-                    pointCloudNode.addChildNode(textNode)
-                }
+//                for textNode in textNodes {
+//                    pointCloudNode.addChildNode(textNode)
+//                }
                 
                 self.pointCloudNode = pointCloudNode
                 
@@ -269,8 +315,9 @@ class GlobeScene {
         }
     }
     
-    private func generateTextureMap(radius: CGFloat, completion: ([(position: SCNVector3, x: Int, y: Int)]) -> ()) {
+    private func generateTextureMap(radius: CGFloat, completion: ([(position: SCNVector3, x: Int, y: Int)], [Int]) -> ()) {
         var textureMap = [(position: SCNVector3, x: Int, y: Int)]()
+        var pixelIndices: [Int] = []
         textureMap.reserveCapacity(dotCount)
         let doubleDotCount = Double(dotCount)
         let floatWorldMapImageHeight = CGFloat(worldMapImage.height)
@@ -298,8 +345,17 @@ class GlobeScene {
 #else
             textureMap.append((position: SCNVector3(x: x * radius, y: y * radius, z: z * radius), x: xPixel, y: yPixel))
 #endif
+            
+            let pixelColor = self.getPixelColor(x: Int(xPixel), y: Int(yPixel))
+            
+            // threshold to determine if the pixel in the earth-dark.jpg represents terrain (0.03 represents rgb(7.65,7.65,7.65), which is almost black)
+            //customizable?
+            let threshold: CGFloat = 0.03
+            if pixelColor.red < threshold && pixelColor.green < threshold && pixelColor.blue < threshold {
+                pixelIndices.append(textureMap.count - 1)
+            }
         }
-        completion(textureMap)
+        completion(textureMap, pixelIndices)
     }
     
     private func getPixelColor(x: Int, y: Int) -> (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -320,9 +376,13 @@ extension GlobeScene {
         //pointCloudNode?.runAction(action)
     }
     
-    public func clear() {
-        earthNode.removeAllActions()
-        earthNode.cleanup()
+    public func destroy() {
+        self.earthNode.removeAllActions()
+        self.earthNode.cleanup()
+        self.cameraNode.removeAllActions()
+        self.cameraNode.cleanup()
+        self.sceneView.scene?.rootNode.removeAllActions()
+        self.sceneView.scene?.rootNode.cleanup()
     }
 }
 

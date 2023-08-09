@@ -19,7 +19,7 @@ struct GlobeExplorerView: View {
     @State var mesh: Mesh? = nil
     @StateObject var selection: SelectionHandler = .init()
     
-    let globe: GlobeView = .init()
+    @State var instances: [Instance] = []
     
     var selectedNode: NodeID? {
         selection.selectedNodeIDs.first ?? mesh?.rootNodeID
@@ -27,17 +27,17 @@ struct GlobeExplorerView: View {
     
     var body: some View {
         VStack {
-//            if Device.isExpandedLayout {
-//                landscapeView
-//            } else if let mesh {
-//                SurfaceView(mesh: mesh,
-//                            selection: selection)
-//                    .showDrawer(selectedNode != nil,
-//                                node: mesh.nodeWithID(selectedNode ?? .init()),
-//                                event: restart)
-//            }
-            
-            globe
+            if instances.count > 1 {
+                GlobeView(instances)
+            } else {
+                Spacer()
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                Spacer()
+            }
         }
         //TODO: reusable
         .overlay(
@@ -72,21 +72,23 @@ struct GlobeExplorerView: View {
         .task {
             explorer.preload()
             
-            guard explorer.state.lastUpdate == nil else {
-                setup()
+            //TODO: counts can change, compare dates instead of count check
+            guard explorer.state.lastUpdate == nil || explorer.state.linkedInstances.isEmpty else {
+                self.instances = [Instance.base] + explorer.state.linkedInstances
+                LoomLog("found \(self.instances.count) instances", level: .debug)
                 return
             }
             
             explorer.center.boot.send()
-            setup()
+            
+            self.instances = [Instance.base] + explorer.state.linkedInstances
+            LoomLog("found \(self.instances.count) instances", level: .debug)
+            //setup()
             
         }
         .clipped()
         .onAppear {
             
-            globe.run()
-//            guard let mesh else { return }
-//            selection.selectNode(mesh.rootNode())
         }
     }
     
