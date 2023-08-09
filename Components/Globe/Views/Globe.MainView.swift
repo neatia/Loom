@@ -13,7 +13,7 @@ import SwiftUI
 extension Globe {
     var mainView: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
+            HStack(alignment: .bottom, spacing: .layer4) {
                 Button {
                     GraniteHaptic.light.invoke()
                     guard state.tab != .accounts else { return }
@@ -57,7 +57,7 @@ extension Globe {
                 accountsView
             case .explorer:
                 GeometryReader { proxy in
-                    GlobeExplorerView(radius: (proxy.size.width / 2) - (.layer4 * 2))
+                    GlobeExplorerView()
                         .graniteEvent(config.center.restart)
                 }
             }

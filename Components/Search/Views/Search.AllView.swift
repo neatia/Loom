@@ -182,7 +182,6 @@ struct SearchAllView: View {
                                     }
                                 }
                                 
-                                
                                 Spacer().frame(width: .layer4)
                             }
                         }

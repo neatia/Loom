@@ -42,20 +42,18 @@ public struct GlobeView : GenericViewRepresentable {
     }
 
     public func updateUIView(_ scnView: SCNView, context: Context) {
-        
+        scene.setup(data, force: true)
     }
     #else
     public func makeNSView(context: GenericControllerRepresentableContext<GlobeView>) -> SCNView {
         
-        scene.setup()
+        scene.setup(force: true)
         
         return scene.sceneView
     }
 
     public func updateNSView(_ scnView: SCNView, context: Context) {
-        if scene.isReady == false {
-            scene.setup(data)
-        }
+        //scene.setup(data, force: true)
     }
     #endif
     

@@ -1,8 +1,8 @@
 //
-//  Search.swift
+//  SearchConductor.Views.swift
 //  Loom
 //
-//  Created by PEXAVC on 7/25/23.
+//  Created by Ritesh Pakala on 8/9/23.
 //
 
 import Foundation
@@ -10,96 +10,28 @@ import Granite
 import GraniteUI
 import SwiftUI
 import Combine
-import LemmyKit
-
-class SearchConductor: ObservableObject {
-    var searchTimer: Cancellable? = nil
-    private var task: Task<Void, Error>? = nil
-    
-    @Published var isEditing: Bool = false
-    //TODO: cleanup, using view @state for this
-    @Published var isSearching: Bool = false
-    @Published var response: SearchResponse? = nil
-    var lastQuery: String = ""
-    
-    var isEmpty: Bool {
-        response == nil
-    }
-    
-    private var handler: ((String) async -> SearchResponse?)?
-    
-    internal var cancellables: Set<AnyCancellable> = .init()
-    
-    init() {
-        self.handler = nil
-    }
-    
-    @discardableResult
-    func hook(_ commit: @escaping ((String) async -> SearchResponse?)) -> Self {
-        self.handler = commit
-        return self
-    }
-    
-    //basic debouncing
-    func startTimer(_ query: String) {
-        self.lastQuery = query
-        searchTimer?.cancel()
-        searchTimer = nil
-        if isSearching == false {
-            DispatchQueue.main.async { [weak self] in
-                self?.isSearching = true
-            }
-        }
-        searchTimer = Timer.publish(every: 1,
-                                    on: .main,
-                                    in: .common)
-          .autoconnect()
-          .sink(receiveValue: { [weak self] (output) in
-              self?.searchTimer?.cancel()
-//              self?.isSearching = false
-              print("[Executing Query] \(query)")
-              self?.search(query)
-          })
-    }
-    
-    func search(_ query: String) {
-        let q = query
-        searchTimer?.cancel()
-        searchTimer = nil
-        self.task?.cancel()
-        //self.isSearching = true
-        self.task = Task.detached(priority: .background) { [weak self] in
-            let response = await self?.handler?(q)
-            DispatchQueue.main.async { [weak self] in
-                GraniteHaptic.light.invoke()
-                self?.response = response
-                //self?.isSearching = false
-                self?.lastQuery = q
-            }
-        }
-    }
-    
-    func clean() {
-        isSearching = false
-        self.task?.cancel()
-        self.task = nil
-        searchTimer?.cancel()
-        searchTimer = nil
-        self.lastQuery = ""
-    }
-}
-
 
 struct SearchBar: View {
-    @EnvironmentObject var conductor: SearchConductor
-    @StateObject var textDebouncer = TextDebouncer()
+    @GraniteAction<String> var query
+    @GraniteAction<Void> var clean
+    
+    @Binding var lastQuery: String
+    
+    var offline: Bool
+    init(lastQuery: Binding<String>? = nil, debounceInterval: Double = 1.2) {
+        self.offline = lastQuery == nil
+        self._lastQuery = lastQuery ?? .constant("")
+        self._textDebouncer = .init(wrappedValue: .init(debounceInterval))
+    }
+    
+    @StateObject var textDebouncer: TextDebouncer
     
     @State var isSearching: Bool = false
     
     var body: some View {
         VStack {
             HStack {
-                if (Device.isMacOS && isSearching == false) || (Device.isMacOS == false) {
+                if ((Device.isMacOS && isSearching == false) || (Device.isMacOS == false)) || offline {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .resizable()
@@ -117,8 +49,10 @@ struct SearchBar: View {
                                 StandardToolbarView()
                                     .attach({
                                         DispatchQueue.main.async {
-                                            self.isSearching = true
-                                            self.conductor.search(textDebouncer.text)
+                                            if offline == false {
+                                                self.isSearching = true
+                                            }
+                                            query.perform(textDebouncer.text)
                                         }
                                     }, at: \.search)
                             }
@@ -132,13 +66,15 @@ struct SearchBar: View {
                 #if os(macOS)
                 EmptyView()
                     .onChange(of: textDebouncer.query) { value in
-                    self.isSearching = true
-                    self.conductor.search(value)
+                    if offline == false {
+                        self.isSearching = true
+                    }
+                    query.perform(value)
                 }
                 #endif
                 
                 EmptyView()
-                    .onChange(of: conductor.lastQuery) { _ in
+                    .onChange(of: lastQuery) { _ in
                     isSearching = false
                 }
                 
@@ -146,26 +82,27 @@ struct SearchBar: View {
                     Group {
                         HStack(spacing: .layer1) {
                             #if os(iOS)
-                            if isSearching {
+                            if isSearching && offline == false {
                                 ProgressView()
                                     .padding(.trailing, .layer4)
                             }
                             #else
-                            if conductor.lastQuery != textDebouncer.query {
+                            if lastQuery != textDebouncer.query && offline == false {
                                 ProgressView()
                                     .scaleEffect(0.6)
                             }
                             #endif
                             
                             //TODO: should probably maintain and cancel should actually invoke cancelling search
-                            if Device.isMacOS {
+                            if offline {
                                 Button(action: {
                                     GraniteHaptic.light.invoke()
-                                    conductor.clean()
-                                    
-#if os(iOS)
+                                    resetView()
+                                    $textDebouncer.text.wrappedValue = ""
+
+                                    #if os(iOS)
                                     hideKeyboard()
-#endif
+                                    #endif
                                 }) {
                                     Text("MISC_CANCEL")
                                         .font(.footnote.bold())
@@ -176,8 +113,6 @@ struct SearchBar: View {
                             }
                         }
                         .frame(height: Device.isMacOS == false && isSearching ? 48 : nil)
-                        //                        .transition(.move(edge: .trailing))
-                        //                        .animation(.default)
                     }
                 }
             }
@@ -188,7 +123,7 @@ struct SearchBar: View {
 #if canImport(UIKit)
         self.hideKeyboard()
 #endif
-        conductor.clean()
+        clean.perform()
     }
 }
 struct StandardLoadingView: View {
@@ -261,10 +196,10 @@ class TextDebouncer : ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    init(_ interval: Double = 1.2) {
         #if os(macOS)
         $text
-            .debounce(for: .seconds(1.2), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(interval), scheduler: DispatchQueue.main)
             .sink(receiveValue: { [weak self] value in
                 let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
                 guard trimmedValue.isNotEmpty else { return }

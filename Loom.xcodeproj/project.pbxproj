@@ -105,6 +105,12 @@
 		711B3FDA2885D4F000F3080D /* Home+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3FD62885D4F000F3080D /* Home+Center.swift */; };
 		711B3FDD2885D4F000F3080D /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3FD82885D4F000F3080D /* Home.swift */; };
 		711B3FDE2885D4F000F3080D /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3FD82885D4F000F3080D /* Home.swift */; };
+		711D39222A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39212A8408CF00CF2DB2 /* SearchConductor.Views.swift */; };
+		711D39232A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39212A8408CF00CF2DB2 /* SearchConductor.Views.swift */; };
+		711D39252A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */; };
+		711D39262A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */; };
+		711D39292A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */; };
+		711D392A2A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */; };
 		712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712427B72A65C4AA007F2F77 /* Bookmark._.swift */; };
 		712427B92A65C4AA007F2F77 /* Bookmark._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712427B72A65C4AA007F2F77 /* Bookmark._.swift */; };
 		71258D272A55F951007E52FC /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71258D262A55F951007E52FC /* Device.swift */; };
@@ -644,6 +650,9 @@
 		711B3F982885D43B00F3080D /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
 		711B3FD62885D4F000F3080D /* Home+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Home+Center.swift"; sourceTree = "<group>"; };
 		711B3FD82885D4F000F3080D /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		711D39212A8408CF00CF2DB2 /* SearchConductor.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchConductor.Views.swift; sourceTree = "<group>"; };
+		711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchConductor.BasicKeys.swift; sourceTree = "<group>"; };
+		711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceCardView.swift; sourceTree = "<group>"; };
 		712427B72A65C4AA007F2F77 /* Bookmark._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark._.swift; sourceTree = "<group>"; };
 		71258D262A55F951007E52FC /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		712BEB5929074CFB00D257B7 /* CameraContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContent.swift; sourceTree = "<group>"; };
@@ -1320,6 +1329,24 @@
 			path = Reducers;
 			sourceTree = "<group>";
 		};
+		711D39202A8408C000CF2DB2 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				71C69E432A70515F00B54AD6 /* SearchConductor.swift */,
+				711D39212A8408CF00CF2DB2 /* SearchConductor.Views.swift */,
+				711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		711D39272A8413E100CF2DB2 /* Instances */ = {
+			isa = PBXGroup;
+			children = (
+				711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */,
+			);
+			path = Instances;
+			sourceTree = "<group>";
+		};
 		712BEB5829074CFB00D257B7 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -1487,9 +1514,9 @@
 				714B48772A816CF900AC6199 /* Logger.swift */,
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
 				71A28E18295237AE00EAE8EE /* Passthrough.swift */,
+				711D39202A8408C000CF2DB2 /* Search */,
 				71A28E1E295237AE00EAE8EE /* Run.swift */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
-				71C69E432A70515F00B54AD6 /* SearchConductor.swift */,
 				717C12A1293BF02D0060A446 /* Animations */,
 			);
 			path = Utility;
@@ -1834,6 +1861,7 @@
 				7166E9E42A74EE64004F88D7 /* BlockedPickerView.swift */,
 				7166E9E72A7503A0004F88D7 /* CardActionsView.swift */,
 				71B7A1DB2A68E5CA003E6D4D /* LoginView.swift */,
+				711D39272A8413E100CF2DB2 /* Instances */,
 				71E5F3C92A739E7800299558 /* Community */,
 				71E5F3C72A739E5200299558 /* Headers */,
 				71E5F3C62A739E3D00299558 /* Comments */,
@@ -2403,6 +2431,7 @@
 				71C9F9262A60ECEF0089D7EA /* CommentCardView.swift in Sources */,
 				710283AD2A2A54C300010877 /* ValueSliderStyle.swift in Sources */,
 				71F042092A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */,
+				711D39222A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */,
 				71C5FF692A64688B00F99A84 /* SwiftUIView.swift in Sources */,
 				7197FB1D2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
 				71A4A1242A61C51600689DF2 /* AccountService.Auth.swift in Sources */,
@@ -2448,6 +2477,7 @@
 				7166E9D22A747ED7004F88D7 /* ReportView.swift in Sources */,
 				71DF107528CC697600559DBC /* Style.swift in Sources */,
 				71F778D62A72187000C9C5C4 /* Config.Update.swift in Sources */,
+				711D39292A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */,
 				710283892A2A54C300010877 /* AnyRangeSliderStyle.swift in Sources */,
 				71F778C22A71A95300C9C5C4 /* LinkPreviewDesign.swift in Sources */,
 				710283932A2A54C300010877 /* PointSliderStyleConfiguration.swift in Sources */,
@@ -2552,6 +2582,7 @@
 				71622EA12A6E5796006233F3 /* Reply+View.swift in Sources */,
 				71C9F8FE2A60B9460089D7EA /* ConfigService.swift in Sources */,
 				71FBA7FB296D16110090B630 /* GraniteScrollViewPositionIndicator.swift in Sources */,
+				711D39252A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift in Sources */,
 				71A28E0A295233B200EAE8EE /* Fonts.swift in Sources */,
 				717090AD2A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift in Sources */,
 				71B21B812A6C791E005B3BFB /* GraniteStandardView.swift in Sources */,
@@ -2714,6 +2745,7 @@
 				71C9F90F2A60BCF50089D7EA /* PostCardView.swift in Sources */,
 				71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
 				71DF107C28CC697600559DBC /* Double+Rounding.swift in Sources */,
+				711D39232A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */,
 				7102838C2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
 				71A28D97295231E600EAE8EE /* Double.swift in Sources */,
@@ -2765,6 +2797,7 @@
 				71EAF47C2A7DA3320034FCB9 /* ExplorerService.swift in Sources */,
 				717C8FB62A6F9F4000DF6037 /* Pager.swift in Sources */,
 				71EAF47F2A7DA3440034FCB9 /* ExplorerService._.swift in Sources */,
+				711D39262A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift in Sources */,
 				71C9F8F12A60B7F40089D7EA /* Settings.swift in Sources */,
 				71622E942A6E4103006233F3 /* View+OnSwipe.swift in Sources */,
 				710283C22A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
@@ -2794,6 +2827,7 @@
 				711B3FDA2885D4F000F3080D /* Home+Center.swift in Sources */,
 				717090AE2A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift in Sources */,
 				71F0420D2A69D39600788CDC /* ContentService.Interact.swift in Sources */,
+				711D392A2A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */,
 				713129BC2A83280A00C6B31D /* Instance.swift in Sources */,
 				711B3F9B2885D43B00F3080D /* PEXApp.swift in Sources */,
 				714B48992A8238A400AC6199 /* GlobeView.swift in Sources */,

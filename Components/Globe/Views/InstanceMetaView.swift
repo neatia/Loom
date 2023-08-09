@@ -208,3 +208,4 @@ extension Lemmy.Metadata: Equatable {
         lhs.site.id == rhs.site.id
     }
 }
+

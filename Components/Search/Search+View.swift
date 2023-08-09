@@ -48,8 +48,13 @@ extension Search: View {
                 
                 Divider()
                 
-                SearchBar()
-                    .environmentObject(conductor)
+                SearchBar(lastQuery: $conductor.lastQuery)
+                    .attach({ query in
+                        conductor.search(query)
+                    }, at: \.query)
+                    .attach({
+                        conductor.clean()
+                    }, at: \.clean)
                 
                 Divider()
             }

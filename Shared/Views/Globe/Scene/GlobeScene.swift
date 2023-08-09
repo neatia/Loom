@@ -141,6 +141,7 @@ class GlobeScene {
     private var data: [GlobeNode]
     private var root: Int
     public var isReady: Bool = false
+    public var isSetup: Bool = false
     
     init(_ data: [GlobeNode] = [], rootIndex root: Int = 0) {
         self.data = data
@@ -154,16 +155,21 @@ class GlobeScene {
         self.isReady = data.isNotEmpty
     }
     
-    func setup(_ data: [GlobeNode] = []) {
+    func setup(_ data: [GlobeNode] = [], force: Bool = false) {
         if sceneView == nil {
             setupScene()
         }
         
-        guard isReady else {
+        guard isReady || force else {
             self.initialize(data, rootIndex: root)
             return
         }
         
+        guard isSetup == false else {
+            return
+        }
+        
+        isSetup = true
         LoomLog("setting up Globe", level: .debug)
         
         if enablesParticles {
@@ -235,11 +241,14 @@ class GlobeScene {
             var textNodes = [SCNNode]()
             
             //Root node setup
-            var rootNode: GlobeNode = data.remove(at: root)
             
             let rootNodeIndex: Int = 0.randomBetween(indices.count)//customizable
             let rootSCNNode: SCNNode = SCNNode(geometry: dotGeometry)
-            rootSCNNode.name = rootNode.nodeId
+            
+            if data.count > root {
+                let rootNode: GlobeNode = data.remove(at: root)
+                rootSCNNode.name = rootNode.nodeId
+            }
             
             let rootNodeDotIndex = mutableIndices.remove(at: rootNodeIndex)
             rootSCNNode.position = map[rootNodeDotIndex].position
@@ -252,7 +261,7 @@ class GlobeScene {
             var positions: [SCNVector3] = [rootSCNNode.position]
             var dotNodes: [SCNNode] = [rootSCNNode]
             
-            let segment = max(data.count, indices.count) / min(data.count, indices.count)
+            let segment: Int = data.isEmpty ? .max : max(data.count, indices.count) / min(data.count, indices.count)
             
             for (index, i) in indices.enumerated() {
                 let dotNode = SCNNode(geometry: dotGeometry)
@@ -263,24 +272,26 @@ class GlobeScene {
                 //children nodes
                 if index % segment == 0,
                           data.isNotEmpty {
-                    
+
                     let node = data.removeFirst()
                     dotNode.name = node.nodeId
                     //LoomLog("linking: \(node.nodeId)", level: .debug)
                     let line = GlobeScene.makeCylinder(from: dotNode.position, to: rootSCNNode.position)
                     line.node.name = node.nodeId
                     line.node.geometry?.firstMaterial?.diffuse.contents = GenericColor(Brand.Colors.yellow.opacity(0.75))
-                    
+
                     connectionNodes.append(line.node)
-                    
+
 //                    let textNode: SCNNode = .text(withString: "@"+node.nodeId, color: .yellow, fontSize: 0.05, addAboveExistingNode: line.node)
 //                    textNode.position.z += line.radius
 //                    textNode.runAction(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 0.0))
 //                    textNodes.append(textNode)
                 }
-                
                 dotNodes.append(dotNode)
+                
             }
+            
+            LoomLog("setting up: \(dotNodes.count) dot nodes", level: .debug)
             
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
