@@ -16,7 +16,7 @@ import NukeUI
 struct InstanceMetaView: View {
     @Environment(\.graniteEvent) var restart
     
-    var node: Node
+    var instance: Instance
     
     var name: String? {
         if isBase {
@@ -35,15 +35,15 @@ struct InstanceMetaView: View {
     }
     
     var title: String {
-        node.meta.title
+        instance.domain
     }
     
     var subtitle: String? {
-        node.meta.subtitle
+        instance.published.serverTimeAsDate?.timeAgoDisplay()
     }
     
     var isBase: Bool {
-        node.style.isMain && LemmyKit.auth != nil
+        instance.domain == LemmyKit.host
     }
     
     var iconURL: URL? {
@@ -72,8 +72,8 @@ struct InstanceMetaView: View {
     @State var siteMetaData: SiteMetadata?
     @State var task: Task<Void, Error>? = nil
     
-    init(node: Node) {
-        self.node = node
+    init(_ instance: Instance) {
+        self.instance = instance
         
         if isBase {
             metadata = LemmyKit.current.metadata

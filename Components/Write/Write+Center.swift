@@ -38,4 +38,14 @@ extension Write {
             return .green.opacity(0.8)
         }
     }
+    
+    var imageColorState: Color {
+        if state.imageData == nil {
+            return .foreground
+        } else if state.imageContent == nil && state.imageData != nil {
+            return .red.opacity(0.8)
+        } else {
+            return .green.opacity(0.8)
+        }
+    }
 }

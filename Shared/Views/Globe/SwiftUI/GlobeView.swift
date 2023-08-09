@@ -28,7 +28,7 @@ public struct GlobeView : GenericViewRepresentable {
     var scene: GlobeScene
     var data: [GlobeNode]
     
-    public init(_ data: [GlobeNode], rootIndex root: Int = 0) {
+    public init(_ data: [GlobeNode] = [], rootIndex root: Int = 0) {
         self.data = data
         self.scene = .init(data, rootIndex: root)
     }

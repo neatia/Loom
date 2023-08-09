@@ -273,12 +273,11 @@ class GlobeScene {
                     
                     connectionNodes.append(line.node)
                     
-                    let textNode: SCNNode = .text(withString: "@"+node.nodeId, color: .yellow, fontSize: 0.05, addAboveExistingNode: line.node)
-                    textNode.position.z += line.radius
-                    textNode.runAction(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 0.0))
-                    textNodes.append(textNode)
+//                    let textNode: SCNNode = .text(withString: "@"+node.nodeId, color: .yellow, fontSize: 0.05, addAboveExistingNode: line.node)
+//                    textNode.position.z += line.radius
+//                    textNode.runAction(SCNAction.rotateBy(x: 0, y: .pi, z: 0, duration: 0.0))
+//                    textNodes.append(textNode)
                 }
-                
                 
                 dotNodes.append(dotNode)
             }
