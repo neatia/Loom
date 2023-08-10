@@ -32,6 +32,14 @@
 
 ### [Changelog // Developer updates](https://lemmy.world/post/2779700)
 
+## Component Previews
+
+> WIP previews of major components
+
+| Explore    | |
+| -------- | ------- |
+| ![Image](https://gateway.ipfs.io/ipfs/QmPr9TxMX4VP94hkQPwncRPdtLYbjqDriMowWPxDozreym)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
+
 ## Contributing 
 
 Loom uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
