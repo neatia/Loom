@@ -2,7 +2,7 @@
 //  Logger.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/7/23.
+//  Created by PEXAVC on 8/7/23.
 //
 
 import Foundation
@@ -49,6 +49,6 @@ extension LoomLogLevel {
                                        line: Int = #line) {
     if level.rawValue <= LoomLogLevel.level.rawValue {
         let fileName = (file as NSString).lastPathComponent
-        print("level: \(level) Loom: \(fileName):\(line) \(function) | \(message)")
+        print("[Loom] | \(level) | \(fileName):\(line) \(function) | \(message)")
     }
 }

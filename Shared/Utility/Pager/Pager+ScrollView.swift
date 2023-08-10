@@ -1,6 +1,6 @@
 //
 //  Pager+ScrollView.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 8/5/23.
 //
@@ -113,19 +113,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     }
 
                     ForEach(pager.currentItems) { item in
-//                        VStack(spacing: 0) {
-//                            cache(item)
-//                                .padding(.vertical, verticalPadding)
-//                                //.setupPlainListRow()
-//
-//                            if !hideDivider,
-//                               item.id != pager.lastItem?.id {
-//                                Divider()
-//                                    //.setupPlainListRow()
-//                            }
-//                        }
-//                        .background(contentBGColor)
-                        cache(item)
+                        mainContent(item)
                             .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                     }
 
@@ -148,7 +136,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         }) {
             LazyVStack(spacing: 0) {
                 ForEach(pager.currentItems) { item in
-                    cache(item)
+                    mainContent(item)
                         .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                 }
             }
@@ -219,20 +207,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         
 //        let view: Content = content(item)
         
-        let view: AnyView = AnyView(
-            VStack(spacing: 0) {
-                content(item)
-                    .padding(.vertical, verticalPadding)
-                    //.setupPlainListRow()
-                
-                if !hideDivider,
-                   item.id != pager.lastItem?.id {
-                    Divider()
-                        //.setupPlainListRow()
-                }
-            }
-            .background(contentBGColor)
-        )
+        let view: AnyView = AnyView(mainContent(item))
         
         if cacheEnabled {
             cache.viewCache[item.id] = view
@@ -244,5 +219,20 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         } else {
             return view
         }
+    }
+    
+    func mainContent(_ item: Model) -> some View {
+        VStack(spacing: 0) {
+            content(item)
+                .padding(.vertical, verticalPadding)
+                //.setupPlainListRow()
+            
+            if !hideDivider,
+               item.id != pager.lastItem?.id {
+                Divider()
+                    //.setupPlainListRow()
+            }
+        }
+        .background(contentBGColor)
     }
 }

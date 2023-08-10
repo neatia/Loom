@@ -6,26 +6,21 @@ extension ExplorerService {
     struct Boot: GraniteReducer {
         typealias Center = ExplorerService.Center
         
-        @Event var storeGraphData: StoreGraphData.Reducer
+        func reduce(state: inout Center.State) async {
+            //TODO: better logic
+            
+            let fedInstances = await Lemmy.instances()
+            
+            LoomLog("globe finished | \(fedInstances?.linked.count ?? 0)")
+            
+            state.linkedInstances = fedInstances?.linked ?? []
+            state.allowedInstances = fedInstances?.allowed ?? []
+            state.blockedInstances = fedInstances?.blocked ?? []
+            state.lastUpdate = .init()
+        }
         
-        func reduce(state: inout Center.State) {
-            _ = Task.detached {
-                let fedInstances = await Lemmy.instances()
-//                let mainNode: Node = .init(id: LemmyKit.host,
-//                                           group: 1,
-//                                           position: .init(0.5, 0.5),
-//                                           velocity: .zero,
-//                                           isInteractive: true)
-//
-//                let instances = Array(fedInstances?.linked ?? [])
-//
-                
-    
-                storeGraphData.send(
-                    StoreGraphData.Meta(linked: fedInstances?.linked ?? [],
-                                        allowed: fedInstances?.allowed ?? [],
-                                        blocked: fedInstances?.blocked ?? []))
-            }
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
     
@@ -41,6 +36,7 @@ extension ExplorerService {
         @Payload var meta: Meta?
         
         func reduce(state: inout Center.State) {
+            LoomLog("globe Linked instances: \(meta?.linked.count ?? 0) | \(meta?.allowed.count ?? 0)")
             state.linkedInstances = meta?.linked ?? []
             state.allowedInstances = meta?.allowed ?? []
             state.blockedInstances = meta?.blocked ?? []

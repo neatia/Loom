@@ -20,9 +20,7 @@ extension AccountService {
         
         @Payload var meta: Meta?
         
-        @Event var response: AuthResponse.Reducer
-        
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             guard let intent = meta?.intent else {
                 return
             }
@@ -30,72 +28,65 @@ extension AccountService {
             let addToProfiles: Bool = meta?.addToProfiles ?? false
             switch intent {
             case .login(let username, let password, let token2FA):
-                _ = Task.detached {
-                    let info = await Lemmy.login(username: username,
-                                                 password: password,
-                                                 token2FA: token2FA)
+                let info = await Lemmy.login(username: username,
+                                             password: password,
+                                             token2FA: token2FA)
+                
+                guard info != nil else {
+                    beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
                     
-                    guard info != nil else {
-                        beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
-                        
-                        return
-                    }
-                    
-                    response.send(AuthResponse.Meta(jwt: info, username: username, host: LemmyKit.host, addToProfiles: addToProfiles))
+                    return
                 }
+                
+                guard setup(username, jwt: info, addToProfiles: addToProfiles),
+                      let user = LemmyKit.current.user else {
+                    return
+                }
+                
+                state.meta = .init(info: user, host: LemmyKit.host)
+                state.addToProfiles = false
+                state.authenticated = LemmyKit.auth != nil
+                
             case .register(let username, let password, let captchaUUID, let captchaAnswer):
-                _ = Task.detached {
-                    let info = await Lemmy.register(username: username, password: password, password_verify: password, show_nsfw: false, captcha_uuid: captchaUUID, captcha_answer: captchaAnswer)
+                let info = await Lemmy.register(username: username, password: password, password_verify: password, show_nsfw: false, captcha_uuid: captchaUUID, captcha_answer: captchaAnswer)
+                
+                guard info != nil else {
+                    beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
                     
-                    guard info != nil else {
-                        beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
-                        
-                        return
-                    }
-                    
-                    response.send(AuthResponse.Meta(jwt: info, username: username, host: LemmyKit.host, addToProfiles: addToProfiles))
+                    return
                 }
-                break
+                
+                guard setup(username, jwt: info, addToProfiles: addToProfiles),
+                      let user = LemmyKit.current.user else {
+                    return
+                }
+                
+                state.meta = .init(info: user, host: LemmyKit.host)
+                state.addToProfiles = false
+                state.authenticated = LemmyKit.auth != nil
             }
         }
-    }
-    struct AuthResponse: GraniteReducer {
-        typealias Center = AccountService.Center
         
-        struct Meta: GranitePayload {
-            var jwt: String?
-            var username: String
-            var host: String
-            var addToProfiles: Bool
-        }
-        
-        @Payload var meta: Meta?
-        
-        //TODO: Something is wrong with event afters
-        //I think online reducers will mess up if the reducer
-        //is mentioned elsewhere as well.
-        @Event(.after) var details: Details.Reducer
-        
-        func reduce(state: inout Center.State) {
-            guard let meta else {
-                return
-            }
-            
-            guard let jwt = meta.jwt else {
-                return
-            }
-            
-            guard let data = jwt.data(using: .utf8) else {
-                return
+        func setup(_ username: String, jwt: String?, addToProfiles: Bool) -> Bool {
+            guard let jwt,
+                  let data = jwt.data(using: .utf8) else {
+                return false
             }
             
             do {
-                try AccountService.insertToken(data, identifier: AccountService.keychainAuthToken + meta.username, service: AccountService.keychainService + meta.host)
-                state.addToProfiles = meta.addToProfiles
+                try AccountService.insertToken(data,
+                                               identifier: AccountService.keychainAuthToken + username,
+                                               service: AccountService.keychainService + LemmyKit.host)
                 print("{TEST} inserted data into keychain")
+                return true
             } catch let error {
                 print("{TEST} keychain: \(error)")
+                return false
             }
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
     

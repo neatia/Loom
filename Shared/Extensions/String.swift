@@ -21,6 +21,26 @@ extension String {
     var isNotEmpty: Bool {
         self.isEmpty == false
     }
+    
+    func suggestions(_ options: [String]) -> [String] {
+        guard self.count > 1 else  { return [] }
+        
+        let text = self
+        
+        let suggestions: [String] = options
+            .filter {
+                let range = $0.lowercased().range(of: text.lowercased())
+                
+                if let rangeCheck = range {
+                    return rangeCheck.lowerBound == $0.startIndex
+                } else {
+                    return false
+                }
+                
+            }
+        
+        return suggestions
+    }
 }
 
 extension Int {

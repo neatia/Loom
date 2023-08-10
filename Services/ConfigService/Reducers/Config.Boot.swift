@@ -10,7 +10,7 @@ extension ConfigService {
         @Relay var content: ContentService
         @Relay var layout: LayoutService
         
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             LemmyKit.baseUrl = state.config.baseUrl
             ConfigService.configureIPFS(state.ipfsGatewayUrl)
             
@@ -31,6 +31,10 @@ extension ConfigService {
                 LayoutService.expandWindow(close: layout.state.closeFeedDisplayView)
             }
         }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
+        }
     }
     
     struct Restart: GraniteReducer {
@@ -46,7 +50,7 @@ extension ConfigService {
         @Relay var account: AccountService
         @Relay var content: ContentService
         
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             guard let meta else { return }
             
             if let host = meta.host {
@@ -56,6 +60,7 @@ extension ConfigService {
                 LemmyKit.baseUrl = accountMeta.host
                 state.config = .init(baseUrl: accountMeta.host)
                 
+                LoomLog("booting account")
                 account.center.boot.send(AccountService.Boot.Meta(accountMeta: accountMeta))
             }
                 
@@ -68,6 +73,10 @@ extension ConfigService {
             if meta.accountMeta == nil {
                 broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(host)", event: .normal))
             }
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
 }

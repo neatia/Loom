@@ -1,6 +1,6 @@
 //
 //  GlobeExplorer.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 8/4/23.
 //
@@ -12,195 +12,258 @@ import GraniteUI
 import LemmyKit
 
 struct GlobeExplorerView: View {
-    var radius: CGFloat = 50
-    @Relay var explorer: ExplorerService
     @Environment(\.graniteEvent) var restart
     
-    @State var mesh: Mesh? = nil
-    @StateObject var selection: SelectionHandler = .init()
+    @State var instances: [String: Instance] = [:]
+    @State var globeInstances: [Instance] = []
+    @State var searchedInstances: [Instance] = []
+    @State var randomSelection: [Instance] = []
     
-    var selectedNode: NodeID? {
-        selection.selectedNodeIDs.first ?? mesh?.rootNodeID
+    @State var searchBox: BasicKeySearchBox = .init(keys: [])
+    @State var isReady: Bool = false
+    
+    @State var connected: Instance = .base
+    
+    @Relay var explorer: ExplorerService
+    
+    @State var instancesViewingOption: Int = 0
+    
+    var hasFavorites: Bool {
+        explorer.state.favorites.values.isEmpty == false
     }
     
     var body: some View {
         VStack {
-            if Device.isExpandedLayout {
-                landscapeView
-            } else if let mesh {
-                SurfaceView(mesh: mesh,
-                            selection: selection)
-                    .showDrawer(selectedNode != nil,
-                                node: mesh.nodeWithID(selectedNode ?? .init()),
-                                event: restart)
-            }
-            
-            //GlobeView()
+            #if os(iOS)
+            searchView
+            #else
+            landscapeView
+            #endif
         }
-        //TODO: reusable
-        .overlay(
-            VStack {
-                HStack {
-                    HStack {
-                        Text("⚠️ ") + Text("ALERT_WORK_IN_PROGRESS")
-
-                    }
-                    .padding(.vertical, .layer1)
-                    .padding(.horizontal, .layer2)
-                    .background(Color.tertiaryBackground.cornerRadius(8))
-                    Spacer()
-
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        setup()
-
-                    } label: {
-                        Image(systemName: "arrow.counterclockwise")
-                            .font(.headline.bold())
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .padding(.vertical, .layer1)
-                    .padding(.horizontal, .layer2)
-                }
-                Spacer()
-            }
-            .padding(.layer4)
-
-        )
-        .task {
-            explorer.preload()
-            
-            guard explorer.state.lastUpdate == nil else {
-                setup()
+        .onChange(of: explorer.isLoaded) { _ in
+            guard instances.isEmpty else {
                 return
             }
             
-            explorer.center.boot.send()
-            setup()
-            
+            if explorer.state.linkedInstances.isEmpty {
+                explorer.center.boot.send()
+            } else {
+                update()
+            }
+        }
+        .onChange(of: explorer.state.lastUpdate) { _ in
+            update()
         }
         .clipped()
-        .onAppear {
-            
-            guard let mesh else { return }
-            selection.selectNode(mesh.rootNode())
-        }
     }
     
+    func update() {
+        //self.instances = [Instance.base] + explorer.state.linkedInstances
+        DispatchQueue.global(qos: .background).async {
+            var keys: [String] = []
+            var instancesToUpdate: [String: Instance] = [:]
+            
+            explorer.state.linkedInstances.enumerated().forEach { (i, instance) in
+                keys.append(instance.domain)
+                instancesToUpdate[instance.domain] = instance
+                
+            }
+            
+            DispatchQueue.main.async {
+                self.instances = instancesToUpdate
+                self.searchBox = .init(keys: keys)
+                self.randomize()
+            }
+        }
+        
+        self.isReady = true
+    }
+    
+    func randomize() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            let count: Int = explorer.state.linkedInstances.count
+            let randomIndex: Int = min(max(count - 2, 0), 2.randomBetween(12))
+            let randomLimit: Int = min(max(count - 1, 0), randomIndex + 12.randomBetween(36))
+            
+            let randomInstances: [Instance] = Array(explorer.state.linkedInstances[randomIndex..<randomLimit])
+            
+            DispatchQueue.main.async {
+                self.randomSelection = randomInstances
+            }
+        }
+        
+    }
+    
+    func search(_ query: String) {
+        let results = searchBox.search(query)
+        let instances = results.compactMap {
+            self.instances[$0]
+        }
+        
+        self.searchedInstances = instances
+    }
+}
+
+extension GlobeExplorerView {
     var landscapeView: some View {
         HStack(spacing: 0) {
-            if let mesh {
-                SurfaceView(mesh: mesh,
-                            selection: selection)
+            if isReady {
+                GlobeView(globeInstances)
+                    .wip()
+            }
+            
+            Divider()
+
+            searchView
+        }
+    }
+    
+    var searchView: some View {
+        VStack(spacing: 0) {
+            if searchedInstances.isEmpty || Device.isExpandedLayout {
+                InstanceCardView(connected,
+                                 isConnected: true,
+                                 isFavorite: explorer.state.favorites[connected.domain] != nil)
+                .attach({ instance in
+                    if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                        explorer._state.favorites.wrappedValue[instance.domain] = instance
+                    } else {
+                        explorer._state.favorites.wrappedValue[instance.domain] = nil
+                    }
+                }, at: \.favorite)
+                .padding(.layer3)
+                .id(connected.domain)
+            }
+            
+            Divider()
+            
+            SearchBar(debounceInterval: 2)
+                .attach({ query in
+                    search(query)
+                }, at: \.query)
+                .attach({
+                    searchedInstances.removeAll()
+                }, at: \.clean)
+            Divider()
+
+            if searchedInstances.isNotEmpty {
+                GraniteScrollView {
+                    LazyVStack(spacing: .layer3) {
+                        ForEach(searchedInstances) { instance in
+                            InstanceCardView(instance,
+                                             isConnected: connected.domain == instance.domain,
+                                             isFavorite: explorer.state.favorites[instance.domain] != nil)
+                                .attach({ instance in
+                                    self.connected = instance
+                                }, at: \.connect)
+                                .attach({ instance in
+                                    if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                        explorer._state.favorites.wrappedValue[instance.domain] = instance
+                                    } else {
+                                        explorer._state.favorites.wrappedValue[instance.domain] = nil
+                                    }
+                                }, at: \.favorite)
+                                .graniteEvent(restart)
+                                .padding(.horizontal, .layer3)
+                        }
+                    }
+                    .padding(.vertical, .layer2)
+                }
             } else {
-                Color.clear
-                    .frame(maxHeight: .infinity)
-            }
-            
-            if let mesh,
-               let selectedNode,
-               let node = mesh.nodeWithID(selectedNode){
-                Divider()
                 
-                InstanceMetaView(node: node)
-                    .graniteEvent(restart)
-                    .id(selectedNode)
-                    .frame(maxWidth: ContainerConfig.iPhoneScreenWidth)
+                VStack(spacing: 0) {
+                    
+                    if hasFavorites {
+                        VStack(spacing: 0) {
+                            Picker("", selection: $instancesViewingOption) {
+                                //TODO: localize
+                                Text("Favorites").tag(0)
+                                //TODO: localize
+                                Text("Random").tag(1)
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        .padding(.layer3)
+                    }
+                    if instancesViewingOption == 0 && hasFavorites {
+                        favoriteView
+                    } else {
+                        randomSelectionView
+                            .onAppear {
+                                randomize()
+                            }
+                    }
+                }
             }
-        }
-    }
-    
-    func setup() {
-        let mainNode = LemmyKit.host
-        let mesh = Mesh()
-        mesh.updateNodeMeta(mesh.rootNode(),
-                            style: .baseInstance,
-                            meta: .baseInstance)
-        let count = explorer.state.linkedInstances.count
-        let random = 0.randomBetween(count)
-        let instances = Array(explorer.state.linkedInstances[random..<min(count, random + 12)])
-        var lastR: CGFloat = .zero
-        for (i, instance) in instances.enumerated() {
-            let ratio = CGFloat(i) / CGFloat(instances.count)
-            let angle = Int(ratio * 360)
             
-            let nodeViewStyle: NodeViewStyle = .fromInstance(instance)
-            var padding: CGFloat = 0
-            //50 is the fixed height, 25 is radius from the center point
-            //this is basically intersection
-            if nodeViewStyle.size.width > lastR - 25,
-               nodeViewStyle.size.width < lastR + 25 {
-                padding = lastR
-            }
-            let point = mesh.pointWithCenter(center: .zero,
-                                             radius: nodeViewStyle.size.width + padding,
-                                             angle: angle.radians)
-            lastR = nodeViewStyle.size.width + padding
-            let node = mesh.addChild(mesh.rootNode(), at: point)
-            //instance details
-            mesh.updateNodeMeta(node,
-                                style: nodeViewStyle,
-                                meta: .fromInstance(instance))
+            Spacer()
         }
-        
-        self.mesh = mesh
-    }
-}
-
-extension NodeViewStyle {
-    
-    static var baseInstance: NodeViewStyle {
-        #if os(macOS)
-        let size: CGSize = LemmyKit.host.size(withAttributes: [.font: NSFont.systemFont(ofSize: 16, weight: .bold)])
-        #else
-        let size: CGSize = LemmyKit.host.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold)])
-        #endif
-        
-        return .init(color: Brand.Colors.yellow,
-                     foregroundColor: .alternateBackground,
-                     size: .init(width: size.width + 8, height: 50),
-                     isMain: true)
     }
     
-    static func fromInstance(_ instance: Instance) -> NodeViewStyle {
-        #if os(macOS)
-        let size: CGSize = instance.domain.size(withAttributes: [.font: NSFont.systemFont(ofSize: 16, weight: .bold)])
-        #else
-        let size: CGSize = instance.domain.size(withAttributes: [.font: UIFont.systemFont(ofSize: 16, weight: .bold)])
-        #endif
-        
-        return .init(size: .init(width: size.width + 8, height: 50))
-    }
-        
-}
-
-extension NodeViewMeta {
-    static var root: NodeViewMeta {
-        .init(title: "root")
+    var favoriteView: some View {
+        VStack(spacing: 0) {
+            
+            GraniteScrollView {
+                LazyVStack(spacing: .layer3) {
+                    ForEach(Array(explorer.state.favorites.values.filter { $0.domain != connected.domain })) { instance in
+                        InstanceCardView(instance,
+                                         isConnected: connected.domain == instance.domain,
+                                         isFavorite: explorer.state.favorites[instance.domain] != nil)
+                            .attach({ instance in
+                                self.connected = instance
+                            }, at: \.connect)
+                            .attach({ instance in
+                                if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                    explorer._state.favorites.wrappedValue[instance.domain] = instance
+                                } else {
+                                    explorer._state.favorites.wrappedValue[instance.domain] = nil
+                                }
+                            }, at: \.favorite)
+                            .graniteEvent(restart)
+                            .padding(.horizontal, .layer3)
+                    }
+                }
+                .padding(.top, .layer2)
+                .padding(.bottom, .layer3)
+            }
+        }
     }
     
-    static var child: NodeViewMeta {
-        .init(title: "child")
-    }
-    
-    static var baseInstance: NodeViewMeta {
-        return .init(title: LemmyKit.host)
-    }
-    
-    static func fromInstance(_ instance: Instance) -> NodeViewMeta {
-        .init(title: instance.domain,
-              subtitle: instance.published.serverTimeAsDate?.timeAgoDisplay())
+    var randomSelectionView: some View {
+        GraniteScrollView {
+            LazyVStack(spacing: .layer3) {
+                ForEach(randomSelection) { instance in
+                    InstanceCardView(instance,
+                                     isConnected: connected.domain == instance.domain,
+                                     isFavorite: explorer.state.favorites[instance.domain] != nil)
+                        .attach({ instance in
+                            self.connected = instance
+                        }, at: \.connect)
+                        .attach({ instance in
+                            if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                explorer._state.favorites.wrappedValue[instance.domain] = instance
+                            } else {
+                                explorer._state.favorites.wrappedValue[instance.domain] = nil
+                            }
+                        }, at: \.favorite)
+                        .graniteEvent(restart)
+                        .padding(.horizontal, .layer3)
+                }
+            }
+            .padding(.top, hasFavorites ? .layer2 : .layer3)
+            .padding(.bottom, .layer3)
+        }
     }
 }
 
 fileprivate extension View {
     func showDrawer(_ condition: Bool,
-                    node: Node?,
+                    instance: Instance?,
                     event: EventExecutable? = nil) -> some View {
-        self.overlayIf(condition && node != nil, alignment: .top) {
+        self.overlayIf(condition && instance != nil, alignment: .top) {
             Group {
                 #if os(iOS)
-                if let node {
+                if let instance {
                     Drawer(startingHeight: 100) {
                         ZStack(alignment: .top) {
                             RoundedRectangle(cornerRadius: 12)
@@ -213,7 +276,7 @@ fileprivate extension View {
                                     .foregroundColor(Color.gray)
                                     .padding(.top, .layer5)
                                 
-                                InstanceMetaView(node: node)
+                                InstanceMetaView(instance)
                                     .graniteEvent(event)
                                 Spacer()
                             }
@@ -224,7 +287,7 @@ fileprivate extension View {
                     .impact(.light)
                     .edgesIgnoringSafeArea(.vertical)
                     .transition(.move(edge: .bottom))
-                    .id(node.id)
+                    .id(instance.domain)
                 }
                 #endif
             }

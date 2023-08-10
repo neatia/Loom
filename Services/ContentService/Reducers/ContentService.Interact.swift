@@ -1,6 +1,6 @@
 //
 //  ContentService.Interact.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/20/23.
 //
@@ -40,9 +40,7 @@ extension ContentService {
         
         @Payload var meta: Meta?
         
-        @Event var response: InteractResponse.Reducer
-        
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             guard let meta else { return }
             
             switch meta.kind {
@@ -61,13 +59,12 @@ extension ContentService {
                 }
                 
                 let post = postView.post
-                _ = Task.detached {
-                    let result = await Lemmy.upvotePost(post,
-                                                        score: myVote)
-                    
-                    guard let result else { return }
-                    response.send(InteractResponse.Meta(kind: .post(result)))
-                }
+                let result = await Lemmy.upvotePost(post,
+                                                    score: myVote)
+                
+                guard let result else { return }
+                
+                state.allPosts[result.id] = result
                 
             case .downvotePost(let postView):
                 let postView = state.allPosts[postView.id] ?? postView
@@ -84,13 +81,12 @@ extension ContentService {
                 }
                 
                 let post = postView.post
-                _ = Task.detached {
-                    let result = await Lemmy.upvotePost(post,
-                                                        score: myVote)
-                    
-                    guard let result else { return }
-                    response.send(InteractResponse.Meta(kind: .post(result)))
-                }
+                let result = await Lemmy.upvotePost(post,
+                                                    score: myVote)
+                
+                guard let result else { return }
+                
+                state.allPosts[result.id] = result
             case .upvoteComment(let commentView):
                 let commentView = state.allComments[commentView.id] ?? commentView
                 
@@ -106,13 +102,11 @@ extension ContentService {
                 }
                 
                 let comment = commentView.comment
-                _ = Task.detached {
-                    let result = await Lemmy.upvoteComment(comment,
-                                                           score: myVote)
-                    
-                    guard let result else { return }
-                    response.send(InteractResponse.Meta(kind: .comment(result)))
-                }
+                let result = await Lemmy.upvoteComment(comment,
+                                                       score: myVote)
+                
+                guard let result else { return }
+                state.allComments[result.id] = result
             case .downvoteComment(let commentView):
                 let commentView = state.allComments[commentView.id] ?? commentView
                 
@@ -128,82 +122,39 @@ extension ContentService {
                 }
                 
                 let comment = commentView.comment
-                _ = Task.detached {
-                    let result = await Lemmy.upvoteComment(comment,
-                                                           score: myVote)
-                    
-                    guard let result else { return }
-                    response.send(InteractResponse.Meta(kind: .comment(result)))
-                }
+                let result = await Lemmy.upvoteComment(comment,
+                                                       score: myVote)
+                
+                guard let result else { return }
+                state.allComments[result.id] = result
             case .replyPost(let model, let content):
-                _ = Task.detached {
-                    let result = await Lemmy.createComment(content, post: model.post)
+                let result = await Lemmy.createComment(content, post: model.post)
 
-                    guard let result else { return }
-                    
-                    broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success), kind: .replyPostSubmit(result, model)))
-                }
+                guard let result else { return }
+                
+                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success), kind: .replyPostSubmit(result, model)))
                 
             case .replyComment(let model, let content):
-                _ = Task.detached {
-                    let result = await Lemmy.createComment(content, post: model.post, parent: model.comment)
+                let result = await Lemmy.createComment(content, post: model.post, parent: model.comment)
 
-                    guard let result else { return }
-                    
-                    broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result, model)))
-                }
+                guard let result else { return }
+                
+                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result, model)))
             case .savePost(let model):
-                _ = Task.detached {
-                    let result = await Lemmy.savePost(model.post, save: true)
-                    //Toast?
-                }
+                let result = await Lemmy.savePost(model.post, save: true)
             case .unsavePost(let model):
-                _ = Task.detached {
-                    let result = await Lemmy.savePost(model.post, save: false)
-                }
+                let result = await Lemmy.savePost(model.post, save: false)
             case .saveComment(let model):
-                _ = Task.detached {
-                    let result = await Lemmy.saveComment(model.comment, save: true)
-                }
+                let result = await Lemmy.saveComment(model.comment, save: true)
             case .unsaveComment(let model):
-                _ = Task.detached {
-                    let result = await Lemmy.saveComment(model.comment, save: false)
-                }
+                let result = await Lemmy.saveComment(model.comment, save: false)
             default:
                 break
             }
         }
-    }
-    
-    struct InteractResponse: GraniteReducer {
-        typealias Center = ContentService.Center
         
-        enum Kind {
-            case post(PostView)
-            case comment(CommentView)
-            case community(CommunityView)
-        }
-        
-        struct Meta: GranitePayload {
-            var kind: InteractResponse.Kind
-        }
-        
-        @Payload var meta: Meta?
-        
-        func reduce(state: inout Center.State) {
-            guard let meta else { return }
-            
-            switch meta.kind {
-            case .post(let postView):
-                state.allPosts[postView.id] = postView
-            case .comment(let commentView):
-                state.allComments[commentView.id] = commentView
-            case .community(let communityView):
-                break
-            default:
-                break
-            }
-            broadcast.send(meta)
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
 }

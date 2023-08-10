@@ -32,7 +32,7 @@ extension LayoutService {
             }
         }
         
-        @Store(persist: "lemur.persistence.layout.0001",
+        @Store(persist: "Loom.persistence.layout.0001",
                autoSave: true,
                preload: true) public var state: State
     }

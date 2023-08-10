@@ -37,8 +37,7 @@ extension Write: View {
                 } label : {
                     Image(systemName: "\(state.imageData != nil ? "photo" : "rectangle.center.inset.filled.badge.plus")")
                         .font(.title3)
-                        .foregroundColor(state.imageData != nil ? .green : .foreground)
-                        .opacity(state.imageData != nil ? 0.8 : 1.0)
+                        .foregroundColor(imageColorState)
                 }
                 .buttonStyle(PlainButtonStyle())
                 .onChange(of: state.imageData) { data in

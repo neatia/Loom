@@ -1,6 +1,6 @@
 //
 //  Image.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/23/23.
 //

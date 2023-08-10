@@ -1,6 +1,6 @@
 //
 //  Globe.Accounts.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 8/4/23.
 //
@@ -13,7 +13,7 @@ import SwiftUI
 extension Globe {
     var mainView: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
+            HStack(alignment: .bottom, spacing: .layer4) {
                 Button {
                     GraniteHaptic.light.invoke()
                     guard state.tab != .accounts else { return }
@@ -56,9 +56,11 @@ extension Globe {
             case .accounts:
                 accountsView
             case .explorer:
-                GeometryReader { proxy in
-                    GlobeExplorerView(radius: (proxy.size.width / 2) - (.layer4 * 2))
+                if isTabSelected == true {
+                    GlobeExplorerView()
                         .graniteEvent(config.center.restart)
+                } else {
+                    EmptyView()
                 }
             }
         }

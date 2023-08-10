@@ -1,6 +1,6 @@
 //
 //  Feed.HeaderFooter.swift
-//  Lemur (iOS)
+//  Loom (iOS)
 //
 //  Created by PEXAVC on 7/25/23.
 //
@@ -39,7 +39,7 @@ extension Feed {
                             Color.background.opacity(0.75)
                                 .cornerRadius(4)
                         }
-                        .padding(.trailing, Device.isExpandedLayout ? 0 : (hasCommunityBanner ? .layer2 : 0))
+                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
                     } else {
                         if Device.isExpandedLayout {
                             ProgressView()

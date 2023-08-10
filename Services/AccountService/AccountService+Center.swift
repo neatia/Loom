@@ -20,7 +20,7 @@ extension AccountService {
         @Event var update: Update.Reducer
         @Event var interact: Interact.Reducer
         
-        @Store(persist: "persistence.lemur.account.0004", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.Loom.account.0005", autoSave: true, preload: true) public var state: State
     }
     
     var blockedUsers: [PersonBlockView] {

@@ -1,6 +1,6 @@
 //
 //  Search.AllView.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 7/25/23.
 //
@@ -181,7 +181,6 @@ struct SearchAllView: View {
                                             .padding(.horizontal, .layer2)
                                     }
                                 }
-                                
                                 
                                 Spacer().frame(width: .layer4)
                             }

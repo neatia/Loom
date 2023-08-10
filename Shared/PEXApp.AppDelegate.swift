@@ -35,7 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         
         let nc = NotificationCenter.default
-        nc.post(name: Notification.Name("nyc.stoic.Lemur.DidFinishLaunching"), object: nil)
+        nc.post(name: Notification.Name("nyc.stoic.Loom.DidFinishLaunching"), object: nil)
         
         NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) {
            [weak self] event in

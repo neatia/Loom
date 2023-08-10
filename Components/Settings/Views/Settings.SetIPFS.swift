@@ -1,6 +1,6 @@
 //
 //  Settings.SetIPFS.swift
-//  Lemur
+//  Loom
 //
 //  Created by PEXAVC on 8/2/23.
 //

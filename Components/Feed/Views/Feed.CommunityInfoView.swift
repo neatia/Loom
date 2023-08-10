@@ -1,6 +1,6 @@
 //
 //  Feed.CommunityInfoView.swift
-//  Lemur (iOS)
+//  Loom (iOS)
 //
 //  Created by PEXAVC on 7/25/23.
 //
@@ -85,7 +85,7 @@ extension Feed {
                         pager.fetch(force: true)
                     } label: {
                         Text("@\(host)")
-                        Image(systemName: "globe.americas")
+                        Image(systemName: "person.2.wave.2")
                     }
                     .buttonStyle(PlainButtonStyle())
                     

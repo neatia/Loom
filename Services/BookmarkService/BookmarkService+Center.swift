@@ -19,7 +19,7 @@ extension BookmarkService {
         
         @Event var modify: Modify.Reducer
         
-        @Store(persist: "persistence.bookmark.Lemur.0008", autoSave: true) public var state: State
+        @Store(persist: "persistence.bookmark.Loom.0008", autoSave: true) public var state: State
     }
     
     func contains(_ kind: Kind) -> Bool {

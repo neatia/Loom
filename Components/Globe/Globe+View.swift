@@ -24,7 +24,6 @@ extension Globe: View {
                                 .id(isTabSelected)
                         }
                     }
-                    
                 }
             } else {
                 VStack(spacing: 0) {
