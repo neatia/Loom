@@ -23,6 +23,8 @@ class InstanceDetailsCache {
 }
 
 struct InstanceCardView: View {
+    @Environment(\.graniteEvent) var restart
+    
     @GraniteAction<Instance> var connect
     @GraniteAction<Instance> var favorite
     
@@ -142,6 +144,7 @@ struct InstanceCardView: View {
                 Button {
                     GraniteHaptic.light.invoke()
                     connect.perform(instance)
+                    //restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))
                 } label: {
                     if isConnected {
                         //TODO: localize
