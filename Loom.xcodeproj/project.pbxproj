@@ -111,8 +111,6 @@
 		711D39262A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */; };
 		711D39292A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */; };
 		711D392A2A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */; };
-		711D392C2A84821D00CF2DB2 /* StaticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392B2A84821D00CF2DB2 /* StaticService.swift */; };
-		711D392D2A84821D00CF2DB2 /* StaticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392B2A84821D00CF2DB2 /* StaticService.swift */; };
 		711D392F2A84A96200CF2DB2 /* DebugComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392E2A84A96200CF2DB2 /* DebugComponent.swift */; };
 		711D39302A84A96200CF2DB2 /* DebugComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392E2A84A96200CF2DB2 /* DebugComponent.swift */; };
 		712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712427B72A65C4AA007F2F77 /* Bookmark._.swift */; };
@@ -657,7 +655,6 @@
 		711D39212A8408CF00CF2DB2 /* SearchConductor.Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchConductor.Views.swift; sourceTree = "<group>"; };
 		711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchConductor.BasicKeys.swift; sourceTree = "<group>"; };
 		711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceCardView.swift; sourceTree = "<group>"; };
-		711D392B2A84821D00CF2DB2 /* StaticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticService.swift; sourceTree = "<group>"; };
 		711D392E2A84A96200CF2DB2 /* DebugComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugComponent.swift; sourceTree = "<group>"; };
 		712427B72A65C4AA007F2F77 /* Bookmark._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark._.swift; sourceTree = "<group>"; };
 		71258D262A55F951007E52FC /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
@@ -1517,7 +1514,6 @@
 			children = (
 				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
 				71E5F3CA2A73A02500299558 /* Haptic.swift */,
-				711D392B2A84821D00CF2DB2 /* StaticService.swift */,
 				71AF14662A2E807300EEBD4B /* Disclaimer.swift */,
 				714B48772A816CF900AC6199 /* Logger.swift */,
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
@@ -2463,7 +2459,6 @@
 				710283A12A2A54C300010877 /* RangeTrackConfiguration.swift in Sources */,
 				71F778D22A71CE7200C9C5C4 /* ProfileSettingsView.swift in Sources */,
 				71C69E292A70492100B54AD6 /* Brand.Color.swift in Sources */,
-				711D392C2A84821D00CF2DB2 /* StaticService.swift in Sources */,
 				71C9F92C2A61064D0089D7EA /* AvatarView.swift in Sources */,
 				712BEB5C29074CFB00D257B7 /* CameraContent.swift in Sources */,
 				717C8FB52A6F9F3D00DF6037 /* Pager.swift in Sources */,
@@ -2766,7 +2761,6 @@
 				71EB91BE2A8028400091EE5B /* Numbers.swift in Sources */,
 				71C8BE6F2A7F1C79008694C7 /* View+OnLoad.swift in Sources */,
 				710283922A2A54C300010877 /* VerticalRangeSliderStyle.swift in Sources */,
-				711D392D2A84821D00CF2DB2 /* StaticService.swift in Sources */,
 				71C69E492A70558100B54AD6 /* Search.HeaderMenuView.swift in Sources */,
 				71DF107228CC697600559DBC /* DictionaryCodingKey.swift in Sources */,
 				7197FB042964B4C0005EBBA4 /* GraniteModalManager.swift in Sources */,

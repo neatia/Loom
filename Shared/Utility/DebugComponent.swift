@@ -2,12 +2,14 @@
 //  DebugComponent.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/9/23.
+//  Created by PEXAVC on 8/9/23.
 //
 
 import Foundation
 import Granite
 import SwiftUI
+
+//Used for tracking memory allocs of relays in normal views
 
 struct DebugComponent: GraniteComponent {
     @Command var center: Center

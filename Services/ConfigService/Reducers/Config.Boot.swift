@@ -30,8 +30,6 @@ extension ConfigService {
             if layout.state.style == .expanded {
                 LayoutService.expandWindow(close: layout.state.closeFeedDisplayView)
             }
-            
-            //Services.all.explorer.preload()
         }
         
         var behavior: GraniteReducerBehavior {
