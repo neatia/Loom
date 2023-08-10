@@ -39,9 +39,7 @@ extension AccountService {
         
         @Payload var meta: Meta?
         
-        @Event var response: InteractResponse.Reducer
-        
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             guard let intent = meta?.intent else {
                 return
             }
@@ -56,43 +54,61 @@ extension AccountService {
                 
                 let personBlocks = state.meta?.info.person_blocks ?? []
                 let blocked: Bool = personBlocks.first(where: { $0.target.equals(model) == true }) != nil
-                _ = Task.detached {
-                    let result = await Lemmy.block(person: model, block: blocked ? false : true)
-                    
-                    guard let result else { return }
-                    
-                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPerson(result.person_view.person)))
-                    
-                    response.send(InteractResponse.Meta(intent: .updatePersonBlockStatus(result)))
+                
+                let result = await Lemmy.block(person: model, block: blocked ? false : true)
+                
+                guard let result else { return }
+                
+                guard let accountMeta = state.meta else {
+                    LoomLog("no account in state to update block")
+                    return
                 }
+                
+                //TODO: reuse block logics
+                broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPerson(result.person_view.person)))
+                
+                let personView: PersonBlockView = .init(person: accountMeta.person, target: result.person_view.person)
+                state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(result.person_view.person) == false } + (result.blocked ? [personView] : [])),
+                                    host: accountMeta.host)
             case .blockPersonFromPost(let model):
                 
                 let personBlocks = state.meta?.info.person_blocks ?? []
                 
                 let blocked: Bool = personBlocks.first(where: { $0.target.equals(model.creator) == true }) != nil
-                _ = Task.detached {
-                    let result = await Lemmy.block(person: model.creator, block: blocked ? false : true)
-                    
-                    guard let result else { return }
-                    
-                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPersonFromPost(model.updateBlock(result.blocked, personView: result.person_view))))
-                    
-                    response.send(InteractResponse.Meta(intent: .updatePersonBlockStatus(result)))
+                
+                let result = await Lemmy.block(person: model.creator, block: blocked ? false : true)
+                
+                guard let result else { return }
+                
+                guard let accountMeta = state.meta else {
+                    LoomLog("no account in state to update block")
+                    return
                 }
+                
+                broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPersonFromPost(model.updateBlock(result.blocked, personView: result.person_view))))
+                
+                let personView: PersonBlockView = .init(person: accountMeta.person, target: result.person_view.person)
+                state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(result.person_view.person) == false } + (result.blocked ? [personView] : [])),
+                                    host: accountMeta.host)
             case .blockPersonFromComment(let model):
                 let personBlocks = state.meta?.info.person_blocks ?? []
                 
                 let blocked: Bool = personBlocks.first(where: { $0.target.equals(model.creator) == true }) != nil
-                _ = Task.detached {
-                    let result = await Lemmy.block(person: model.creator, block: blocked ? false : true)
-                    
-                    guard let result else { return }
-                    
-                    broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent:  .blockPersonFromComment(model.updateBlock(result.blocked, personView: result.person_view))))
-                    
-                    //We send the same intent for these since we are simply updating the blocklist
-                    response.send(InteractResponse.Meta(intent: .updatePersonBlockStatus(result)))
+                
+                let result = await Lemmy.block(person: model.creator, block: blocked ? false : true)
+                
+                guard let result else { return }
+                
+                guard let accountMeta = state.meta else {
+                    LoomLog("no account in state to update block")
+                    return
                 }
+                
+                broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent:  .blockPersonFromComment(model.updateBlock(result.blocked, personView: result.person_view))))
+                
+                let personView: PersonBlockView = .init(person: accountMeta.person, target: result.person_view.person)
+                state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(result.person_view.person) == false } + (result.blocked ? [personView] : [])),
+                                    host: accountMeta.host)
             case .blockCommunity(let model):
                 _ = Task.detached {
                     let result = await Lemmy.block(community: model.community, block: model.blocked == true ? false : true)
@@ -113,46 +129,45 @@ extension AccountService {
                 
             //MARK: Remove
             case .removePost(let model):
-                _ = Task.detached {
-                    let result = await Lemmy.removePost(model.post, removed: model.post.removed == true ? false : true)
-                    if let result, let meta {
-                        broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.post.removed ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS", event: .success), intent: .removePost(result.post_view)))
-                        
-                        response.send(InteractResponse.Meta(postResponse: result, intent: .removePost(result.post_view)))
-                    } else {
-                        broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REMOVE", event: .error))
-                    }
+                let result = await Lemmy.removePost(model.post, removed: model.post.removed == true ? false : true)
+                if let result, let meta {
+                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.post.removed ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS", event: .success), intent: .removePost(result.post_view)))
+                } else {
+                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REMOVE", event: .error))
                 }
             case .removeComment(let model):
-                _ = Task.detached {
-                    let result = await Lemmy.removeComment(model.comment, removed: model.comment.removed == true ? false : true)
+                let result = await Lemmy.removeComment(model.comment, removed: model.comment.removed == true ? false : true)
+                
+                if let result, let meta {
+                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.comment.removed ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS", event: .success), intent: meta.intent))
                     
-                    if let result, let meta {
-                        broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.comment.removed ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS", event: .success), intent: meta.intent))
-                        
-                        response.send(InteractResponse.Meta(commentResponse: result, intent: meta.intent))
-                    } else {
-                        broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_COMMENT_FAILED_TO_REMOVE", event: .error))
-                    }
+                } else {
+                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_COMMENT_FAILED_TO_REMOVE", event: .error))
                 }
             case .reportPost:
                 beam.send(meta)
             case .reportComment:
                 beam.send(meta)
             case .reportPostSubmit(let form):
-                _ = Task.detached {
-                    let result = await Lemmy.report(post: form.model.post, reason: form.reason)
-                    
-                    guard let result, let meta else {
-                        broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REPORT", event: .error))
-                        return
-                    }
-                    
-                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_POST_REPORT_SUCCESS", event: .success), intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
+                let result = await Lemmy.report(post: form.model.post, reason: form.reason)
+                
+                guard let result, let meta else {
+                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REPORT", event: .error))
+                    return
                 }
+                
+                broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_POST_REPORT_SUCCESS", event: .success), intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
             default:
                 break
             }
+        }
+        
+        func update(_ intent: Interact.Intent) {
+            
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
     

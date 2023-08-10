@@ -144,6 +144,7 @@ extension PostCardView {
             default:
                 FooterView(postView: model,
                            commentView: nil,
+                           showScores: config.state.showScores,
                            style: self.style)
                     .attach({ model in
                         reply.perform(model)

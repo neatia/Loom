@@ -18,6 +18,7 @@ struct ThreadView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
+    @Relay var config: ConfigService
     @Relay var modalService: ModalService
     
     @State var breadCrumbs: [CommentView] = []
@@ -110,7 +111,8 @@ extension ThreadView {
             
             FooterView(postView: postView,
                        commentView: currentModel,
-                       isHeader: true)
+                       isHeader: true,
+                       showScores: config.state.showScores)
         }
         .fixedSize(horizontal: false, vertical: true)
     }

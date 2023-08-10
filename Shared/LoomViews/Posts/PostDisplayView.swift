@@ -24,6 +24,7 @@ struct PostDisplayView: View {
     @State var commentModel: CommentView? = nil
     @State var expandLinkPreview: Bool = false
     
+    @Relay var config: ConfigService
     @Relay var modal: ModalService
     
     @State var enableCommunityRoute: Bool = false
@@ -126,6 +127,7 @@ extension PostDisplayView {
             FooterView(postView: model,
                        commentView: nil,
                        isHeader: true,
+                       showScores: config.state.showScores,
                        isComposable: true)
                 .attach({ model in
                     modal.presentSheet {

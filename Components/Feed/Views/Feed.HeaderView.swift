@@ -39,7 +39,7 @@ extension Feed {
                             Color.background.opacity(0.75)
                                 .cornerRadius(4)
                         }
-                        .padding(.trailing, Device.isExpandedLayout ? 0 : (hasCommunityBanner ? .layer2 : 0))
+                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
                     } else {
                         if Device.isExpandedLayout {
                             ProgressView()

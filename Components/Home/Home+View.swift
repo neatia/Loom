@@ -81,6 +81,7 @@ extension Home: View {
         }, currentTab: 0) {
             GraniteTab {
                 Feed()
+//                DebugComponent()
             } icon: {
                 GraniteTabIcon(name: "house")
             }
@@ -90,13 +91,13 @@ extension Home: View {
             } icon: {
                 GraniteTabIcon(name: "globe.americas", larger: true)
             }
-            
+
             GraniteTab {
                 Write()
             } icon: {
                 GraniteTabIcon(name: "applescript")
             }
-            
+
             #if os(iOS)
             GraniteTab {
                 Bookmark()
@@ -104,7 +105,7 @@ extension Home: View {
                 GraniteTabIcon(name: "bookmark")
             }
             #endif
-            
+
             GraniteTab(split: Device.isExpandedLayout,
                        last: true) {
                 Settings()

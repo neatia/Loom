@@ -35,7 +35,7 @@ extension ConfigService {
         @Event var restart: Restart.Reducer
         @Event var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0017", autoSave: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0017", autoSave: true, preload: true) public var state: State
     }
     
     struct Preferences {

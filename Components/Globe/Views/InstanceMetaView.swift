@@ -169,7 +169,7 @@ struct InstanceMetaView: View {
             GraniteHaptic.light.invoke()
             restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))
         } label: {
-            Text("Connect")
+            Text("MISC_CONNECT")
                 .font(.headline.bold())
                 .lineLimit(1)
                 .foregroundColor(Color.black)

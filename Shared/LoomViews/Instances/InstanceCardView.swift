@@ -40,11 +40,7 @@ struct InstanceCardView: View {
     }
     
     var sidebar: String? {
-        if isBase {
-            return metadata?.site.sidebar
-        } else {
-            return siteMetaData?.description
-        }
+        metadata?.site.sidebar
     }
     
     var title: String {
@@ -120,7 +116,7 @@ struct InstanceCardView: View {
             }
             .padding(.leading, .layer3)
             .padding(.trailing, .layer2)
-            .padding(.top, hasBanner ? .layer2 : .layer1)
+            .padding(.top, hasBanner || sidebar != nil ? .layer2 : .layer1)
             
             
             if let sidebar {
@@ -133,7 +129,7 @@ struct InstanceCardView: View {
                 .background(Color.tertiaryBackground)
                 .cornerRadius(8)
                 .padding(.horizontal, .layer3)
-                .padding(.top, hasBanner ? .layer2 : .layer1)
+                .padding(.top, .layer2)
                 .fixedSize(horizontal: false, vertical: true)
             }
             
@@ -183,6 +179,7 @@ struct InstanceCardView: View {
                     .padding(.bottom, 6)
             }
             .padding(.horizontal, .layer3)
+            .padding(.vertical, hasBanner == false && sidebar != nil ? .layer1 : 0)
         }
         .frame(minWidth: 200, minHeight: 100)
         .background(
@@ -214,7 +211,7 @@ struct InstanceCardView: View {
     }
                     
     func getMetadata() async {
-        if isBase {
+        if isBase, LemmyKit.current.metadata != nil {
             metadata = LemmyKit.current.metadata
         } else {
             if let siteView = InstanceDetailsCache.shared.cache[host] {

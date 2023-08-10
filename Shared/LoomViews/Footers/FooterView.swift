@@ -72,11 +72,14 @@ struct FooterView: View {
         location == .base
     }
     
+    var showScores: Bool
+    
     var isComposable: Bool
     
     init(postView: PostView?,
          commentView: CommentView?,
          isHeader: Bool = false,
+         showScores: Bool = true,
          style: FeedStyle = .style1,
          isComposable: Bool = false) {
         if let commentView {
@@ -105,6 +108,7 @@ struct FooterView: View {
         
         self.style = style
         
+        self.showScores = showScores
         self.isComposable = isComposable
         
         //        content.preload()
@@ -254,7 +258,7 @@ extension FooterView {
             .frame(height: 20)
             
             HStack(spacing: 0) {
-                if config.state.showScores {
+                if showScores {
                     Text("\(String(upvoteCount)) LABEL_UPVOTE")
                         .font(font.smaller)
                         .padding(.trailing, .layer4)
@@ -334,7 +338,7 @@ extension FooterView {
                     Image(systemName: "arrow.up")
                         .font(font.bold())
                     
-                    if config.state.showScores {
+                    if showScores {
                         Text("\(upvoteCount)")
                             .font(font.smaller)
                     }
@@ -357,7 +361,7 @@ extension FooterView {
                     Image(systemName: "arrow.down")
                         .font(font.bold())
                     
-                    if config.state.showScores {
+                    if showScores {
                         Text("\(downvoteCount)")
                             .font(font.smaller)
                     }

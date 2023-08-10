@@ -15,15 +15,21 @@ struct GlobeExplorerView: View {
     @Environment(\.graniteEvent) var restart
     
     @State var instances: [String: Instance] = [:]
+    @State var globeInstances: [Instance] = []
     @State var searchedInstances: [Instance] = []
+    @State var randomSelection: [Instance] = []
     
     @State var searchBox: BasicKeySearchBox = .init(keys: [])
     @State var isReady: Bool = false
     
     @State var connected: Instance = .base
     
-    var explorer: ExplorerService {
-        Services.all.explorer
+    @Relay var explorer: ExplorerService
+    
+    @State var instancesViewingOption: Int = 0
+    
+    var hasFavorites: Bool {
+        explorer.state.favorites.values.isEmpty == false
     }
     
     var body: some View {
@@ -34,7 +40,18 @@ struct GlobeExplorerView: View {
             landscapeView
             #endif
         }
-        .task {
+        .onChange(of: explorer.isLoaded) { _ in
+            guard instances.isEmpty else {
+                return
+            }
+            
+            if explorer.state.linkedInstances.isEmpty {
+                explorer.center.boot.send()
+            } else {
+                update()
+            }
+        }
+        .onChange(of: explorer.state.lastUpdate) { _ in
             update()
         }
         .clipped()
@@ -42,14 +59,39 @@ struct GlobeExplorerView: View {
     
     func update() {
         //self.instances = [Instance.base] + explorer.state.linkedInstances
-        var keys: [String] = []
-        explorer.state.linkedInstances.forEach { instance in
-            keys.append(instance.domain)
-            self.instances[instance.domain] = instance
+        DispatchQueue.global(qos: .background).async {
+            var keys: [String] = []
+            var instancesToUpdate: [String: Instance] = [:]
+            
+            explorer.state.linkedInstances.enumerated().forEach { (i, instance) in
+                keys.append(instance.domain)
+                instancesToUpdate[instance.domain] = instance
+                
+            }
+            
+            DispatchQueue.main.async {
+                self.instances = instancesToUpdate
+                self.searchBox = .init(keys: keys)
+                self.randomize()
+            }
         }
-        self.searchBox = .init(keys: keys)
         
         self.isReady = true
+    }
+    
+    func randomize() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            let count: Int = explorer.state.linkedInstances.count
+            let randomIndex: Int = min(max(count - 2, 0), 2.randomBetween(12))
+            let randomLimit: Int = min(max(count - 1, 0), randomIndex + 12.randomBetween(36))
+            
+            let randomInstances: [Instance] = Array(explorer.state.linkedInstances[randomIndex..<randomLimit])
+            
+            DispatchQueue.main.async {
+                self.randomSelection = randomInstances
+            }
+        }
+        
     }
     
     func search(_ query: String) {
@@ -57,6 +99,7 @@ struct GlobeExplorerView: View {
         let instances = results.compactMap {
             self.instances[$0]
         }
+        
         self.searchedInstances = instances
     }
 }
@@ -65,7 +108,7 @@ extension GlobeExplorerView {
     var landscapeView: some View {
         HStack(spacing: 0) {
             if isReady {
-                GlobeView()
+                GlobeView(globeInstances)
                     .wip()
             }
             
@@ -102,8 +145,6 @@ extension GlobeExplorerView {
                     searchedInstances.removeAll()
                 }, at: \.clean)
             Divider()
-            
-            Spacer()
 
             if searchedInstances.isNotEmpty {
                 GraniteScrollView {
@@ -128,31 +169,39 @@ extension GlobeExplorerView {
                     }
                     .padding(.vertical, .layer2)
                 }
-            } else if explorer.state.favorites.values.isEmpty {
-                //TODO: localize
-                Text("Search for an instance via their domain.")
-                    .font(.headline)
-                
-                Spacer()
             } else {
-                favoriteView
+                
+                VStack(spacing: 0) {
+                    
+                    if hasFavorites {
+                        VStack(spacing: 0) {
+                            Picker("", selection: $instancesViewingOption) {
+                                //TODO: localize
+                                Text("Favorites").tag(0)
+                                //TODO: localize
+                                Text("Random").tag(1)
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        .padding(.layer3)
+                    }
+                    if instancesViewingOption == 0 && hasFavorites {
+                        favoriteView
+                    } else {
+                        randomSelectionView
+                            .onAppear {
+                                randomize()
+                            }
+                    }
+                }
             }
+            
+            Spacer()
         }
     }
     
     var favoriteView: some View {
         VStack(spacing: 0) {
-            //TODO: localize
-            HStack {
-                Text("Favorites")
-                    .font(.title2.bold())
-                    .foregroundColor(.foreground)
-                Spacer()
-            }
-            .padding(.top, .layer3)
-            .padding(.bottom, .layer2)
-            .padding(.horizontal, .layer3)
-            Divider()
             
             GraniteScrollView {
                 LazyVStack(spacing: .layer3) {
@@ -174,9 +223,35 @@ extension GlobeExplorerView {
                             .padding(.horizontal, .layer3)
                     }
                 }
-                .padding(.top, .layer3)
-                .padding(.bottom, .layer2)
+                .padding(.top, .layer2)
+                .padding(.bottom, .layer3)
             }
+        }
+    }
+    
+    var randomSelectionView: some View {
+        GraniteScrollView {
+            LazyVStack(spacing: .layer3) {
+                ForEach(randomSelection) { instance in
+                    InstanceCardView(instance,
+                                     isConnected: connected.domain == instance.domain,
+                                     isFavorite: explorer.state.favorites[instance.domain] != nil)
+                        .attach({ instance in
+                            self.connected = instance
+                        }, at: \.connect)
+                        .attach({ instance in
+                            if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                                explorer._state.favorites.wrappedValue[instance.domain] = instance
+                            } else {
+                                explorer._state.favorites.wrappedValue[instance.domain] = nil
+                            }
+                        }, at: \.favorite)
+                        .graniteEvent(restart)
+                        .padding(.horizontal, .layer3)
+                }
+            }
+            .padding(.top, hasFavorites ? .layer2 : .layer3)
+            .padding(.bottom, .layer3)
         }
     }
 }

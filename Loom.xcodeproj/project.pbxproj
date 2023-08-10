@@ -113,6 +113,8 @@
 		711D392A2A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */; };
 		711D392C2A84821D00CF2DB2 /* StaticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392B2A84821D00CF2DB2 /* StaticService.swift */; };
 		711D392D2A84821D00CF2DB2 /* StaticService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392B2A84821D00CF2DB2 /* StaticService.swift */; };
+		711D392F2A84A96200CF2DB2 /* DebugComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392E2A84A96200CF2DB2 /* DebugComponent.swift */; };
+		711D39302A84A96200CF2DB2 /* DebugComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711D392E2A84A96200CF2DB2 /* DebugComponent.swift */; };
 		712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712427B72A65C4AA007F2F77 /* Bookmark._.swift */; };
 		712427B92A65C4AA007F2F77 /* Bookmark._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712427B72A65C4AA007F2F77 /* Bookmark._.swift */; };
 		71258D272A55F951007E52FC /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71258D262A55F951007E52FC /* Device.swift */; };
@@ -656,6 +658,7 @@
 		711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchConductor.BasicKeys.swift; sourceTree = "<group>"; };
 		711D39282A8413EF00CF2DB2 /* InstanceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceCardView.swift; sourceTree = "<group>"; };
 		711D392B2A84821D00CF2DB2 /* StaticService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticService.swift; sourceTree = "<group>"; };
+		711D392E2A84A96200CF2DB2 /* DebugComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugComponent.swift; sourceTree = "<group>"; };
 		712427B72A65C4AA007F2F77 /* Bookmark._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark._.swift; sourceTree = "<group>"; };
 		71258D262A55F951007E52FC /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
 		712BEB5929074CFB00D257B7 /* CameraContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContent.swift; sourceTree = "<group>"; };
@@ -1512,6 +1515,7 @@
 		717C8FB32A6F9EA000DF6037 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
 				71E5F3CA2A73A02500299558 /* Haptic.swift */,
 				711D392B2A84821D00CF2DB2 /* StaticService.swift */,
 				71AF14662A2E807300EEBD4B /* Disclaimer.swift */,
@@ -2496,6 +2500,7 @@
 				717090E92A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
 				710283C12A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
 				71A4A1322A6352CA00689DF2 /* CGFloat.swift in Sources */,
+				711D392F2A84A96200CF2DB2 /* DebugComponent.swift in Sources */,
 				71FCDD142A75ECF9000A6309 /* LayoutEnvironment.swift in Sources */,
 				713129BB2A83280A00C6B31D /* Instance.swift in Sources */,
 				71DF107B28CC697600559DBC /* Double+Rounding.swift in Sources */,
@@ -2810,6 +2815,7 @@
 				71B21B9F2A6CC90C005B3BFB /* GraniteSheetView.swift in Sources */,
 				7167A8662A773C8E006F901E /* FeedSidebarView.swift in Sources */,
 				71C9F9342A610C110089D7EA /* FooterView.swift in Sources */,
+				711D39302A84A96200CF2DB2 /* DebugComponent.swift in Sources */,
 				71A4A1222A61C41000689DF2 /* AccountService+Center.swift in Sources */,
 				710283822A2A54C300010877 /* EnvironmentValues+TrackPoint.swift in Sources */,
 				710283862A2A54C300010877 /* RangeSliderStyle.swift in Sources */,
@@ -3100,7 +3106,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3136,7 +3142,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3175,7 +3181,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3205,7 +3211,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

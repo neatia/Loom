@@ -8,9 +8,7 @@ extension ExplorerService {
         
         func reduce(state: inout Center.State) async {
             //TODO: better logic
-            guard state.lastUpdate == nil else { return }
             
-            LoomLog("globe begun")
             let fedInstances = await Lemmy.instances()
             
             LoomLog("globe finished | \(fedInstances?.linked.count ?? 0)")

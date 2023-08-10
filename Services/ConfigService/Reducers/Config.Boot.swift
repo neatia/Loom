@@ -31,7 +31,7 @@ extension ConfigService {
                 LayoutService.expandWindow(close: layout.state.closeFeedDisplayView)
             }
             
-            Services.all.explorer.preload()
+            //Services.all.explorer.preload()
         }
         
         var behavior: GraniteReducerBehavior {
@@ -62,6 +62,7 @@ extension ConfigService {
                 LemmyKit.baseUrl = accountMeta.host
                 state.config = .init(baseUrl: accountMeta.host)
                 
+                LoomLog("booting account")
                 account.center.boot.send(AccountService.Boot.Meta(accountMeta: accountMeta))
             }
                 

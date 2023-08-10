@@ -145,6 +145,7 @@ extension CommentCardView {
             #endif
             FooterView(postView: postView,
                        commentView: model,
+                       showScores: config.state.showScores,
                        style: self.style)
                 .attach({ id in
                     guard isPreview == false else { return }
