@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "granite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/Granite.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5f399b008af394a5c3ba44ad38584741706f70bb"
+      }
+    },
+    {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raspu/Highlightr.git",
@@ -16,6 +25,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "757e86c5d468635ab88e30d3bfb896a27ec34618"
+      }
+    },
+    {
+      "identity" : "lemmykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/LemmyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "e69796616cbe035519bfd284cf5b54a1a38cd9a0"
       }
     },
     {
