@@ -144,7 +144,7 @@ struct InstanceCardView: View {
                 Button {
                     GraniteHaptic.light.invoke()
                     connect.perform(instance)
-                    //restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))
+                    restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))
                 } label: {
                     if isConnected {
                         //TODO: localize

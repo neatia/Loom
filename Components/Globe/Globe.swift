@@ -49,5 +49,6 @@ struct Globe: GraniteComponent {
         let moduleWith = (width / 3) - (.layer4 * 2)
         _center = .init(.init(accountModuleSize: moduleWith))
         #endif
+        config.silence()
     }
 }

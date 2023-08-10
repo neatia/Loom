@@ -49,6 +49,6 @@ extension LoomLogLevel {
                                        line: Int = #line) {
     if level.rawValue <= LoomLogLevel.level.rawValue {
         let fileName = (file as NSString).lastPathComponent
-        print("level: \(level) Loom: \(fileName):\(line) \(function) | \(message)")
+        print("[Loom] | \(level) | \(fileName):\(line) \(function) | \(message)")
     }
 }

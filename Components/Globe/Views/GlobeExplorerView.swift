@@ -12,7 +12,6 @@ import GraniteUI
 import LemmyKit
 
 struct GlobeExplorerView: View {
-    @Relay var explorer: ExplorerService
     @Environment(\.graniteEvent) var restart
     
     @State var instances: [String: Instance] = [:]
@@ -23,6 +22,10 @@ struct GlobeExplorerView: View {
     
     @State var connected: Instance = .base
     
+    var explorer: ExplorerService {
+        Services.all.explorer
+    }
+    
     var body: some View {
         VStack {
             #if os(iOS)
@@ -31,16 +34,7 @@ struct GlobeExplorerView: View {
             landscapeView
             #endif
         }
-        .onChange(of: explorer.isLoaded) { _ in
-            explorer.center.boot.send()
-        }
-        .onChange(of: explorer.state.lastUpdate) { _ in
-            DispatchQueue.main.async {
-                update()
-                LoomLog("found \(self.instances.count) instances", level: .debug)
-            }
-        }
-        .onAppear {
+        .task {
             update()
         }
         .clipped()
@@ -83,18 +77,20 @@ extension GlobeExplorerView {
     
     var searchView: some View {
         VStack(spacing: 0) {
-            InstanceCardView(connected,
-                             isConnected: true,
-                             isFavorite: explorer.state.favorites[connected.domain] != nil)
-            .attach({ instance in
-                if explorer._state.favorites.wrappedValue[instance.domain] == nil {
-                    explorer._state.favorites.wrappedValue[instance.domain] = instance
-                } else {
-                    explorer._state.favorites.wrappedValue[instance.domain] = nil
-                }
-            }, at: \.favorite)
-            .padding(.layer3)
-            .id(connected.domain)
+            if searchedInstances.isEmpty || Device.isExpandedLayout {
+                InstanceCardView(connected,
+                                 isConnected: true,
+                                 isFavorite: explorer.state.favorites[connected.domain] != nil)
+                .attach({ instance in
+                    if explorer._state.favorites.wrappedValue[instance.domain] == nil {
+                        explorer._state.favorites.wrappedValue[instance.domain] = instance
+                    } else {
+                        explorer._state.favorites.wrappedValue[instance.domain] = nil
+                    }
+                }, at: \.favorite)
+                .padding(.layer3)
+                .id(connected.domain)
+            }
             
             Divider()
             
@@ -130,6 +126,7 @@ extension GlobeExplorerView {
                                 .padding(.horizontal, .layer3)
                         }
                     }
+                    .padding(.vertical, .layer2)
                 }
             } else if explorer.state.favorites.values.isEmpty {
                 //TODO: localize
@@ -159,7 +156,7 @@ extension GlobeExplorerView {
             
             GraniteScrollView {
                 LazyVStack(spacing: .layer3) {
-                    ForEach(Array(explorer.state.favorites.values)) { instance in
+                    ForEach(Array(explorer.state.favorites.values.filter { $0.domain != connected.domain })) { instance in
                         InstanceCardView(instance,
                                          isConnected: connected.domain == instance.domain,
                                          isFavorite: explorer.state.favorites[instance.domain] != nil)
@@ -176,7 +173,9 @@ extension GlobeExplorerView {
                             .graniteEvent(restart)
                             .padding(.horizontal, .layer3)
                     }
-                }.padding(.top, .layer3)
+                }
+                .padding(.top, .layer3)
+                .padding(.bottom, .layer2)
             }
         }
     }

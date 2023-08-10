@@ -56,9 +56,13 @@ extension Globe {
             case .accounts:
                 accountsView
             case .explorer:
-                GeometryReader { proxy in
-                    GlobeExplorerView()
-                        .graniteEvent(config.center.restart)
+                if isTabSelected == true {
+                    GeometryReader { proxy in
+                        GlobeExplorerView()
+                            .graniteEvent(config.center.restart)
+                    }
+                } else {
+                    EmptyView()
                 }
             }
         }
