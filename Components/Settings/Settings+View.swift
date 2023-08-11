@@ -86,16 +86,28 @@ extension Settings: View {
                     
                     HStack(spacing: .layer2) {
                         Group {
-                            if config.state.isIPFSAvailable {
-                                Image(systemName: "checkmark.circle")
-                                    .font(.headline)
-                                Text("IPFS_STATUS_ONLINE")
-                                    .font(.headline.bold())
-                            } else {
+                            if config.state.isIPFSAvailable == false {
                                 Image(systemName: "xmark.circle")
                                     .font(.headline.bold())
+                                    .foregroundColor(.red)
                                 Text("IPFS_STATUS_OFFLINE")
                                     .font(.headline.bold())
+                                    .foregroundColor(.red)
+                            } else if config.state.enableIPFS {
+                                Image(systemName: "checkmark.circle")
+                                    .font(.headline)
+                                    .foregroundColor(.green)
+                                Text("IPFS_STATUS_ONLINE")
+                                    .font(.headline.bold())
+                                    .foregroundColor(.green)
+                            } else {
+                                Image(systemName: "circle.circle")
+                                    .font(.headline.bold())
+                                    .foregroundColor(Brand.Colors.yellow)
+                                //TODO: localize
+                                Text("Available")
+                                    .font(.headline.bold())
+                                    .foregroundColor(Brand.Colors.yellow)
                             }
                         }
                         .foregroundColor((config.state.isIPFSAvailable ? Color.green : Color.red).opacity(0.8))
@@ -132,6 +144,26 @@ extension Settings: View {
                     #endif
                 }
                 .padding(.horizontal, .layer4)
+                
+                if config.state.isIPFSAvailable {
+                    HStack {
+                        Picker("", selection: config._state.ipfsContentType) {
+                            //TODO: localize
+                            Text("Markdown").tag(0)
+                            //TODO: localize
+                            Text("Classic").tag(1)
+                            //TODO: localize
+                            Text("Visualizer").tag(2)
+                        }
+                        .pickerStyle(.segmented)
+                        .frame(maxWidth: Device.isExpandedLayout ? 240 : nil)
+                        
+                        if Device.isExpandedLayout {
+                            Spacer()
+                        }
+                    }
+                    .padding(.horizontal, .layer2)
+                }
                 
                 if isTabSelected == true {
                     VStack(alignment: .leading, spacing: 0) {

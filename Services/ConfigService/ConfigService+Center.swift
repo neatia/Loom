@@ -22,6 +22,7 @@ extension ConfigService {
             }
             var ipfsGatewayUrl: String = "https://gateway.ipfs.io"
             var isIPFSAvailable: Bool = false
+            var ipfsContentType: Int = 0
             
             //Account
             var showNSFW: Bool = false
@@ -35,7 +36,7 @@ extension ConfigService {
         @Event var restart: Restart.Reducer
         @Event var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0017", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0018", autoSave: true, preload: true) public var state: State
     }
     
     struct Preferences {

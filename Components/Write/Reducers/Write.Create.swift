@@ -13,7 +13,7 @@ extension Write {
         
         @Relay var config: ConfigService
         
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             config.preload()
             
             let title = state.title
@@ -22,37 +22,43 @@ extension Write {
             let postURL = state.postURL
             let postCommunity = state.postCommunity
             let enableIPFS: Bool = config.state.enableIPFS && config.state.isIPFSAvailable
-            let ipfsContentStyle: Int = state.selectedIPFSContentStyle
-            _ = Task {
-                guard let community = postCommunity?.community else {
-                    return
-                }
-                
-                _ = Task.detached {
-                    let url: String?
-                    var subcontent: String = ""
-                    if enableIPFS && content.isNotEmpty {
-                        let ipfsContent = await prepareIPFS(imageData: imageData, postURL: postURL, ipfsContentStyle: ipfsContentStyle, title: title, content: content)
-                        
-                        url = ipfsContent?.postUrl ?? postURL
-                        subcontent = ipfsContent?.subcontent ?? ""
-                    } else {
-                        url = postURL
-                    }
-                    
-                    let value = await Lemmy.createPost(title,
-                                                       content: content,
-                                                       url: url?.isEmpty == true ? nil : url,
-                                                       body: content + subcontent,
-                                                       community: community)
-
-                    guard let value else {
-                        beam.send(StandardNotificationMeta(title: "MISC_ERROR_2", message: "ALERT_CREATE_POST_FAILED \("!"+community.name)", event: .error))
-                        return
-                    }
-                    beam.send(ResponseMeta(postView: value))
-                }
+            let ipfsContentStyle: Int = config.state.ipfsContentType
+            
+            state.isPosting = false
+            
+            guard let community = postCommunity?.community else {
+                return
             }
+            
+            let url: String?
+            var subcontent: String = ""
+            var includeBody: Bool = true
+            if enableIPFS && content.isNotEmpty {
+                let ipfsContent = await prepareIPFS(imageData: imageData, postURL: postURL, ipfsContentStyle: ipfsContentStyle, title: title, content: content)
+                
+                url = ipfsContent?.postUrl ?? postURL
+                subcontent = ipfsContent?.subcontent ?? ""
+                
+                if ipfsContentStyle == 2 {
+                    includeBody = false
+                }
+            } else {
+                url = postURL
+            }
+            
+            let value = await Lemmy.createPost(title,
+                                               content: content,
+                                               url: url?.isEmpty == true ? nil : url,
+                                               body: includeBody ? (content + subcontent) : nil,
+                                               community: community)
+
+            guard let value else {
+                beam.send(StandardNotificationMeta(title: "MISC_ERROR_2", message: "ALERT_CREATE_POST_FAILED \("!"+community.name)", event: .error))
+                return
+            }
+            
+            state.createdPostView = value
+            state.showPost = true
         }
         
         struct IPFSContent {
@@ -94,8 +100,10 @@ extension Write {
             
             if ipfsContentStyle == 0 {
                 text = Write.Generate.htmlMarkdown(title: title, author: user, content: content, urlString: actorUrl, image_url: image_url)
-            } else {
+            } else if ipfsContentStyle == 1 {
                 text = Write.Generate.htmlReader(title: title, author: user, content: Array(content.components(separatedBy: "\n")).map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }, urlString: actorUrl, image_url: image_url)
+            } else {
+                text = Write.Generate.shader(title: title, author: user, content: content.trimmingCharacters(in: .whitespacesAndNewlines), urlString: actorUrl, image_url: image_url)
             }
             
             guard let data: Data = text.data(using: .utf8) else {
@@ -114,8 +122,10 @@ extension Write {
             
             return .init(imageUrl: image_url, postUrl: url, content: content, subcontent: subcontent)
         }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
+        }
     }
-    
-    
 }
 

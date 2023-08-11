@@ -218,7 +218,7 @@ extension PostCardView {
             }
             
             if let contentMetadata {
-                ContentMetadataView(metadata: contentMetadata)
+                ContentMetadataView(metadata: contentMetadata, urlToOpen: model.postURL)
                     .frame(maxWidth: Device.isMacOS ? 350 : nil)
                     .padding(.bottom, .layer2)
             }

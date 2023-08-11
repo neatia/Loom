@@ -19,9 +19,11 @@ struct ContentMetadataView: View {
     
     var meta: LPLinkMetadata?
     var image: GraniteImage?
-    init(metadata: PageableMetadata?) {
+    var urlToOpen: URL?
+    init(metadata: PageableMetadata?, urlToOpen: URL? = nil) {
         self.meta = metadata?.linkMeta
         self.image = metadata?.imageThumb
+        self.urlToOpen = urlToOpen
     }
     
     var body: some View {
@@ -112,7 +114,7 @@ struct ContentMetadataView: View {
             .cornerRadius(12)
         }
         .buttonStyle(LinkButton())
-        .universalWebCover(isPresented: $isPresented, url: meta?.url)
+        .universalWebCover(isPresented: $isPresented, url: urlToOpen ?? meta?.url)
     }
 }
 

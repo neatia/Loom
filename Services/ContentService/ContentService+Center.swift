@@ -13,7 +13,7 @@ extension ContentService {
         }
         
         @Event var boot: Boot.Reducer
-        @Event var interact: Interact.Reducer
+        @Event(debounce: 0.5) var interact: Interact.Reducer
         
         @Store(persist: "persistence.content.Loom.0018", autoSave: true) public var state: State
     }

@@ -16,8 +16,11 @@ struct DebugComponent: GraniteComponent {
     
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            
+            var index: Int = 0
         }
+        
+        @Event(debounce: 0.5) var debounce: DebounceInterval.Reducer
+        @Event var normal: DebounceInterval.Reducer
         
         @Store var state: State
     }
@@ -29,14 +32,34 @@ struct DebugComponent: GraniteComponent {
             if toggle {
                 PostCardView(model: .mock)
             }
+            
+            Text("\(state.index)")
 
             Button {
-                toggle.toggle()
+                center.normal.send()
             } label: {
-                Text("Test")
+                Text("Increment")
+            }
+            .buttonStyle(.plain)
+            
+            Button {
+                center.debounce.send()
+            } label: {
+                Text("Increment Debounce")
             }
             .buttonStyle(.plain)
 //            PostCardView(model: .mock)
         }
     }
+}
+
+struct DebounceInterval: GraniteReducer {
+    typealias Center = DebugComponent.Center
+    func reduce(state: inout Center.State) {
+        state.index += 1
+    }
+    
+//    var behavior: GraniteReducerBehavior {
+//        .task(.userInitiated)
+//    }
 }

@@ -15,16 +15,15 @@ extension Write {
             var enableMDPreview: Bool = false
             var enableImagePreview: Bool = true
             
-            var selectedIPFSContentStyle: Int = 1
-            var ipfsType: [String] = ["Markdown", "Classic"]
-            
             var postCommunity: CommunityView? = nil
             
             var showPost: Bool = false
             var createdPostView: PostView? = nil
+            
+            var isPosting: Bool = false
         }
         
-        @Event var create: Write.Create.Reducer
+        @Event(debounce: 0.25) var create: Write.Create.Reducer
         
         @Store public var state: State
     }

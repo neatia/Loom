@@ -93,6 +93,8 @@
 		710283D02A2A54C400010877 /* AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710283722A2A54C300010877 /* AccentColor.swift */; };
 		71071F222A660D8E003AEC62 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71071F212A660D8E003AEC62 /* PostContentView.swift */; };
 		71071F232A660D8E003AEC62 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71071F212A660D8E003AEC62 /* PostContentView.swift */; };
+		710BEA9F2A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */; };
+		710BEAA02A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */; };
 		711B3F8B2885D43B00F3080D /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F8A2885D43B00F3080D /* Tests_iOS.swift */; };
 		711B3F8D2885D43B00F3080D /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F8C2885D43B00F3080D /* Tests_iOSLaunchTests.swift */; };
 		711B3F972885D43B00F3080D /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F962885D43B00F3080D /* Tests_macOS.swift */; };
@@ -645,6 +647,8 @@
 		710283712A2A54C300010877 /* DefaultThumb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultThumb.swift; sourceTree = "<group>"; };
 		710283722A2A54C300010877 /* AccentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
 		71071F212A660D8E003AEC62 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
+		710BEA9D2A868D3C0075A141 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
+		710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Shaders.swift; sourceTree = "<group>"; };
 		711B3F722885D43700F3080D /* PEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEXApp.swift; sourceTree = "<group>"; };
 		711B3F742885D43B00F3080D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		711B3F792885D43B00F3080D /* Loom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1211,6 +1215,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				710BEA9D2A868D3C0075A141 /* LemmyKit */,
 				716157DB2A85C5A700449EE4 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
@@ -1946,6 +1951,7 @@
 				71CB6C372A6B81E500084ECC /* Write.Set.swift */,
 				71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */,
 				71B21B5F2A6C5743005B3BFB /* Write.Generate.Passage.swift */,
+				710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -2495,6 +2501,7 @@
 				71C9F9072A60B9C10089D7EA /* Config.Boot.swift in Sources */,
 				717C8FBB2A6FD1EF00DF6037 /* Feed.HeaderView.swift in Sources */,
 				71A28D9C295231E600EAE8EE /* Dictionary.swift in Sources */,
+				710BEA9F2A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */,
 				712BEB5E29074CFB00D257B7 /* CameraView.swift in Sources */,
 				7166E9D22A747ED7004F88D7 /* ReportView.swift in Sources */,
 				71DF107528CC697600559DBC /* Style.swift in Sources */,
@@ -2756,6 +2763,7 @@
 				71F0421E2A6A3AD100788CDC /* Globe.swift in Sources */,
 				71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71CB6C342A6B742200084ECC /* Write.Import.swift in Sources */,
+				710BEAA02A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */,
 				710283B42A2A54C300010877 /* AnyValueSliderStyle.swift in Sources */,
 				7197FB182964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,
 				71B7A1D72A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */,

@@ -7,6 +7,7 @@ struct Feed: GraniteComponent {
     @Command var center: Center
     
     @Relay var config: ConfigService
+    @Relay var content: ContentService
     @Relay var modal: ModalService
     @Relay var account: AccountService
     
@@ -63,10 +64,19 @@ struct Feed: GraniteComponent {
                 pager.clear()
                 pager.fetch(force: true)
             }
+        
+        content
+            .center
+            .interact
+            .listen(.broadcast) { value in
+                if let meta = value as? StandardErrorMeta {
+                    modal.presentModal(GraniteToastView(meta))
+                }
+            }
     }
     
     init(_ community: Community? = nil) {
         _center = .init(.init(community: community, location: community?.location ?? .base, peerLocation: community?.location?.isPeer == true ? community?.location : nil))
-        //content.preload()
+        content.silence()
     }
 }

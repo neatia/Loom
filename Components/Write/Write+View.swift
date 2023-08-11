@@ -91,39 +91,54 @@ extension Write: View {
                 
                 Spacer()
                 
-                Button {
-                    GraniteHaptic.light.invoke()
-                    setCommunity()
-                } label : {
-                    if let communityView = state.postCommunity {
-                        Text(communityView.community.name)
-                            .font(.headline.bold())
-                            .offset(x: 0, y: -1)
-                    } else if Device.isMacOS {
-                        Text("TITLE_SET_COMMUNITY")
-                            .font(.headline.bold())
-                            .offset(x: 0, y: -1)
+                if state.isPosting {
+                    #if os(iOS)
+                    ProgressView()
+                    #else
+                    ProgressView()
+                        .scaleEffect(0.6)
+                    #endif
+                } else {
+                    
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        setCommunity()
+                    } label : {
+                        if let communityView = state.postCommunity {
+                            Text(communityView.community.name)
+                                .font(.headline.bold())
+                                .offset(x: 0, y: -1)
+                        } else if Device.isMacOS {
+                            Text("TITLE_SET_COMMUNITY")
+                                .font(.headline.bold())
+                                .offset(x: 0, y: -1)
+                        }
+                        if let communityView = state.postCommunity {
+                            AvatarView(communityView.iconURL, size: .mini, isCommunity: true)
+                        } else {
+                            Image(systemName: "globe")
+                                .font(.title3)
+                        }
                     }
-                    if let communityView = state.postCommunity {
-                        AvatarView(communityView.iconURL, size: .mini, isCommunity: true)
-                    } else {
-                        Image(systemName: "globe")
-                            .font(.title3)
+                    .buttonStyle(PlainButtonStyle())
+                    .foregroundColor(state.postCommunity != nil ? .foreground : .red)
+                    .opacity(0.8)
+                    .fixedSize(horizontal: false, vertical: true)
+                    
+                    Button {
+                        guard state.isPosting == false else {
+                            return
+                        }
+                        
+                        GraniteHaptic.light.invoke()
+                        _state.isPosting.wrappedValue = true
+                        center.create.send()
+                    } label: {
+                        Image(systemName: "paperplane.fill")
+                            .font(.headline)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .buttonStyle(PlainButtonStyle())
-                .foregroundColor(state.postCommunity != nil ? .foreground : .red)
-                .opacity(0.8)
-                .fixedSize(horizontal: false, vertical: true)
-                
-                Button {
-                    GraniteHaptic.light.invoke()
-                    center.create.send()
-                } label: {
-                    Image(systemName: "paperplane.fill")
-                        .font(.headline)
-                }
-                .buttonStyle(PlainButtonStyle())
             }
             .frame(height: 24)
             .padding(.leading, .layer4)
