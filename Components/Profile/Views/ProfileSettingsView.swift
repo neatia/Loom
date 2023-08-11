@@ -158,6 +158,9 @@ struct ProfileSettingsView: View {
                                 showBotAccounts: config.state.showBotAccounts,
                                 sortType: config.state.sortType,
                                 listingType: config.state.listingType)
+        
+        account.preload()
+        
         #if os(iOS)
         UITextView.appearance().backgroundColor = .clear
         #else

@@ -71,10 +71,6 @@ extension Search: View {
                 StandardLoadingView()
             } else if let response = conductor.response {
                 SearchAllView(model: response)
-//                    .attach({ commentView in
-//                        _state.commentView.wrappedValue = commentView
-//                        _state.showDrawer.wrappedValue = true
-//                    }, at: \.showDrawer)
                     .background(Color.alternateBackground)
             } else {
                 Spacer()

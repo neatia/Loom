@@ -16,7 +16,6 @@ struct FooterView: View {
     @GraniteAction<CommentId> var showComments
     @GraniteAction<PostView> var reply
     
-    @Relay var config: ConfigService
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
     
@@ -111,7 +110,7 @@ struct FooterView: View {
         self.showScores = showScores
         self.isComposable = isComposable
         
-        //        content.preload()
+        //content.preload()
         //        config.preload()
     }
     

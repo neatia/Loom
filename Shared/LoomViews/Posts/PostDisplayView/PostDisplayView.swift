@@ -29,10 +29,25 @@ struct PostDisplayView: View {
     
     @State var enableCommunityRoute: Bool = false
     
-    //important to maintain handler
-    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
-    
     @State var threadLocation: FetchType = .base
+    
+    //TODO: Similar to feed's controls maybe it can be reused?
+    @State var selectedSorting: Int = 0
+    var sortingType: [CommentSortType] = CommentSortType.allCases
+    @State var selectedHost: String = LemmyKit.host
+    var viewableHosts: [String] {
+        var hosts: [String] = [LemmyKit.host]
+        if model.isBaseResource == false {
+            hosts += [model.community.actor_id.host]
+        }
+        
+        if model.isPeerResource {
+            hosts += [model.creator.actor_id.host]
+        }
+        return hosts
+    }
+    
+    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -97,6 +112,7 @@ struct PostDisplayView: View {
                                             community: model.community,
                                             page: page,
                                             type: .all,
+                                            sort: sortingType[selectedSorting],
                                             location: threadLocation)
             }.fetch()
         }
@@ -109,11 +125,8 @@ extension PostDisplayView {
         VStack(alignment: .leading, spacing: 0) {
             if model.hasContent {
                 if model.post.url != nil {
-//                    ScrollView(showsIndicators: false) {
-                        contentLinkPreview
-                            .padding(.horizontal, .layer4)
-//                    }
-//                    .frame(maxHeight: 400)
+                    contentLinkPreview
+                        .padding(.horizontal, .layer4)
                 }
                 
                 if model.post.body != nil {
@@ -147,23 +160,9 @@ extension PostDisplayView {
             
             Divider()
             
-            VStack(spacing: 0) {
-                Picker("", selection: $threadLocation) {
-                    Text(LemmyKit.host).tag(FetchType.base)
-                    if model.isBaseResource == false {
-                        Text(model.community.actor_id.host).tag(FetchType.source)
-                    }
-                    if model.isPeerResource {
-                        Text(model.creator.actor_id.host).tag(FetchType.peer(model.creator.actor_id.host))
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, .layer3)
-                .onChange(of: threadLocation) { _ in
-                    comments.fetch(force: true)
-                }
-            }
-            .padding(.vertical, .layer4)
+            sortMenuView
+                .padding(.layer4)
+                .addHaptic()
         }
         .fixedSize(horizontal: false, vertical: true)
     }
@@ -176,12 +175,6 @@ extension PostDisplayView {
                     .font(.title3.bold())
                     .foregroundColor(.foreground.opacity(0.9))
                     .padding(.bottom, .layer1)
-                
-//                        if let postURL = model.postURL {
-//                            Text(postURL)
-//                                .font(.footnote)
-//                                .foregroundColor(.white.opacity(0.9))
-//                        }
             }
             
             Spacer()

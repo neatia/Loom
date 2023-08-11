@@ -59,6 +59,8 @@ struct Feed: GraniteComponent {
             .center
             .restart
             .listen(.broadcast) { _ in
+                LoomLog("Restarting")
+                pager.clear()
                 pager.fetch(force: true)
             }
     }

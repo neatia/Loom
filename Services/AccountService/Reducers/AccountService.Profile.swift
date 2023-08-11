@@ -54,21 +54,21 @@ extension AccountService {
             guard let data = info?.jwt?.data(using: .utf8),
                       let username,
                       let host else {
-                beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_UPDATE_SETTINGS_FAILED", event: .error))
+                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_UPDATE_SETTINGS_FAILED", event: .error))
                 return
             }
             
             
             do {
                 try AccountService.insertToken(data, identifier: AccountService.keychainAuthToken + username, service: AccountService.keychainService + host)
-                LoomLog("inserted into keychain", level: .debug)
+                LoomLog("inserted into keychain after updating profile", level: .debug)
             } catch let error {
                 LoomLog("keychain: \(error)", level: .error)
             }
             
             if let user = LemmyKit.current.user?.local_user_view.person {
                 
-                beam.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_UPDATE_SETTINGS_SUCCESS", event: .success), person: user))
+                broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_UPDATE_SETTINGS_SUCCESS", event: .success), person: user))
                 
                 guard let user = LemmyKit.current.user, let host = state.meta?.host else {
                     LoomLog("no user found", level: .debug)
@@ -77,6 +77,7 @@ extension AccountService {
                 }
                 
                 state.meta = .init(info: user, host: host)
+                LoomLog("updated user data after updating settings")
             }
         }
         
