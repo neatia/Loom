@@ -77,6 +77,9 @@ extension LoginView {
             
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                .textContentType(.username)
                 .frame(height: 60)
                 .padding(.horizontal, .layer4)
                 .font(.title3.bold())
@@ -85,8 +88,6 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer2)
-                .autocorrectionDisabled()
-                .textContentType(.username)
             
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
             //TextField("Enter your password", text: $password)
@@ -103,6 +104,8 @@ extension LoginView {
             
             TextField("https://lemmy.world", text: $host)
                 .textFieldStyle(.plain)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
                 .frame(height: 60)
                 .padding(.horizontal, .layer4)
                 .font(.title3.bold())
@@ -114,6 +117,8 @@ extension LoginView {
         
             TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)
                 .textFieldStyle(.plain)
+                .keyboardType(.numberPad)
+                .textContentType(.oneTimeCode)
                 .frame(height: 60)
                 .padding(.horizontal, .layer4)
                 .font(.title3.bold())
@@ -122,7 +127,6 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer4)
-                .textContentType(.oneTimeCode)
             
             HStack(spacing: .layer2) {
                 Spacer()
@@ -158,6 +162,7 @@ extension LoginView {
         }
         .padding(.layer5)
     }
+    //TODO: combing both/reuse
     var loginForm: some View {
         VStack(spacing: 0) {
             HStack(spacing: .layer4) {
@@ -184,6 +189,8 @@ extension LoginView {
             
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
                 .frame(height: 60)
                 .padding(.horizontal, .layer4)
                 .font(.title3.bold())
@@ -192,7 +199,6 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer2)
-                .autocorrectionDisabled()
             
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
                 .textFieldStyle(.plain)
@@ -208,6 +214,8 @@ extension LoginView {
             if kind == .login {
                 TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)
                     .textFieldStyle(.plain)
+                    .keyboardType(.numberPad)
+                    .textContentType(.oneTimeCode)
                     .frame(height: 60)
                     .padding(.horizontal, .layer4)
                     .font(.title3.bold())
@@ -240,6 +248,8 @@ extension LoginView {
                     
                     TextField("", text: $captcha)
                         .textFieldStyle(.plain)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
                         .frame(height: 60)
                         .padding(.horizontal, .layer4)
                         .font(.title3.bold())

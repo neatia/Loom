@@ -95,6 +95,8 @@ extension AccountService {
         
         func reduce(state: inout Center.State) {
             state.meta = nil
+            LemmyKit.auth = nil
+            state.authenticated = false
         }
     }
 }

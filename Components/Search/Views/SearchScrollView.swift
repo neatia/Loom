@@ -16,10 +16,10 @@ struct SearchScrollView: View {
     var query: String
     @Binding var response: SearchResponse?
     
-    var pagerPosts: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
-    var pagerComments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
-    var pagerUsers: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS")
-    var pagerCommunities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    @StateObject var pagerPosts: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    @StateObject var pagerComments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    @StateObject var pagerUsers: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS")
+    @StateObject var pagerCommunities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
     
     var searchType: SearchType
     var community: Community?
@@ -119,32 +119,32 @@ struct SearchScrollView: View {
     func setInitial() {
         switch searchType {
         case .posts:
-            pagerPosts.add(response?.posts ?? [], pageIndex: 2)
+            let pageIndex = response?.posts.isEmpty == true ? 1 : 2
+            pagerPosts.add(response?.posts ?? [], pageIndex: pageIndex)
         case .comments:
-            pagerComments.add(response?.comments ?? [], pageIndex: 2)
+            let pageIndex = response?.comments.isEmpty == true ? 1 : 2
+            pagerComments.add(response?.comments ?? [], pageIndex: pageIndex)
         case .users:
-            pagerUsers.add(response?.users ?? [], pageIndex: 2)
+            let pageIndex = response?.users.isEmpty == true ? 1 : 2
+            pagerUsers.add(response?.users ?? [], pageIndex: pageIndex)
         case .communities:
-            pagerCommunities.add(response?.communities ?? [], pageIndex: 2)
+            let pageIndex = response?.communities.isEmpty == true ? 1 : 2
+            pagerCommunities.add(response?.communities ?? [], pageIndex: pageIndex)
         default:
             break
         }
     }
     
     func search(_ page: Int?) async -> SearchResponse? {
-        if page == 1 {
-            return response
-        } else {
-            return  await Lemmy.search(query,
-                                       type_: searchType,
-                                       communityId: nil,
-                                       communityName: community?.name,
-                                       creatorId: nil,
-                                       sort: selectedSort,
-                                       listingType: selectedListing,
-                                       page: page,
-                                       limit: ConfigService.Preferences.pageLimit)
-        }
+        return  await Lemmy.search(query,
+                                   type_: searchType,
+                                   communityId: nil,
+                                   communityName: community?.name,
+                                   creatorId: nil,
+                                   sort: selectedSort,
+                                   listingType: selectedListing,
+                                   page: page,
+                                   limit: ConfigService.Preferences.pageLimit)
     }
     
     var headerView: some View {

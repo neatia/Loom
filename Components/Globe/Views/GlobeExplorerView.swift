@@ -63,10 +63,9 @@ struct GlobeExplorerView: View {
             var keys: [String] = []
             var instancesToUpdate: [String: Instance] = [:]
             
-            explorer.state.linkedInstances.enumerated().forEach { (i, instance) in
+            explorer.state.linkedInstances.forEach { instance in
                 keys.append(instance.domain)
                 instancesToUpdate[instance.domain] = instance
-                
             }
             
             DispatchQueue.main.async {
@@ -82,7 +81,7 @@ struct GlobeExplorerView: View {
     func randomize() {
         DispatchQueue.global(qos: .userInteractive).async {
             let count: Int = explorer.state.linkedInstances.count
-            let randomIndex: Int = min(max(count - 2, 0), 2.randomBetween(12))
+            let randomIndex: Int = min(max(count - 2, 0), 2.randomBetween(count - 36))
             let randomLimit: Int = min(max(count - 1, 0), randomIndex + 12.randomBetween(36))
             
             let randomInstances: [Instance] = Array(explorer.state.linkedInstances[randomIndex..<randomLimit])
@@ -195,8 +194,6 @@ extension GlobeExplorerView {
                     }
                 }
             }
-            
-            Spacer()
         }
     }
     

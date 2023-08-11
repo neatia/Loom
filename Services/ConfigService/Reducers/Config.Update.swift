@@ -10,7 +10,7 @@ extension ConfigService {
         
         @Relay var account: AccountService
         
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             guard let meta else { return }
             state.showNSFW = meta.showNSFW
             state.showScores = meta.showScores
@@ -20,6 +20,10 @@ extension ConfigService {
             
             guard account.isLoggedIn else { return }
             account.center.update.send(meta)
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
 }

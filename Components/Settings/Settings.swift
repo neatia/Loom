@@ -6,24 +6,21 @@ struct Settings: GraniteComponent {
     
     @Environment(\.openURL) var openURL
     
-    @State var action = WebViewAction.idle
-    @State var webState = WebViewState.empty
-    
     @Relay var modal: ModalService
     @Relay var account: AccountService
     @Relay var config: ConfigService
     
     @Environment(\.graniteTabSelected) var isTabSelected
     
-//    var listeners: Void {
-//        account
-//            .center
-//            .update
-//            .listen { value in
-//                if let meta = value as? StandardNotificationMeta {
-//                    modal.dismissSheet()
-//                    modal.presentModal(GraniteToastView(meta))
-//                }
-//            }
-//    }
+    var listeners: Void {
+        account
+            .center
+            .update
+            .listen(.broadcast) { value in
+                if let meta = value as? AccountService.Update.ResponseMeta {
+                    modal.dismissSheet()
+                    modal.presentModal(GraniteToastView(meta.notification))
+                }
+            }
+    }
 }

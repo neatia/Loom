@@ -15,6 +15,8 @@ extension ConfigService {
             ConfigService.configureIPFS(state.ipfsGatewayUrl)
             
             account.center.boot.send()
+            
+            content.preload()
             content.center.boot.send()
             
             layout.preload()
@@ -68,10 +70,15 @@ extension ConfigService {
             
             let host: String = (meta.host ?? meta.accountMeta?.host) ?? ""
             
+            content.preload()
             content.center.boot.send()
             
             if meta.accountMeta == nil {
                 broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(host)", event: .normal))
+            } else {
+                //This will notify Feed's receivers to reset the content
+                //But will avoid stacking toasts on Globe's receiver
+                broadcast.send(nil)
             }
         }
         
