@@ -27,6 +27,7 @@ struct WriteView: View {
     
     @State var id: UUID = .init()
     
+    @FocusState var isFocused: Bool
     
     var body: some View {
         VStack {
@@ -75,21 +76,29 @@ extension WriteView {
             HStack(spacing: 0) {
                 if #available(macOS 13.0, iOS 16.0, *) {
                     TextEditor(text: $content)
-                        .textFieldStyle(PlainTextFieldStyle())
+                        .textFieldStyle(.plain)
+                        .focused($isFocused)
                         .foregroundColor(.foreground)
                         .background(.clear)
                         .font(.title3.bold())
                         .scrollContentBackground(Visibility.hidden)
                         .padding(.layer3)
                         .frame(maxWidth: .infinity)
+                        .overlayIf(content.isEmpty && isFocused == false) {
+                            placeholderView
+                        }
                 } else {
                     TextEditor(text: $content)
-                        .textFieldStyle(PlainTextFieldStyle())
+                        .textFieldStyle(.plain)
+                        .focused($isFocused)
                         .foregroundColor(.foreground)
                         .background(.clear)
                         .font(.title3.bold())
                         .padding(.layer3)
                         .frame(maxWidth: .infinity)
+                        .overlayIf(content.isEmpty && isFocused == false) {
+                            placeholderView
+                        }
                 }
                 
                 Divider()
@@ -138,7 +147,8 @@ extension WriteView {
             
             if #available(macOS 13.0, iOS 16.0, *) {
                 TextEditor(text: $content)
-                    .textFieldStyle(PlainTextFieldStyle())
+                    .textFieldStyle(.plain)
+                    .focused($isFocused)
                     .foregroundColor(.foreground)
                     .background(.clear)
                     .font(.title3.bold())
@@ -149,6 +159,9 @@ extension WriteView {
                             KeyboardToolbarView(minimize: $minimize)
                         }
                     }
+                    .overlayIf(content.isEmpty && isFocused == false) {
+                        placeholderView
+                    }
                     .id(id)
             } else {
                 NavigationView {
@@ -156,7 +169,8 @@ extension WriteView {
                         Color.background
                         
                         TextEditor(text: $content)
-                            .textFieldStyle(PlainTextFieldStyle())
+                            .textFieldStyle(.plain)
+                            .focused($isFocused)
                             .foregroundColor(.foreground)
                             .background(.clear)
                             .font(.title3.bold())
@@ -172,10 +186,28 @@ extension WriteView {
                             .hideNavBar()
                         
                     }
+                    .overlayIf(content.isEmpty && isFocused == false) {
+                        placeholderView
+                    }
                 }
                 .inlineNavTitle()
             }
         }
+    }
+    
+    var placeholderView: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                //TODO: localize
+                Text("Write something...")
+                    .font(.title3.bold())
+                    .foregroundColor(.foreground.opacity(0.3))
+                Spacer()
+            }
+            .padding(.horizontal, .layer3)
+            .padding(.vertical, .layer2)
+            Spacer()
+        }.allowsHitTesting(false)
     }
 }
 

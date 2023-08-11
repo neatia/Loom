@@ -11,6 +11,14 @@ struct Feed: GraniteComponent {
     @Relay var modal: ModalService
     @Relay var account: AccountService
     
+    /*
+     Note: there is no "LayoutService" in the top level.
+     Avoid redraws, as for Expanded layout manages 3 different
+     component states.
+     
+     Instead use a reducer to reset with the relay initialized within
+     */
+    
     @StateObject var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
     
     var listeners: Void {
