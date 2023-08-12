@@ -5,8 +5,8 @@ import LemmyKit
 extension BookmarkService {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var posts: [String: BookmarkPosts] = [:]
-            var comments: [String: BookmarkComments] = [:]
+            var posts: [String: [String : BookmarkPosts]] = [:]
+            var comments: [String: [String : BookmarkComments]] = [:]
             
             var postDomains: Set<String> = .init()
             var commentDomains: Set<String> = .init()
@@ -19,21 +19,24 @@ extension BookmarkService {
         
         @Event var modify: Modify.Reducer
         
-        @Store(persist: "persistence.bookmark.Loom.0008", autoSave: true) public var state: State
+        @Store(persist: "persistence.bookmark.Loom.0009", autoSave: true) public var state: State
     }
     
     func contains(_ kind: Kind) -> Bool {
+        let host: String = LemmyKit.host
+        
         switch kind {
         case .post(let model):
             guard let domain = model.creator.domain else {
                 return false
             }
-            return state.posts[domain]?.map[model.id] != nil
+            
+            return state.posts[host]?[domain]?.map[model.id] != nil
         case .comment(let model, _):
             guard let domain = model.creator.domain else {
                 return false
             }
-            return state.comments[domain]?.map[model.id] != nil
+            return state.comments[host]?[domain]?.map[model.id] != nil
         }
     }
     

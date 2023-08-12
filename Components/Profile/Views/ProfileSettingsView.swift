@@ -214,6 +214,8 @@ struct ProfileSettingsView: View {
                 .padding(.horizontal, .layer4)
                 
                 Divider()
+                    .padding(.bottom, .layer2)
+                    .padding(.leading, .layer4)
             }
             
             if isModal {
@@ -407,7 +409,7 @@ struct ProfileSettingsView: View {
             HStack {
                 Toggle(isOn: $showNSFW) {
                     Text("PROFILE_ADULT_CONTENT")
-                        .font(.headline)
+                        .font(.body)
                         .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                 }
                 .padding(.bottom, .layer3)
@@ -419,7 +421,7 @@ struct ProfileSettingsView: View {
             HStack {
                 Toggle(isOn: $showScores) {
                     Text("PROFILE_SHOW_SCORES")
-                        .font(.headline)
+                        .font(.body)
                         .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                 }
                 .padding(.bottom, .layer3)
@@ -431,7 +433,7 @@ struct ProfileSettingsView: View {
             HStack {
                 Toggle(isOn: $showBotAccounts) {
                     Text("PROFILE_SHOW_BOT_ACCOUNTS")
-                        .font(.headline)
+                        .font(.body)
                         .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                 }
                 #if os(macOS)

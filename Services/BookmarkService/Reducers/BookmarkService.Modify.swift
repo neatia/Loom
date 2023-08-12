@@ -24,44 +24,66 @@ extension BookmarkService {
         func reduce(state: inout Center.State) {
             guard let meta = self.meta else { return }
             
+            let host = LemmyKit.host
+            
             switch meta.kind {
             case .post(let model):
                 guard let domain = model.creator.domain else {
                     return
                 }
                 
-                if state.posts[domain] == nil {
-                    state.posts[domain] = .init(domain)
+                var bookmarkPost: BookmarkPosts
+                
+                if let posts = state.posts[host]?[domain] {
+                    bookmarkPost = posts
+                } else {
+                    bookmarkPost = .init(domain)
                 }
                 
                 if meta.remove {
-                    state.posts[domain]?.map[model.id] = nil
+                    bookmarkPost.map[model.id] = nil
                 } else {
-                    state.posts[domain]?.map[model.id] = model
+                    bookmarkPost.map[model.id] = model
                 }
                 
-                state.postDomains.insert(domain)
+                //state update
+                if state.posts[host] == nil {
+                    state.posts[host] = [:]
+                }
                 
+                state.posts[host]?[domain] = bookmarkPost
+                
+                state.postDomains.insert(domain)
                 state.datesPosts[domain+model.id] = .init()
             case .comment(let model, let postView):
                 guard let domain = model.creator.domain else {
                     return
                 }
                 
-                if state.comments[domain] == nil {
-                    state.comments[domain] = .init(domain)
+                var bookmarkComment: BookmarkComments
+                
+                if let comments = state.comments[host]?[domain] {
+                    bookmarkComment = comments
+                } else {
+                    bookmarkComment = .init(host)
                 }
                 
                 if meta.remove {
-                    state.comments[domain]?.map[model.id] = nil
+                    bookmarkComment.map[model.id] = nil
                 } else {
-                    state.comments[domain]?.map[model.id] = model
+                    bookmarkComment.map[model.id] = model
                 }
                 
-                state.comments[domain]?.postMap[model.post.id] = postView
+                bookmarkComment.postMap[model.post.id] = postView
+                
+                //state update
+                if state.comments[host] == nil {
+                    state.comments[host] = [:]
+                }
+                
+                state.comments[host]?[domain] = bookmarkComment
                 
                 state.commentDomains.insert(domain)
-                
                 state.datesComments[domain+model.id] = .init()
             }
             

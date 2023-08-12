@@ -25,10 +25,9 @@ struct PostCardView: View {
     @Relay var layout: LayoutService
     
     var model: PostView
-    var isPreview: Bool = false
     var style: FeedStyle = .style1
-    var showAvatar: Bool = true
-    var isCompact: Bool = false
+    var viewingContext: ViewingContext = .base
+    
     var topPadding: CGFloat = .layer5
     var bottomPadding: CGFloat = .layer5
     
@@ -68,6 +67,14 @@ struct PostCardView: View {
         }
     }
     
+    var viewingContextHost: String {
+        if viewingContext.isBookmark {
+            return viewingContext.bookmarkLocation.host ?? LemmyKit.host
+        } else {
+            return LemmyKit.host
+        }
+    }
+    
     //horizontal experience
     var isSelected: Bool {
         switch layout.state.feedContext {
@@ -76,6 +83,23 @@ struct PostCardView: View {
         default:
             return false
         }
+    }
+    
+    var showAvatar: Bool {
+        isCompact == false || viewingContext == .profile
+    }
+    
+    var isCompact: Bool {
+        switch viewingContext {
+        case .bookmarkExpanded:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isPreview: Bool {
+        viewingContext == .search
     }
     
     var body: some View {
@@ -138,6 +162,7 @@ extension PostCardView {
             if isPreview && !isCompact {
                 Spacer()
             }
+            
             switch censorKind {
             case .removed, .blocked:
                 EmptyView()
@@ -224,6 +249,13 @@ extension PostCardView {
                     }, at: \.showContent)
                     .frame(maxWidth: Device.isMacOS ? 350 : nil)
                     .padding(.bottom, .layer2)
+            } else if case .bookmark(_) = viewingContext {
+                ContentMetadataView(metadata: nil, urlToOpen: model.postURL, shouldLoad: true)
+                    .attach({
+                        showContent.perform(model)
+                    }, at: \.showContent)
+                    .frame(maxWidth: Device.isMacOS ? 350 : nil)
+                    .padding(.bottom, .layer2)
             }
         }
     }
@@ -261,7 +293,10 @@ extension PostCardView {
         }
         .routeIf(layout.state.style == .compact || layout.state.style == .unknown,
                  style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-            PostDisplayView(model: model)
+            PostDisplayView(model: model,
+                            threadLocation: viewingContext.isBookmark ? viewingContext.bookmarkLocation : .base,
+                            viewingContext: viewingContext,
+                            selectedHost: viewingContextHost)
         }
     }
     

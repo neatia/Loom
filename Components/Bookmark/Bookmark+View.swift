@@ -62,42 +62,109 @@ extension Bookmark: View {
             
             switch state.kind {
             case .posts:
-                let postViews = postViews
-                LazyScrollView(postViews) { postView in
-                    VStack(spacing: 0) {
-                        PostCardView(model: postView,
-                                     style: Device.isExpandedLayout == false ? .style1 : .style2,
-                                     isCompact: showHeader == false,
-                                     linkPreviewType: .largeNoMetadata)
-                            .attach({ postView in
-                                GraniteHaptic.light.invoke()
-                                modal.presentSheet { 
-                                    PostContentView(postView: postView)
-                                        .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                let postViewDomains: [String] = Array(service.state.posts.keys)
+                
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 0) {
+                        ForEach(postViewDomains, id: \.self) { host in
+                            if postViewDomains.count > 1 {
+                                if host != postViewDomains.first {
+                                    Divider()
                                 }
-                            }, at: \.showContent)
-                        
-                        if postView.id != postViews.last?.id {
-                            Divider()
+                                
+                                Section(header:
+                                    headerView(for: host)
+                                ) {
+                                    postViews(for: host, indent: true)
+                                }
+                            } else {
+                                postViews(for: host)
+                            }
                         }
-                    }
+                    }.padding(.top, 1)
                 }
             case .comments:
-                let commentViews = commentViews
-                LazyScrollView(commentViews) { commentView in
-                    VStack(spacing: 0) {
-                        CommentCardView(model: commentView,
-                                        postView: postForComment(commentView),
-                                        shouldLinkToPost: true,
-                                        isBookmark: true)
-                        
-                        if commentView.id != commentViews.last?.id {
-                            Divider()
+                let commentViewDomains: [String] = Array(service.state.comments.keys)
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 0) {
+                        ForEach(commentViewDomains, id: \.self) { host in
+                            if commentViewDomains.count > 1 {
+                                if host != commentViewDomains.first {
+                                    Divider()
+                                }
+                                
+                                Section(header:
+                                    headerView(for: host)
+                                ) {
+                                    commentViews(for: host, indent: true)
+                                }
+                            } else {
+                                commentViews(for: host)
+                            }
                         }
-                    }
-                }.background(Color.alternateBackground)
+                    }.padding(.top, 1)
+                }
+                .background(Color.alternateBackground)
             }
         }
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
+    }
+    
+    func headerView(for host: String) -> some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(host)
+                    .font(.title3.bold())
+                    .foregroundColor(.foreground)
+                    .padding(.horizontal, .layer3)
+                
+                Spacer()
+                
+            }
+            
+            Divider().padding(.vertical, .layer4)
+        }
+        .padding(.top, .layer5)
+    }
+    
+    func postViews(for host: String, indent: Bool = false) -> some View {
+        VStack {
+            let postViews = postViews(host: host)
+            ForEach(postViews) { postView in
+                PostCardView(model: postView,
+                             style: .style2,
+                             viewingContext: showHeader ? .bookmark(host) : .bookmarkExpanded(host),
+                             linkPreviewType: .largeNoMetadata)
+                    .attach({ postView in
+                        GraniteHaptic.light.invoke()
+                        modal.presentSheet {
+                            PostContentView(postView: postView)
+                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
+                    }, at: \.showContent)
+                
+                if postView.id != postViews.last?.id {
+                    Divider()
+                        .padding(.leading, indent ? .layer4 : nil)
+                }
+            }
+        }
+    }
+    
+    func commentViews(for host: String, indent: Bool = false) -> some View {
+        VStack {
+            let commentViews = commentViews(host: host)
+            ForEach(commentViews) { commentView in
+                CommentCardView(model: commentView,
+                                postView: postForComment(commentView, host: host),
+                                shouldLinkToPost: true,
+                                viewingContext: .bookmark(host))
+                
+                if commentView.id != commentViews.last?.id {
+                    Divider()
+                        .padding(.leading, indent ? .layer4 : nil)
+                }
+            }
+        }
     }
 }

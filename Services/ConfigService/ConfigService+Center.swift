@@ -30,13 +30,17 @@ extension ConfigService {
             var showBotAccounts: Bool = false
             var sortType: SortType = .hot
             var listingType: ListingType = .all
+            
+            //Marble
+            var marbleYoutubeLinks: Bool = false
+            var marblePlayback: Bool = false
         }
         
         @Event var boot: Boot.Reducer
         @Event(debounce: 0.25) var restart: Restart.Reducer
         @Event(debounce: 0.25) var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0018", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0019", autoSave: true, preload: true) public var state: State
     }
     
     struct Preferences {

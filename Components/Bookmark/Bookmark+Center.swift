@@ -40,9 +40,11 @@ extension Bookmark {
         }
     }
     
-    var postViews: [PostView] {
-        
-        Array(service.state.posts.values.flatMap { obj in
+    func postViews(host: String) -> [PostView] {
+        guard let values = service.state.posts[host]?.values else {
+            return []
+        }
+        return Array(values.flatMap { obj in
             
             Array(
                 obj.map.values
@@ -51,8 +53,12 @@ extension Bookmark {
         }).sorted(by: { service.state.datesPosts[($0.creator.domain ?? "")+$0.id]?.compare(service.state.datesPosts[($1.creator.domain ?? "")+$1.id] ?? .init()) == .orderedDescending })
     }
     
-    var commentViews: [CommentView] {
-        Array(service.state.comments.values.flatMap { obj in
+    func commentViews(host: String) -> [CommentView] {
+        guard let values = service.state.comments[host]?.values else {
+            return []
+        }
+        
+        return Array(values.flatMap { obj in
             
             Array(
                 obj.map.values
@@ -61,10 +67,10 @@ extension Bookmark {
         }).sorted(by: { service.state.datesComments[($0.creator.domain ?? "")+$0.id]?.compare(service.state.datesComments[($1.creator.domain ?? "")+$1.id] ?? .init()) == .orderedDescending })
     }
     
-    func postForComment(_ commentView: CommentView) -> PostView? {
+    func postForComment(_ commentView: CommentView, host: String) -> PostView? {
         guard let domain = commentView.creator.domain else {
             return nil
         }
-        return service.state.comments[domain]?.postMap[commentView.post.id]
+        return service.state.comments[host]?[domain]?.postMap[commentView.post.id]
     }
 }

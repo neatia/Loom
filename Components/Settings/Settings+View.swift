@@ -56,6 +56,70 @@ extension Settings: View {
 //                .padding(.top, .layer4)
 //                .padding(.horizontal, .layer4)
                 
+                
+                if isTabSelected == true {
+                    ProfileSettingsView(showProfileSettings: false,
+                                        modal: modal)
+                    .padding(.top, .layer4)
+                }
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer()
+                    HStack {
+                        Group {
+                            //TODO: Localize
+                            Text("Marbler")
+                                .font(.title2.bold())
+                        }
+                        //TODO: Localize
+                        .addInfoIcon(text: "Adds an interactive experience to various types of content.", modal)
+                        
+                        Spacer()
+                    }
+                    .padding(.vertical, .layer4)
+                    .padding(.trailing, .layer4)
+                    
+                    Divider()
+                        .padding(.bottom, .layer2)
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Toggle(isOn: config._state.marbleYoutubeLinks) {
+                                Text("Youtube links")
+                                    .font(.body)
+                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
+                            }
+                        }.padding(.vertical, .layer3)
+                        
+                        #if os(macOS)
+                        Spacer()
+                        #endif
+                    }
+                    .padding(.trailing, .layer4)
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Toggle(isOn: config._state.marblePlayback) {
+                                Text("Playback controls")
+                                    .font(.body)
+                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
+                            }
+                        }
+                        
+                        #if os(macOS)
+                        Spacer()
+                        #endif
+                    }
+                    .padding(.trailing, .layer4)
+                    
+                    #if os(macOS)
+                    Spacer()
+                    #endif
+                }
+                .padding(.leading, .layer4)
+                .padding(.bottom, .layer4)
+                
+                //IPFS Settings
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer()
                     HStack {
@@ -68,13 +132,17 @@ extension Settings: View {
                         
                         Spacer()
                     }
-                    .padding(.top, .layer4)
+                    .padding(.vertical, .layer4)
+                    .padding(.trailing, .layer4)
+                    
+                    Divider()
+                        .padding(.bottom, .layer2)
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
                             Toggle(isOn: config._state.enableIPFS) {
                                 Text("SETTINGS_IPFS_ENABLE")
-                                    .font(.headline)
+                                    .font(.body)
                                     .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                             }
                         }.padding(.vertical, .layer3)
@@ -83,6 +151,7 @@ extension Settings: View {
                         Spacer()
                         #endif
                     }
+                    .padding(.trailing, .layer4)
                     
                     HStack(spacing: .layer2) {
                         Group {
@@ -121,7 +190,7 @@ extension Settings: View {
                             setIPFSProperties()
                         } label: {
                             Text("MISC_EDIT")
-                                .font(.headline.bold())
+                                .font(.body)
                                 .foregroundColor(.foreground)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
@@ -138,12 +207,14 @@ extension Settings: View {
                         #endif
                     }
                     .padding(.bottom, .layer2)
+                    .padding(.trailing, .layer4)
                     
                     #if os(macOS)
                     Spacer()
                     #endif
                 }
-                .padding(.horizontal, .layer4)
+                .padding(.leading, .layer4)
+                .padding(.bottom, config.state.isIPFSAvailable ? .layer4 : nil)
                 
                 if config.state.isIPFSAvailable {
                     HStack {
@@ -163,24 +234,10 @@ extension Settings: View {
                         }
                     }
                     .padding(.horizontal, .layer2)
+                    .padding(.bottom, .layer4)
                 }
-                
-                if isTabSelected == true {
-                    VStack(alignment: .leading, spacing: 0) {
-                        Spacer()
-                        HStack {
-                            Text("TITLE_GENERAL")
-                                .font(.title2.bold())
-                            
-                            Spacer()
-                        }
-                    }
-                    .padding(.top, .layer4)
-                    .padding(.horizontal, .layer4)
-                    ProfileSettingsView(showProfileSettings: false,
-                                        modal: modal)
-                }
-                
+                    
+                //Debug Settings
                 DebugSettingsView()
                     .graniteEvent(config.center.restart)
                 
@@ -228,8 +285,7 @@ extension Settings: View {
                     #endif
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.top, .layer4)
-                .padding(.bottom, .layer2)
+                .padding(.vertical, .layer4)
                 .padding(.horizontal, .layer4)
                 
 //                HStack {
@@ -250,4 +306,6 @@ extension Settings: View {
                          background: Color.clear)
         .addGraniteModal(modal.modalManager)
     }
+    
 }
+

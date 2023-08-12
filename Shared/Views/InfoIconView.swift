@@ -42,4 +42,13 @@ extension View {
             }
         }
     }
+    func addInfoIconIf(_ condition: Bool, text: LocalizedStringKey, spacing: CGFloat = .layer4, _ modalService: ModalService, direction: HorizontalAlignment = .trailing ) -> some View {
+        Group {
+            if condition {
+                self.addInfoIcon(text: text, spacing: spacing, modalService, direction: direction)
+            } else {
+                self
+            }
+        }
+    }
 }

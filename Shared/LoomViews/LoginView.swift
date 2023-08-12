@@ -38,7 +38,7 @@ struct LoginView: View {
         GraniteStandardModalView {
             if addToProfiles {
                 Text("MISC_ADD")
-                    .font(.title.bold()) + Text(" ") + Text("TITLE_ACCOUNT")
+                    .font(.title.bold()) + Text("  ") + Text("TITLE_ACCOUNT")
                     .font(.title.bold())
             } else {
                 
@@ -114,7 +114,7 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer4)
+                .padding(.bottom, .layer5)
             
             HStack(spacing: .layer2) {
                 Spacer()
@@ -145,6 +145,7 @@ extension LoginView {
                 
                 Spacer()
             }
+            .padding(.top, .layer2)
         }
     }
     //TODO: combing both/reuse
@@ -184,7 +185,7 @@ extension LoginView {
                         RoundedRectangle(cornerRadius: 8)
                             .foregroundColor(Color.tertiaryBackground)
                     )
-                    .padding(.bottom, .layer4)
+                    .padding(.bottom, .layer5)
             } else {
                 HStack {
                     if let captchaResponse,

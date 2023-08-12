@@ -206,8 +206,7 @@ struct HeaderView: View {
             } else {
                 AvatarView(person)
                     .overlay(Circle()
-                        .stroke(avatarBorderColor, lineWidth: 1.0)
-                        .foregroundColor(avatarBorderColor))
+                        .stroke(avatarBorderColor, lineWidth: 1.0))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Text(headline)

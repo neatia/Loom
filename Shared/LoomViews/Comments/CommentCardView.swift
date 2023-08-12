@@ -22,17 +22,32 @@ struct CommentCardView: View {
     var shouldLinkToPost: Bool = false
     var parentModel: CommentView? = nil
     var isInline: Bool = false
-    var isPreview: Bool = false
-    var showAvatar: Bool = true
-    var isBookmark: Bool = false
     
     let style: FeedStyle = .style2
+    var viewingContext: ViewingContext = .base
     
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
     var censorBot: Bool {
         model.creator.bot_account && config.state.showBotAccounts == false
+    }
+    
+    var isBookmark: Bool {
+        viewingContext.isBookmark
+    }
+    
+    var isPreview: Bool {
+        viewingContext == .search
+    }
+    
+    var showAvatar: Bool {
+        switch viewingContext {
+        case .bookmarkExpanded, .profile:
+            return false
+        default:
+            return true
+        }
     }
     
     var body: some View {

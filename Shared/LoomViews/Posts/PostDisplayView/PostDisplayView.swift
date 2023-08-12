@@ -17,6 +17,9 @@ import MarkdownView
 struct PostDisplayView: View {
     @GraniteAction<Community> var viewCommunity
     
+    @Relay var config: ConfigService
+    @Relay var modal: ModalService
+    
     let model: PostView
     var style: FeedStyle = .style2
     
@@ -24,19 +27,20 @@ struct PostDisplayView: View {
     @State var commentModel: CommentView? = nil
     @State var expandLinkPreview: Bool = false
     
-    @Relay var config: ConfigService
-    @Relay var modal: ModalService
-    
     @State var enableCommunityRoute: Bool = false
     
     @State var threadLocation: FetchType = .base
+    
+    var viewingContext: ViewingContext = .base
     
     //TODO: Similar to feed's controls maybe it can be reused?
     @State var selectedSorting: Int = 0
     var sortingType: [CommentSortType] = CommentSortType.allCases
     @State var selectedHost: String = LemmyKit.host
+    
     var viewableHosts: [String] {
         var hosts: [String] = [LemmyKit.host]
+        
         if model.isBaseResource == false {
             hosts += [model.community.actor_id.host]
         }
@@ -44,6 +48,12 @@ struct PostDisplayView: View {
         if model.isPeerResource {
             hosts += [model.creator.actor_id.host]
         }
+        
+        if viewingContext.isBookmark,
+           case .peer(let host) = viewingContext.bookmarkLocation {
+            hosts += [host]
+        }
+        
         return hosts
     }
     
@@ -107,7 +117,9 @@ struct PostDisplayView: View {
                     commentView: commentModel,
                     postView: model)
         .task {
-            threadLocation = model.post.location ?? .base
+            if viewingContext.isBookmark == false {
+                threadLocation = model.post.location ?? .base
+            }
             comments.hook { page in
                 return await Lemmy.comments(model.post,
                                             community: model.community,

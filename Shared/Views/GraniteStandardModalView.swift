@@ -51,15 +51,18 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                         Spacer()
                     }
                     .frame(height: 36)
-                    .padding(.bottom, .layer4)
-                    .padding(.leading, .layer4)
-                    .padding(.trailing, .layer4)
+                    .padding(.bottom, Device.isMacOS ? .layer4 : .layer5)
+                    .padding(.leading, Device.isMacOS ? .layer4 : .layer5)
+                    .padding(.trailing, Device.isMacOS ? .layer4 : .layer5)
+                    .padding(.top, Device.isMacOS ? nil : .layer5)
                     
                     Divider()
                         .padding(.bottom, .layer4)
                     
                     content()
-                        .padding(.horizontal, .layer4)
+                        .padding(.horizontal, Device.isMacOS ? .layer4 : .layer5)
+                        .padding(.top, Device.isMacOS ? nil : .layer4)
+                        .padding(.bottom, Device.isMacOS ? nil : .layer5)
                 }
             }
             .frame(maxHeight: 400)

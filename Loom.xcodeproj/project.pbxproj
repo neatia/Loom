@@ -176,6 +176,8 @@
 		715797732A7B835500B7FEC9 /* LemmyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 715797722A7B835500B7FEC9 /* LemmyKit */; };
 		715797762A7B83A100B7FEC9 /* IPFSKit in Frameworks */ = {isa = PBXBuildFile; productRef = 715797752A7B83A100B7FEC9 /* IPFSKit */; };
 		715797792A7B843100B7FEC9 /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = 715797782A7B843100B7FEC9 /* MarkdownView */; };
+		715826782A881DD8000E4B49 /* ViewingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826772A881DD8000E4B49 /* ViewingContext.swift */; };
+		715826792A881DD8000E4B49 /* ViewingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826772A881DD8000E4B49 /* ViewingContext.swift */; };
 		716157D92A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DA2A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DF2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */; };
@@ -701,6 +703,7 @@
 		71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.SetIPFS.swift; sourceTree = "<group>"; };
 		7157977A2A7B86D600B7FEC9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7157977B2A7B86F000B7FEC9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		715826772A881DD8000E4B49 /* ViewingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewingContext.swift; sourceTree = "<group>"; };
 		716157D82A85C29500449EE4 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		716157DB2A85C5A700449EE4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayView.SortMenuView.swift; sourceTree = "<group>"; };
@@ -1893,6 +1896,7 @@
 		71C9F9102A60BCFF0089D7EA /* LoomViews */ = {
 			isa = PBXGroup;
 			children = (
+				715826772A881DD8000E4B49 /* ViewingContext.swift */,
 				71F778C42A71ABAC00C9C5C4 /* CensorView.swift */,
 				7166E9D12A747ED7004F88D7 /* ReportView.swift */,
 				71F778C72A71AE0300C9C5C4 /* FeedStyle.swift */,
@@ -2457,6 +2461,7 @@
 				710283C72A2A54C300010877 /* DefaultVerticalValueView.swift in Sources */,
 				71C69E4B2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
 				712BEB6329074FEC00D257B7 /* UIScreen.swift in Sources */,
+				715826782A881DD8000E4B49 /* ViewingContext.swift in Sources */,
 				71A4A1142A61C39600689DF2 /* Bookmark+View.swift in Sources */,
 				71C69E4E2A7063EB00B54AD6 /* Search.CollectionView.swift in Sources */,
 				71F042262A6A3AD700788CDC /* Write+View.swift in Sources */,
@@ -2698,6 +2703,7 @@
 				71A28E03295233A300EAE8EE /* Brand.swift in Sources */,
 				71C9F9252A60ECEF0089D7EA /* ThreadView.swift in Sources */,
 				7166E9D62A748C7F004F88D7 /* PostActionsView.swift in Sources */,
+				715826792A881DD8000E4B49 /* ViewingContext.swift in Sources */,
 				7102838E2A2A54C300010877 /* HorizontalRangeSliderStyle.swift in Sources */,
 				71071F232A660D8E003AEC62 /* PostContentView.swift in Sources */,
 				7102837E2A2A54C300010877 /* PointTrackConfiguration.swift in Sources */,
