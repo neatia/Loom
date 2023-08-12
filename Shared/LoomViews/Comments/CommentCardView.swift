@@ -110,10 +110,6 @@ extension CommentCardView {
     var content: some View {
         VStack(alignment: .leading, spacing: .layer3) {
             #if os(macOS)
-//            contentBody
-//                .routeIf(model.replyCount > 0, style: .init(size: .init(600, 500))) {
-//                    ThreadView(model: model)
-//                }
             contentBody
                 .censor(censorBot, kind: .bot)
                 .padding(.top, censorBot ? .layer2 : 0)
@@ -131,8 +127,8 @@ extension CommentCardView {
                 contentBody
                     .censor(censorBot, kind: .bot)
                     .padding(.top, censorBot ? .layer2 : 0)
-                .contentShape(Rectangle())
-                .modifier(TapAndLongPressModifier(tapAction: {
+                    .contentShape(Rectangle())
+                    .modifier(TapAndLongPressModifier(tapAction: {
                     guard isPreview == false, model.replyCount > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()

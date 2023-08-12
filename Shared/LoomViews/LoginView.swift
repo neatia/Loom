@@ -34,46 +34,37 @@ struct LoginView: View {
     @State var kind: Kind = .login
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            ZStack {
-                #if os(iOS)
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundColor(Color.background)
-                    .edgesIgnoringSafeArea(.all)
-                #endif
+        
+        GraniteStandardModalView {
+            if addToProfiles {
+                Text("MISC_ADD")
+                    .font(.title.bold()) + Text(" ") + Text("TITLE_ACCOUNT")
+                    .font(.title.bold())
+            } else {
                 
-                if addToProfiles {
-                    addToProfilesForm
-                } else {
-                    loginForm
+                switch kind {
+                case .login:
+                    Text("AUTH_LOGIN")
+                        .font(.title.bold())
+                case .signup:
+                    Text("AUTH_SIGNUP")
+                        .font(.title.bold())
+                    
                 }
             }
-            .frame(maxHeight: 400)
+        } content: {
+            if addToProfiles {
+                addToProfilesForm
+            } else {
+                loginForm
+            }
         }
-        .frame(width: Device.isMacOS ? 300 : nil, height: Device.isMacOS ? 400 : nil)
     }
 }
 
 extension LoginView {
     var addToProfilesForm: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
-                VStack {
-                    Spacer()
-                    Text("MISC_ADD")
-                        .font(.title.bold()) + Text(" ") + Text("TITLE_ACCOUNT")
-                        .font(.title.bold())
-                }
-                
-                Spacer()
-            }
-            .frame(height: 36)
-            .padding(.bottom, .layer4)
-            
-            Divider()
-                .padding(.bottom, .layer4)
             
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
@@ -154,36 +145,11 @@ extension LoginView {
                 
                 Spacer()
             }
-            
-            Spacer()
         }
-        .padding(.layer5)
     }
     //TODO: combing both/reuse
     var loginForm: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
-                VStack {
-                    Spacer()
-                    switch kind {
-                    case .login:
-                        Text("AUTH_LOGIN")
-                            .font(.title.bold())
-                    case .signup:
-                        Text("AUTH_SIGNUP")
-                            .font(.title.bold())
-                        
-                    }
-                }
-                
-                Spacer()
-            }
-            .frame(height: 36)
-            .padding(.bottom, .layer4)
-            
-            Divider()
-                .padding(.bottom, .layer4)
-            
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
@@ -227,18 +193,29 @@ extension LoginView {
                         
                         PhotoView(image: image)
                             .clipped()
+                            .cornerRadius(8)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
                                     .foregroundColor(Color.tertiaryBackground)
                             )
                             .padding(.trailing, .layer2)
                     } else {
+                        #if os(macOS)
+                        ProgressView()
+                            .scaleEffect(0.6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .foregroundColor(Color.tertiaryBackground)
+                            )
+                            .padding(.trailing, .layer2)
+                        #else
                         ProgressView()
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
                                     .foregroundColor(Color.tertiaryBackground)
                             )
                             .padding(.trailing, .layer2)
+                        #endif
                     }
                     
                     TextField("", text: $captcha)
@@ -260,11 +237,6 @@ extension LoginView {
                     captchaResponse = captcha?.ok
                 }
             }
-                
-            
-            #if os(macOS)
-            Spacer()
-            #endif
             
             HStack(spacing: .layer2) {
                 Spacer()
@@ -317,13 +289,7 @@ extension LoginView {
                 
                 Spacer()
             }
-            .padding(.top, Device.isMacOS ? 0 : .layer3)
-            
-            #if os(iOS)
-            Spacer()
-            #endif
         }
-        .padding(.layer5)
     }
 }
 

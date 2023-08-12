@@ -112,8 +112,8 @@ struct PostCardView: View {
                 }
                 .padding(.top, isPreview ? (isCompact ? .layer3 : 0) : topPadding)
                 .padding(.bottom, isPreview ? (isCompact ? .layer3 : 0) : bottomPadding)
-                .padding(.leading, isCompact ? .layer2 : .layer3)
-                .padding(.trailing, isCompact ? .layer2 : .layer4)
+                .padding(.leading, .layer3)
+                .padding(.trailing, isCompact ? .layer3 : .layer4)
                 .backgroundIf(isSelected,
                               overlay: Color.accentColor.opacity(0.5))
             }

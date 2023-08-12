@@ -58,7 +58,7 @@ extension Feed {
                         .cornerRadius(4)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, Device.isExpandedLayout ? .layer1 : .layer2)
+                .padding(.bottom, .layer2)
             }.frame(maxHeight: .infinity)
         }
         .frame(height: hasCommunityBanner ? 48 : 36)

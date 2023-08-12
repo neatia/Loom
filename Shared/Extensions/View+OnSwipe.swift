@@ -60,6 +60,11 @@ struct OnSwipe: ViewModifier {
                     .onChanged { gesture in
                         switch edge {
                         case .trailing:
+                            guard gesture.location.x > contentWidth / 2,
+                                  abs(gesture.location.x - gesture.startLocation.x) > 32 else {
+                                return
+                            }
+                            
                             if gesture.translation.width + initialOffset.width <= 0 {
                                 self.offset.width = gesture.translation.width + initialOffset.width
                             }
@@ -71,6 +76,10 @@ struct OnSwipe: ViewModifier {
                                 willDeleteIfReleased.toggle()
                             }
                         default:
+                            guard gesture.location.x < contentWidth / 2,
+                                  abs(gesture.location.x - gesture.startLocation.x) > 32 else {
+                                return
+                            }
                             if gesture.translation.width + initialOffset.width >= 0 {
                                 self.offset.width = gesture.translation.width + initialOffset.width
                             }
@@ -81,7 +90,6 @@ struct OnSwipe: ViewModifier {
                                 hapticFeedback()
                                 willDeleteIfReleased.toggle()
                             }
-                            
                         }
                     }
                     .onEnded { _ in
@@ -152,16 +160,3 @@ extension View {
         }
     }
 }
-//#else
-//extension View {
-//
-//    func onSwipe(edge: HorizontalAlignment = .trailing,
-//                 icon: String = "trash",
-//                 iconColor: Color = .red,
-//                 backgroundColor: Color = Brand.Colors.black,
-//                 perform action: @escaping () -> Void) -> some View {
-//        return self
-//    }
-//
-//}
-//#endif

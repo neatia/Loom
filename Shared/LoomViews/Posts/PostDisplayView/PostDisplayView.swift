@@ -74,7 +74,8 @@ struct PostDisplayView: View {
             } inlineBody: {
                 content
             } content: { comment in
-                CommentCardView(model: comment, postView: model)
+                CommentCardView(model: comment,
+                                postView: model)
                     .attach({ model in
                         self.showDrawer = true
                         self.commentModel = model

@@ -205,7 +205,7 @@ extension WriteView {
                 Spacer()
             }
             .padding(.horizontal, .layer3)
-            .padding(.vertical, .layer2)
+            .padding(.vertical, Device.isExpandedLayout ? .layer3 : .layer2)
             Spacer()
         }.allowsHitTesting(false)
     }

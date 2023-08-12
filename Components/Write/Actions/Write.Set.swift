@@ -85,7 +85,7 @@ extension Write {
                     GraniteHaptic.light.invoke()
                     _state.postCommunity.wrappedValue = communityView
                 }, at: \.pickedCommunity)
-                .frame(width: Device.isMacOS ? 300 : nil, height: Device.isMacOS ? 300 : nil)
+                .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
         }
     }
 }

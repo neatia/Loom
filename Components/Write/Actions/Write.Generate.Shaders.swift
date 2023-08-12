@@ -178,78 +178,124 @@ extension Write.Generate {
         <div class="containerToTHEContainerheh">
             <div id="canvasContainer" class="containerData">
                 <canvas id="canvas2" class="glslCanvas" data-fragment="precision highp float;
-                uniform vec2 u_resolution;
-                uniform float u_time;
-                uniform vec2 u_position;
-                    
-                const vec3 GOLD = vec3(0.57, 0.57, 0.57);
-                const vec3 WHITE   = vec3(0.2, 0.2, 0.2);
-                const vec3 FADED_BLACK   = vec3(0.12, 0.12, 0.12);
-                const vec3 BLACK   = vec3(0.05, 0.05, 0.05);
-                    
-                float hash( float n ) {
-                    //return fract(sin(n)*43758.5453123);
-                    return fract(sin(n)*75728.5453123);
-                }
-                    
+uniform vec2 u_resolution;
+uniform float u_time;
+uniform vec2 u_position;
                 
-                float noise( in vec2 x ) {
-                    vec2 p = floor(x);
-                    vec2 f = fract(x);
-                    f = f*f*(3.0-2.0*f);
-                    float n = p.x + p.y*57.0;
-                    return mix(mix( hash(n + 0.0), hash(n + 1.0), f.x), mix(hash(n + 57.0), hash(n + 58.0), f.x), f.y);
-                }
-                    
-                mat2 m = mat2( 0.6, 0.6, -0.6, 0.8);
-                float fbm(vec2 p){
-                    
-                    float f = 0.0;
-                    f += 0.5000 * noise(p); p *= m * 2.02;
-                    f += 0.2500 * noise(p); p *= m * 2.03;
-                    f += 0.1250 * noise(p); p *= m * 2.01;
-                    f += 0.0625 * noise(p); p *= m * 2.04;
-                    f /= 0.9375;
-                    return f;
-                }
-                    
-                
-                void main(){
-                    
-                    // pixel ratio
-                    
-                    vec2 uv = gl_FragCoord.xy / u_resolution.xy ;
-                    vec2 p = - 1. + 2. * uv;
-                    p.x *= u_resolution.x / u_resolution.y;
-                    
-                    float r = sqrt(dot(p,p));
-                    float a = cos(p.y * p.x);
-                    
-                    float f = fbm( 5.0 * p);
-                    a += fbm(vec2(1.9 - p.x, 0.9 * (u_time * 0.024) + p.y));
-                    a += fbm(0.4 * p);
-                    r += fbm(2.9 * p);
-                    
-                    vec3 col = FADED_BLACK;
-                    
-                    float ff = 1.0 - smoothstep(-0.4, 1.1, noise(vec2(0.5 * a, 3.3 * a)) );
-                    col =  mix( col, GOLD, ff);
-                        
-                    ff = 1.0 - smoothstep(.0, 2.8, r );
-                    col +=  mix( col, BLACK,  ff);
-                    
-                    ff -= 1.0 - smoothstep(0.3, 0.5, fbm(vec2(1.0, 40.0 * a)) );
-                    col =  mix( col, WHITE,  ff);
-                        
-                    ff = 1.0 - smoothstep(2., 2.9, a * 1.5 );
-                    col =  mix( col, BLACK,  ff);
-                                                            
-                    gl_FragColor = vec4(col, 1.);
-                }" width="631px" height="631px"></canvas>
+const float cloudscale = 2.1;
+const float speed = .025;
+const float clouddark = 0.5;
+const float cloudlight = 0.9;
+const float cloudcover = 0.7;
+const float cloudalpha = 100.0;
+const float skytint = 0.5;
+const vec3 skycolour1 = vec3(0.9, 0.1, 10.6);
+const vec3 skycolour2 = vec3(0.4, 1.1, 01.0);
+
+const mat2 m = mat2( 1.9,  1.2, -1.2,  0.9 );
+
+vec2 hash( vec2 p ) {
+    p = vec2(dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)));
+    return -1.0 + 2.0*fract(sin(p)*43758.5453123);
+}
+
+float noise( in vec2 p ) {
+    const float K1 = 0.366025404; // (sqrt(3)-1)/2;
+    const float K2 = 0.211324865; // (3-sqrt(3))/6;
+    vec2 i = floor(p + (p.x+p.y)*K1);
+    vec2 a = p - i + (i.x+i.y)*K2;
+    vec2 o = (a.x>a.y) ? vec2(1.0,0.0) : vec2(0.0,1.0); //vec2 of = 0.5 + 0.5*vec2(sign(a.x-a.y), sign(a.y-a.x));
+    vec2 b = a - o + K2;
+    vec2 c = a - 1.0 + 2.0*K2;
+    vec3 h = max(0.5-vec3(dot(a,a), dot(b,b), dot(c,c) ), 0.0 );
+    vec3 n = h*h*h*h*vec3( dot(a,hash(i+0.0)), dot(b,hash(i+o)), dot(c,hash(i+1.0)));
+    return dot(n, vec3(70.0));
+}
+
+float fbm(vec2 n) {
+    float total = 0.0, amplitude = 0.5;
+    for (int i = 0; i < 7; i++) {
+        total -= noise(n) * amplitude;
+        n = m * n;
+        amplitude *= 0.5;
+    }
+    return total;
+}
+
+// -----------------------------------------------
+
+void main() {
+    vec2 p = gl_FragCoord.xy / u_resolution.xy;
+    vec2 uv = p*vec2(u_resolution.x/u_resolution.y,1.0);
+    float time = u_time * speed;
+    float q = fbm(uv * cloudscale * 0.5);
+    
+    //ridged noise shape
+    float r = 0.0;
+    uv *= cloudscale;
+    uv -= q - time;
+    float weight = 0.8;
+    for (int i=0; i<8; i++){
+        r += abs(weight*noise( uv ));
+        uv = m*uv + time;
+        weight *= 0.7;
+    }
+    
+    //noise shape
+    float f = 0.0;
+    uv = p*vec2(u_resolution.x/u_resolution.y,1.0);
+    uv *= cloudscale;
+    uv -= q - time;
+    weight = 0.9;
+    for (int i=0; i<8; i++){
+        f += weight*noise( uv );
+        uv = m*uv + time;
+        weight *= 0.6;
+    }
+    
+    f *= r + f;
+    
+    //noise colour
+    float c = 0.0;
+    time = u_time * speed * 2.0;
+    uv = p*vec2(u_resolution.x/u_resolution.y,1.0);
+    uv *= cloudscale*2.0;
+    uv -= q - time;
+    weight = 0.4;
+    for (int i=0; i<7; i++){
+        c += weight*noise( uv );
+        uv = m*uv + time;
+        weight *= .6;
+    }
+    
+    //noise ridge colour
+    float c1 = 0.0;
+    time = u_time * speed * 3.0;
+    uv = p*vec2(u_resolution.x/u_resolution.y,1.0);
+    uv *= cloudscale*3.0;
+    uv -= q - time;
+    weight = 0.1;
+    for (int i=0; i<7; i++){
+        c1 += abs(weight*noise( uv ));
+        uv = m*uv + time;
+        weight *= 0.2;
+    }
+    
+    c += c1;
+    
+    vec3 skycolour = mix(skycolour2, skycolour1, (p.x + p.y) * .7);
+    vec3 cloudcolour = vec3(9.10, 0.0, 0.0) * clamp((clouddark + cloudlight*c), 0.0, 0.0);
+   
+    f = cloudcover + cloudalpha*f*r;
+    
+    vec3 result = mix(skycolour, clamp(skytint * skycolour + cloudcolour, 0.0, 0.0), clamp(f + c, 0.0, 1.0));
+    
+    gl_FragColor = vec4( result, 1.0 );
+}" width="631px" height="631px"></canvas>
             </div>
             <div class="codeContainer">
                 <div class="containerBody">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/\(content)" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/\(content)?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allow='autoplay' allowfullscreen></iframe>
                 </div>
             </div>
         </div>

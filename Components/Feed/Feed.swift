@@ -26,7 +26,9 @@ struct Feed: GraniteComponent {
             .center
             .interact
             .listen(.broadcast) { value in
-                if let response = value as? AccountService.Interact.ResponseMeta {
+                if let response = value as? StandardErrorMeta {
+                    modal.presentModal(GraniteToastView(response))
+                } else if let response = value as? AccountService.Interact.ResponseMeta {
                     switch response.intent {
                     case .blockPersonFromPost(let model):
                         pager.block(item: model)

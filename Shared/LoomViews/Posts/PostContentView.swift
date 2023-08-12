@@ -7,6 +7,7 @@
 
 import Foundation
 import Granite
+import GraniteUI
 import SwiftUI
 import NukeUI
 import LemmyKit
@@ -113,23 +114,16 @@ struct PostContentView: View {
             
             if fullPage {
                 Button {
+                    GraniteHaptic.light.invoke()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text("Close")
+                    Image(systemName: "xmark.circle.fill")
                         .font(.title3)
                         .foregroundColor(.foreground)
                 }
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, .layer4)
             }
-        }
-        .task {
-//            switch contentKind {
-//            case .webPage(let url):
-//                analyze.center.load.send(AnalyzeService.Load.Meta(url: url.absoluteString))
-//            default:
-//                break
-//            }
         }
         .onAppear {
             guard contentKind.isWebPage else { return }

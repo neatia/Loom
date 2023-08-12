@@ -43,6 +43,14 @@ extension AccountService {
             guard let intent = meta?.intent else {
                 return
             }
+            
+            
+            guard LemmyKit.auth != nil else {
+                //TODO: localize
+                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
+                return
+            }
+            
             /*
              TODO: when receiver is being monitored by 2 diff instances
              there is an issue with updating each since i remove observers

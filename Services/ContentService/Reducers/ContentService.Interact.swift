@@ -45,7 +45,7 @@ extension ContentService {
             
             guard LemmyKit.auth != nil else {
                 //TODO: localize
-                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to interact with content", event: .error))
+                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
                 return
             }
             

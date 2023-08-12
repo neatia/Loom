@@ -8,8 +8,6 @@ extension Bookmark {
             var kind: Kind = .posts
         }
         
-        //@Event(.onAppear) var onAppear: DidAppear.Reducer
-        
         @Store public var state: State
     }
     

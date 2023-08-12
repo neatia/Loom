@@ -86,7 +86,10 @@ extension Bookmark: View {
                 let commentViews = commentViews
                 LazyScrollView(commentViews) { commentView in
                     VStack(spacing: 0) {
-                        CommentCardView(model: commentView, postView: postForComment(commentView), shouldLinkToPost: true, isBookmark: true)
+                        CommentCardView(model: commentView,
+                                        postView: postForComment(commentView),
+                                        shouldLinkToPost: true,
+                                        isBookmark: true)
                         
                         if commentView.id != commentViews.last?.id {
                             Divider()

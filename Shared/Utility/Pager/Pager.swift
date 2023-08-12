@@ -299,11 +299,13 @@ extension Pager {
     }
     
     func updateBlockFromPerson(item: Person) {
-        if let itemKey = blockedItemMap.keys.first(where: { itemMap[$0]?.person.equals(item) == true }) {
-            
-            blockedItemMap[itemKey] = blockedItemMap[itemKey] == true ? false : true
-            self.update()
+        blockedItemMap.keys.forEach { [weak self] key in
+            if itemMap[key]?.person.equals(item) == true {
+                self?.blockedItemMap[key] = self?.blockedItemMap[key] == true ? false : true
+            }
         }
+        
+        self.update()
     }
     
     func block(item: Model) {

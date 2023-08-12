@@ -33,8 +33,8 @@ extension ConfigService {
         }
         
         @Event var boot: Boot.Reducer
-        @Event var restart: Restart.Reducer
-        @Event var update: Update.Reducer
+        @Event(debounce: 0.25) var restart: Restart.Reducer
+        @Event(debounce: 0.25) var update: Update.Reducer
         
         @Store(persist: "persistence.config.Loom.0018", autoSave: true, preload: true) public var state: State
     }
