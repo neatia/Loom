@@ -20,12 +20,11 @@ extension AccountService {
         @Payload var meta: Meta?
         
         func reduce(state: inout Center.State) async {
-            LoomLog("booting heard")
             guard let meta = meta?.accountMeta ?? state.meta else {
                 LoomLog("[No account in state] \(meta?.accountMeta == nil) \(state.meta == nil)", level: .debug)
                 return
             }
-            LoomLog("booting conntinuing")
+            
             guard let token = try? AccountService.getToken(identifier: AccountService.keychainAuthToken + meta.username, service: AccountService.keychainService + meta.host) else {
                 
                 Lemmy.getSite()

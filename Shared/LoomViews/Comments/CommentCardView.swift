@@ -28,7 +28,6 @@ struct CommentCardView: View {
     
     let style: FeedStyle = .style2
     
-    @State var minHeight: CGFloat = 100
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
@@ -56,7 +55,7 @@ struct CommentCardView: View {
                     .padding(.bottom, .layer3)
             case .style2:
                 HStack(spacing: .layer3) {
-                    HeaderCardAvatarView(model, badge: (postView == nil ? .noBadge : .post(postView!)), showAvatar: showAvatar)
+                    HeaderCardAvatarView(model, postView: postView, showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
                         HeaderCardView(model, badge: shouldLinkToPost ? (postView == nil ? nil : .post(postView!)) : nil)
                             .attach({ community in
@@ -147,10 +146,6 @@ extension CommentCardView {
                     guard isPreview == false else { return }
                     showDrawer.perform(model)
                 }, at: \.showComments)
-                .attach({
-                    //TODO: Change hard code to enum?
-                    self.minHeight = self.minHeight == 100 ? 300 : 100
-                }, at: \.expand)
         }
         .padding(.leading, style == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
         .overlayIf(style == .style1) {

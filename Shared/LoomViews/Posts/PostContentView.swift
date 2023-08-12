@@ -14,6 +14,7 @@ import LemmyKit
 
 enum PostContentKind {
     case webPage(URL)
+    case webPageHTML(String)
     case image(URL)
     case text
     
@@ -24,7 +25,9 @@ enum PostContentKind {
             return .text
         }
         
-        if url.lastPathComponent.contains(".") && url.lastPathComponent.contains(".html") == false {
+        if let youtubeId = urlString.youtubeID {
+            return .webPageHTML(Write.Generate.shader(title: "Loom Render", author: "pexavc", content: youtubeId, urlString: urlString, image_url: ""))
+        } else if url.lastPathComponent.contains(".") && url.lastPathComponent.contains(".html") == false {
             return .image(url)
         } else {
             return .webPage(url)
@@ -33,7 +36,7 @@ enum PostContentKind {
     
     var isWebPage: Bool {
         switch self {
-        case .webPage:
+        case .webPage, .webPageHTML:
             return true
         default:
             return false
@@ -79,10 +82,10 @@ struct PostContentView: View {
                 
                 VStack {
                     switch contentKind {
-                    case .webPage(let url):
+                    case .webPage, .webPageHTML:
                         GraniteWebView(action: $action,
                                        state: $webState,
-                                       restrictedPages: ["apple.com"],
+                                       restrictedPages: [],
                                        htmlInState: true)
                         .clipShape(
                             RoundedRectangle(cornerRadius: 8)
@@ -131,6 +134,8 @@ struct PostContentView: View {
                 switch contentKind {
                 case .webPage(let url):
                     action = .load(URLRequest(url: url))
+                case .webPageHTML(let html):
+                    action = .loadHTML(html)
                 default:
                     break
                 }

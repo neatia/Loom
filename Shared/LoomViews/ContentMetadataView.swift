@@ -11,6 +11,8 @@ import Granite
 import UniformTypeIdentifiers
 
 struct ContentMetadataView: View {
+    @GraniteAction<Void> var showContent
+    
     #if os(iOS)
     var backgroundColor: Color = Color(.systemGray5)
     #else
@@ -37,10 +39,11 @@ struct ContentMetadataView: View {
     var largeType: some View {
         Button {
             #if os(iOS)
-            guard let url = meta?.url else { return }
-            if UIApplication.shared.canOpenURL(url) {
-                self.isPresented.toggle()
-            }
+//            guard let url = meta?.url else { return }
+//            if UIApplication.shared.canOpenURL(url) {
+//                self.isPresented.toggle()
+//            }
+            showContent.perform()
             #else
             self.isPresented.toggle()
             #endif

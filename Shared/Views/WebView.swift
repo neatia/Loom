@@ -300,7 +300,8 @@ public struct GraniteWebView: UIViewRepresentable {
         case .load(let request):
             uiView.load(request)
         case .loadHTML(let pageHTML):
-            uiView.loadHTMLString(pageHTML, baseURL: nil)
+            LoomLog("loading html")
+            uiView.loadHTMLString(pageHTML, baseURL: URL(string: "https://youtube.com"))
         case .reload:
             uiView.reload()
         case .goBack:

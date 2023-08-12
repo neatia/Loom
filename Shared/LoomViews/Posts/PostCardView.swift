@@ -17,7 +17,7 @@ struct PostCardView: View {
     @Environment(\.graniteEvent) var interact
     @Environment(\.pagerMetadata) var contentMetadata
     
-    @GraniteAction<Void> var showContent
+    @GraniteAction<PostView> var showContent
     @GraniteAction<PostView> var reply
     @GraniteAction<Community> var viewCommunity
     
@@ -199,7 +199,7 @@ extension PostCardView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
-                    showContent.perform()
+                    showContent.perform(model)
                 }
             }
         }
@@ -219,6 +219,9 @@ extension PostCardView {
             
             if let contentMetadata {
                 ContentMetadataView(metadata: contentMetadata, urlToOpen: model.postURL)
+                    .attach({
+                        showContent.perform(model)
+                    }, at: \.showContent)
                     .frame(maxWidth: Device.isMacOS ? 350 : nil)
                     .padding(.bottom, .layer2)
             }

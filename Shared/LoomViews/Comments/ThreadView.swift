@@ -32,7 +32,9 @@ struct ThreadView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if isModal {
-                HeaderView(model, crumbs: breadCrumbs.reversed())
+                HeaderView(model,
+                           postView: postView,
+                           crumbs: breadCrumbs.reversed())
                     .attach({ id in
                         viewReplies(id)
                     }, at: \.tappedCrumb)

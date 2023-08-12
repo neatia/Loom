@@ -66,12 +66,12 @@ extension Bookmark: View {
                 LazyScrollView(postViews) { postView in
                     VStack(spacing: 0) {
                         PostCardView(model: postView,
-                                     style: .style2,
+                                     style: Device.isExpandedLayout == false ? .style1 : .style2,
                                      isCompact: showHeader == false,
                                      linkPreviewType: .largeNoMetadata)
-                            .attach({
+                            .attach({ postView in
                                 GraniteHaptic.light.invoke()
-                                modal.presentSheet {
+                                modal.presentSheet { 
                                     PostContentView(postView: postView)
                                         .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                                 }

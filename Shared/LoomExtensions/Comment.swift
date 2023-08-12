@@ -22,6 +22,10 @@ extension CommentView: Pageable {
     public var person: Person {
         creator
     }
+    
+    public var isAdmin: Bool {
+        self.person.admin
+    }
 }
 
 extension CommentView {

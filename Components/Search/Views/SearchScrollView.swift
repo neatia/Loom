@@ -51,12 +51,12 @@ struct SearchScrollView: View {
                     EmptyView()
                 } content: { model in
                     PostCardView(model: model)
-                        .attach({
+                        .attach({ postView in
                             GraniteHaptic.light.invoke()
-                            //                    modal.presentSheet {
-                            //                        PostContentView(postView: postView)
-                            //                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-                            //                    }
+//                            modal.presentSheet {
+//                                PostContentView(postView: postView)
+//                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+//                            }
                         }, at: \.showContent)
                 }.environmentObject(pagerPosts)
             case .communities:
