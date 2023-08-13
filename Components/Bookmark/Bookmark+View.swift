@@ -60,60 +60,67 @@ extension Bookmark: View {
             
             Divider()
             
+            HStack(spacing: .layer4) {
+                Menu {
+                    ForEach(bookmarkKeys) { key in
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            switch state.kind {
+                            case .posts:
+                                _state.selectedBookmarkPostKey.wrappedValue = key
+                            case .comments:
+                                _state.selectedBookmarkCommentKey.wrappedValue = key
+                            }
+                        } label: {
+                            Text(key.description)
+                            Image(systemName: "arrow.down.right.circle")
+                        }
+                    }
+                } label: {
+                    switch state.kind {
+                    case .posts:
+                        Text(state.selectedBookmarkPostKey.description)
+                    case .comments:
+                        Text(state.selectedBookmarkCommentKey.description)
+                    }
+                    
+                    #if os(iOS)
+                    Image(systemName: "chevron.up.chevron.down")
+                    #endif
+                }
+                .menuStyle(BorderlessButtonMenuStyle())
+                
+                Spacer()
+            }
+            .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+            .padding(.vertical, .layer4)
+            .padding(.horizontal, .layer3)
+            
             switch state.kind {
             case .posts:
-                let postViewDomains: [String] = Array(service.state.posts.keys)
-                
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 0) {
-                        ForEach(postViewDomains, id: \.self) { host in
-                            if postViewDomains.count > 1 {
-                                if host != postViewDomains.first {
-                                    Divider()
-                                }
-                                
-                                Section(header:
-                                    headerView(for: host)
-                                ) {
-                                    postViews(for: host, indent: true)
-                                }
-                            } else {
-                                postViews(for: host)
-                            }
-                        }
+                        postViews()
                     }.padding(.top, 1)
                 }
+                .id(service.isLoaded)
             case .comments:
-                let commentViewDomains: [String] = Array(service.state.comments.keys)
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 0) {
-                        ForEach(commentViewDomains, id: \.self) { host in
-                            if commentViewDomains.count > 1 {
-                                if host != commentViewDomains.first {
-                                    Divider()
-                                }
-                                
-                                Section(header:
-                                    headerView(for: host)
-                                ) {
-                                    commentViews(for: host, indent: true)
-                                }
-                            } else {
-                                commentViews(for: host)
-                            }
-                        }
+                        commentViews()
                     }.padding(.top, 1)
                 }
+                .id(service.isLoaded)
                 .background(Color.alternateBackground)
             }
         }
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
     }
     
-    func headerView(for host: String) -> some View {
+    func headerView(for host: BookmarkKey) -> some View {
         VStack(spacing: 0) {
             HStack {
-                Text(host)
+                Text(host.description)
                     .font(.title3.bold())
                     .foregroundColor(.foreground)
                     .padding(.horizontal, .layer3)
@@ -127,13 +134,12 @@ extension Bookmark: View {
         .padding(.top, .layer5)
     }
     
-    func postViews(for host: String, indent: Bool = false) -> some View {
+    func postViews(indent: Bool = false) -> some View {
         VStack {
-            let postViews = postViews(host: host)
             ForEach(postViews) { postView in
                 PostCardView(model: postView,
                              style: .style2,
-                             viewingContext: showHeader ? .bookmark(host) : .bookmarkExpanded(host),
+                             viewingContext: showHeader ? .bookmark(state.selectedBookmarkPostKey.host) : .bookmarkExpanded(state.selectedBookmarkPostKey.host),
                              linkPreviewType: .largeNoMetadata)
                     .attach({ postView in
                         GraniteHaptic.light.invoke()
@@ -151,14 +157,13 @@ extension Bookmark: View {
         }
     }
     
-    func commentViews(for host: String, indent: Bool = false) -> some View {
+    func commentViews(indent: Bool = false) -> some View {
         VStack {
-            let commentViews = commentViews(host: host)
             ForEach(commentViews) { commentView in
                 CommentCardView(model: commentView,
-                                postView: postForComment(commentView, host: host),
+                                postView: postForComment(commentView),
                                 shouldLinkToPost: true,
-                                viewingContext: .bookmark(host))
+                                viewingContext: .bookmark(state.selectedBookmarkCommentKey.host))
                 
                 if commentView.id != commentViews.last?.id {
                     Divider()

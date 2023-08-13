@@ -6,6 +6,8 @@ extension Bookmark {
     struct Center: GraniteCenter {
         struct State: GraniteState {
             var kind: Kind = .posts
+            var selectedBookmarkPostKey: BookmarkKey = .local
+            var selectedBookmarkCommentKey: BookmarkKey = .local
         }
         
         @Store public var state: State
@@ -40,8 +42,8 @@ extension Bookmark {
         }
     }
     
-    func postViews(host: String) -> [PostView] {
-        guard let values = service.state.posts[host]?.values else {
+    var postViews: [PostView] {
+        guard let values = service.state.posts[state.selectedBookmarkPostKey]?.values else {
             return []
         }
         return Array(values.flatMap { obj in
@@ -53,8 +55,8 @@ extension Bookmark {
         }).sorted(by: { service.state.datesPosts[($0.creator.domain ?? "")+$0.id]?.compare(service.state.datesPosts[($1.creator.domain ?? "")+$1.id] ?? .init()) == .orderedDescending })
     }
     
-    func commentViews(host: String) -> [CommentView] {
-        guard let values = service.state.comments[host]?.values else {
+    var commentViews: [CommentView] {
+        guard let values = service.state.comments[state.selectedBookmarkCommentKey]?.values else {
             return []
         }
         
@@ -67,10 +69,21 @@ extension Bookmark {
         }).sorted(by: { service.state.datesComments[($0.creator.domain ?? "")+$0.id]?.compare(service.state.datesComments[($1.creator.domain ?? "")+$1.id] ?? .init()) == .orderedDescending })
     }
     
-    func postForComment(_ commentView: CommentView, host: String) -> PostView? {
+    func postForComment(_ commentView: CommentView) -> PostView? {
         guard let domain = commentView.creator.domain else {
             return nil
         }
-        return service.state.comments[host]?[domain]?.postMap[commentView.post.id]
+        return service.state.comments[state.selectedBookmarkCommentKey]?[domain]?.postMap[commentView.post.id]
+    }
+}
+
+extension Bookmark {
+    var bookmarkKeys: [BookmarkKey] {
+        switch state.kind {
+        case .posts:
+            return Array(service.state.posts.keys)
+        case .comments:
+            return Array(service.state.comments.keys)
+        }
     }
 }

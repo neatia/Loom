@@ -5,8 +5,8 @@ import LemmyKit
 extension BookmarkService {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var posts: [String: [String : BookmarkPosts]] = [:]
-            var comments: [String: [String : BookmarkComments]] = [:]
+            var posts: [BookmarkKey: [String : BookmarkPosts]] = [:]
+            var comments: [BookmarkKey: [String : BookmarkComments]] = [:]
             
             var postDomains: Set<String> = .init()
             var commentDomains: Set<String> = .init()
@@ -17,13 +17,14 @@ extension BookmarkService {
             var lastUpdate: Date = .init()
         }
         
+        @Event var boot: Boot.Reducer
         @Event var modify: Modify.Reducer
         
-        @Store(persist: "persistence.bookmark.Loom.0009", autoSave: true) public var state: State
+        @Store(persist: "persistence.bookmark.Loom.0010", autoSave: true) public var state: State
     }
     
     func contains(_ kind: Kind) -> Bool {
-        let host: String = LemmyKit.host
+        let key: BookmarkKey = .current ?? .local
         
         switch kind {
         case .post(let model):
@@ -31,12 +32,12 @@ extension BookmarkService {
                 return false
             }
             
-            return state.posts[host]?[domain]?.map[model.id] != nil
+            return state.posts[key]?[domain]?.map[model.id] != nil
         case .comment(let model, _):
             guard let domain = model.creator.domain else {
                 return false
             }
-            return state.comments[host]?[domain]?.map[model.id] != nil
+            return state.comments[key]?[domain]?.map[model.id] != nil
         }
     }
     
@@ -91,6 +92,41 @@ class BookmarkComments: Equatable, Codable {
         self.domain = domain
         self.map = [:]
         self.postMap = [:]
+    }
+}
+
+struct BookmarkKey: GraniteModel, CustomStringConvertible, Hashable, Identifiable {
+    let host: String
+    let name: String
+    
+    var isLocal: Bool = false
+    
+    var description: String {
+        if isLocal {
+            return host
+        } else {
+            return name+"@"+host
+        }
+    }
+    
+    var id: String {
+        description
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(description)
+    }
+    
+    public static var local: BookmarkKey {
+        .init(host: LemmyKit.host, name: "", isLocal: true)
+    }
+    
+    public static var current: BookmarkKey? {
+        if let name = LemmyKit.current.user?.local_user_view.person.name {
+            return .init(host: LemmyKit.host, name: name, isLocal: false)
+        } else {
+            return nil
+        }
     }
 }
 

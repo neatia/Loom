@@ -14,19 +14,23 @@ import LemmyKit
 
 enum PostContentKind {
     case webPage(URL)
-    case webPageHTML(String)
+    case webPageHTML(String, URL)
     case image(URL)
     case text
     
-    static func from(_ urlString: String?) -> PostContentKind {
+    static func from(urlString: String?) -> PostContentKind {
         guard let urlString else { return .text }
         
         guard let url = URL(string: urlString) else {
             return .text
         }
         
-        if let youtubeId = urlString.youtubeID {
-            return .webPageHTML(Write.Generate.shader(title: "Loom Render", author: "pexavc", content: youtubeId, urlString: urlString, image_url: ""))
+        return PostContentKind.from(url: url)
+    }
+    
+    static func from(url: URL) -> PostContentKind {
+        if let youtubeId = url.absoluteString.youtubeID {
+            return .webPageHTML(Write.Generate.shader(title: "Loom Render", author: "pexavc", content: youtubeId, urlString: url.absoluteString, image_url: ""), url)
         } else if url.lastPathComponent.contains(".") && url.lastPathComponent.contains(".html") == false {
             return .image(url)
         } else {
@@ -59,11 +63,11 @@ struct PostContentView: View {
     
     init(postView: PostView) {
         self.postView = postView
-        _contentKind = .init(initialValue: PostContentKind.from(postView.post.url))
+        _contentKind = .init(initialValue: PostContentKind.from(urlString: postView.post.url))
     }
     
     init(_ url: URL) {
-        _contentKind = .init(initialValue: .webPage(url))
+        _contentKind = .init(initialValue: PostContentKind.from(url: url))
         fullPage = true
     }
     
@@ -134,8 +138,8 @@ struct PostContentView: View {
                 switch contentKind {
                 case .webPage(let url):
                     action = .load(URLRequest(url: url))
-                case .webPageHTML(let html):
-                    action = .loadHTML(html)
+                case .webPageHTML(let html, let url):
+                    action = .loadHTML(html, url)
                 default:
                     break
                 }

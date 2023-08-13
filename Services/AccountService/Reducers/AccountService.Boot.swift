@@ -17,6 +17,8 @@ extension AccountService {
             var accountMeta: AccountMeta?
         }
         
+        @Relay var bookmark: BookmarkService
+        
         @Payload var meta: Meta?
         
         func reduce(state: inout Center.State) async {
@@ -45,19 +47,21 @@ extension AccountService {
                 return
             }
             
-            LoomLog("[Account Restored]", level: .debug)
-            
-            guard let user = LemmyKit.current.user else {
+            guard let user = result.my_user else {
                 print("[AccountService] No user found")
                 state.meta = nil
                 return
             }
-            LoomLog("connected")
+            
+            LoomLog("[Account Restored] - connected", level: .debug)
+            
             broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host + " @\(meta.username)")", event: .success))
             
             state.meta = .init(info: user, host: meta.host)
             state.addToProfiles = false
             state.authenticated = LemmyKit.auth != nil
+            
+            bookmark.center.boot.send()
         }
         
         var behavior: GraniteReducerBehavior {

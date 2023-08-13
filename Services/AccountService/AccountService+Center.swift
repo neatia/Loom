@@ -7,8 +7,9 @@ extension AccountService {
         struct State: GraniteState {
             var meta: AccountMeta? = nil
             var profiles: [AccountMeta] = []
-            var addToProfiles: Bool = false
             
+            //This may not be necessary anymore
+            var addToProfiles: Bool = false
             
             var authenticated: Bool = false
         }

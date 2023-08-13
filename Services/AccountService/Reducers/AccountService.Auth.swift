@@ -18,6 +18,7 @@ extension AccountService {
             var addToProfiles: Bool = false
         }
         
+        @Relay var bookmark: BookmarkService
         @Payload var meta: Meta?
         
         func reduce(state: inout Center.State) async {
@@ -46,6 +47,7 @@ extension AccountService {
                 state.meta = .init(info: user, host: LemmyKit.host)
                 state.addToProfiles = false
                 state.authenticated = LemmyKit.auth != nil
+                bookmark.center.boot.send()
                 
             case .register(let username, let password, let captchaUUID, let captchaAnswer):
                 let info = await Lemmy.register(username: username, password: password, password_verify: password, show_nsfw: false, captcha_uuid: captchaUUID, captcha_answer: captchaAnswer)

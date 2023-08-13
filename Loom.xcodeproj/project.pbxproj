@@ -178,6 +178,8 @@
 		715797792A7B843100B7FEC9 /* MarkdownView in Frameworks */ = {isa = PBXBuildFile; productRef = 715797782A7B843100B7FEC9 /* MarkdownView */; };
 		715826782A881DD8000E4B49 /* ViewingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826772A881DD8000E4B49 /* ViewingContext.swift */; };
 		715826792A881DD8000E4B49 /* ViewingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826772A881DD8000E4B49 /* ViewingContext.swift */; };
+		7158267B2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */; };
+		7158267C2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */; };
 		716157D92A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DA2A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DF2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */; };
@@ -704,6 +706,7 @@
 		7157977A2A7B86D600B7FEC9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7157977B2A7B86F000B7FEC9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		715826772A881DD8000E4B49 /* ViewingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewingContext.swift; sourceTree = "<group>"; };
+		7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkService.Boot.swift; sourceTree = "<group>"; };
 		716157D82A85C29500449EE4 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		716157DB2A85C5A700449EE4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayView.SortMenuView.swift; sourceTree = "<group>"; };
@@ -1948,6 +1951,7 @@
 			isa = PBXGroup;
 			children = (
 				71C9F9432A613EA30089D7EA /* BookmarkService.Modify.swift */,
+				7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -2535,6 +2539,7 @@
 				7197FB172964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,
 				71B7A1E62A68FEA8003E6D4D /* AccountService.Boot.swift in Sources */,
 				71EB91C52A803F240091EE5B /* InstanceMetaView.swift in Sources */,
+				7158267B2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */,
 				71F778CF2A71C99900C9C5C4 /* Profile.TitleBarView.swift in Sources */,
 				717090E92A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
 				710283C12A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
@@ -2709,6 +2714,7 @@
 				7102837E2A2A54C300010877 /* PointTrackConfiguration.swift in Sources */,
 				716157DA2A85C29500449EE4 /* WebView.swift in Sources */,
 				71DF108028CC697600559DBC /* ProgressContent.swift in Sources */,
+				7158267C2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */,
 				71DF107028CC697600559DBC /* DictionaryEncoder.swift in Sources */,
 				71C8BE792A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */,
 				7102839A2A2A54C300010877 /* PointSliderStyle.swift in Sources */,
