@@ -15,6 +15,8 @@ extension BookmarkService {
         typealias Center = BookmarkService.Center
         
         func reduce(state: inout Center.State) async {
+            LoomLog("📖 booting 📖", level: .debug)
+            
             guard let key = BookmarkKey.current else {
                 return
             }
@@ -32,6 +34,10 @@ extension BookmarkService {
                     bookmarkPost = posts
                 } else {
                     bookmarkPost = .init(domain)
+                    
+                    if state.posts[key] == nil {
+                        state.posts[key] = [:]
+                    }
                 }
                 
                 bookmarkPost.map[model.id] = model
@@ -39,6 +45,9 @@ extension BookmarkService {
                 state.postDomains.insert(domain)
                 state.datesPosts[domain+model.id] = .init()
             }
+            
+            
+            LoomLog("📖 synced \(posts.count) posts 📖", level: .debug)
             
             
             let comments = await Lemmy.comments(type: .all, saved_only: true)
@@ -54,6 +63,10 @@ extension BookmarkService {
                     bookmarkComment = comments
                 } else {
                     bookmarkComment = .init(domain)
+                    
+                    if state.comments[key] == nil {
+                        state.comments[key] = [:]
+                    }
                 }
                 
                 //state update
@@ -67,6 +80,12 @@ extension BookmarkService {
                 state.datesComments[domain+model.id] = .init()
             }
             
+            LoomLog("📖 synced \(comments.count) comments 📖", level: .debug)
+            
+            
+            LoomLog("📖 keys: \(Array(state.posts.keys)) 📖", level: .debug)
+            
+            state.lastUpdate = .init()
         }
         
         var behavior: GraniteReducerBehavior {

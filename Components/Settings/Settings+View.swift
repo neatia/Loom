@@ -85,6 +85,7 @@ extension Settings: View {
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
                             Toggle(isOn: config._state.marbleYoutubeLinks) {
+                                //TODO: localize
                                 Text("Youtube links")
                                     .font(.body)
                                     .offset(x: 0, y: Device.isMacOS ? -1 : 0)
@@ -97,9 +98,11 @@ extension Settings: View {
                     }
                     .padding(.trailing, .layer4)
                     
+                    /*
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
-                            Toggle(isOn: config._state.marblePlayback) {
+                            Toggle(isOn: config._state.marblePlaybackControls) {
+                                //TODO: localize
                                 Text("Playback controls")
                                     .font(.body)
                                     .offset(x: 0, y: Device.isMacOS ? -1 : 0)
@@ -111,6 +114,7 @@ extension Settings: View {
                         #endif
                     }
                     .padding(.trailing, .layer4)
+                     */
                     
                     #if os(macOS)
                     Spacer()

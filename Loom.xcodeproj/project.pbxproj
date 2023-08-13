@@ -180,6 +180,8 @@
 		715826792A881DD8000E4B49 /* ViewingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826772A881DD8000E4B49 /* ViewingContext.swift */; };
 		7158267B2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */; };
 		7158267C2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */; };
+		7158267F2A886752000E4B49 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267E2A886752000E4B49 /* Marble.swift */; };
+		715826802A886752000E4B49 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267E2A886752000E4B49 /* Marble.swift */; };
 		716157D92A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DA2A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DF2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */; };
@@ -707,6 +709,7 @@
 		7157977B2A7B86F000B7FEC9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		715826772A881DD8000E4B49 /* ViewingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewingContext.swift; sourceTree = "<group>"; };
 		7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkService.Boot.swift; sourceTree = "<group>"; };
+		7158267E2A886752000E4B49 /* Marble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marble.swift; sourceTree = "<group>"; };
 		716157D82A85C29500449EE4 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		716157DB2A85C5A700449EE4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayView.SortMenuView.swift; sourceTree = "<group>"; };
@@ -1253,6 +1256,7 @@
 				71F778E22A72767A00C9C5C4 /* i8n */,
 				717C8FB32A6F9EA000DF6037 /* Utility */,
 				71A28E2F295239D100EAE8EE /* Design */,
+				7158267D2A88673A000E4B49 /* Marble */,
 				719725F628CC7F0300A64334 /* Views */,
 				7145EF0B28D43F1700BFD19A /* Extensions */,
 				71C9F9102A60BCFF0089D7EA /* LoomViews */,
@@ -1465,6 +1469,14 @@
 				71EB91CE2A80A75B0091EE5B /* DebugSettingsView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		7158267D2A88673A000E4B49 /* Marble */ = {
+			isa = PBXGroup;
+			children = (
+				7158267E2A886752000E4B49 /* Marble.swift */,
+			);
+			path = Marble;
 			sourceTree = "<group>";
 		};
 		716157DD2A85D97800449EE4 /* PostDisplayView */ = {
@@ -2654,6 +2666,7 @@
 				7102838D2A2A54C300010877 /* HorizontalRangeSliderStyle.swift in Sources */,
 				71DF106D28CC697600559DBC /* DictionaryDecoder.swift in Sources */,
 				71F778C02A71A95300C9C5C4 /* Extension.swift in Sources */,
+				7158267F2A886752000E4B49 /* Marble.swift in Sources */,
 				71C9F9302A6107D20089D7EA /* HeaderView.swift in Sources */,
 				71C8BE6E2A7F1C79008694C7 /* View+OnLoad.swift in Sources */,
 				710283AF2A2A54C300010877 /* EnvironmentValues+ValueSliderStyle.swift in Sources */,
@@ -2930,6 +2943,7 @@
 				71F0423A2A6A682C00788CDC /* Write.Create.swift in Sources */,
 				71CB6C302A6B1F8D00084ECC /* WriteView.swift in Sources */,
 				716157E02A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */,
+				715826802A886752000E4B49 /* Marble.swift in Sources */,
 				71FCDD112A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
 				7197FB1E2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
 				71C8BE762A7F2BFA008694C7 /* Pager+LoadingView.swift in Sources */,

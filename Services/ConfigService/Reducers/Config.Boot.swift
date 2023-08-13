@@ -32,6 +32,11 @@ extension ConfigService {
             if layout.state.style == .expanded {
                 LayoutService.expandWindow(close: layout.state.closeFeedDisplayView)
             }
+            
+            //Marbler
+            if state.marbleYoutubeLinks {
+                MarbleOptions.enableFX = true
+            }
         }
         
         var behavior: GraniteReducerBehavior {
@@ -62,7 +67,6 @@ extension ConfigService {
                 LemmyKit.baseUrl = accountMeta.host
                 state.config = .init(baseUrl: accountMeta.host)
                 
-                LoomLog("booting account")
                 account.center.boot.send(AccountService.Boot.Meta(accountMeta: accountMeta))
             }
                 

@@ -61,6 +61,7 @@ extension AccountService {
             state.addToProfiles = false
             state.authenticated = LemmyKit.auth != nil
             
+            bookmark.preload()
             bookmark.center.boot.send()
         }
         

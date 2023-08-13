@@ -60,41 +60,43 @@ extension Bookmark: View {
             
             Divider()
             
-            HStack(spacing: .layer4) {
-                Menu {
-                    ForEach(bookmarkKeys) { key in
-                        Button {
-                            GraniteHaptic.light.invoke()
-                            switch state.kind {
-                            case .posts:
-                                _state.selectedBookmarkPostKey.wrappedValue = key
-                            case .comments:
-                                _state.selectedBookmarkCommentKey.wrappedValue = key
+            if bookmarkKeys.isNotEmpty {
+                HStack(spacing: .layer4) {
+                    Menu {
+                        ForEach(bookmarkKeys) { key in
+                            Button {
+                                GraniteHaptic.light.invoke()
+                                switch state.kind {
+                                case .posts:
+                                    _state.selectedBookmarkPostKey.wrappedValue = key
+                                case .comments:
+                                    _state.selectedBookmarkCommentKey.wrappedValue = key
+                                }
+                            } label: {
+                                Text(key.description)
+                                Image(systemName: "arrow.down.right.circle")
                             }
-                        } label: {
-                            Text(key.description)
-                            Image(systemName: "arrow.down.right.circle")
                         }
+                    } label: {
+                        switch state.kind {
+                        case .posts:
+                            Text(state.selectedBookmarkPostKey.description)
+                        case .comments:
+                            Text(state.selectedBookmarkCommentKey.description)
+                        }
+                        
+#if os(iOS)
+                        Image(systemName: "chevron.up.chevron.down")
+#endif
                     }
-                } label: {
-                    switch state.kind {
-                    case .posts:
-                        Text(state.selectedBookmarkPostKey.description)
-                    case .comments:
-                        Text(state.selectedBookmarkCommentKey.description)
-                    }
+                    .menuStyle(BorderlessButtonMenuStyle())
                     
-                    #if os(iOS)
-                    Image(systemName: "chevron.up.chevron.down")
-                    #endif
+                    Spacer()
                 }
-                .menuStyle(BorderlessButtonMenuStyle())
-                
-                Spacer()
+                .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+                .padding(.vertical, .layer4)
+                .padding(.horizontal, showHeader == false ? .layer3 : .layer4)
             }
-            .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
-            .padding(.vertical, .layer4)
-            .padding(.horizontal, .layer3)
             
             switch state.kind {
             case .posts:
@@ -103,7 +105,6 @@ extension Bookmark: View {
                         postViews()
                     }.padding(.top, 1)
                 }
-                .id(service.isLoaded)
             case .comments:
                 ScrollView(showsIndicators: false) {
                     LazyVStack(spacing: 0) {
@@ -113,6 +114,10 @@ extension Bookmark: View {
                 .id(service.isLoaded)
                 .background(Color.alternateBackground)
             }
+        }
+        .onChange(of: service.isLoaded) { isLoaded in
+            guard isLoaded else { return }
+            _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
         }
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
     }

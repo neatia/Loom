@@ -29,7 +29,8 @@ enum PostContentKind {
     }
     
     static func from(url: URL) -> PostContentKind {
-        if let youtubeId = url.absoluteString.youtubeID {
+        if MarbleOptions.enableFX,
+           let youtubeId = url.absoluteString.youtubeID {
             return .webPageHTML(Write.Generate.shader(title: "Loom Render", author: "pexavc", content: youtubeId, urlString: url.absoluteString, image_url: ""), url)
         } else if url.lastPathComponent.contains(".") && url.lastPathComponent.contains(".html") == false {
             return .image(url)
