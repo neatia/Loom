@@ -20,11 +20,10 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
         pager.hasMore && pager.items.count >= pager.pageSize
     }
     
-    
     func progressWidth(_ proxy: GeometryProxy) -> CGFloat {
         let width = proxy.size.width * pager.rlProcessingProgress
         
-        return width.isFinite ? width : 0
+        return width.isFinite && width >= 0 ? width : 0
     }
     
     var body: some View {
@@ -46,7 +45,8 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
                     }
             }
         }
-        .frame(maxWidth: .infinity, minHeight: hasMore ? 60 : 0, maxHeight: (hasMore ? 60 : 0))
+        .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
+        .padding(.top, .layer4)
         .background(
             ZStack(alignment: .top) {
                 GeometryReader { proxy in
@@ -58,6 +58,7 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
                 
                 Divider()
             }
+            .padding(.top, .layer4)
             , alignment: .bottomLeading)
     }
 }

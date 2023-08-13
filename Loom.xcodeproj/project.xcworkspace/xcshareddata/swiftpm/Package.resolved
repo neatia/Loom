@@ -6,7 +6,7 @@
       "location" : "https://github.com/pexavc/Granite.git",
       "state" : {
         "branch" : "main",
-        "revision" : "2f179b8e40ce43ef5a25266cc418bf7e3f1f53de"
+        "revision" : "d51b986b0d677d2178b0916dca3340842f7aee2b"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/pexavc/LemmyKit",
       "state" : {
         "branch" : "main",
-        "revision" : "dab7fbae6443c09f445e47cd2c3c38f8f8509af5"
+        "revision" : "8c64e37a058c2b4fa294b37aacd8be35c0ecebeb"
       }
     },
     {
