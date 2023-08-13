@@ -43,6 +43,12 @@ extension ContentService {
         func reduce(state: inout Center.State) async {
             guard let meta else { return }
             
+            guard LemmyKit.auth != nil else {
+                //TODO: localize
+                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
+                return
+            }
+            
             switch meta.kind {
             case .upvotePost(let postView):
                 let postView = state.allPosts[postView.id] ?? postView

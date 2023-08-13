@@ -41,44 +41,19 @@ struct ReportView: View {
     }
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            ZStack {
-                #if os(iOS)
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundColor(Color.background)
-                    .edgesIgnoringSafeArea(.all)
-                #endif
-                
-                reportForm
-            }
-            .frame(maxHeight: 400)
+        GraniteStandardModalView {
+            Text("MISC_REPORT")
+                .font(.title.bold()) + Text(" ") + Text(title)
+                .font(.title.bold())
+        } content: {
+            reportForm
         }
-        .frame(width: Device.isMacOS ? 300 : nil, height: Device.isMacOS ? 400 : nil)
     }
 }
 
 extension ReportView {
     var reportForm: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
-                VStack {
-                    Spacer()
-                    
-                    Text("MISC_REPORT")
-                        .font(.title.bold()) + Text(title)
-                        .font(.title.bold())
-                }
-                
-                Spacer()
-            }
-            .frame(height: 36)
-            .padding(.bottom, .layer4)
-            
-            Divider()
-                .padding(.bottom, .layer4)
-            
             if #available(macOS 13.0, iOS 16.0, *) {
                 TextEditor(text: $reason)
                     .textFieldStyle(.plain)
@@ -90,7 +65,7 @@ extension ReportView {
                         RoundedRectangle(cornerRadius: 8)
                             .foregroundColor(Color.tertiaryBackground)
                     )
-                    .padding(.bottom, .layer3)
+                    .padding(.bottom, .layer4)
                     .toolbar {
                         ToolbarItemGroup(placement: .keyboard) {
                             StandardToolbarView()
@@ -106,7 +81,7 @@ extension ReportView {
                         RoundedRectangle(cornerRadius: 8)
                             .foregroundColor(Color.tertiaryBackground)
                     )
-                    .padding(.bottom, .layer3)
+                    .padding(.bottom, .layer4)
                     .toolbar {
                         ToolbarItemGroup(placement: .keyboard) {
                             StandardToolbarView()
@@ -140,13 +115,9 @@ extension ReportView {
                         .font(.headline)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.trailing, .layer2)
                 
                 Spacer()
             }
-            
-            Spacer()
         }
-        .padding(.layer5)
     }
 }

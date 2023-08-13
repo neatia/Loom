@@ -22,18 +22,32 @@ struct CommentCardView: View {
     var shouldLinkToPost: Bool = false
     var parentModel: CommentView? = nil
     var isInline: Bool = false
-    var isPreview: Bool = false
-    var showAvatar: Bool = true
-    var isBookmark: Bool = false
     
     let style: FeedStyle = .style2
+    var viewingContext: ViewingContext = .base
     
-    @State var minHeight: CGFloat = 100
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
     var censorBot: Bool {
         model.creator.bot_account && config.state.showBotAccounts == false
+    }
+    
+    var isBookmark: Bool {
+        viewingContext.isBookmark
+    }
+    
+    var isPreview: Bool {
+        viewingContext == .search
+    }
+    
+    var showAvatar: Bool {
+        switch viewingContext {
+        case .bookmarkExpanded, .profile:
+            return false
+        default:
+            return true
+        }
     }
     
     var body: some View {
@@ -56,7 +70,7 @@ struct CommentCardView: View {
                     .padding(.bottom, .layer3)
             case .style2:
                 HStack(spacing: .layer3) {
-                    HeaderCardAvatarView(model, badge: (postView == nil ? .noBadge : .post(postView!)), showAvatar: showAvatar)
+                    HeaderCardAvatarView(model, postView: postView, showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
                         HeaderCardView(model, badge: shouldLinkToPost ? (postView == nil ? nil : .post(postView!)) : nil)
                             .attach({ community in
@@ -110,10 +124,6 @@ extension CommentCardView {
     var content: some View {
         VStack(alignment: .leading, spacing: .layer3) {
             #if os(macOS)
-//            contentBody
-//                .routeIf(model.replyCount > 0, style: .init(size: .init(600, 500))) {
-//                    ThreadView(model: model)
-//                }
             contentBody
                 .censor(censorBot, kind: .bot)
                 .padding(.top, censorBot ? .layer2 : 0)
@@ -131,8 +141,8 @@ extension CommentCardView {
                 contentBody
                     .censor(censorBot, kind: .bot)
                     .padding(.top, censorBot ? .layer2 : 0)
-                .contentShape(Rectangle())
-                .modifier(TapAndLongPressModifier(tapAction: {
+                    .contentShape(Rectangle())
+                    .modifier(TapAndLongPressModifier(tapAction: {
                     guard isPreview == false, model.replyCount > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()
@@ -151,10 +161,6 @@ extension CommentCardView {
                     guard isPreview == false else { return }
                     showDrawer.perform(model)
                 }, at: \.showComments)
-                .attach({
-                    //TODO: Change hard code to enum?
-                    self.minHeight = self.minHeight == 100 ? 300 : 100
-                }, at: \.expand)
         }
         .padding(.leading, style == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
         .overlayIf(style == .style1) {

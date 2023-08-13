@@ -22,9 +22,6 @@ struct Write: GraniteComponent {
             .listen { value in
                 if let response = value as? StandardNotificationMeta {
                     modal.presentModal(GraniteToastView(response))
-                } else if let response = value as? Write.Create.ResponseMeta {
-                    _state.createdPostView.wrappedValue = response.postView
-                    _state.showPost.wrappedValue = true
                 }
             }
     }

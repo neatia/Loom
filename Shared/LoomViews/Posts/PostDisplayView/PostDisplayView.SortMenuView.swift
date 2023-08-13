@@ -2,7 +2,7 @@
 //  PostDisplayView.HeaderMenu.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/10/23.
+//  Created by PEXAVC on 8/10/23.
 //
 
 import Foundation
@@ -42,8 +42,12 @@ extension PostDisplayView {
                         
                         if index == 1 && model.isBaseResource == false {
                             self.threadLocation = .source
-                        } else if index > 0 && model.isPeerResource {
-                            self.threadLocation = .peer(viewableHosts[index])
+                        } else if index > 0 {
+                            if model.isPeerResource {
+                                self.threadLocation = .peer(viewableHosts[index])
+                            } else if viewingContext.isBookmark {
+                                self.threadLocation = viewingContext.bookmarkLocation
+                            }
                         } else {
                             self.threadLocation = .base
                         }

@@ -183,7 +183,6 @@ private struct TransparentNonAnimatableFullScreenModifier<FullScreenContent: Vie
                 }
             })
     }
-    
 }
 
 private struct FullScreenCoverBackgroundRemovalView: UIViewRepresentable {

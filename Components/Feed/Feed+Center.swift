@@ -8,13 +8,6 @@ extension Feed {
             var community: Community? = nil
             var communityView: CommunityView? = nil
             
-            var isDropdownSortActive: Bool = false
-            var isDropdownListingActive: Bool = false
-            
-            var isDropdownActive: Bool {
-                isDropdownSortActive || isDropdownListingActive
-            }
-            
             var selectedTimeCategory: Int = 0
             var sortingTimeType: [String] = ["SORT_TYPE_ALL_TIME", "SORT_TYPE_TODAY"]
             
@@ -31,6 +24,8 @@ extension Feed {
             var location: FetchType = .base
             var peerLocation: FetchType? = nil
         }
+        
+        @Event var goHome: GoHome.Reducer
         
         @Store public var state: State
     }
@@ -105,68 +100,6 @@ extension Feed {
             if reset {
                 await self.pager.fetch(force: true)
             }
-        }
-    }
-}
-
-extension SortType {
-    static var categoryGeneral: [SortType] {
-        [.hot, .active, .topAll, .new,]
-    }
-    
-    static var categoryTime: [SortType] {
-        [.topAll, .topYear, .topDay]
-    }
-    
-    var isTime: Bool {
-        switch self {
-        case .topAll, .topMonth, .topDay, .topYear, .topHour, .topWeek:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    var displayString: LocalizedStringKey {
-        switch self {
-        case .topAll:
-            return "SORT_TYPE_TOP"
-        case .topYear:
-            return "SORT_TYPE_YEAR"
-        case .topDay:
-            return "SORT_TYPE_TODAY"
-        case .hot:
-            return "SORT_TYPE_HOT"
-        case .active:
-            return "SORT_TYPE_ACTIVE"
-        case .new:
-            return "SORT_TYPE_NEW"
-        case .old:
-            return "SORT_TYPE_OLD"
-        default:
-            return .init(self.rawValue)
-        }
-    }
-}
-
-extension ListingType {
-    var abbreviated: String {
-        switch self {
-        case .subscribed:
-            return "sub."
-        default:
-            return self.rawValue
-        }
-    }
-    
-    var displayString: LocalizedStringKey {
-        switch self {
-        case .all:
-            return "LISTING_TYPE_ALL"
-        case .local:
-            return "LISTING_TYPE_LOCAL"
-        case .subscribed:
-            return "LISTING_TYPE_SUBSCRIBED"
         }
     }
 }

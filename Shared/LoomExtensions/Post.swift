@@ -65,10 +65,14 @@ extension PostView {
         post.body != nil || post.url != nil
     }
     
-    var postURL: String? {
+    var postURLString: String? {
+        postURL?.host
+    }
+    
+    var postURL: URL? {
         if let urlString = post.url,
            let url = URL(string: urlString) {
-            return url.host
+            return url
         }
         return nil
     }
@@ -81,3 +85,4 @@ extension PostView {
         return URL(string: url)
     }
 }
+

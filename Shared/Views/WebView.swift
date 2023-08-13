@@ -12,7 +12,7 @@ import WebKit
 public enum WebViewAction: Equatable {
     case idle,
          load(URLRequest),
-         loadHTML(String),
+         loadHTML(String, URL),
          reload,
          goBack,
          goForward,
@@ -299,8 +299,9 @@ public struct GraniteWebView: UIViewRepresentable {
             break
         case .load(let request):
             uiView.load(request)
-        case .loadHTML(let pageHTML):
-            uiView.loadHTMLString(pageHTML, baseURL: nil)
+        case .loadHTML(let pageHTML, let url):
+            LoomLog("loading html")
+            uiView.loadHTMLString(pageHTML, baseURL: url)
         case .reload:
             uiView.reload()
         case .goBack:
@@ -378,8 +379,8 @@ public struct GraniteWebView: NSViewRepresentable {
             break
         case .load(let request):
             uiView.load(request)
-        case .loadHTML(let html):
-            uiView.loadHTMLString(html, baseURL: nil)
+        case .loadHTML(let html, let url):
+            uiView.loadHTMLString(html, baseURL: url)
         case .reload:
             uiView.reload()
         case .goBack:

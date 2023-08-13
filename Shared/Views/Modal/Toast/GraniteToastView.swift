@@ -55,8 +55,8 @@ public struct GraniteToastView : GraniteModal {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(Color.gray.opacity(0.3))
         )
-        .padding(.horizontal, 20)
-        .padding(.top, 15)
+        .padding(.horizontal, .layer3)
+        .padding(.top, 16)
         .transition(
             AnyTransition.move(edge: .top)
                 .combined(with: .opacity)

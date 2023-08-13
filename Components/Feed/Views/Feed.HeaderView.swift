@@ -14,7 +14,10 @@ import NukeUI
 extension Feed {
     var headerView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            //            Spacer()
+            if Device.isExpandedLayout {
+                accountInfoExpandedView
+                    .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
+            }
             titleBarView
                 .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             HStack(spacing: 0) {
@@ -43,14 +46,13 @@ extension Feed {
                     } else {
                         if Device.isExpandedLayout {
                             ProgressView()
-                                .offset(y: hasCommunityBanner ? -2 : 0)
                                 .padding(.horizontal, hasCommunityBanner ? 4 : 0)
                                 .padding(.vertical, hasCommunityBanner ? 4 : 0)
                                 .backgroundIf(hasCommunityBanner) {
                                     Color.background.opacity(0.75)
                                         .cornerRadius(6)
                                 }
-                                .scaleEffect(0.5)
+                                .scaleEffect(0.6)
                                 .offset(x: .layer1)
                         } else {
                             ProgressView()
@@ -82,7 +84,7 @@ extension Feed {
                         .padding(.bottom, hasCommunityBanner ? 0 : .layer1)
                 }
             }
-            .frame(height: hasCommunityBanner ? 48 : 36)
+            .frame(height: headerViewHeight)
             .padding(.vertical, Device.isExpandedLayout ? 0 : .layer2)
             .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             
@@ -107,5 +109,14 @@ extension Feed {
             }
         }
         .clipped())
+    }
+    
+    var headerViewHeight: CGFloat {
+        let padding: CGFloat = hasCommunityBanner ? 12 : 0
+        if Device.isExpandedLayout {
+            return 54 + padding
+        } else {
+            return 36 + padding
+        }
     }
 }

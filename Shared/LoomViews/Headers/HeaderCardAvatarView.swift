@@ -21,7 +21,6 @@ struct HeaderCardAvatarView: View {
     let headline: String
     let subheadline: String?
     let subtitle: String?
-    let badge: HeaderView.Badge
     let avatarURL: URL?
     let time: Date?
     
@@ -39,9 +38,33 @@ struct HeaderCardAvatarView: View {
     
     let showThreadLine: Bool
     
+    let postView: PostView?
+    let commentView: CommentView?
+    
+    var isAdmin: Bool {
+        postView?.creator.admin == true && commentView == nil
+    }
+    
+    var isOP: Bool {
+        guard let poster = postView?.creator else {
+            return false
+        }
+        
+        return commentView?.creator.equals(poster) == true
+    }
+    
+    var avatarBorderColor: Color {
+        if isAdmin {
+            return .red.opacity(0.8)
+        } else if isOP {
+            return .blue.opacity(0.8)
+        } else {
+            return .clear
+        }
+    }
+    
     init(_ model: PostView,
          crumbs: [PostView] = [],
-         badge: HeaderView.Badge? = nil,
          showAvatar: Bool = true,
          size: AvatarView.Size = .small,
          showThreadLine: Bool = true) {
@@ -60,20 +83,21 @@ struct HeaderCardAvatarView: View {
         
         self.person = model.creator
         
-        self.badge = badge ?? .community(model.community.name)
-        
         self.showAvatar = showAvatar
         
         self.size = size
         
         self.showThreadLine = showThreadLine
         
+        self.postView = model
+        self.commentView = nil
+        
         Colors.update(model.community.name)
     }
     
     init(_ model: CommentView,
+         postView: PostView? = nil,
          crumbs: [CommentView] = [],
-         badge: HeaderView.Badge? = nil,
          showAvatar: Bool = true,
          size: AvatarView.Size = .small,
          showThreadLine: Bool = true) {
@@ -94,18 +118,20 @@ struct HeaderCardAvatarView: View {
         
         self.showAvatar = showAvatar
         
-        self.badge = badge ?? .none//((model.creator.domain != nil && model.creator.local == false) ? .host(model.creator.domain!) : .none)//.community(model.community.name)
-        //Colors.update(model.creator.domain ?? model.community.name)
-        
         self.size = size
         
         self.showThreadLine = showThreadLine
+        
+        self.postView = postView
+        self.commentView = model
     }
     
     var body: some View {
         VStack(spacing: .layer3) {
             if showAvatar {
                 AvatarView(person, size: size)
+                    .overlay(Circle()
+                        .stroke(avatarBorderColor, lineWidth: 1.0))
             }
             
             GeometryReader { proxy in

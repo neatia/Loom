@@ -12,7 +12,6 @@ import Granite
 import GraniteUI
 
 struct FooterView: View {
-    @GraniteAction<Void> var expand
     @GraniteAction<CommentId> var showComments
     @GraniteAction<PostView> var reply
     
@@ -51,7 +50,6 @@ struct FooterView: View {
     let replyCount: Int?
     
     let isHeader: Bool
-    let canExpand: Bool
     
     let font: Font
     let secondaryFont: Font
@@ -96,7 +94,6 @@ struct FooterView: View {
         }
         
         self.isHeader = isHeader
-        self.canExpand = false
         
         self.font = isHeader ? .title3 : .headline
         self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
@@ -257,45 +254,40 @@ extension FooterView {
             .frame(height: 20)
             
             HStack(spacing: 0) {
-                if showScores {
-                    Text("\(String(upvoteCount)) LABEL_UPVOTE")
-                        .font(font.smaller)
-                        .padding(.trailing, .layer4)
-                    
-                    Text("\(String(downvoteCount)) LABEL_DOWNVOTE")
-                        .font(font.smaller)
-                    
-                    Text("•")
-                        .font(.footnote)
-                        .padding(.horizontal, .layer2)
-                }
-                
-                if let replyCount {
-                    if replyCount != 1 {
-                        Text("\(String(replyCount)) CONTENT_CARD_REPLIES")
+                HStack(spacing: 0) {
+                    if showScores {
+                        Text("\(NumberFormatter.formatAbbreviated(upvoteCount)) LABEL_UPVOTE")
                             .font(font.smaller)
-                    } else {
-                        Text("\(String(replyCount)) CONTENT_CARD_REPLY")
+                            .padding(.trailing, .layer4)
+                        
+                        Text("\(NumberFormatter.formatAbbreviated(downvoteCount)) LABEL_DOWNVOTE")
                             .font(font.smaller)
+                        
+                        Text("•")
+                            .font(.footnote)
+                            .padding(.horizontal, .layer2)
                     }
-                } else {
-                    if commentCount != 1 {
-                        Text("\(String(commentCount)) CONTENT_CARD_REPLIES")
-                            .font(font.smaller)
-                    } else {
-                        Text("\(String(commentCount)) CONTENT_CARD_REPLY")
-                            .font(font.smaller)
-                    }
-                }
-                
-                if isBase == false {
-                    Text("•")
-                        .font(.footnote)
-                        .padding(.horizontal, .layer2)
                     
-                    Image(systemName: "globe.americas")
-                        .font(.caption)
-                }
+                    if let replyCount {
+                        if replyCount != 1 {
+                            Text("\(String(replyCount)) CONTENT_CARD_REPLIES")
+                                .font(font.smaller)
+                        } else {
+                            Text("\(String(replyCount)) CONTENT_CARD_REPLY")
+                                .font(font.smaller)
+                        }
+                    } else {
+                        if commentCount != 1 {
+                            Text("\(String(commentCount)) CONTENT_CARD_REPLIES")
+                                .font(font.smaller)
+                        } else {
+                            Text("\(String(commentCount)) CONTENT_CARD_REPLY")
+                                .font(font.smaller)
+                        }
+                    }
+                }.foregroundColor(.foreground.opacity(0.5))
+                
+                symbols
                 
                 Spacer()
                 
@@ -309,13 +301,14 @@ extension FooterView {
                             Image(systemName: "square.and.pencil")
                                 .font(font)
                                 .contentShape(Rectangle())
+                                .foregroundColor(.foreground.opacity(0.5))
                         }
                         .buttonStyle(PlainButtonStyle())
                     default:
                         EmptyView()
                     }
                 }
-            }.foregroundColor(.foreground.opacity(0.5))
+            }
         }
     }
 }
@@ -408,15 +401,6 @@ extension FooterView {
                 }
             }
             
-            //            Color.clear.frame(maxWidth: .infinity)
-            //                .contentShape(Rectangle())
-            //                .modifier(TapAndLongPressModifier(tapAction: {  },
-            //                                                  longPressAction: {
-            //                    guard canExpand else { return }
-            //                    GraniteHaptic.light.invoke()
-            //                    expand.perform()
-            //                }))
-            
             Spacer()
             
             if isHeader == false || bookmarkKind.isComment {
@@ -425,15 +409,15 @@ extension FooterView {
                     modifyBookmark()
                 } label: {
                     
-                    Image(systemName: "bookmark.square\(bookmark.contains(bookmarkKind) ? ".fill" : "")")
-                        .font(secondaryFont)
+                    Image(systemName: "bookmark\(bookmark.contains(bookmarkKind) ? ".fill" : "")")
+                        .font(font.smaller)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.trailing, .layer2)
+                .padding(.trailing, .layer3)
                 
-                Image(systemName: "arrow.up.square")
-                    .font(secondaryFont)
+                Image(systemName: "paperplane")
+                    .font(font.smaller)
             } else if isComposable,
                       bookmarkKind.isComment == false {
                 switch bookmarkKind {
@@ -453,5 +437,72 @@ extension FooterView {
             }
         }
         .frame(height: 20)
+    }
+}
+
+//MARK: Symbols
+extension FooterView {
+    var symbols: some View {
+        HStack(spacing: 0) {
+            if isBase == false {
+                Text("•")
+                    .font(.footnote)
+                    .padding(.horizontal, .layer2)
+                    .foregroundColor(.foreground.opacity(0.5))
+                
+                Image(systemName: "globe.americas")
+                    .font(.caption)
+                    .foregroundColor(.foreground.opacity(0.5))
+            }
+            
+            if commentView == nil,
+               let postView,
+               postView.post.featured_community || postView.post.featured_local{
+                Text("•")
+                    .font(.footnote)
+                    .padding(.horizontal, .layer2)
+                    .foregroundColor(.foreground.opacity(0.5))
+                
+                Image(systemName: "pin")
+                    .font(.caption)
+                    .foregroundColor(.green.opacity(0.8))
+            }
+            
+            //Indicator moved to header avater
+//            if postView?.creator.admin == true && commentView == nil {
+//                Text("•")
+//                    .font(.footnote)
+//                    .padding(.horizontal, .layer2)
+//                    .foregroundColor(.foreground.opacity(0.5))
+//
+//                Image(systemName: "a.circle")
+//                    .font(.caption)
+//                    .foregroundColor(.red.opacity(0.8))
+//            }
+            
+//            if let poster = postView?.creator, commentView?.creator.equals(poster) == true {
+//                Text("•")
+//                    .font(.footnote)
+//                    .padding(.horizontal, .layer2)
+//                    .foregroundColor(.foreground.opacity(0.5))
+//
+//                Text("OP")
+//                    .font(font.smaller)
+//                    .foregroundColor(.blue.opacity(0.8))
+//            }
+            
+            if commentView == nil,
+               let postView,
+               postView.post.locked {
+                Text("•")
+                    .font(.footnote)
+                    .padding(.horizontal, .layer2)
+                    .foregroundColor(.foreground.opacity(0.5))
+                
+                Image(systemName: "lock")
+                    .font(.caption)
+                    .foregroundColor(.yellow.opacity(0.8))
+            }
+        }
     }
 }

@@ -1,8 +1,8 @@
 //
-//  File.swift
+//  BookmarkService.Boot.swift
 //  Loom
 //
-//  Created by PEXAVC on 7/14/23.
+//  Created by Ritesh Pakala on 8/12/23.
 //
 
 import Foundation
@@ -11,25 +11,21 @@ import SwiftUI
 import LemmyKit
 
 extension BookmarkService {
-    struct Modify: GraniteReducer {
+    struct Boot: GraniteReducer {
         typealias Center = BookmarkService.Center
         
-        struct Meta: GranitePayload {
-            var kind: BookmarkService.Kind
-            var remove: Bool
-        }
-        
-        @Payload var meta: Meta?
-        
-        func reduce(state: inout Center.State) {
-            guard let meta = self.meta else { return }
+        func reduce(state: inout Center.State) async {
+            LoomLog("📖 booting 📖", level: .debug)
             
-            let key: BookmarkKey = .current ?? .local
+            guard let key = BookmarkKey.current else {
+                return
+            }
             
-            switch meta.kind {
-            case .post(let model):
+            let posts = await Lemmy.posts(type: .all, saved_only: true)
+            
+            for model in posts {
                 guard let domain = model.creator.domain else {
-                    return
+                    continue
                 }
                 
                 var bookmarkPost: BookmarkPosts
@@ -38,24 +34,25 @@ extension BookmarkService {
                     bookmarkPost = posts
                 } else {
                     bookmarkPost = .init(domain)
+                    
+                    if state.posts[key] == nil {
+                        state.posts[key] = [:]
+                    }
                 }
                 
-                if meta.remove {
-                    bookmarkPost.map[model.id] = nil
-                } else {
-                    bookmarkPost.map[model.id] = model
-                }
-                
-                //state update
-                if state.posts[key] == nil {
-                    state.posts[key] = [:]
-                }
-                
+                bookmarkPost.map[model.id] = model
                 state.posts[key]?[domain] = bookmarkPost
-                
                 state.postDomains.insert(domain)
                 state.datesPosts[domain+model.id] = .init()
-            case .comment(let model, let postView):
+            }
+            
+            
+            LoomLog("📖 synced \(posts.count) posts 📖", level: .debug)
+            
+            
+            let comments = await Lemmy.comments(type: .all, saved_only: true)
+            
+            for model in comments {
                 guard let domain = model.creator.domain else {
                     return
                 }
@@ -66,15 +63,11 @@ extension BookmarkService {
                     bookmarkComment = comments
                 } else {
                     bookmarkComment = .init(domain)
+                    
+                    if state.comments[key] == nil {
+                        state.comments[key] = [:]
+                    }
                 }
-                
-                if meta.remove {
-                    bookmarkComment.map[model.id] = nil
-                } else {
-                    bookmarkComment.map[model.id] = model
-                }
-                
-                bookmarkComment.postMap[model.post.id] = postView
                 
                 //state update
                 if state.comments[key] == nil {
@@ -87,7 +80,16 @@ extension BookmarkService {
                 state.datesComments[domain+model.id] = .init()
             }
             
+            LoomLog("📖 synced \(comments.count) comments 📖", level: .debug)
+            
+            
+            LoomLog("📖 keys: \(Array(state.posts.keys)) 📖", level: .debug)
+            
             state.lastUpdate = .init()
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
 }

@@ -22,6 +22,7 @@ extension ConfigService {
             }
             var ipfsGatewayUrl: String = "https://gateway.ipfs.io"
             var isIPFSAvailable: Bool = false
+            var ipfsContentType: Int = 0
             
             //Account
             var showNSFW: Bool = false
@@ -29,13 +30,21 @@ extension ConfigService {
             var showBotAccounts: Bool = false
             var sortType: SortType = .hot
             var listingType: ListingType = .all
+            
+            //Marble
+            var marbleYoutubeLinks: Bool = false {
+                didSet {
+                    MarbleOptions.enableFX = marbleYoutubeLinks
+                }
+            }
+            var marblePlaybackControls: Bool = false
         }
         
         @Event var boot: Boot.Reducer
-        @Event var restart: Restart.Reducer
-        @Event var update: Update.Reducer
+        @Event(debounce: 0.25) var restart: Restart.Reducer
+        @Event(debounce: 0.25) var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0017", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0020", autoSave: true, preload: true) public var state: State
     }
     
     struct Preferences {

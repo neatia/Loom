@@ -60,41 +60,121 @@ extension Bookmark: View {
             
             Divider()
             
+            if bookmarkKeys.isNotEmpty {
+                HStack(spacing: .layer4) {
+                    Menu {
+                        ForEach(bookmarkKeys) { key in
+                            Button {
+                                GraniteHaptic.light.invoke()
+                                switch state.kind {
+                                case .posts:
+                                    _state.selectedBookmarkPostKey.wrappedValue = key
+                                case .comments:
+                                    _state.selectedBookmarkCommentKey.wrappedValue = key
+                                }
+                            } label: {
+                                Text(key.description)
+                                Image(systemName: "arrow.down.right.circle")
+                            }
+                        }
+                    } label: {
+                        switch state.kind {
+                        case .posts:
+                            Text(state.selectedBookmarkPostKey.description)
+                        case .comments:
+                            Text(state.selectedBookmarkCommentKey.description)
+                        }
+                        
+#if os(iOS)
+                        Image(systemName: "chevron.up.chevron.down")
+#endif
+                    }
+                    .menuStyle(BorderlessButtonMenuStyle())
+                    
+                    Spacer()
+                }
+                .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+                .padding(.vertical, .layer4)
+                .padding(.horizontal, showHeader == false ? .layer3 : .layer4)
+            }
+            
             switch state.kind {
             case .posts:
-                let postViews = postViews
-                LazyScrollView(postViews) { postView in
-                    VStack(spacing: 0) {
-                        PostCardView(model: postView,
-                                     style: .style2,
-                                     isCompact: showHeader == false,
-                                     linkPreviewType: .largeNoMetadata)
-                            .attach({
-                                GraniteHaptic.light.invoke()
-                                modal.presentSheet {
-                                    PostContentView(postView: postView)
-                                        .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-                                }
-                            }, at: \.showContent)
-                        
-                        if postView.id != postViews.last?.id {
-                            Divider()
-                        }
-                    }
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 0) {
+                        postViews()
+                    }.padding(.top, 1)
                 }
             case .comments:
-                let commentViews = commentViews
-                LazyScrollView(commentViews) { commentView in
-                    VStack(spacing: 0) {
-                        CommentCardView(model: commentView, postView: postForComment(commentView), shouldLinkToPost: true, isBookmark: true)
-                        
-                        if commentView.id != commentViews.last?.id {
-                            Divider()
-                        }
-                    }
-                }.background(Color.alternateBackground)
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 0) {
+                        commentViews()
+                    }.padding(.top, 1)
+                }
+                .id(service.isLoaded)
+                .background(Color.alternateBackground)
             }
         }
+        .onChange(of: service.isLoaded) { isLoaded in
+            guard isLoaded else { return }
+            _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
+        }
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
+    }
+    
+    func headerView(for host: BookmarkKey) -> some View {
+        VStack(spacing: 0) {
+            HStack {
+                Text(host.description)
+                    .font(.title3.bold())
+                    .foregroundColor(.foreground)
+                    .padding(.horizontal, .layer3)
+                
+                Spacer()
+                
+            }
+            
+            Divider().padding(.vertical, .layer4)
+        }
+        .padding(.top, .layer5)
+    }
+    
+    func postViews(indent: Bool = false) -> some View {
+        VStack {
+            ForEach(postViews) { postView in
+                PostCardView(model: postView,
+                             style: .style2,
+                             viewingContext: showHeader ? .bookmark(state.selectedBookmarkPostKey.host) : .bookmarkExpanded(state.selectedBookmarkPostKey.host),
+                             linkPreviewType: .largeNoMetadata)
+                    .attach({ postView in
+                        GraniteHaptic.light.invoke()
+                        modal.presentSheet {
+                            PostContentView(postView: postView)
+                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
+                    }, at: \.showContent)
+                
+                if postView.id != postViews.last?.id {
+                    Divider()
+                        .padding(.leading, indent ? .layer4 : nil)
+                }
+            }
+        }
+    }
+    
+    func commentViews(indent: Bool = false) -> some View {
+        VStack {
+            ForEach(commentViews) { commentView in
+                CommentCardView(model: commentView,
+                                postView: postForComment(commentView),
+                                shouldLinkToPost: true,
+                                viewingContext: .bookmark(state.selectedBookmarkCommentKey.host))
+                
+                if commentView.id != commentViews.last?.id {
+                    Divider()
+                        .padding(.leading, indent ? .layer4 : nil)
+                }
+            }
+        }
     }
 }

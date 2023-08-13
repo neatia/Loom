@@ -12,6 +12,7 @@ import LemmyKit
 
 struct FeedMainView<Content: View>: View {
     @GraniteAction<Community> var viewCommunity
+    @GraniteAction<PostView> var showContent
     @EnvironmentObject var pager: Pager<PostView>
     @Environment(\.graniteEvent) var interact
     
@@ -40,7 +41,9 @@ struct FeedMainView<Content: View>: View {
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
-//                }, at: \.showContent)
+                .attach({ postView in
+                    showContent.perform(postView)
+                }, at: \.showContent)
                 .graniteEvent(interact)
             }.environmentObject(pager)
         }

@@ -125,7 +125,7 @@ struct SearchAllView: View {
                             HStack(spacing: 0) {
                                 ForEach(model.comments) { cModel in
                                     CommentCardView(model: cModel,
-                                                    isPreview: true)
+                                                    viewingContext: .search)
                                     .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
                                     .frame(height: 240)
 
@@ -171,7 +171,7 @@ struct SearchAllView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {
                                 ForEach(model.posts) { pModel in
-                                    PostCardView(model: pModel, isPreview: true)
+                                    PostCardView(model: pModel, viewingContext: .search)
                                         .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
                                         .frame(height: 200)
                                     

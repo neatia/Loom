@@ -7,23 +7,32 @@
 
 import Foundation
 import Granite
+import GraniteUI
 import SwiftUI
 import NukeUI
 import LemmyKit
 
 enum PostContentKind {
     case webPage(URL)
+    case webPageHTML(String, URL)
     case image(URL)
     case text
     
-    static func from(_ urlString: String?) -> PostContentKind {
+    static func from(urlString: String?) -> PostContentKind {
         guard let urlString else { return .text }
         
         guard let url = URL(string: urlString) else {
             return .text
         }
         
-        if url.lastPathComponent.contains(".") && url.lastPathComponent.contains(".html") == false {
+        return PostContentKind.from(url: url)
+    }
+    
+    static func from(url: URL) -> PostContentKind {
+        if MarbleOptions.enableFX,
+           let youtubeId = url.absoluteString.youtubeID {
+            return .webPageHTML(Write.Generate.shader(title: "Loom Render", author: "pexavc", content: youtubeId, urlString: url.absoluteString, image_url: ""), url)
+        } else if url.lastPathComponent.contains(".") && url.lastPathComponent.contains(".html") == false {
             return .image(url)
         } else {
             return .webPage(url)
@@ -32,7 +41,7 @@ enum PostContentKind {
     
     var isWebPage: Bool {
         switch self {
-        case .webPage:
+        case .webPage, .webPageHTML:
             return true
         default:
             return false
@@ -55,11 +64,11 @@ struct PostContentView: View {
     
     init(postView: PostView) {
         self.postView = postView
-        _contentKind = .init(initialValue: PostContentKind.from(postView.post.url))
+        _contentKind = .init(initialValue: PostContentKind.from(urlString: postView.post.url))
     }
     
     init(_ url: URL) {
-        _contentKind = .init(initialValue: .webPage(url))
+        _contentKind = .init(initialValue: PostContentKind.from(url: url))
         fullPage = true
     }
     
@@ -78,10 +87,10 @@ struct PostContentView: View {
                 
                 VStack {
                     switch contentKind {
-                    case .webPage(let url):
+                    case .webPage, .webPageHTML:
                         GraniteWebView(action: $action,
                                        state: $webState,
-                                       restrictedPages: ["apple.com"],
+                                       restrictedPages: [],
                                        htmlInState: true)
                         .clipShape(
                             RoundedRectangle(cornerRadius: 8)
@@ -113,9 +122,10 @@ struct PostContentView: View {
             
             if fullPage {
                 Button {
+                    GraniteHaptic.light.invoke()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text("Close")
+                    Image(systemName: "xmark.circle.fill")
                         .font(.title3)
                         .foregroundColor(.foreground)
                 }
@@ -123,20 +133,14 @@ struct PostContentView: View {
                 .padding(.bottom, .layer4)
             }
         }
-        .task {
-//            switch contentKind {
-//            case .webPage(let url):
-//                analyze.center.load.send(AnalyzeService.Load.Meta(url: url.absoluteString))
-//            default:
-//                break
-//            }
-        }
         .onAppear {
             guard contentKind.isWebPage else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 switch contentKind {
                 case .webPage(let url):
                     action = .load(URLRequest(url: url))
+                case .webPageHTML(let html, let url):
+                    action = .loadHTML(html, url)
                 default:
                     break
                 }

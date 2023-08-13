@@ -66,6 +66,28 @@ struct HeaderView: View {
     let postView: PostView?
     let commentView: CommentView?
     
+    var isAdmin: Bool {
+        postView?.creator.admin == true && commentView == nil
+    }
+    
+    var isOP: Bool {
+        guard let poster = postView?.creator else {
+            return false
+        }
+        
+        return commentView?.creator.equals(poster) == true
+    }
+    
+    var avatarBorderColor: Color {
+        if isAdmin {
+            return .red.opacity(0.8)
+        } else if isOP {
+            return .blue.opacity(0.8)
+        } else {
+            return .clear
+        }
+    }
+    
     typealias Crumb = (Int, Person)
     let crumbs: [Crumb]
     
@@ -101,6 +123,7 @@ struct HeaderView: View {
     }
     
     init(_ model: CommentView,
+         postView: PostView? = nil,
          crumbs: [CommentView] = [],
          shouldRouteCommunity: Bool = true,
          shouldRoutePost: Bool = true,
@@ -124,17 +147,19 @@ struct HeaderView: View {
         
         self.person = model.creator
         
+        self.postView = postView
+        
         self.showPostActions = showPostActions
         
         self.badge = badge ?? .none//((model.creator.domain != nil && model.creator.local == false) ? .host(model.creator.domain!) : .none)//.community(model.community.name)
         //Colors.update(model.creator.domain ?? model.community.name)
         
-        switch badge {
-        case .post(let postView):
-            self.postView = postView
-        default:
-            self.postView = nil
-        }
+//        switch badge {
+//        case .post(let postView):
+//            self.postView = postView
+//        default:
+//            self.postView = nil
+//        }
     }
     
     var body: some View {
@@ -146,6 +171,8 @@ struct HeaderView: View {
                         ForEach(crumbs, id: \.0) { crumb in
                             HStack(spacing: .layer2) {
                                 AvatarView(URL(string: crumb.1.avatar ?? ""))
+                                    .overlay(Circle()
+                                        .stroke(crumbColor(crumb.1), lineWidth: 1.0))
                                 Text(crumb.1.name)
                                     .font(.headline)
                                 Image(systemName: "chevron.right")
@@ -163,6 +190,8 @@ struct HeaderView: View {
                         
                         HStack(spacing: .layer2) {
                             AvatarView(avatarURL)
+                                .overlay(Circle()
+                                    .stroke(avatarBorderColor, lineWidth: 1.0))
                             
                             Text(headline)
                                 .font(.headline)
@@ -176,6 +205,8 @@ struct HeaderView: View {
                 .frame(maxHeight: 36)
             } else {
                 AvatarView(person)
+                    .overlay(Circle()
+                        .stroke(avatarBorderColor, lineWidth: 1.0))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Text(headline)
@@ -222,6 +253,16 @@ struct HeaderView: View {
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
             }
+        }
+    }
+    
+    func crumbColor(_ model: Person) -> Color {
+        if postView?.creator.equals(model) == true {
+            return .blue.opacity(0.8)
+        } else if model.admin {
+            return .red.opacity(0.8)
+        } else {
+            return .clear
         }
     }
 }

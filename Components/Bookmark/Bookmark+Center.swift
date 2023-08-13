@@ -6,9 +6,9 @@ extension Bookmark {
     struct Center: GraniteCenter {
         struct State: GraniteState {
             var kind: Kind = .posts
+            var selectedBookmarkPostKey: BookmarkKey = .local
+            var selectedBookmarkCommentKey: BookmarkKey = .local
         }
-        
-        //@Event(.onAppear) var onAppear: DidAppear.Reducer
         
         @Store public var state: State
     }
@@ -43,8 +43,10 @@ extension Bookmark {
     }
     
     var postViews: [PostView] {
-        
-        Array(service.state.posts.values.flatMap { obj in
+        guard let values = service.state.posts[state.selectedBookmarkPostKey]?.values else {
+            return []
+        }
+        return Array(values.flatMap { obj in
             
             Array(
                 obj.map.values
@@ -54,7 +56,11 @@ extension Bookmark {
     }
     
     var commentViews: [CommentView] {
-        Array(service.state.comments.values.flatMap { obj in
+        guard let values = service.state.comments[state.selectedBookmarkCommentKey]?.values else {
+            return []
+        }
+        
+        return Array(values.flatMap { obj in
             
             Array(
                 obj.map.values
@@ -67,6 +73,17 @@ extension Bookmark {
         guard let domain = commentView.creator.domain else {
             return nil
         }
-        return service.state.comments[domain]?.postMap[commentView.post.id]
+        return service.state.comments[state.selectedBookmarkCommentKey]?[domain]?.postMap[commentView.post.id]
+    }
+}
+
+extension Bookmark {
+    var bookmarkKeys: [BookmarkKey] {
+        switch state.kind {
+        case .posts:
+            return Array(service.state.posts.keys)
+        case .comments:
+            return Array(service.state.comments.keys)
+        }
     }
 }

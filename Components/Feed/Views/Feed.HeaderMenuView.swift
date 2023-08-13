@@ -13,6 +13,28 @@ import SwiftUI
 extension Feed {
     var headerMenuView: some View {
         HStack(spacing: .layer4) {
+            if Device.isExpandedLayout && state.community != nil {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    center.goHome.send()
+                    
+                    pager.fetch(force: true)
+                } label: {
+                    Image(systemName: "chevron.backward")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                        .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                        .contentShape(Rectangle())
+                }
+                .backgroundIf(hasCommunityBanner) {
+                    Color.background.opacity(0.75)
+                        .cornerRadius(4)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            
             Menu {
                 ForEach(0..<state.sortingType.count) { index in
                     Button {

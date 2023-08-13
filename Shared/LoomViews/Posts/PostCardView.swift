@@ -17,7 +17,7 @@ struct PostCardView: View {
     @Environment(\.graniteEvent) var interact
     @Environment(\.pagerMetadata) var contentMetadata
     
-    @GraniteAction<Void> var showContent
+    @GraniteAction<PostView> var showContent
     @GraniteAction<PostView> var reply
     @GraniteAction<Community> var viewCommunity
     
@@ -25,10 +25,9 @@ struct PostCardView: View {
     @Relay var layout: LayoutService
     
     var model: PostView
-    var isPreview: Bool = false
     var style: FeedStyle = .style1
-    var showAvatar: Bool = true
-    var isCompact: Bool = false
+    var viewingContext: ViewingContext = .base
+    
     var topPadding: CGFloat = .layer5
     var bottomPadding: CGFloat = .layer5
     
@@ -68,6 +67,14 @@ struct PostCardView: View {
         }
     }
     
+    var viewingContextHost: String {
+        if viewingContext.isBookmark {
+            return viewingContext.bookmarkLocation.host ?? LemmyKit.host
+        } else {
+            return LemmyKit.host
+        }
+    }
+    
     //horizontal experience
     var isSelected: Bool {
         switch layout.state.feedContext {
@@ -76,6 +83,23 @@ struct PostCardView: View {
         default:
             return false
         }
+    }
+    
+    var showAvatar: Bool {
+        isCompact == false || viewingContext == .profile
+    }
+    
+    var isCompact: Bool {
+        switch viewingContext {
+        case .bookmarkExpanded:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isPreview: Bool {
+        viewingContext == .search
     }
     
     var body: some View {
@@ -112,8 +136,8 @@ struct PostCardView: View {
                 }
                 .padding(.top, isPreview ? (isCompact ? .layer3 : 0) : topPadding)
                 .padding(.bottom, isPreview ? (isCompact ? .layer3 : 0) : bottomPadding)
-                .padding(.leading, isCompact ? .layer2 : .layer3)
-                .padding(.trailing, isCompact ? .layer2 : .layer4)
+                .padding(.leading, .layer3)
+                .padding(.trailing, isCompact ? .layer3 : .layer4)
                 .backgroundIf(isSelected,
                               overlay: Color.accentColor.opacity(0.5))
             }
@@ -138,6 +162,7 @@ extension PostCardView {
             if isPreview && !isCompact {
                 Spacer()
             }
+            
             switch censorKind {
             case .removed, .blocked:
                 EmptyView()
@@ -199,7 +224,7 @@ extension PostCardView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
-                    showContent.perform()
+                    showContent.perform(model)
                 }
             }
         }
@@ -218,7 +243,17 @@ extension PostCardView {
             }
             
             if let contentMetadata {
-                ContentMetadataView(metadata: contentMetadata)
+                ContentMetadataView(metadata: contentMetadata, urlToOpen: model.postURL)
+                    .attach({
+                        showContent.perform(model)
+                    }, at: \.showContent)
+                    .frame(maxWidth: Device.isMacOS ? 350 : nil)
+                    .padding(.bottom, .layer2)
+            } else if case .bookmark(_) = viewingContext {
+                ContentMetadataView(metadata: nil, urlToOpen: model.postURL, shouldLoad: true)
+                    .attach({
+                        showContent.perform(model)
+                    }, at: \.showContent)
                     .frame(maxWidth: Device.isMacOS ? 350 : nil)
                     .padding(.bottom, .layer2)
             }
@@ -258,7 +293,10 @@ extension PostCardView {
         }
         .routeIf(layout.state.style == .compact || layout.state.style == .unknown,
                  style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-            PostDisplayView(model: model)
+            PostDisplayView(model: model,
+                            threadLocation: viewingContext.isBookmark ? viewingContext.bookmarkLocation : .base,
+                            viewingContext: viewingContext,
+                            selectedHost: viewingContextHost)
         }
     }
     

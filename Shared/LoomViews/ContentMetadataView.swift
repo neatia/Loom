@@ -11,6 +11,8 @@ import Granite
 import UniformTypeIdentifiers
 
 struct ContentMetadataView: View {
+    @GraniteAction<Void> var showContent
+    
     #if os(iOS)
     var backgroundColor: Color = Color(.systemGray5)
     #else
@@ -18,10 +20,14 @@ struct ContentMetadataView: View {
     #endif
     
     var meta: LPLinkMetadata?
-    var image: GraniteImage?
-    init(metadata: PageableMetadata?) {
+    @State var image: GraniteImage?
+    var urlToOpen: URL?
+    var shouldLoad: Bool
+    init(metadata: PageableMetadata?, urlToOpen: URL? = nil, shouldLoad: Bool = false) {
         self.meta = metadata?.linkMeta
-        self.image = metadata?.imageThumb
+        self._image = .init(initialValue: metadata?.imageThumb)
+        self.urlToOpen = urlToOpen
+        self.shouldLoad = shouldLoad
     }
     
     var body: some View {
@@ -35,10 +41,11 @@ struct ContentMetadataView: View {
     var largeType: some View {
         Button {
             #if os(iOS)
-            guard let url = meta?.url else { return }
-            if UIApplication.shared.canOpenURL(url) {
-                self.isPresented.toggle()
-            }
+//            guard let url = meta?.url else { return }
+//            if UIApplication.shared.canOpenURL(url) {
+//                self.isPresented.toggle()
+//            }
+            showContent.perform()
             #else
             self.isPresented.toggle()
             #endif
@@ -51,7 +58,6 @@ struct ContentMetadataView: View {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                        //                        .frame(height: containerSize.height)
                             .clipped()
                             .scrollOnOverflow()
                             .frame(minHeight: (350 / image.size.width) * image.size.height)
@@ -59,7 +65,6 @@ struct ContentMetadataView: View {
                         Image(nsImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                        //                        .frame(height: containerSize.height)
                             .clipped()
                             .scrollOnOverflow()
                             .frame(minHeight: (350 / image.size.width) * image.size.height)
@@ -112,7 +117,14 @@ struct ContentMetadataView: View {
             .cornerRadius(12)
         }
         .buttonStyle(LinkButton())
-        .universalWebCover(isPresented: $isPresented, url: meta?.url)
+        .task {
+            guard shouldLoad else {
+                return
+            }
+            
+            await loadImage()
+        }
+        .universalWebCover(isPresented: $isPresented, url: urlToOpen ?? meta?.url)
     }
 }
 
@@ -143,5 +155,48 @@ struct LinkButton: ButtonStyle {
             .scaleEffect(configuration.isPressed ? 0.95 : 1)
             .opacity(configuration.isPressed ? 0.9 : 1)
             .animation(.spring(), value: configuration.isPressed)
+    }
+}
+
+extension ContentMetadataView {
+    func loadImage() async {
+        guard let urlToOpen else {
+            return
+        }
+        let provider = LPMetadataProvider()
+        let metaData = try? await provider.startFetchingMetadata(for: urlToOpen)
+        
+        let type = String(describing: UTType.image)
+        
+        guard let imageProvider = metaData?.imageProvider else {
+            return
+        }
+        
+        var image: GraniteImage?
+        if imageProvider.hasItemConformingToTypeIdentifier(type) {
+            guard let item = try? await imageProvider.loadItem(forTypeIdentifier: type) else {
+                image = nil
+                return
+            }
+            
+            if item is GraniteImage {
+                image = item as? GraniteImage
+            }
+            
+            if item is URL {
+                guard let url = item as? URL,
+                      let data = try? Data(contentsOf: url) else { return }
+                
+                image = GraniteImage(data: data)
+            }
+            
+            if item is Data {
+                guard let data = item as? Data else { return }
+                
+                image = GraniteImage(data: data)
+            }
+        }
+        
+        self.image = image
     }
 }

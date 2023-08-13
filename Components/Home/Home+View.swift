@@ -98,13 +98,13 @@ extension Home: View {
                 GraniteTabIcon(name: "applescript")
             }
 
-            #if os(iOS)
-            GraniteTab {
-                Bookmark()
-            } icon: {
-                GraniteTabIcon(name: "bookmark")
+            if Device.isExpandedLayout == false {
+                GraniteTab {
+                    Bookmark()
+                } icon: {
+                    GraniteTabIcon(name: "bookmark")
+                }
             }
-            #endif
 
             GraniteTab(split: Device.isExpandedLayout,
                        last: true) {
@@ -136,7 +136,7 @@ struct GraniteTabIcon: View {
     var body: some View {
         Image(systemName: "\(name)\(isTabSelected == true ? ".fill" : "")")
             .renderingMode(.template)
-            .font(larger ? Font.title : Font.title2.bold())
+            .font(larger ? Font.title : Font.title2)
             .frame(width: 20,
                    height: 20,
                    alignment: .center)
