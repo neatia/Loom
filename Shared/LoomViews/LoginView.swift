@@ -35,13 +35,12 @@ struct LoginView: View {
     
     var body: some View {
         
-        GraniteStandardModalView {
+        GraniteStandardModalView(maxHeight: addToProfiles ? 480 : 400) {
             if addToProfiles {
                 Text("MISC_ADD")
                     .font(.title.bold()) + Text("  ") + Text("TITLE_ACCOUNT")
                     .font(.title.bold())
             } else {
-                
                 switch kind {
                 case .login:
                     Text("AUTH_LOGIN")
@@ -49,7 +48,6 @@ struct LoginView: View {
                 case .signup:
                     Text("AUTH_SIGNUP")
                         .font(.title.bold())
-                    
                 }
             }
         } content: {
@@ -148,6 +146,7 @@ extension LoginView {
             .padding(.top, .layer2)
         }
     }
+    
     //TODO: combing both/reuse
     var loginForm: some View {
         VStack(spacing: 0) {
@@ -172,7 +171,7 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer4)
+                .padding(.bottom, .layer5)
             
             if kind == .login {
                 TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)

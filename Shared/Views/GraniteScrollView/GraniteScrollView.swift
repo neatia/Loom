@@ -106,10 +106,12 @@ public struct GraniteScrollView<Content : View> : View {
                 }
                 
                 content
+                    .frame(maxHeight: .infinity)
                     .overlay(onRefresh != nil ? progressBody : nil, alignment: .top)
             }
         }
         .background(GraniteScrollViewPositionIndicator(type: .fixed))
+        .coordinateSpace(name: "GraniteScrollView")
         .onPreferenceChange(GraniteScrollViewPositionIndicator.PositionPreferenceKey.self) { values in
             guard status != .loading, onRefresh != nil else {
                 return

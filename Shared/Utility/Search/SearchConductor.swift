@@ -72,6 +72,9 @@ class SearchConductor: ObservableObject {
             let response = await self?.handler?(q)
             DispatchQueue.main.async { [weak self] in
                 GraniteHaptic.light.invoke()
+                
+                LoomLog("🔎 search result recieved 🔎", level: .debug)
+                
                 self?.response = response
                 //self?.isSearching = false
                 self?.lastQuery = q

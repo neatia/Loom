@@ -130,7 +130,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                pager.hasMore,
                pager.isFetching == false {
                 pager.fetch()
-                
             }
             
         }) {

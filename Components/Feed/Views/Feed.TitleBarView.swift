@@ -52,13 +52,14 @@ extension Feed {
                         .padding(.horizontal, hasCommunityBanner ? 4 : 0)
                         .padding(.vertical, hasCommunityBanner ? 6 : 0)
                         .contentShape(Rectangle())
+                        .offset(y: hasCommunityBanner ? -2 : 0)
                 }
                 .backgroundIf(hasCommunityBanner) {
                     Color.background.opacity(0.75)
                         .cornerRadius(4)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.bottom, .layer2)
+                .padding(.bottom, hasCommunityBanner ? nil : .layer2)
             }.frame(maxHeight: .infinity)
         }
         .frame(height: hasCommunityBanner ? 48 : 36)

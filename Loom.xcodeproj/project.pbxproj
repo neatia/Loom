@@ -182,6 +182,8 @@
 		7158267C2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */; };
 		7158267F2A886752000E4B49 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267E2A886752000E4B49 /* Marble.swift */; };
 		715826802A886752000E4B49 /* Marble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7158267E2A886752000E4B49 /* Marble.swift */; };
+		715826822A889506000E4B49 /* View+TextReadability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826812A889506000E4B49 /* View+TextReadability.swift */; };
+		715826832A889506000E4B49 /* View+TextReadability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715826812A889506000E4B49 /* View+TextReadability.swift */; };
 		716157D92A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DA2A85C29500449EE4 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157D82A85C29500449EE4 /* WebView.swift */; };
 		716157DF2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */; };
@@ -287,8 +289,8 @@
 		7197FB1C2964B4C0005EBBA4 /* GraniteSheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */; };
 		7197FB1D2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */; };
 		7197FB1E2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */; };
-		7197FB1F2964B4C0005EBBA4 /* GraniteSheet+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB012964B4BF005EBBA4 /* GraniteSheet+View.swift */; };
-		7197FB202964B4C0005EBBA4 /* GraniteSheet+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB012964B4BF005EBBA4 /* GraniteSheet+View.swift */; };
+		7197FB1F2964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */; };
+		7197FB202964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */; };
 		7197FB212964B4C0005EBBA4 /* GraniteModalWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */; };
 		7197FB222964B4C0005EBBA4 /* GraniteModalWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */; };
 		7197FB272964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB242964B4EC005EBBA4 /* ModalService+Actions.swift */; };
@@ -408,10 +410,10 @@
 		71C7EE2E2A2C82DE00B52090 /* PEXApp.AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C7EE2C2A2C82DE00B52090 /* PEXApp.AppDelegate.swift */; };
 		71C8BE6E2A7F1C79008694C7 /* View+OnLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */; };
 		71C8BE6F2A7F1C79008694C7 /* View+OnLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */; };
-		71C8BE722A7F2BF1008694C7 /* Pager+ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE712A7F2BF1008694C7 /* Pager+ScrollView.swift */; };
-		71C8BE732A7F2BF1008694C7 /* Pager+ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE712A7F2BF1008694C7 /* Pager+ScrollView.swift */; };
-		71C8BE752A7F2BFA008694C7 /* Pager+LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE742A7F2BFA008694C7 /* Pager+LoadingView.swift */; };
-		71C8BE762A7F2BFA008694C7 /* Pager+LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE742A7F2BFA008694C7 /* Pager+LoadingView.swift */; };
+		71C8BE722A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */; };
+		71C8BE732A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */; };
+		71C8BE752A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */; };
+		71C8BE762A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */; };
 		71C8BE782A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE772A7F2E1E008694C7 /* ContentMetadataView.swift */; };
 		71C8BE792A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE772A7F2E1E008694C7 /* ContentMetadataView.swift */; };
 		71C8BE7B2A7F3F14008694C7 /* FeedMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C8BE7A2A7F3F14008694C7 /* FeedMainView.swift */; };
@@ -659,7 +661,6 @@
 		710283712A2A54C300010877 /* DefaultThumb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultThumb.swift; sourceTree = "<group>"; };
 		710283722A2A54C300010877 /* AccentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
 		71071F212A660D8E003AEC62 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
-		710BEA9D2A868D3C0075A141 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
 		710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Shaders.swift; sourceTree = "<group>"; };
 		710BEAA12A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.AccountInfoExpandedView.swift; sourceTree = "<group>"; };
 		710BEAA42A86E87B0075A141 /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
@@ -710,8 +711,8 @@
 		715826772A881DD8000E4B49 /* ViewingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewingContext.swift; sourceTree = "<group>"; };
 		7158267A2A883EDA000E4B49 /* BookmarkService.Boot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkService.Boot.swift; sourceTree = "<group>"; };
 		7158267E2A886752000E4B49 /* Marble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Marble.swift; sourceTree = "<group>"; };
+		715826812A889506000E4B49 /* View+TextReadability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+TextReadability.swift"; sourceTree = "<group>"; };
 		716157D82A85C29500449EE4 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
-		716157DB2A85C5A700449EE4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		716157DE2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDisplayView.SortMenuView.swift; sourceTree = "<group>"; };
 		716157E12A85FD9D00449EE4 /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		7161D2FA29540AD00070FE59 /* View+Overlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Overlay.swift"; sourceTree = "<group>"; };
@@ -765,7 +766,7 @@
 		7197FAFE2964B4BF005EBBA4 /* GraniteSheetContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheetContainerView.swift; sourceTree = "<group>"; };
 		7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheetManager.swift; sourceTree = "<group>"; };
 		7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheetPresenterView.swift; sourceTree = "<group>"; };
-		7197FB012964B4BF005EBBA4 /* GraniteSheet+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GraniteSheet+View.swift"; sourceTree = "<group>"; };
+		7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheet.View.swift; sourceTree = "<group>"; };
 		7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteModalWindow.swift; sourceTree = "<group>"; };
 		7197FB242964B4EC005EBBA4 /* ModalService+Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModalService+Actions.swift"; sourceTree = "<group>"; };
 		7197FB252964B4EC005EBBA4 /* ModalService+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModalService+Center.swift"; sourceTree = "<group>"; };
@@ -824,8 +825,8 @@
 		71C69E562A70DC1400B54AD6 /* SearchScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScrollView.swift; sourceTree = "<group>"; };
 		71C7EE2C2A2C82DE00B52090 /* PEXApp.AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEXApp.AppDelegate.swift; sourceTree = "<group>"; };
 		71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+OnLoad.swift"; sourceTree = "<group>"; };
-		71C8BE712A7F2BF1008694C7 /* Pager+ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pager+ScrollView.swift"; sourceTree = "<group>"; };
-		71C8BE742A7F2BFA008694C7 /* Pager+LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pager+LoadingView.swift"; sourceTree = "<group>"; };
+		71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ScrollView.swift; sourceTree = "<group>"; };
+		71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.LoadingView.swift; sourceTree = "<group>"; };
 		71C8BE772A7F2E1E008694C7 /* ContentMetadataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentMetadataView.swift; sourceTree = "<group>"; };
 		71C8BE7A2A7F3F14008694C7 /* FeedMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedMainView.swift; sourceTree = "<group>"; };
 		71C9F8D12A60B7C10089D7EA /* Feed+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Feed+View.swift"; sourceTree = "<group>"; };
@@ -1233,8 +1234,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				710BEA9D2A868D3C0075A141 /* LemmyKit */,
-				716157DB2A85C5A700449EE4 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -1413,6 +1412,7 @@
 				712BEB6229074FEC00D257B7 /* UIScreen.swift */,
 				71BEA9C628E3D95B00B58933 /* String.swift */,
 				71622E922A6E4103006233F3 /* View+OnSwipe.swift */,
+				715826812A889506000E4B49 /* View+TextReadability.swift */,
 				71258D262A55F951007E52FC /* Device.swift */,
 				71622E8C2A6E0A26006233F3 /* Image.swift */,
 				71EB91BC2A8028400091EE5B /* Numbers.swift */,
@@ -1570,8 +1570,8 @@
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
 				71A28E18295237AE00EAE8EE /* Passthrough.swift */,
 				71A28E1E295237AE00EAE8EE /* Run.swift */,
-				711D39202A8408C000CF2DB2 /* Search */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
+				711D39202A8408C000CF2DB2 /* Search */,
 				717C12A1293BF02D0060A446 /* Animations */,
 			);
 			path = Utility;
@@ -1603,8 +1603,8 @@
 		7197FAEF2964B4BF005EBBA4 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				7197FAF72964B4BF005EBBA4 /* Toast */,
 				7197FAFC2964B4BF005EBBA4 /* Sheet */,
+				7197FAF72964B4BF005EBBA4 /* Toast */,
 				7197FAF22964B4BF005EBBA4 /* Alert */,
 				7197FAF02964B4BF005EBBA4 /* GraniteModalManager.swift */,
 				7197FAF12964B4BF005EBBA4 /* GraniteModal.swift */,
@@ -1640,9 +1640,9 @@
 			children = (
 				7197FAFD2964B4BF005EBBA4 /* GraniteSheetPresentationStyle.swift */,
 				7197FAFE2964B4BF005EBBA4 /* GraniteSheetContainerView.swift */,
-				7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */,
 				7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */,
-				7197FB012964B4BF005EBBA4 /* GraniteSheet+View.swift */,
+				7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */,
+				7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */,
 			);
 			path = Sheet;
 			sourceTree = "<group>";
@@ -1823,8 +1823,8 @@
 			isa = PBXGroup;
 			children = (
 				717C8FB42A6F9F3D00DF6037 /* Pager.swift */,
-				71C8BE712A7F2BF1008694C7 /* Pager+ScrollView.swift */,
-				71C8BE742A7F2BFA008694C7 /* Pager+LoadingView.swift */,
+				71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */,
+				71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */,
 			);
 			path = Pager;
 			sourceTree = "<group>";
@@ -1919,13 +1919,13 @@
 				7166E9E42A74EE64004F88D7 /* BlockedPickerView.swift */,
 				7166E9E72A7503A0004F88D7 /* CardActionsView.swift */,
 				71B7A1DB2A68E5CA003E6D4D /* LoginView.swift */,
-				711D39272A8413E100CF2DB2 /* Instances */,
-				71E5F3C92A739E7800299558 /* Community */,
-				71E5F3C72A739E5200299558 /* Headers */,
-				71E5F3C62A739E3D00299558 /* Comments */,
-				71E5F3C82A739E6100299558 /* Footers */,
 				71E5F3C52A739E3000299558 /* User */,
 				71E5F3C42A739E1900299558 /* Posts */,
+				71E5F3C82A739E6100299558 /* Footers */,
+				71E5F3C72A739E5200299558 /* Headers */,
+				711D39272A8413E100CF2DB2 /* Instances */,
+				71E5F3C62A739E3D00299558 /* Comments */,
+				71E5F3C92A739E7800299558 /* Community */,
 			);
 			path = LoomViews;
 			sourceTree = "<group>";
@@ -2582,7 +2582,7 @@
 				711B3FDD2885D4F000F3080D /* Home.swift in Sources */,
 				717C129F293BEF730060A446 /* AppBlurBackground.swift in Sources */,
 				7197FB272964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
-				71C8BE752A7F2BFA008694C7 /* Pager+LoadingView.swift in Sources */,
+				71C8BE752A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
 				71B7A1D62A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */,
 				71E5F3C22A73244500299558 /* LazyScrollView.swift in Sources */,
 				71A4A1162A61C39600689DF2 /* Bookmark.swift in Sources */,
@@ -2622,7 +2622,7 @@
 				710283952A2A54C300010877 /* EnvironmentValues+PointSliderStyle.swift in Sources */,
 				717E613328A0D69B009A2B1A /* Home._.swift in Sources */,
 				7197FB112964B4C0005EBBA4 /* GraniteToastViewStyle.swift in Sources */,
-				7197FB1F2964B4C0005EBBA4 /* GraniteSheet+View.swift in Sources */,
+				7197FB1F2964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */,
 				71DF107928CC697600559DBC /* Outcome.swift in Sources */,
 				711B3FD92885D4F000F3080D /* Home+Center.swift in Sources */,
 				71CB6C382A6B81E500084ECC /* Write.Set.swift in Sources */,
@@ -2657,7 +2657,7 @@
 				71B21B812A6C791E005B3BFB /* GraniteStandardModalView.swift in Sources */,
 				71EAF47B2A7DA3320034FCB9 /* ExplorerService.swift in Sources */,
 				716157E22A85FD9D00449EE4 /* Keyboard.swift in Sources */,
-				71C8BE722A7F2BF1008694C7 /* Pager+ScrollView.swift in Sources */,
+				71C8BE722A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */,
 				71A28D3229522F8300EAE8EE /* ContainerConfig.swift in Sources */,
 				7145EF0D28D43F1D00BFD19A /* Date.swift in Sources */,
 				71B21B602A6C5743005B3BFB /* Write.Generate.Passage.swift in Sources */,
@@ -2699,6 +2699,7 @@
 				717C12A3293BF03C0060A446 /* Animations._.swift in Sources */,
 				7102838F2A2A54C300010877 /* RangeSliderOptions.swift in Sources */,
 				71FCDD032A758D92000A6309 /* Profile.InlineView.swift in Sources */,
+				715826822A889506000E4B49 /* View+TextReadability.swift in Sources */,
 				71539A8B2A7AAD6500B85FB9 /* Settings.SetIPFS.swift in Sources */,
 				714B48902A8238A400AC6199 /* EarthNode.swift in Sources */,
 				71F0421B2A6A3AD100788CDC /* Globe+View.swift in Sources */,
@@ -2711,7 +2712,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7197FB202964B4C0005EBBA4 /* GraniteSheet+View.swift in Sources */,
+				7197FB202964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */,
 				71C69E232A70469900B54AD6 /* Search+Center.swift in Sources */,
 				7197FB282964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71A4A1202A61C41000689DF2 /* AccountService.swift in Sources */,
@@ -2913,6 +2914,7 @@
 				717090EA2A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
 				71C9F9372A6116B20089D7EA /* ContentService.Boot.swift in Sources */,
 				71C9F8EF2A60B7F40089D7EA /* Settings+View.swift in Sources */,
+				715826832A889506000E4B49 /* View+TextReadability.swift in Sources */,
 				714B48822A81A5D600AC6199 /* Locateable.swift in Sources */,
 				71622E8E2A6E0A26006233F3 /* Image.swift in Sources */,
 				71C9F9192A60BFEA0089D7EA /* ContentService.swift in Sources */,
@@ -2946,8 +2948,8 @@
 				715826802A886752000E4B49 /* Marble.swift in Sources */,
 				71FCDD112A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
 				7197FB1E2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
-				71C8BE762A7F2BFA008694C7 /* Pager+LoadingView.swift in Sources */,
-				71C8BE732A7F2BF1008694C7 /* Pager+ScrollView.swift in Sources */,
+				71C8BE762A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
+				71C8BE732A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */,
 				71B7A1E12A68FDF5003E6D4D /* Keychain.swift in Sources */,
 				7102838A2A2A54C300010877 /* AnyRangeSliderStyle.swift in Sources */,
 				7166E9E62A74EE64004F88D7 /* BlockedPickerView.swift in Sources */,
@@ -3176,7 +3178,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3212,7 +3214,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3251,7 +3253,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3281,7 +3283,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

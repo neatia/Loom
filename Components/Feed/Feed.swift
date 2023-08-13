@@ -70,9 +70,12 @@ struct Feed: GraniteComponent {
             .center
             .restart
             .listen(.broadcast) { _ in
-                LoomLog("Restarting")
+                LoomLog("🟡 Restarting")
                 pager.clear()
-                pager.fetch(force: true)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    self.pager.fetch(force: true)
+                }
             }
         
         content

@@ -90,12 +90,15 @@ extension Bookmark: View {
 #endif
                     }
                     .menuStyle(BorderlessButtonMenuStyle())
+                    .addHaptic()
                     
                     Spacer()
                 }
                 .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
                 .padding(.vertical, .layer4)
                 .padding(.horizontal, showHeader == false ? .layer3 : .layer4)
+                
+                Divider()
             }
             
             switch state.kind {

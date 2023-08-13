@@ -71,7 +71,8 @@ struct CommunityPickerView: View {
                         Bookmark(showHeader: false)
                     } else {
                         PagerScrollView(CommunityView.self,
-                                        hideDivider: true) { communityView in
+                                        hideDivider: true,
+                                        useSimple: true) { communityView in
                             
                             if sidebar {
                                 CommunitySidebarCardView(model: communityView,
@@ -120,7 +121,11 @@ struct CommunityPickerView: View {
                 await Lemmy.communities(.local, page: page)
             }
             subscribed.hook { page in
-                await Lemmy.communities(.subscribed, page: page)
+                let communities = await Lemmy.communities(.subscribed, page: page)
+                
+                LoomLog("👥 fetched: \(communities.count) subscribed communities", level: .debug)
+                
+                return communities
             }
             currentPager.fetch()
         }

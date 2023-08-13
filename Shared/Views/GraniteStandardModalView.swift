@@ -11,13 +11,16 @@ import SwiftUI
 //TODO: eventually convert all modals to this
 struct GraniteStandardModalView<Header: View, Content: View>: View {
     var title: LocalizedStringKey?
+    var maxHeight: CGFloat
     var header: (() -> Header)
     var content: (() -> Content)
     
     init(title: LocalizedStringKey? = nil,
+         maxHeight: CGFloat = 400,
          @ViewBuilder header: @escaping (() -> Header) = { EmptyView() },
          @ViewBuilder content: @escaping (() -> Content)) {
         self.title = title
+        self.maxHeight = maxHeight
         self.header = header
         self.content = content
     }
@@ -65,11 +68,10 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                 }
             }
-            .frame(maxHeight: 400)
+            .frame(maxHeight: maxHeight)
             
         }
         .frame(width: Device.isMacOS ? 300 : nil)
         .padding(.top, .layer5)
-        .padding(.bottom, .layer5)
     }
 }

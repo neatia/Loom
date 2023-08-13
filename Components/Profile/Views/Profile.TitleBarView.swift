@@ -15,18 +15,23 @@ extension Profile {
     var titleBarView: some View {
         VStack {
             HStack(spacing: 0) {
-                AvatarView(state.person?.avatarURL, size: .medium)
+                AvatarView(state.person?.avatarURL, size: hasBanner ? .large : .medium)
                     .padding(.trailing, .layer3)
                 VStack(alignment: .leading, spacing: 0) {
                     Text(subheaderTitle)
                         .font(.footnote)
+                        .textReadabilityIf(hasBanner)
+                    
                     Text(headerTitle)
                         .font(.title.bold())
+                        .textReadabilityIf(hasBanner)
+                        .padding(.top, hasBanner ? .layer1 : 0)
                         .padding(.bottom, .layer1)
                 }
                 .foregroundColor(.foreground)
                 
                 Spacer()
+                
                 
                 if isMe {
                     VStack {
@@ -51,13 +56,14 @@ extension Profile {
                 //             }
                 
             }
-            .frame(height: 48)
+            .frame(height: hasBanner ? 72 : 48)
             .padding(.vertical, .layer2)
             .padding(.horizontal, .layer4)
+            .padding(.top, hasBanner ? .layer1 : nil)
             
             Divider()
         }
-        .background(Color.background.overlayIf(state.person?.banner != nil) {
+        .background(Color.background.overlayIf(hasBanner) {
              if let banner = state.person?.banner,
                 let url = URL(string: banner) {
                  LazyImage(url: url) { state in

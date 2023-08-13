@@ -21,6 +21,7 @@ struct ProfilePickerView: View {
     }
     
     @Binding var kind: Kind
+    var isMe: Bool
     
     func opacityFor(_ kind: Kind) -> CGFloat {
         return self.kind == kind ? 1.0 : 0.6
@@ -48,33 +49,35 @@ struct ProfilePickerView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                Button {
-                    GraniteHaptic.light.invoke()
-                    refresh.perform()
-                    kind = .mentions
-                } label: {
-                    VStack {
-                        Spacer()
-                        Text("TITLE_MENTIONS")
-                            .font(fontFor(.mentions))
-                            .opacity(opacityFor(.mentions))
+                if isMe {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        refresh.perform()
+                        kind = .mentions
+                    } label: {
+                        VStack {
+                            Spacer()
+                            Text("TITLE_MENTIONS")
+                                .font(fontFor(.mentions))
+                                .opacity(opacityFor(.mentions))
+                        }
                     }
-                }
-                .buttonStyle(PlainButtonStyle())
-                
-                Button {
-                    GraniteHaptic.light.invoke()
-                    refresh.perform()
-                    kind = .replies
-                } label: {
-                    VStack {
-                        Spacer()
-                        Text("TITLE_REPLIES")
-                            .font(fontFor(.replies))
-                            .opacity(opacityFor(.replies))
+                    .buttonStyle(PlainButtonStyle())
+                    
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        refresh.perform()
+                        kind = .replies
+                    } label: {
+                        VStack {
+                            Spacer()
+                            Text("TITLE_REPLIES")
+                                .font(fontFor(.replies))
+                                .opacity(opacityFor(.replies))
+                        }
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
-                .buttonStyle(PlainButtonStyle())
                 
                 Spacer()
             }

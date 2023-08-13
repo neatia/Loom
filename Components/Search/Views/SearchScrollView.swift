@@ -119,15 +119,19 @@ struct SearchScrollView: View {
     func setInitial() {
         switch searchType {
         case .posts:
+            LoomLog("🔎 initial set | \(response?.posts.count ?? 0) posts 🔎", level: .debug)
             let pageIndex = response?.posts.isEmpty == true ? 1 : 2
             pagerPosts.add(response?.posts ?? [], pageIndex: pageIndex)
         case .comments:
+            LoomLog("🔎 initial set | \(response?.comments.count ?? 0) comments 🔎", level: .debug)
             let pageIndex = response?.comments.isEmpty == true ? 1 : 2
             pagerComments.add(response?.comments ?? [], pageIndex: pageIndex)
         case .users:
+            LoomLog("🔎 initial set | \(response?.users.count ?? 0) users 🔎", level: .debug)
             let pageIndex = response?.users.isEmpty == true ? 1 : 2
             pagerUsers.add(response?.users ?? [], pageIndex: pageIndex)
         case .communities:
+            LoomLog("🔎 initial set | \(response?.communities.count ?? 0) communities 🔎", level: .debug)
             let pageIndex = response?.communities.isEmpty == true ? 1 : 2
             pagerCommunities.add(response?.communities ?? [], pageIndex: pageIndex)
         default:
@@ -136,6 +140,7 @@ struct SearchScrollView: View {
     }
     
     func search(_ page: Int?) async -> SearchResponse? {
+        LoomLog("🔎 requesting new page: \(page ?? -1) 🔎", level: .debug)
         return  await Lemmy.search(query,
                                    type_: searchType,
                                    communityId: nil,
