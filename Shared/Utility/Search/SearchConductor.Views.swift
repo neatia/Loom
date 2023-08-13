@@ -52,6 +52,7 @@ struct SearchBar: View {
                                             if offline == false {
                                                 self.isSearching = true
                                             }
+                                            LoomLog("🔎 performing search query: \(textDebouncer.text) 🔎", level: .debug)
                                             query.perform(textDebouncer.text)
                                         }
                                     }, at: \.search)
@@ -169,6 +170,7 @@ struct StandardToolbarView: View {
                 }
             }
             .buttonStyle(PlainButtonStyle())
+            .offset(x: -.layer2)
             
             Spacer()
             
@@ -186,6 +188,7 @@ struct StandardToolbarView: View {
                     )
             }
             .buttonStyle(PlainButtonStyle())
+            .offset(x: .layer1)
         }
     }
 }

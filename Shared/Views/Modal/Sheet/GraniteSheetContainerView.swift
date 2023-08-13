@@ -30,64 +30,12 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                 .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
-                        .onAppear {
-                            if !UIView.areAnimationsEnabled {
-                                UIView.setAnimationsEnabled(true)
-                            }
-                        }
-                        .onDisappear {
-                            if !UIView.areAnimationsEnabled {
-                                UIView.setAnimationsEnabled(true)
-                            }
-                        }
+
                 }
                 .sheet(isPresented: manager.hasContent(with: .sheet)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
-                        .onAppear {
-                            if !UIView.areAnimationsEnabled {
-                                UIView.setAnimationsEnabled(true)
-                            }
-                        }
-                        .onDisappear {
-                            if !UIView.areAnimationsEnabled {
-                                UIView.setAnimationsEnabled(true)
-                            }
-                        }
                 }
-        } else if #available(iOS 14.0, *) {
-            content
-                .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
-                    sheetContent(for: manager.style)
-                        .background(FullScreenCoverBackgroundRemovalView())
-                        .onAppear {
-                            if !UIView.areAnimationsEnabled {
-                                UIView.setAnimationsEnabled(true)
-                            }
-                        }
-                        .onDisappear {
-                            if !UIView.areAnimationsEnabled {
-                                UIView.setAnimationsEnabled(true)
-                            }
-                        }
-                }
-                .overlay (
-                    EmptyView()
-                        .sheet(isPresented: manager.hasContent(with: .sheet)) {
-                            sheetContent(for: manager.style)
-                                .background(FullScreenCoverBackgroundRemovalView())
-                                .onAppear {
-                                    if !UIView.areAnimationsEnabled {
-                                        UIView.setAnimationsEnabled(true)
-                                    }
-                                }
-                                .onDisappear {
-                                    if !UIView.areAnimationsEnabled {
-                                        UIView.setAnimationsEnabled(true)
-                                    }
-                                }
-                        }
-                )
         } else {
             content
                 .sheet(isPresented: manager.hasContent(with: .sheet)) {

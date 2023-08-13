@@ -79,6 +79,7 @@ struct CommunityCardView: View {
                         
                         Spacer()
                     }
+                    .scrollOnOverflow()
                 }
                 
                 if fullWidth {

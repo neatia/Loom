@@ -76,6 +76,7 @@ extension Search: View {
                 Spacer()
             }
         }
+        .addGraniteSheet(modal.sheetManager, background: Color.clear)
         .graniteNavigation(backgroundColor: Color.background, disable: Device.isMacOS) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
@@ -99,8 +100,6 @@ extension Search: View {
                                    page: 1,
                                    limit: ConfigService.Preferences.pageLimit)
             }
-        }
-        .onAppear {
             conductor.startTimer("")
         }
     }

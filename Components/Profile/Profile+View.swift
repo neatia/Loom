@@ -15,7 +15,8 @@ extension Profile: View {
             } content: { details in
                 if let model = details.commentView,
                    !filterOverviewPosts {
-                    CommentCardView(model: model, viewingContext: details.isReply || details.isMention ? .base : .profile )
+                    CommentCardView(model: model,
+                                    viewingContext: details.isReply || details.isMention ? .base : .profile)
                         .graniteEvent(account.center.interact)
                 } else if let model = details.postView,
                           !filterOverviewComments {
@@ -40,7 +41,8 @@ extension Profile: View {
                                                       page: page,
                                                       limit: ConfigService.Preferences.pageLimit,
                                                       community: nil,
-                                                      saved_only: nil)
+                                                      saved_only: nil,
+                                                      location: state.person?.isMe == true ? .base : .source)
                     
                     var models: [any Pageable] = (details?.comments ?? []) + (details?.posts ?? [])
                     models = models.sorted(by: { $0.date.compare($1.date) == .orderedDescending })

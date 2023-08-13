@@ -34,13 +34,17 @@ extension PostDisplayView {
             }
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 80 : nil)
+            .addHaptic()
             
             Menu {
                 ForEach(0..<viewableHosts.count) { index in
+                    let isSource: Bool = index == 1 && model.isBaseResource == false
+                    let isPeer: Bool = !isSource && index > 0
+                    let imageName: String = isSource ? "globe.americas" : (isPeer ? "person.wave.2" : "house")
                     Button {
                         GraniteHaptic.light.invoke()
                         
-                        if index == 1 && model.isBaseResource == false {
+                        if isSource {
                             self.threadLocation = .source
                         } else if index > 0 {
                             if model.isPeerResource {
@@ -56,7 +60,7 @@ extension PostDisplayView {
                         comments.fetch(force: true)
                     } label: {
                         Text(viewableHosts[index])
-                        Image(systemName: "arrow.down.right.circle")
+                        Image(systemName: imageName)
                     }
                 }
             } label: {
@@ -67,6 +71,8 @@ extension PostDisplayView {
             }
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 100 : nil)
+            .addHaptic()
+            
             Spacer()
         }
         .foregroundColor(Device.isMacOS ? .foreground : .accentColor)

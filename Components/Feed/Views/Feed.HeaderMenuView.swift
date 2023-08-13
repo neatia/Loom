@@ -57,6 +57,7 @@ extension Feed {
             .frame(maxWidth: Device.isMacOS ? 80 : nil)
             .padding(.horizontal, hasCommunityBanner ? 6 : 0)
             .padding(.vertical, hasCommunityBanner ? 4 : 0)
+            .addHaptic()
             .backgroundIf(hasCommunityBanner) {
                 Color.background.opacity(0.75)
                     .cornerRadius(4)
@@ -84,6 +85,7 @@ extension Feed {
                 .frame(maxWidth: Device.isMacOS ? 80 : nil)
                 .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                 .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                .addHaptic()
                 .backgroundIf(hasCommunityBanner) {
                     Color.background.opacity(0.75)
                         .cornerRadius(4)
@@ -112,6 +114,7 @@ extension Feed {
                 }
                 .menuStyle(BorderlessButtonMenuStyle())
                 .frame(maxWidth: Device.isMacOS ? 100 : nil)
+                .addHaptic()
             }
             Spacer()
         }

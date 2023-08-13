@@ -29,5 +29,6 @@ extension Feed {
             .graniteEvent(account.center.interact)
             .environmentObject(pager)
         }
+        .edgesIgnoringSafeArea(state.community != nil ? [.bottom] : [])
     }
 }

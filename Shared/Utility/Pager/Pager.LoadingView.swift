@@ -20,17 +20,17 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
         pager.hasMore && pager.items.count >= pager.pageSize
     }
     
+    
+    func progressWidth(_ proxy: GeometryProxy) -> CGFloat {
+        let width = proxy.size.width * pager.rlProcessingProgress
+        
+        return width.isFinite ? width : 0
+    }
+    
     var body: some View {
         
         VStack {
-            if pager.fetchMoreTimedOut {
-                Image(systemName: "arrow.counterclockwise")
-                    .font(.headline.bold())
-                    .onTapGesture {
-                        GraniteHaptic.light.invoke()
-                        pager.tryAgain()
-                    }
-            } else if pager.isFetching {
+            if pager.isFetching && !pager.fetchMoreTimedOut {
                 #if os(iOS)
                 ProgressView()
                 #else
@@ -38,15 +38,27 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
                     .scaleEffect(0.6)
                 #endif
             } else {
-                EmptyView()
+                Image(systemName: "arrow.counterclockwise")
+                    .font(.headline.bold())
+                    .onTapGesture {
+                        GraniteHaptic.light.invoke()
+                        pager.tryAgain()
+                    }
             }
         }
         .frame(maxWidth: .infinity, minHeight: hasMore ? 60 : 0, maxHeight: (hasMore ? 60 : 0))
-        .onAppear {
-//            if pager.enableAuxiliaryLoaders && hasMore {
-//                pager.fetch()
-//            }
-        }
+        .background(
+            ZStack(alignment: .top) {
+                GeometryReader { proxy in
+                    Brand.Colors.yellow.opacity(0.8)
+                        .frame(width: progressWidth(proxy), height: .infinity)
+                        .animation(.easeIn, value: pager.rlProcessingProgress)
+                    
+                }
+                
+                Divider()
+            }
+            , alignment: .bottomLeading)
     }
 }
 
@@ -54,6 +66,12 @@ struct PagerLoadingView<Model: Pageable>: View {
     @EnvironmentObject private var pager: Pager<Model>
     
     var label: LocalizedStringKey
+    
+    func progressWidth(_ proxy: GeometryProxy) -> CGFloat {
+        let width = proxy.size.width * pager.rlProcessingProgress
+        
+        return width.isFinite ? width : 0
+    }
     
     var body: some View {
         VStack {
@@ -76,6 +94,14 @@ struct PagerLoadingView<Model: Pageable>: View {
             
             Spacer()
         }
+        .background(
+            GeometryReader { proxy in
+                Brand.Colors.yellow.opacity(0.8)
+                    .frame(width: progressWidth(proxy), height: .infinity)
+                    .animation(.easeIn, value: pager.rlProcessingProgress)
+                
+            }
+            , alignment: .bottomLeading)
     }
 }
 

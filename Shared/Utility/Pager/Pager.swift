@@ -59,8 +59,10 @@ class Pager<Model: Pageable>: ObservableObject {
     
     var currentItems: [Model] = []
     var fetchMoreTimedOut: Bool = false
-    @Published var isFetching: Bool = false
     var hasMore: Bool = true
+    
+    @Published var isFetching: Bool = false
+    @Published var rlProcessingProgress: CGFloat = 0.0
     
     var pageSize: Int = ConfigService.Preferences.pageLimit
     
@@ -77,6 +79,7 @@ class Pager<Model: Pageable>: ObservableObject {
     
     private var timerCancellable: Cancellable?
     private var task: Task<Void, Error>? = nil
+    private var rlProcessorTask: Task<Void, Error>? = nil
     
     private var handler: ((Int?) async -> [Model])?
     
@@ -142,7 +145,7 @@ class Pager<Model: Pageable>: ObservableObject {
         self.task?.cancel()
         self.task = Task(priority: .background) { [weak self] in
             guard let handler = self?.handler else {
-                LoomLog("Fetch failed | no handler", level: .error)
+                LoomLog("🔴 Fetch failed | no handler", level: .error)
                 self?.clean()
                 return
             }
@@ -151,20 +154,30 @@ class Pager<Model: Pageable>: ObservableObject {
             
             guard let this = self else { return }
             
-            LoomLog("Fetch succeeded | \(models.count) items", level: .debug)
+            LoomLog("🟢 Fetch succeeded | \(models.count) items", level: .debug)
             
             let thumbURLs: [(String, URL?)] = models.compactMap { ($0.id, $0.thumbUrl) }
                 
             if thumbURLs.isEmpty {
                 insertModels(models, force: force)
             } else {
-                _ = Task.detached {
+                let count = CGFloat(thumbURLs.count)
+                self?.rlProcessorTask?.cancel()
+                self?.rlProcessorTask = Task(priority: .userInitiated) { [weak self] in
+                    var completed: CGFloat = 0.0
                     for (id, url) in thumbURLs {
                         guard let url else { continue }
                         let time = CFAbsoluteTimeGetCurrent()
                         this.itemMetadatas[id] = await this.getLPMetadata(url: url)
                         if this.itemMetadatas[id] != nil {
                             LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time)", level: .info)
+                        }
+                        
+                        completed += 1
+                        
+                        let progress = completed / count
+                        DispatchQueue.main.async { [weak self] in
+                            self?.rlProcessingProgress = progress
                         }
                     }
                     this.insertModels(models, force: force)
@@ -183,11 +196,11 @@ class Pager<Model: Pageable>: ObservableObject {
                 if !force,
                    let lastItem = self?.lastItem,
                    models.contains(lastItem) {
-                    self?.hasMore = false
+                    //self?.hasMore = false
                 }
 
                 if models.isEmpty {
-                    self?.hasMore = false
+                    //self?.hasMore = false
                 }
                 
                 self?.lastItem = lastModel
@@ -343,12 +356,14 @@ extension Pager{
     }
     
     func clear() {
+        self.clean()
         self.pageIndex = 1
         self.hasMore = true
         self.lastItem = nil
         self.itemIDs = []
         self.itemMap = [:]
         self.blockedItemMap = [:]
+        self.currentItems = []
     }
     
     func tryAgain() {
@@ -363,6 +378,9 @@ extension Pager{
         self.isFetching = false
         self.onRefreshHandler?()
         self.onRefreshHandler = nil
+        self.rlProcessorTask?.cancel()
+        self.rlProcessorTask = nil
+        self.rlProcessingProgress = 0.0
     }
 }
 

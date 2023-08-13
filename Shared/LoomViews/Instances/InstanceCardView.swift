@@ -237,19 +237,6 @@ struct InstanceCardView_Previews: PreviewProvider {
 }
 #endif
 
-//TODO: use in Feed as well
-extension View {
-    func textReadabilityIf(_ condition: Bool) -> some View {
-        self
-            .padding(.vertical, condition ? .layer1 : 0)
-            .padding(.horizontal, condition ? .layer2 : 0)
-            .backgroundIf(condition) {
-                Color.background.opacity(0.75)
-                    .cornerRadius(6)
-            }
-    }
-}
-
 fileprivate extension TimeInterval {
     var pingHealth: PingBars.Health {
         if self > 3 {

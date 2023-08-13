@@ -25,7 +25,7 @@ extension Profile {
                 EmptyView()
             }
             
-            ProfilePickerView(kind: _state.viewingDataType)
+            ProfilePickerView(kind: _state.viewingDataType, isMe: state.person?.isMe == true)
                 .attach( {
                     pager.clear()
                     pager.fetch(force: true)
