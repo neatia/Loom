@@ -110,7 +110,7 @@ extension Feed {
             }
             
             if reset {
-                await self.pager.fetch(force: true)
+                await self.pager.reset()
             }
         }
     }

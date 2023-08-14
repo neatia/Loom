@@ -130,7 +130,8 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     }
     
     var simpleScrollView: some View {
-        GraniteScrollView(onRefresh: pager.refresh(_:),
+        GraniteScrollView(showsIndicators: false,
+                          onRefresh: pager.refresh(_:),
                           onReachedEdge: { edge in
             
             if edge == .bottom,
