@@ -2,7 +2,7 @@
 //  Loom.CreateView.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/13/23.
+//  Created by PEXAVC on 8/13/23.
 //
 
 import Foundation
@@ -35,7 +35,6 @@ struct LoomCreateView: View {
                 TextField("Name", text: $name)
                     .textFieldStyle(.plain)
                     .correctionDisabled()
-                    .textContentType(.username)
                     .frame(height: 60)
                     .padding(.horizontal, .layer4)
                     .font(.title3.bold())
@@ -44,6 +43,11 @@ struct LoomCreateView: View {
                             .foregroundColor(Color.tertiaryBackground)
                     )
                     .padding(.bottom, invalidName ? .layer2 : .layer4)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            StandardToolbarView()
+                        }
+                    }
                 
                 //TODO: localize
                 if invalidName {
@@ -61,6 +65,7 @@ struct LoomCreateView: View {
                             return
                         }
                         create.perform(trimmed)
+                        intent = .idle
                     } label: {
                         //TODO: localize
                         Text("Create")

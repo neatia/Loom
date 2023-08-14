@@ -76,7 +76,7 @@ extension Feed {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                if (state.location.isPeer || state.peerLocation == nil) && state.communityView != nil {
+                if state.location.isPeer || state.peerLocation == nil {
                     Divider()
                 }
             }
@@ -93,33 +93,32 @@ extension Feed {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                if (state.communityView != nil) {
-                    Divider()
-                }
+                Divider()
             }
             
-            if let communityView = state.communityView {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    modal.presentSheet {
-                        CommunitySidebarView(communityView: communityView)
-                    }
-                } label: {
-                    Text("COMMUNITY_SIDEBAR")
-                    Image(systemName: "arrow.down.right.circle")
+            
+            Button {
+                guard let communityView = state.communityView else { return }
+                GraniteHaptic.light.invoke()
+                modal.presentSheet {
+                    CommunitySidebarView(communityView: communityView)
                 }
-                
-                Divider()
-                
-                Button {
-                    GraniteHaptic.light.invoke()
-                    loom._state.intent.wrappedValue = .adding(communityView)
-                    LoomLog("🪡 Adding loom, triggering intent", level: .debug)
-                } label: {
-                    //TODO: localize
-                    Text("Add to a Loom")
-                    Image(systemName: "rectangle.stack.badge.plus")
-                }
+            } label: {
+                Text("COMMUNITY_SIDEBAR")
+                Image(systemName: "arrow.down.right.circle")
+            }
+            
+            Divider()
+            
+            Button {
+                guard let communityView = state.communityView else { return }
+                GraniteHaptic.light.invoke()
+                loom._state.intent.wrappedValue = .adding(communityView)
+                LoomLog("🪡 Adding loom, triggering intent", level: .debug)
+            } label: {
+                //TODO: localize
+                Text("Add to a Loom")
+                Image(systemName: "rectangle.stack.badge.plus")
             }
         } label: {
             Image(systemName: "ellipsis")

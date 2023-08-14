@@ -18,53 +18,17 @@ extension Feed {
                 accountInfoExpandedView
                     .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             }
+            
             titleBarView
                 .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
+            
             HStack(spacing: 0) {
                 headerMenuView
-                    .frame(maxHeight: .infinity)
                 
                 Spacer()
+                
                 if pager.isFetching || pager.isEmpty {
-                    if pager.fetchMoreTimedOut || (pager.isEmpty && pager.isFetching == false) {
-                        Button {
-                            GraniteHaptic.light.invoke()
-                            pager.fetch(force: true)
-                        } label: {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.headline.bold())
-                                .offset(y: (hasCommunityBanner == false) ? (Device.isExpandedLayout ? -3 : -1) : 0)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.horizontal, hasCommunityBanner ? 4 : 0)
-                        .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                        .backgroundIf(hasCommunityBanner) {
-                            Color.background.opacity(0.75)
-                                .cornerRadius(4)
-                        }
-                        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
-                    } else {
-                        if Device.isExpandedLayout {
-                            ProgressView()
-                                .padding(.horizontal, hasCommunityBanner ? 4 : 0)
-                                .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                                .backgroundIf(hasCommunityBanner) {
-                                    Color.background.opacity(0.75)
-                                        .cornerRadius(6)
-                                }
-                                .scaleEffect(0.6)
-                                .offset(x: .layer1)
-                        } else {
-                            ProgressView()
-                                .padding(.horizontal, hasCommunityBanner ? 4 : 0)
-                                .padding(.vertical, hasCommunityBanner ? 4 : 0)
-                                .backgroundIf(hasCommunityBanner) {
-                                    Color.background.opacity(0.75)
-                                        .cornerRadius(6)
-                                }
-                                .padding(.trailing, .layer2)
-                        }
-                    }
+                    pagerIndicatorView
                 }
                 
                 if Device.isExpandedLayout == false {
@@ -85,13 +49,12 @@ extension Feed {
                         .padding(.bottom, hasCommunityBanner ? 0 : .layer1)
                 }
             }
-            .frame(height: headerViewHeight)
             .padding(.vertical, Device.isExpandedLayout ? 0 : .layer2)
             .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
+            .padding(.bottom, .layer2)
             
             Divider()
         }
-        .padding(.top, hasCommunityBanner ? .layer3 : 0)
         .background(Color.background.overlayIf(state.community != nil) {
             if let banner = state.community?.banner,
                let url = URL(string: banner) {
@@ -112,12 +75,47 @@ extension Feed {
         .clipped())
     }
     
-    var headerViewHeight: CGFloat {
-        let padding: CGFloat = hasCommunityBanner ? 12 : 0
-        if Device.isExpandedLayout {
-            return 54 + padding
-        } else {
-            return 36 + padding
+    var pagerIndicatorView: some View {
+        Group {
+            if pager.fetchMoreTimedOut || (pager.isEmpty && pager.isFetching == false) {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    pager.fetch(force: true)
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.headline.bold())
+                        .offset(y: (hasCommunityBanner == false) ? (Device.isExpandedLayout ? -3 : -1) : 0)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                .backgroundIf(hasCommunityBanner) {
+                    Color.background.opacity(0.75)
+                        .cornerRadius(4)
+                }
+                .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
+            } else {
+                if Device.isExpandedLayout {
+                    ProgressView()
+                        .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                        .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                        .backgroundIf(hasCommunityBanner) {
+                            Color.background.opacity(0.75)
+                                .cornerRadius(6)
+                        }
+                        .scaleEffect(Device.isMacOS ? 0.6 : 1.0)
+                        .offset(x: .layer1)
+                } else {
+                    ProgressView()
+                        .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                        .padding(.vertical, hasCommunityBanner ? 4 : 0)
+                        .backgroundIf(hasCommunityBanner) {
+                            Color.background.opacity(0.75)
+                                .cornerRadius(6)
+                        }
+                        .padding(.trailing, .layer2)
+                }
+            }
         }
     }
 }

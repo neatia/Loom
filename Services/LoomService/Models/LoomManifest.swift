@@ -48,6 +48,7 @@ struct LoomManifest: GraniteModel, Identifiable, Hashable {
                                           location: location)
             cumulativePosts.append(contentsOf: posts)
         }
+        cumulativePosts.shuffle()
         return cumulativePosts
     }
 }

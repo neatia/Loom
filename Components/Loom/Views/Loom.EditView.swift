@@ -43,7 +43,6 @@ struct LoomEditView: View {
                 TextField("Name", text: $manifest.meta.name)
                     .textFieldStyle(.plain)
                     .correctionDisabled()
-                    .textContentType(.username)
                     .frame(height: 60)
                     .padding(.horizontal, .layer4)
                     .font(.title3.bold())
@@ -52,6 +51,11 @@ struct LoomEditView: View {
                             .foregroundColor(Color.background)
                     )
                     .padding(.bottom, invalidName ? .layer2 : .layer4)
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            StandardToolbarView()
+                        }
+                    }
                 
                 //TODO: localize
                 if invalidName {
