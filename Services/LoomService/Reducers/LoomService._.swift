@@ -10,6 +10,7 @@ extension LoomService {
             case add(CommunityView, LoomManifest)
             case remove(CommunityView, LoomManifest)
             case toggle(LoomManifest)
+            case update(LoomManifest)
             case idle
         }
         
@@ -52,6 +53,10 @@ extension LoomService {
                     state.activeManifest = model
                     broadcast.send(LoomService.Control.activate(model))
                 }
+            case .update(let model):
+                var mutable = model
+                mutable.meta.updatedDate = .init()
+                state.manifests[mutable.id] = mutable
             default:
                 break
             }

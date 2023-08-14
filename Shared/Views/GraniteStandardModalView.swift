@@ -16,6 +16,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     var maxHeight: CGFloat
     var fullWidth: Bool
     var showBG: Bool
+    var alternateBG: Bool
     var drawerMode: Bool
     @Binding var shouldShowDrawer: Bool
     var canCloseDrawer: Bool
@@ -26,6 +27,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     init(title: LocalizedStringKey? = nil,
          maxHeight: CGFloat = 400,
          showBG: Bool = false,
+         alternateBG: Bool = false,
          fullWidth: Bool = false,
          drawerMode: Bool = false,
          shouldShowDrawer: Binding<Bool>? = nil,
@@ -34,6 +36,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
         self.title = title
         self.maxHeight = maxHeight
         self.showBG = showBG
+        self.alternateBG = alternateBG
         self.drawerMode = drawerMode
         self.fullWidth = fullWidth
         self.header = header
@@ -52,10 +55,10 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                 
                 if Device.isMacOS == false || showBG {
                     RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(.foreground.opacity(0.3), lineWidth: 1)
-                        .background(Color.background)
+                        .foregroundColor(alternateBG ? .alternateBackground : Color.background)
                         .cornerRadius(16)
                         .edgesIgnoringSafeArea(.all)
+                        .shadow(color: Brand.Colors.black.opacity(0.5), radius: 8)
                 }
                 
                 VStack(spacing: 0) {
@@ -71,9 +74,12 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                             }
                         }
                         
-                        Spacer()
+                        if title != nil {
+                            Spacer()
+                        }
                         
                         if canCloseDrawer {
+                            
                             Button {
                                 GraniteHaptic.light.invoke()
                                 shouldShowDrawer = false

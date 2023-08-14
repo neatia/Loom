@@ -13,8 +13,8 @@ import GraniteUI
 struct LoomCollectionsView: View {
     @GraniteAction<LoomService.Modify.Intent> var add
     @GraniteAction<LoomManifest> var toggle
+    @GraniteAction<LoomManifest> var edit
     
-    @Binding var isCreaing: Bool
     @Binding var intent: Loom.Intent
     @Binding var activeManifest: LoomManifest?
     
@@ -22,12 +22,31 @@ struct LoomCollectionsView: View {
     
     
     var body: some View {
-        //TODO: localize
-        GraniteStandardModalView(title: "Looms",
-                                 maxHeight: 600,
+        GraniteStandardModalView(maxHeight: 600,
                                  showBG: true,
+                                 alternateBG: true,
                                  fullWidth: true,
                                  drawerMode: true) {
+            HStack {
+                //TODO: localize
+                Text("Looms")
+                    .font(.title.bold())
+                Spacer()
+                
+                if intent.isAdding {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        intent = .idle
+                    } label: {
+                        Text("MISC_DONE")
+                            .font(.subheadline)
+                            .lineLimit(1)
+                            .readability()
+                            .outline()
+                    }.buttonStyle(.plain)
+                }
+            }
+        } content: {
             VStack(spacing: .layer3) {
                 if manifests.isNotEmpty {
                     ScrollView(showsIndicators: false) {
@@ -40,6 +59,11 @@ struct LoomCollectionsView: View {
                                 .attach({ manifest in
                                     toggle.perform(manifest)
                                 }, at: \.toggle)
+                                .attach({ manifest in
+                                    edit.perform(manifest)
+                                }, at: \.edit)
+                                .opacity(intent.isAdding ? 0.7 : 1.0)
+                                .allowsHitTesting(intent.isAdding == false)
                                 .overlayIf(intent.isAdding) {
                                     HStack {
                                         Spacer()
@@ -65,7 +89,6 @@ struct LoomCollectionsView: View {
                                         Spacer()
                                     }
                                     .frame(maxHeight: .infinity)
-                                    .background(.background.opacity(0.75))
                                     .clipped()
                                 }
                             }
@@ -77,9 +100,10 @@ struct LoomCollectionsView: View {
                 }
                 
                 Button {
-                    isCreaing = true
+                    GraniteHaptic.light.invoke()
+                    intent = .creating
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: "plus.circle")
                         .font(.title)
                 }
                 .buttonStyle(.plain)

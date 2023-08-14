@@ -11,7 +11,7 @@ import Granite
 import GraniteUI
 
 struct LoomCreateView: View {
-    @Binding var isCreating: Bool
+    @Binding var intent: Loom.Intent
     @State var name: String = ""
     @State var invalidName: Bool = false
     
@@ -23,7 +23,13 @@ struct LoomCreateView: View {
                                  showBG: true,
                                  fullWidth: true,
                                  drawerMode: true,
-                                 shouldShowDrawer: $isCreating) {
+                                 shouldShowDrawer:  .init(get: {
+                                    true
+                                 }, set: { state in
+                                    if !state {
+                                        intent = .idle
+                                    }
+                                 })) {
             VStack(spacing: 0) {
                 //TODO: localize
                 TextField("Name", text: $name)
@@ -37,17 +43,18 @@ struct LoomCreateView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .foregroundColor(Color.tertiaryBackground)
                     )
-                    .padding(.bottom, .layer4)
+                    .padding(.bottom, invalidName ? .layer2 : .layer4)
                 
                 //TODO: localize
                 if invalidName {
                     Text("Invalid name")
                         .font(.footnote)
                         .foregroundColor(.red.opacity(0.8))
+                        .padding(.bottom, .layer4)
                 }
-                Spacer()
                 HStack {
                     Button {
+                        GraniteHaptic.light.invoke()
                         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
                         guard trimmed.isNotEmpty else {
                             invalidName = true
@@ -62,6 +69,7 @@ struct LoomCreateView: View {
                     }
                     .buttonStyle(.plain)
                 }
+                Spacer()
             }
         }
     }

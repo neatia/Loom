@@ -5,8 +5,6 @@ import LemmyKit
 extension Loom {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var display: DisplayKind = .compact
-            var isCreating: Bool = false
         }
         
         @Store public var state: State
@@ -19,6 +17,8 @@ extension Loom {
     
     enum Intent: GraniteModel {
         case adding(CommunityView)
+        case edit(LoomManifest)
+        case creating
         case idle
         
         var isAdding: Bool {

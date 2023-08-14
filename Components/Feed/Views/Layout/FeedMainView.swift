@@ -53,7 +53,8 @@ struct FeedMainView<Content: View>: View {
             .environmentObject(pager)
             
             Loom()
-                .padding(.bottom, isViewingCommunity ? .layer4 : 0)
+                .padding(.bottom,
+                         isViewingCommunity ? .layer4 : 0)
         }
         .adaptsToKeyboard()
     }

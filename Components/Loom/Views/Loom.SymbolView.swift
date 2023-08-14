@@ -12,7 +12,6 @@ import GraniteUI
 
 struct LoomSymbolView: View {
     @Binding var displayKind: Loom.DisplayKind
-    @Binding var isCreating: Bool
     @Binding var intent: Loom.Intent
     
     var body: some View {
@@ -25,12 +24,12 @@ struct LoomSymbolView: View {
                 Button {
                     GraniteHaptic.light.invoke()
                     
+                    intent = .idle
+                    
                     switch displayKind {
                     case .compact:
-                        intent = .idle
                         displayKind = .expanded
                     case .expanded:
-                        isCreating = false
                         displayKind = .compact
                     }
                 } label: {

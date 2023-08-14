@@ -112,8 +112,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     addContent()
                 }
 
-                Section(header: header(),
-                        footer: PagerFooterLoadingView<Model>().environmentObject(pager)) {
+                Section(header: header()) {
 
                     if !alternateAddPosition {
                         addContent()
@@ -124,6 +123,8 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                             .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                     }
                 }
+                
+                PagerFooterLoadingView<Model>().environmentObject(pager)
             }.padding(.top, 1)
         }
     }
@@ -145,6 +146,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                 }
             }
+            .padding(.bottom, .layer4)
             
             PagerFooterLoadingView<Model>()
                 .environmentObject(pager)

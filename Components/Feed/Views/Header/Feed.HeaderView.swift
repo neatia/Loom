@@ -66,6 +66,7 @@ extension Feed {
                         }
                     }
                 }
+                
                 if Device.isExpandedLayout == false {
                     AccountView()
                         .attach({

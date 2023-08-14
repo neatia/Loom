@@ -98,7 +98,6 @@ extension Settings: View {
                         #endif
                     }
                     .padding(.horizontal, .layer4)
-                    .padding(.bottom, config.state.marbleYoutubeLinks ? .layer3 : nil)
                     
                     
                     if config.state.marbleYoutubeLinks {
@@ -110,6 +109,8 @@ extension Settings: View {
                                 }
                             }
                             .pickerStyle(.segmented)
+                            //Also helps for detecting scroll gesture
+                            .padding(.top, .layer3)
                         }
                         .padding(.horizontal, .layer2)
                     }

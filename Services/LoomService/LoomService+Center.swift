@@ -7,11 +7,12 @@ extension LoomService {
             var manifests: [UUID: LoomManifest] = [:]
             var activeManifest: LoomManifest? = nil
             var intent: Loom.Intent = .idle
+            var display: Loom.DisplayKind = .compact
         }
         
         @Event var modify: Modify.Reducer
         
-        @Store(persist: "persistence.Loom.service.0003",
+        @Store(persist: "persistence.Loom.service.0005",
                autoSave: true) public var state: State
         
     }

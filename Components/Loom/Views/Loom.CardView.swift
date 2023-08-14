@@ -12,6 +12,7 @@ import GraniteUI
 
 struct LoomCardView: View {
     @GraniteAction<LoomManifest> var toggle
+    @GraniteAction<LoomManifest> var edit
     var isActive: Bool = false
     var manifest: LoomManifest
     
@@ -32,7 +33,6 @@ struct LoomCardView: View {
             }
             .padding(.bottom, .layer2)
             .foregroundColor(.foreground)
-            
             
             HStack(spacing: 0) {
                 if collectionNames.isNotEmpty {
@@ -56,6 +56,7 @@ struct LoomCardView: View {
                         .outline()
                 }
                 
+                Spacer()
                 
                 Button {
                     GraniteHaptic.light.invoke()
@@ -76,6 +77,17 @@ struct LoomCardView: View {
                     .lineLimit(1)
                     .foregroundColor(.foreground.opacity(0.5))
                 Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    edit.perform(manifest)
+                } label: {
+                    Text("MISC_EDIT")
+                        .font(.subheadline)
+                        .lineLimit(1)
+                        .readability()
+                        .outline()
+                }.buttonStyle(.plain)
             }
             .padding(.top, .layer2)
         }
