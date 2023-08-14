@@ -48,13 +48,11 @@ struct CommunityCardView: View {
                 AvatarView(model.iconURL, size: .large, isCommunity: true)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    if showCounts {
-                        HStack {
-                            Text("\(subscribers) COMMUNITY_SUBSCRIBERS")
-                                .font(.headline.bold())
-                            
-                            Spacer()
-                        }
+                    HStack {
+                        Text("\(subscribers) COMMUNITY_SUBSCRIBERS")
+                            .font(.headline.bold())
+                        
+                        Spacer()
                     }
                     
                     HStack(spacing: .layer1) {

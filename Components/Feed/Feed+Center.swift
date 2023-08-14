@@ -23,6 +23,9 @@ extension Feed {
             
             var location: FetchType = .base
             var peerLocation: FetchType? = nil
+            
+            //Loom
+            var currentLoomManifest: LoomManifest? = nil
         }
         
         @Event var goHome: GoHome.Reducer
@@ -51,7 +54,9 @@ extension Feed {
     }
     
     var headerTitle: LocalizedStringKey {
-        if let community = state.community {
+        if isLoom, let manifest = state.currentLoomManifest {
+            return .init(manifest.meta.name)
+        } else if let community = state.community {
             return .init(community.title)
         } else {
             return "TITLE_FRONT_PAGE"
@@ -59,7 +64,10 @@ extension Feed {
     }
     
     var subheaderTitle: String {
-        if let community = state.community {
+        if isLoom {
+            //TODO: localize
+            return "Loom"
+        } else if let community = state.community {
             switch state.location {
             case .peer(let host):
                 return host+"@"+community.actor_id.host
@@ -75,6 +83,10 @@ extension Feed {
         } else {
             return LemmyKit.host
         }
+    }
+    
+    var isLoom: Bool {
+        state.currentLoomManifest != nil
     }
     
     var isCommunity: Bool {
@@ -98,7 +110,7 @@ extension Feed {
             }
             
             if reset {
-                await self.pager.fetch(force: true)
+                await self.pager.reset()
             }
         }
     }

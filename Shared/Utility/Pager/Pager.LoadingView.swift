@@ -20,12 +20,13 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
         pager.hasMore && pager.items.count >= pager.pageSize
     }
     
-    
     func progressWidth(_ proxy: GeometryProxy) -> CGFloat {
-        let width = proxy.size.width * pager.rlProcessingProgress
+        let width = proxy.size.width * progress
         
-        return width.isFinite ? width : 0
+        return width.isNaN == false && width.isFinite && width >= 0 ? width : 0
     }
+    
+    @State var progress: CGFloat = 0.0
     
     var body: some View {
         
@@ -46,32 +47,37 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
                     }
             }
         }
-        .frame(maxWidth: .infinity, minHeight: hasMore ? 60 : 0, maxHeight: (hasMore ? 60 : 0))
+        .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
         .background(
-            ZStack(alignment: .top) {
-                GeometryReader { proxy in
-                    Brand.Colors.yellow.opacity(0.8)
-                        .frame(width: progressWidth(proxy), height: .infinity)
-                        .animation(.easeIn, value: pager.rlProcessingProgress)
-                    
-                }
+            GeometryReader { proxy in
+                Color.random.opacity(0.7)
+                    .frame(width: progressWidth(proxy), height: 60)
+                    .animation(.easeIn, value: progress)
                 
-                Divider()
             }
             , alignment: .bottomLeading)
+        .task {
+            pager.progress { value in
+                self.progress = value ?? 0.0
+            }
+        }
     }
 }
 
 struct PagerLoadingView<Model: Pageable>: View {
+    
     @EnvironmentObject private var pager: Pager<Model>
     
     var label: LocalizedStringKey
     
+    @MainActor
     func progressWidth(_ proxy: GeometryProxy) -> CGFloat {
-        let width = proxy.size.width * pager.rlProcessingProgress
+        let width = proxy.size.width * progress
         
-        return width.isFinite ? width : 0
+        return width.isNaN == false && width.isFinite && width >= 0 ? width : 0
     }
+    
+    @State var progress: CGFloat = 0.0
     
     var body: some View {
         VStack {
@@ -96,12 +102,16 @@ struct PagerLoadingView<Model: Pageable>: View {
         }
         .background(
             GeometryReader { proxy in
-                Brand.Colors.yellow.opacity(0.8)
-                    .frame(width: progressWidth(proxy), height: .infinity)
-                    .animation(.easeIn, value: pager.rlProcessingProgress)
-                
+                Color.random.opacity(0.7)
+                    .frame(width: progressWidth(proxy))
+                    .animation(.easeIn, value: progress)
             }
             , alignment: .bottomLeading)
+        .task {
+            pager.progress { value in
+                self.progress = value ?? 0.0
+            }
+        }
     }
 }
 

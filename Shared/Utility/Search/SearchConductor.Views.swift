@@ -46,7 +46,7 @@ struct SearchBar: View {
                         .autocorrectionDisabled(true)
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
-                                StandardToolbarView()
+                                StandardSearchToolbarView()
                                     .attach({
                                         DispatchQueue.main.async {
                                             if offline == false {
@@ -147,7 +147,7 @@ struct StandardLoadingView: View {
     }
 }
 
-struct StandardToolbarView: View {
+struct StandardSearchToolbarView: View {
     @GraniteAction<Void> var search
     
     var body: some View {

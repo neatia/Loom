@@ -33,14 +33,28 @@ extension Feed: View {
             guard pager.isEmpty else { return }
             
             pager.hook { page in
-                let posts = await Lemmy.posts(state.community,
-                                              type: selectedListing,
-                                              page: page,
-                                              limit: ConfigService.Preferences.pageLimit,
-                                              sort: selectedSort,
-                                              location: state.location)
                 
-                return posts
+                if loom.state.display == .expanded {
+                    DispatchQueue.main.async {
+                        loom._state.display.wrappedValue = .compact
+                    }
+                }
+                
+                if isLoom,
+                   let manifest = state.currentLoomManifest {
+                    return await manifest.fetch(page ?? 0,
+                                                listing: selectedListing,
+                                                sorting: selectedSort)
+                } else {
+                    let posts = await Lemmy.posts(state.community,
+                                                  type: selectedListing,
+                                                  page: page,
+                                                  limit: ConfigService.Preferences.pageLimit,
+                                                  sort: selectedSort,
+                                                  location: state.location)
+                    
+                    return posts
+                }
             }
             
             if let community = state.community {
