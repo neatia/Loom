@@ -6,37 +6,57 @@
 //
 
 import Foundation
+import GraniteUI
+import Granite
 import SwiftUI
 
 //TODO: eventually convert all modals to this
 struct GraniteStandardModalView<Header: View, Content: View>: View {
     var title: LocalizedStringKey?
     var maxHeight: CGFloat
+    var fullWidth: Bool
+    var showBG: Bool
+    var drawerMode: Bool
+    @Binding var shouldShowDrawer: Bool
+    var canCloseDrawer: Bool
     var header: (() -> Header)
     var content: (() -> Content)
     
+    //TODO: revise prop names and consider style struct
     init(title: LocalizedStringKey? = nil,
          maxHeight: CGFloat = 400,
+         showBG: Bool = false,
+         fullWidth: Bool = false,
+         drawerMode: Bool = false,
+         shouldShowDrawer: Binding<Bool>? = nil,
          @ViewBuilder header: @escaping (() -> Header) = { EmptyView() },
          @ViewBuilder content: @escaping (() -> Content)) {
         self.title = title
         self.maxHeight = maxHeight
+        self.showBG = showBG
+        self.drawerMode = drawerMode
+        self.fullWidth = fullWidth
         self.header = header
         self.content = content
+        self._shouldShowDrawer = shouldShowDrawer ?? .constant(false)
+        self.canCloseDrawer = drawerMode && shouldShowDrawer != nil
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            #if os(iOS)
-            Spacer()
-            #endif
+            if Device.isMacOS == false && !drawerMode {
+                Spacer()
+            }
             
             ZStack {
-                #if os(iOS)
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundColor(Color.background)
-                    .edgesIgnoringSafeArea(.all)
-                #endif
+                
+                if Device.isMacOS == false || showBG {
+                    RoundedRectangle(cornerRadius: 16)
+                        .strokeBorder(.foreground.opacity(0.3), lineWidth: 1)
+                        .background(Color.background)
+                        .cornerRadius(16)
+                        .edgesIgnoringSafeArea(.all)
+                }
                 
                 VStack(spacing: 0) {
                     HStack(spacing: .layer4) {
@@ -52,11 +72,22 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                         }
                         
                         Spacer()
+                        
+                        if canCloseDrawer {
+                            Button {
+                                GraniteHaptic.light.invoke()
+                                shouldShowDrawer = false
+                            } label: {
+                                Image(systemName: "chevron.down")
+                                    .font(.title3)
+                                    .foregroundColor(.foreground)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                     .frame(height: 36)
                     .padding(.bottom, Device.isMacOS ? .layer4 : .layer5)
-                    .padding(.leading, Device.isMacOS ? .layer4 : .layer5)
-                    .padding(.trailing, Device.isMacOS ? .layer4 : .layer5)
+                    .padding(.horizontal, Device.isMacOS ? .layer4 : .layer5)
                     .padding(.top, Device.isMacOS ? nil : .layer5)
                     
                     Divider()
@@ -71,7 +102,8 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
             .frame(maxHeight: maxHeight)
             
         }
-        .frame(width: Device.isMacOS ? 300 : nil)
-        .padding(.top, .layer5)
+        .frame(width: Device.isMacOS && !fullWidth ? 300 : nil)
+        .padding(.top, drawerMode ? 0 : .layer5)
+        .offset(x: 0, y: drawerMode ? .layer5 : 0)
     }
 }

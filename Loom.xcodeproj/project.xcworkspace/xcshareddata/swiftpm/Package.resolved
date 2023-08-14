@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
+      "identity" : "ffmpegkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/FFmpegKit.git",
+      "state" : {
+        "revision" : "89f71ccee33d1ff402201162f28b6400f349c873",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "granite",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/Granite.git",
       "state" : {
         "branch" : "main",
-        "revision" : "d51b986b0d677d2178b0916dca3340842f7aee2b"
+        "revision" : "737bca0ed8889653281d3bc46c7f6310b8e203d9"
       }
     },
     {
@@ -34,6 +43,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "8c64e37a058c2b4fa294b37aacd8be35c0ecebeb"
+      }
+    },
+    {
+      "identity" : "marblekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MarbleKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "c11d304ea2f0ea9c5a7fbd637345877e4dfec690"
       }
     },
     {

@@ -2,6 +2,7 @@ import Granite
 import GraniteUI
 import SwiftUI
 import Foundation
+import MarbleKit
 
 extension Settings: View {
     var aboutPageLinkString: String {
@@ -77,7 +78,7 @@ extension Settings: View {
                         Spacer()
                     }
                     .padding(.vertical, .layer4)
-                    .padding(.trailing, .layer4)
+                    .padding(.horizontal, .layer4)
                     
                     Divider()
                         .padding(.bottom, .layer2)
@@ -96,7 +97,22 @@ extension Settings: View {
                         Spacer()
                         #endif
                     }
-                    .padding(.trailing, .layer4)
+                    .padding(.horizontal, .layer4)
+                    .padding(.bottom, config.state.marbleYoutubeLinks ? .layer3 : nil)
+                    
+                    
+                    if config.state.marbleYoutubeLinks {
+                        ScrollView([.horizontal], showsIndicators: false) {
+                            Picker("", selection: config._state.marbleFX) {
+                                ForEach(MarbleWebGLCatalog.FX.allCases) { fx in
+                                    Text("\(fx.rawValue.capitalized)")
+                                        .tag(fx)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        .padding(.horizontal, .layer2)
+                    }
                     
                     /*
                     HStack {
@@ -120,7 +136,6 @@ extension Settings: View {
                     Spacer()
                     #endif
                 }
-                .padding(.leading, .layer4)
                 .padding(.bottom, .layer4)
                 
                 //IPFS Settings
@@ -213,12 +228,9 @@ extension Settings: View {
                     .padding(.bottom, .layer2)
                     .padding(.trailing, .layer4)
                     
-                    #if os(macOS)
-                    Spacer()
-                    #endif
                 }
                 .padding(.leading, .layer4)
-                .padding(.bottom, config.state.isIPFSAvailable ? .layer4 : nil)
+                .padding(.bottom, config.state.isIPFSAvailable ? .layer3 : nil)
                 
                 if config.state.isIPFSAvailable {
                     HStack {
@@ -240,6 +252,10 @@ extension Settings: View {
                     .padding(.horizontal, .layer2)
                     .padding(.bottom, .layer4)
                 }
+                
+                #if os(macOS)
+                Spacer()
+                #endif
                     
                 //Debug Settings
                 DebugSettingsView()

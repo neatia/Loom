@@ -14,7 +14,8 @@ import LemmyKit
 extension Feed {
     var verticalLayout: some View {
         VStack(spacing: 0) {
-            FeedMainView(location: state.location) {
+            FeedMainView(location: state.location,
+                         isViewingCommunity: state.community != nil) {
                 headerView
             }
             .attach({ community in

@@ -13,19 +13,23 @@ import LemmyKit
 struct FeedMainView<Content: View>: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<PostView> var showContent
+    
     @EnvironmentObject var pager: Pager<PostView>
     @Environment(\.graniteEvent) var interact
     
     let location: FetchType
     let header: () -> Content
+    let isViewingCommunity: Bool
     init(location: FetchType,
+         isViewingCommunity: Bool = false,
          @ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
         self.location = location
         self.header = header
+        self.isViewingCommunity = isViewingCommunity
     }
     
     var body: some View {
-        Group {
+        ZStack {
             PagerScrollView(PostView.self,
                             alternateAddPosition: true,
                             useSimple: true,
@@ -45,7 +49,12 @@ struct FeedMainView<Content: View>: View {
                     showContent.perform(postView)
                 }, at: \.showContent)
                 .graniteEvent(interact)
-            }.environmentObject(pager)
+            }
+            .environmentObject(pager)
+            
+            Loom()
+                .padding(.bottom, isViewingCommunity ? .layer4 : 0)
         }
+        .adaptsToKeyboard()
     }
 }

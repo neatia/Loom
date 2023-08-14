@@ -28,11 +28,19 @@ extension CommunityView: Locateable {
     var isPeerResource: Bool {
         false
     }
+    
+    var displayName: String {
+        self.community.displayName
+    }
 }
 
 extension Community {
     func asView(isBlocked: Bool) -> CommunityView {
         .init(community: self, subscribed: .notSubscribed, blocked: isBlocked, counts: .mock)
+    }
+    
+    var displayName: String {
+        "!"+self.name+"@"+self.actor_id.host
     }
 }
 

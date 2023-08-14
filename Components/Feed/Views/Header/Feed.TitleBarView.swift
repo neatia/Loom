@@ -60,7 +60,7 @@ extension Feed {
                 }
                 .buttonStyle(PlainButtonStyle())
                 .padding(.bottom, hasCommunityBanner ? nil : .layer2)
-            }.frame(maxHeight: .infinity)
+            }
         }
         .frame(height: hasCommunityBanner ? 48 : 36)
         .padding(.top, Device.isExpandedLayout ? nil : (state.community == nil ? ContainerConfig.generalViewTopPadding : .layer3))

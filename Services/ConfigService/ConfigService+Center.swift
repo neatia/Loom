@@ -2,6 +2,7 @@ import Granite
 import SwiftUI
 import LemmyKit
 import IPFSKit
+import MarbleKit
 
 extension ConfigService {
     struct Center: GraniteCenter {
@@ -37,6 +38,11 @@ extension ConfigService {
                     MarbleOptions.enableFX = marbleYoutubeLinks
                 }
             }
+            var marbleFX: MarbleWebGLCatalog.FX = .granite {
+                didSet {
+                    MarbleOptions.fx = marbleFX
+                }
+            }
             var marblePlaybackControls: Bool = false
         }
         
@@ -44,7 +50,7 @@ extension ConfigService {
         @Event(debounce: 0.25) var restart: Restart.Reducer
         @Event(debounce: 0.25) var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0020", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0021", autoSave: true, preload: true) public var state: State
     }
     
     struct Preferences {

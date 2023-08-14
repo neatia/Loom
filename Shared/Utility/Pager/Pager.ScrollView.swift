@@ -14,6 +14,8 @@ import GraniteUI
 struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content: View>: View {
     @EnvironmentObject private var pager: Pager<Model>
     
+    @State private var currentItems: [Model] = []
+    
     let cache: LazyScrollViewCache<AnyView> = .init()
     
     let header: () -> Header
@@ -58,7 +60,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     }
     
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
             if pager.isEmpty {
                 if alternateAddPosition {
                     addContent()
@@ -93,6 +95,11 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 }
             }
         }
+        .task {
+            pager.getItems { items in
+                self.currentItems = items
+            }
+        }
     }
     
     var normalScrollView: some View {
@@ -112,11 +119,10 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         addContent()
                     }
 
-                    ForEach(pager.currentItems) { item in
+                    ForEach(currentItems) { item in
                         mainContent(item)
                             .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                     }
-
                 }
             }.padding(.top, 1)
         }
@@ -134,7 +140,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             
         }) {
             LazyVStack(spacing: 0) {
-                ForEach(pager.currentItems) { item in
+                ForEach(currentItems) { item in
                     mainContent(item)
                         .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                 }
@@ -165,7 +171,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                                     .setupPlainListRow()
                             }
                             
-                            ForEach(pager.currentItems) { item in
+                            ForEach(currentItems) { item in
                                 
                                 VStack(spacing: 0) {
                                     cache(item)

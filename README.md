@@ -8,7 +8,7 @@
 <p align="center">https://testflight.apple.com/join/owwIagmV</p>
 
 
-<p align="center">An app with "Threads" that does not collect your data. Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations.</p>
+<p align="center">Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
@@ -55,6 +55,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 ## Swift Packages
 
 - [Granite](https://github.com/pexavc/Granite)
+- [MarbleKit](https://github.com/pexavc/marblekit)
 - [LemmyKit](https://github.com/pexavc/lemmykit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean/nuke)

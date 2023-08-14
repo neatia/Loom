@@ -36,6 +36,7 @@ extension ConfigService {
             //Marbler
             if state.marbleYoutubeLinks {
                 MarbleOptions.enableFX = true
+                MarbleOptions.fx = state.marbleFX
             }
         }
         

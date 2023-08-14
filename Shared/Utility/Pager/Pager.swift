@@ -57,12 +57,13 @@ class Pager<Model: Pageable>: ObservableObject {
     
     var itemMetadatas: [String: PageableMetadata] = [:]
     
+    //main data source
     var currentItems: [Model] = []
+    
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
     
     @Published var isFetching: Bool = false
-    @Published var rlProcessingProgress: CGFloat = 0.0
     
     var pageSize: Int = ConfigService.Preferences.pageLimit
     
@@ -81,7 +82,10 @@ class Pager<Model: Pageable>: ObservableObject {
     private var task: Task<Void, Error>? = nil
     private var rlProcessorTask: Task<Void, Error>? = nil
     
+    //handlers
     private var handler: ((Int?) async -> [Model])?
+    private var progressHandler: ((CGFloat) -> Void)?
+    private var currentItemsHandler: (([Model]) -> Void)?
     
     var enableAuxiliaryLoaders: Bool = false
     
@@ -104,9 +108,17 @@ class Pager<Model: Pageable>: ObservableObject {
         return self
     }
     
+    func progress(_ commit: @escaping ((CGFloat?) -> Void)) {
+        self.progressHandler = commit
+    }
+    
+    func getItems(_ commit: @escaping (([Model]) -> Void)) {
+        self.currentItemsHandler = commit
+    }
+    
     func refresh(_ handler: GraniteScrollView.CompletionHandler?) {
         self.onRefreshHandler = handler
-        self.fetch(force: true)
+        self.reset()
     }
     
     func fetch(force: Bool = false) {
@@ -177,7 +189,7 @@ class Pager<Model: Pageable>: ObservableObject {
                         
                         let progress = completed / count
                         DispatchQueue.main.async { [weak self] in
-                            self?.rlProcessingProgress = progress
+                            self?.progressHandler?(progress)
                         }
                     }
                     this.insertModels(models, force: force)
@@ -347,10 +359,21 @@ extension Pager {
 
 //MARK: user-interactive modifiers
 extension Pager{
+    func reset() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.clear()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.fetch(force: true)
+        }
+    }
+    
     func update() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.currentItems = self.items
+            self.currentItemsHandler?(self.currentItems)
             self.clean()
         }
     }
@@ -380,7 +403,7 @@ extension Pager{
         self.onRefreshHandler = nil
         self.rlProcessorTask?.cancel()
         self.rlProcessorTask = nil
-        self.rlProcessingProgress = 0.0
+        self.progressHandler?(0.0)
     }
 }
 
