@@ -36,6 +36,10 @@
 
 > WIP previews of major components
 
+| Looms    | |
+| -------- | ------- |
+| ![Image](https://gateway.ipfs.io/ipfs/QmPqGzNcivMFp8Ge64W5ccbDUQ16UFAgRRKrEs1ai1Zcme) | Create "Looms" of any community from any instance. Grouping their content into a singular feed
+
 | Explore    | |
 | -------- | ------- |
 | ![Image](https://gateway.ipfs.io/ipfs/QmPr9TxMX4VP94hkQPwncRPdtLYbjqDriMowWPxDozreym)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
