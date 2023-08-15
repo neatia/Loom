@@ -95,7 +95,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 }
             }
         }
-        .task {
+        .onAppear {
             pager.getItems { items in
                 self.currentItems = items
             }
