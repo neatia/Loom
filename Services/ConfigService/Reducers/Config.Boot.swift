@@ -9,6 +9,7 @@ extension ConfigService {
         @Relay var account: AccountService
         @Relay var content: ContentService
         @Relay var layout: LayoutService
+        @Relay var loom: LoomService
         
         func reduce(state: inout Center.State) async {
             LemmyKit.baseUrl = state.config.baseUrl
@@ -36,7 +37,13 @@ extension ConfigService {
             //Marbler
             if state.marbleYoutubeLinks {
                 MarbleOptions.enableFX = true
+                MarbleOptions.fx = state.marbleFX
             }
+            
+            //Loom
+            loom.preload()
+            loom._state.intent.wrappedValue = .idle
+            loom._state.display.wrappedValue = .compact
         }
         
         var behavior: GraniteReducerBehavior {

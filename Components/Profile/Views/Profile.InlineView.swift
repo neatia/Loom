@@ -17,9 +17,8 @@ extension Profile {
             if let bio = state.person?.bio, bio.isEmpty == false {
                 MarkdownView(text: bio)
                     .markdownViewRole(.editor)
-                    .padding(.layer3)
-                    .background(Color.tertiaryBackground)
-                    .cornerRadius(8)
+                    .readability()
+                    .outline()
                     .padding(.layer3)
             } else {
                 EmptyView()

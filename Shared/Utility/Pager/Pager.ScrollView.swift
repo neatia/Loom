@@ -14,6 +14,8 @@ import GraniteUI
 struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content: View>: View {
     @EnvironmentObject private var pager: Pager<Model>
     
+    @State private var currentItems: [Model] = []
+    
     let cache: LazyScrollViewCache<AnyView> = .init()
     
     let header: () -> Header
@@ -58,7 +60,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     }
     
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
             if pager.isEmpty {
                 if alternateAddPosition {
                     addContent()
@@ -110,25 +112,26 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     addContent()
                 }
 
-                Section(header: header(),
-                        footer: PagerFooterLoadingView<Model>().environmentObject(pager)) {
+                Section(header: header()) {
 
                     if !alternateAddPosition {
                         addContent()
                     }
 
-                    ForEach(pager.currentItems) { item in
+                    ForEach(currentItems) { item in
                         mainContent(item)
                             .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                     }
-
                 }
+                
+                PagerFooterLoadingView<Model>().environmentObject(pager)
             }.padding(.top, 1)
         }
     }
     
     var simpleScrollView: some View {
-        GraniteScrollView(onRefresh: pager.refresh(_:),
+        GraniteScrollView(showsIndicators: false,
+                          onRefresh: pager.refresh(_:),
                           onReachedEdge: { edge in
             
             if edge == .bottom,
@@ -139,11 +142,12 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             
         }) {
             LazyVStack(spacing: 0) {
-                ForEach(pager.currentItems) { item in
+                ForEach(currentItems) { item in
                     mainContent(item)
                         .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                 }
             }
+            .padding(.bottom, .layer4)
             
             PagerFooterLoadingView<Model>()
                 .environmentObject(pager)
@@ -170,7 +174,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                                     .setupPlainListRow()
                             }
                             
-                            ForEach(pager.currentItems) { item in
+                            ForEach(currentItems) { item in
                                 
                                 VStack(spacing: 0) {
                                     cache(item)

@@ -53,7 +53,7 @@ extension Feed {
             if state.location != .base {
                 Button {
                     _state.location.wrappedValue = .base
-                    pager.fetch(force: true)
+                    pager.reset()
                 } label: {
                     Text("LISTING_TYPE_LOCAL")
                     Image(systemName: "house")
@@ -68,7 +68,7 @@ extension Feed {
             if (state.location == .base && LemmyKit.host != state.community?.ap_id?.host) || (state.location.isPeer) {
                 Button {
                     _state.location.wrappedValue = .source
-                    pager.fetch(force: true)
+                    pager.reset()
                 } label: {
                     //TODO: localize
                     Text("@\(state.community?.actor_id.host ?? "Source")")
@@ -86,7 +86,7 @@ extension Feed {
                 Button {
                     guard let location = state.peerLocation else { return }
                     _state.location.wrappedValue = location
-                    pager.fetch(force: true)
+                    pager.reset()
                 } label: {
                     Text("@\(host)")
                     Image(systemName: "person.2.wave.2")
@@ -106,6 +106,19 @@ extension Feed {
             } label: {
                 Text("COMMUNITY_SIDEBAR")
                 Image(systemName: "arrow.down.right.circle")
+            }
+            
+            Divider()
+            
+            Button {
+                guard let communityView = state.communityView else { return }
+                GraniteHaptic.light.invoke()
+                loom._state.intent.wrappedValue = .adding(communityView)
+                LoomLog("🪡 Adding loom, triggering intent", level: .debug)
+            } label: {
+                //TODO: localize
+                Text("Add to a Loom")
+                Image(systemName: "rectangle.stack.badge.plus")
             }
         } label: {
             Image(systemName: "ellipsis")

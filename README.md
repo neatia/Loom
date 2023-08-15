@@ -8,7 +8,7 @@
 <p align="center">https://testflight.apple.com/join/owwIagmV</p>
 
 
-<p align="center">An app with "Threads" that does not collect your data. Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations.</p>
+<p align="center">Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
@@ -36,6 +36,10 @@
 
 > WIP previews of major components
 
+| Looms    | |
+| -------- | ------- |
+| ![Image](https://gateway.ipfs.io/ipfs/QmPqGzNcivMFp8Ge64W5ccbDUQ16UFAgRRKrEs1ai1Zcme) | Create "Looms" of any community from any instance. Grouping their content into a singular feed
+
 | Explore    | |
 | -------- | ------- |
 | ![Image](https://gateway.ipfs.io/ipfs/QmPr9TxMX4VP94hkQPwncRPdtLYbjqDriMowWPxDozreym)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
@@ -55,6 +59,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 ## Swift Packages
 
 - [Granite](https://github.com/pexavc/Granite)
+- [MarbleKit](https://github.com/pexavc/marblekit)
 - [LemmyKit](https://github.com/pexavc/lemmykit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean/nuke)

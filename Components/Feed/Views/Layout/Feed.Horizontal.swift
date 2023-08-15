@@ -36,7 +36,7 @@ extension Feed {
                 DispatchQueue.main.async {
                     self._state.community.wrappedValue = model.community
                     self._state.communityView.wrappedValue = model
-                    self.pager.fetch(force: true)
+                    self.pager.reset()
                 }
             }, at: \.pickedCommunity)
             .frame(width: 240)

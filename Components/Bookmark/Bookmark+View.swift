@@ -121,6 +121,7 @@ extension Bookmark: View {
         .onChange(of: service.isLoaded) { isLoaded in
             guard isLoaded else { return }
             _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
+            _state.selectedBookmarkCommentKey.wrappedValue = service.state.comments.keys.first ?? .local
         }
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
     }

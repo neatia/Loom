@@ -32,7 +32,7 @@ extension LayoutService {
             }
         }
         
-        @Store(persist: "Loom.persistence.layout.0001",
+        @Store(persist: "persistence.Loom.layout.0000",
                autoSave: true,
                preload: true) public var state: State
     }

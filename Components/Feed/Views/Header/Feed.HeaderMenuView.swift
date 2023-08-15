@@ -17,8 +17,7 @@ extension Feed {
                 Button {
                     GraniteHaptic.light.invoke()
                     center.goHome.send()
-                    
-                    pager.fetch(force: true)
+                    pager.reset()
                 } label: {
                     Image(systemName: "chevron.backward")
                         .font(.title3)
@@ -40,7 +39,7 @@ extension Feed {
                     Button {
                         GraniteHaptic.light.invoke()
                         _state.selectedSorting.wrappedValue = index
-                        pager.fetch(force: true)
+                        pager.reset()
                     } label: {
                         Text(state.sortingType[index].displayString)
                         Image(systemName: "arrow.down.right.circle")
@@ -69,7 +68,7 @@ extension Feed {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.selectedTimeCategory.wrappedValue = index
-                            pager.fetch(force: true)
+                            pager.reset()
                         } label: {
                             Text(LocalizedStringKey(state.sortingTimeType[index]))
                             Image(systemName: "arrow.down.right.circle")
@@ -100,7 +99,7 @@ extension Feed {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.selectedListing.wrappedValue = index
-                            pager.fetch(force: true)
+                            pager.reset()
                         } label: {
                             Text(state.listingType[index].displayString)
                             Image(systemName: "arrow.down.right.circle")

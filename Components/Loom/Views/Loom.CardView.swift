@@ -1,0 +1,109 @@
+//
+//  Loom.Views.swift
+//  Loom
+//
+//  Created by PEXAVC on 8/13/23.
+//
+
+import Foundation
+import SwiftUI
+import Granite
+import GraniteUI
+
+struct LoomCardView: View {
+    @GraniteAction<LoomManifest> var toggle
+    @GraniteAction<LoomManifest> var edit
+    var isActive: Bool = false
+    var manifest: LoomManifest
+    
+    var collectionNamesList: [String] {
+        manifest.collectionNamesList
+    }
+    
+    var collectionNames: String {
+        manifest.collectionNames
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 0) {
+                Text(manifest.meta.name)
+                    .font(.title3.bold())
+                Spacer()
+            }
+            .padding(.bottom, .layer2)
+            .foregroundColor(.foreground)
+            
+            HStack(spacing: 0) {
+                if collectionNames.isNotEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: .layer3) {
+                            ForEach(manifest.communities) { model in
+                                CommunityCardView(model: model,
+                                                  showCounts: false)
+                                .frame(minWidth: 240)
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .foregroundColor(.foreground)
+                    .padding(.trailing, .layer4)
+                } else {
+                    Text("EMPTY_STATE_NO_COMMUNITIES")
+                        .font(.subheadline)
+                        .readability()
+                        .outline()
+                }
+                
+                Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    toggle.perform(manifest)
+                } label: {
+                    Image(systemName: "rectangle.\(isActive ? "righthalf" : "lefthalf").inset.filled")
+                        .font(.title)
+                        .foregroundColor(.foreground.opacity(0.8))
+                        .padding(-4)
+                        .backgroundIf(isActive) { Color.green.opacity(0.6) }
+                        .padding(.horizontal, .layer2)
+                }.buttonStyle(.plain)
+            }
+            
+            HStack(spacing: 0) {
+                Text(manifest.meta.updatedDate.asString)
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .foregroundColor(.foreground.opacity(0.5))
+                Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    edit.perform(manifest)
+                } label: {
+                    Text("MISC_EDIT")
+                        .font(.subheadline)
+                        .lineLimit(1)
+                        .readability()
+                        .outline()
+                }.buttonStyle(.plain)
+            }
+            .padding(.top, .layer2)
+        }
+        .padding(.leading, .layer1)
+        .readability()
+        .outline()
+    }
+}
+
+#if DEBUG
+struct LoomCardView_Previews: PreviewProvider {
+    static var previews: some View {
+        InstanceCardView(.init(id: 0,
+                               domain: "https://lemmy.world",
+                               published: Date.now.asString))
+        .padding(.layer2)
+    }
+}
+#endif
