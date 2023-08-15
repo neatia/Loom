@@ -58,7 +58,11 @@ class Pager<Model: Pageable>: ObservableObject {
     var itemMetadatas: [String: PageableMetadata] = [:]
     
     //main data source
+    #if os(macOS)
+    @Published var currentItems: [Model] = []
+    #else
     var currentItems: [Model] = []
+    #endif
     
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
