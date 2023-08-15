@@ -42,7 +42,7 @@
       "location" : "https://github.com/pexavc/LemmyKit",
       "state" : {
         "branch" : "main",
-        "revision" : "8c64e37a058c2b4fa294b37aacd8be35c0ecebeb"
+        "revision" : "5eefd2d005cb472aa3f1d35946c29958f4931ce3"
       }
     },
     {
@@ -51,7 +51,7 @@
       "location" : "https://github.com/pexavc/MarbleKit",
       "state" : {
         "branch" : "main",
-        "revision" : "c11d304ea2f0ea9c5a7fbd637345877e4dfec690"
+        "revision" : "9a2b5ff0b4d7743659476958aed1569660093c90"
       }
     },
     {

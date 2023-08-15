@@ -8,7 +8,7 @@
 <p align="center">https://testflight.apple.com/join/owwIagmV</p>
 
 
-<p align="center">Providing everyone with a premium experience when interacting with federated link aggregators. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
+<p align="center">Aggregating aggregation. Providing everyone with a premium experience when interacting with federated servers. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)

@@ -91,6 +91,7 @@ extension Feed {
                 }
                 
                 Divider()
+                    .frame(maxHeight: 24)
             }
             
             if state.community == nil {

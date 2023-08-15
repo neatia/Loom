@@ -9,9 +9,13 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
+import LemmyKit
 
 struct LoomCreateView: View {
     @Binding var intent: Loom.Intent
+    
+    var communityView: CommunityView?
+    
     @State var name: String = ""
     @State var invalidName: Bool = false
     
@@ -65,7 +69,12 @@ struct LoomCreateView: View {
                             return
                         }
                         create.perform(trimmed)
-                        intent = .idle
+                        
+                        if let communityView {
+                            intent = .adding(communityView)
+                        } else {
+                            intent = .idle
+                        }
                     } label: {
                         //TODO: localize
                         Text("Create")

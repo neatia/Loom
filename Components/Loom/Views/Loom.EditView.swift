@@ -18,7 +18,6 @@ struct LoomEditView: View {
     
     @State var removeCommunities: [CommunityView] = []
     
-    @State var name: String = ""
     @State var invalidName: Bool = false
     
     @GraniteAction<LoomManifest> var edit
@@ -105,7 +104,7 @@ struct LoomEditView: View {
                 HStack {
                     Button {
                         GraniteHaptic.light.invoke()
-                        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+                        let trimmed = manifest.meta.name.trimmingCharacters(in: .whitespacesAndNewlines)
                         guard trimmed.isNotEmpty else {
                             invalidName = true
                             return
@@ -113,6 +112,7 @@ struct LoomEditView: View {
                         var mutable = manifest
                         mutable.communities.removeAll(where: { removeCommunities.contains($0) })
                         edit.perform(mutable)
+                        intent = .idle
                     } label: {
                         //TODO: localize
                         Text("Save")

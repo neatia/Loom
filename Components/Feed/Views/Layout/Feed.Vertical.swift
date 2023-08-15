@@ -15,7 +15,7 @@ extension Feed {
     var verticalLayout: some View {
         VStack(spacing: 0) {
             FeedMainView(location: state.location,
-                         isViewingCommunity: state.community != nil) {
+                         communityView: state.communityView) {
                 headerView
             }
             .attach({ community in

@@ -9,10 +9,16 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
+import LemmyKit
 
 struct LoomSymbolView: View {
     @Binding var displayKind: Loom.DisplayKind
     @Binding var intent: Loom.Intent
+    var communityView: CommunityView?
+    
+    var isViewingCommunity: Bool {
+        communityView != nil
+    }
     
     var body: some View {
         VStack {
@@ -24,12 +30,19 @@ struct LoomSymbolView: View {
                 Button {
                     GraniteHaptic.light.invoke()
                     
-                    intent = .idle
                     
                     switch displayKind {
                     case .compact:
                         displayKind = .expanded
+                        
+                        if isViewingCommunity,
+                           let communityView {
+                            intent = .adding(communityView)
+                        } else {
+                            intent = .idle
+                        }
                     case .expanded:
+                        intent = .idle
                         displayKind = .compact
                     }
                 } label: {
@@ -47,11 +60,26 @@ struct LoomSymbolView: View {
                                 .foregroundColor(Brand.Colors.black)
                         }
                     case .compact:
-                        Image("logo_small")
-                            .resizable()
-                            .frame(width: 48, height: 48)
-                            .shadow(color: Color.background.opacity(0.75),
-                                    radius: 6)
+                        if isViewingCommunity {
+                            ZStack {
+                                Image("logo_small_bg")
+                                    .resizable()
+                                    .frame(width: 48, height: 48)
+                                    .shadow(color: Color.background.opacity(0.75),
+                                            radius: 6)
+                                
+                                Image(systemName: "plus")
+                                    .font(.title)
+                                    .foregroundColor(Brand.Colors.black)
+                            }
+                        } else {
+                            
+                            Image("logo_small")
+                                .resizable()
+                                .frame(width: 48, height: 48)
+                                .shadow(color: Color.background.opacity(0.75),
+                                        radius: 6)
+                        }
                     }
                 }
                 .buttonStyle(.plain)
