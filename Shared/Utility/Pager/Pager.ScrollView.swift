@@ -93,6 +93,11 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 }
             }
         }
+        .onAppear {
+            pager.getItems { items in
+                self.currentItems = items
+            }
+        }
     }
     
     var normalScrollView: some View {
