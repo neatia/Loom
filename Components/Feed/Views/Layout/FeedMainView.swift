@@ -20,12 +20,14 @@ struct FeedMainView<Content: View>: View {
     let location: FetchType
     let header: () -> Content
     let isViewingCommunity: Bool
+    let communityView: CommunityView?
     init(location: FetchType,
-         isViewingCommunity: Bool = false,
+         communityView: CommunityView? = nil,
          @ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
         self.location = location
         self.header = header
-        self.isViewingCommunity = isViewingCommunity
+        self.isViewingCommunity = communityView != nil
+        self.communityView = communityView
     }
     
     var body: some View {
@@ -52,7 +54,7 @@ struct FeedMainView<Content: View>: View {
             }
             .environmentObject(pager)
             
-            Loom()
+            Loom(communityView: communityView)
                 .padding(.bottom,
                          isViewingCommunity ? .layer4 : 0)
         }

@@ -15,6 +15,7 @@ struct LoomManifest: GraniteModel, Identifiable, Hashable {
     
     var meta: Meta
     var communities: [CommunityView] = []
+    var instances: [Instance] = []
     
     var collectionNamesList: [String] {
         communities.map { $0.displayName }

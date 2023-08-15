@@ -6,7 +6,8 @@ extension Loom: View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
                 LoomSymbolView(displayKind: service._state.display,
-                               intent: service._state.intent)
+                               intent: service._state.intent,
+                               communityView: communityView)
                 
                 if service.state.display == .expanded {
                     LoomCollectionsView(intent: service._state.intent,
@@ -28,8 +29,12 @@ extension Loom: View {
             case .edit(let model):
                 LoomEditView(intent: service._state.intent,
                              manifest: model)
+                .attach({ manifest in
+                    service.center.modify.send(LoomService.Modify.Intent.update(manifest))
+                }, at: \.edit)
             case .creating:
-                LoomCreateView(intent: service._state.intent)
+                LoomCreateView(intent: service._state.intent,
+                               communityView: communityView)
                     .attach({ name in
                         service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
                     }, at: \.create)

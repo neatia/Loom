@@ -159,8 +159,6 @@ struct ProfileSettingsView: View {
                                 sortType: config.state.sortType,
                                 listingType: config.state.listingType)
         
-        account.preload()
-        
         #if os(iOS)
         UITextView.appearance().backgroundColor = .clear
         #else
