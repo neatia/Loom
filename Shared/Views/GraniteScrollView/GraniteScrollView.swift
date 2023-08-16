@@ -152,16 +152,11 @@ public struct GraniteScrollView<Content : View> : View {
                                 self.progress = 0
                             }
                         }
-                      
                     }
                 }
             }
         }
-        .onTapGesture {
-            
-        }
     }
-    
 }
 
 /* Indicators */

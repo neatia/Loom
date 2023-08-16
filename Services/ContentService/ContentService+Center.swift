@@ -10,12 +10,15 @@ extension ContentService {
             var allCommunities: CommunityMap = [:]
             
             var userContent: [String:UserContent] = [:]
+            
+            var lastVersionUpdateNotice: String = ""
         }
         
         @Event var boot: Boot.Reducer
         @Event(debounce: 0.5) var interact: Interact.Reducer
         
-        @Store(persist: "persistence.content.Loom.0018", autoSave: true) public var state: State
+        @Store(persist: "persistence.content.Loom.0025",
+               autoSave: true) public var state: State
     }
 }
 

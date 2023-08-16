@@ -35,19 +35,26 @@ struct LoginView: View {
     
     var body: some View {
         
-        GraniteStandardModalView(maxHeight: addToProfiles ? 480 : 400) {
+        GraniteStandardModalView(maxHeight: Device.isMacOS ? (addToProfiles ? 480 : 400) : 600) {
             if addToProfiles {
-                Text("MISC_ADD")
-                    .font(.title.bold()) + Text("  ") + Text("TITLE_ACCOUNT")
-                    .font(.title.bold())
+                HStack {
+                    Text("MISC_ADD")
+                        .font(.title.bold()) + Text("  ") + Text("TITLE_ACCOUNT")
+                        .font(.title.bold())
+                    
+                    Spacer()
+                }
             } else {
-                switch kind {
-                case .login:
-                    Text("AUTH_LOGIN")
-                        .font(.title.bold())
-                case .signup:
-                    Text("AUTH_SIGNUP")
-                        .font(.title.bold())
+                HStack {
+                    switch kind {
+                    case .login:
+                        Text("AUTH_LOGIN")
+                            .font(.title.bold())
+                    case .signup:
+                        Text("AUTH_SIGNUP")
+                            .font(.title.bold())
+                    }
+                    Spacer()
                 }
             }
         } content: {

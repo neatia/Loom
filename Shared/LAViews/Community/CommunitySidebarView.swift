@@ -38,6 +38,7 @@ struct CommunitySidebarView: View {
                     }.frame(minHeight: 400, maxHeight: 400)
                 }
                 
+                //TODO: admin list
                 if let communityView {
                     HStack(spacing: .layer4) {
                         VStack {

@@ -17,6 +17,7 @@ extension Feed {
                 .font(.footnote)
                 .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                 .padding(.vertical, hasCommunityBanner ? 2 : 0)
+                .shinyIf(isLoom)
                 .backgroundIf(hasCommunityBanner) {
                     Color.background.opacity(0.75)
                         .cornerRadius(4)

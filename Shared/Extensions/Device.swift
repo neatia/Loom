@@ -30,4 +30,23 @@ struct Device {
     static var isExpandedLayout: Bool {
         isMacOS || isiPad
     }
+    
+    static var appVersion: String? {
+        if let releaseVersion = Bundle.main.releaseVersionNumber,
+           let buildVersion = Bundle.main.buildVersionNumber {
+            
+            return releaseVersion + buildVersion
+        } else {
+            return nil
+        }
+    }
+}
+
+extension Bundle {
+    var releaseVersionNumber: String? {
+        infoDictionary?["CFBundleShortVersionString"] as? String
+    }
+    var buildVersionNumber: String? {
+        infoDictionary?["CFBundleVersion"] as? String
+    }
 }

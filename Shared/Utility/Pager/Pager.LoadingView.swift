@@ -48,12 +48,14 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
-        .background(
+        .overlay(
             GeometryReader { proxy in
-                Color.random.opacity(0.7)
-                    .frame(width: progressWidth(proxy), height: 60)
-                    .animation(.easeIn, value: progress)
-                
+                ZStack {
+                    Color.background
+                    Color.random.opacity(0.7)
+                }
+                .frame(width: progressWidth(proxy))
+                .animation(.easeIn, value: progress)
             }
             , alignment: .bottomLeading)
         .task {
@@ -84,14 +86,14 @@ struct PagerLoadingView<Model: Pageable>: View {
             Spacer()
             HStack {
                 Spacer()
-                if pager.isFetching {
+                if pager.isFetching || pager.hasMore {
                     #if os(iOS)
                     ProgressView()
                     #else
                     ProgressView()
                         .scaleEffect(0.6)
                     #endif
-                } else {
+                } else if pager.hasMore == false {
                     Text(label)
                         .font(.headline.bold())
                 }
@@ -100,11 +102,14 @@ struct PagerLoadingView<Model: Pageable>: View {
             
             Spacer()
         }
-        .background(
+        .overlay(
             GeometryReader { proxy in
-                Color.random.opacity(0.7)
-                    .frame(width: progressWidth(proxy))
-                    .animation(.easeIn, value: progress)
+                ZStack {
+                    Color.background
+                    Color.random.opacity(0.7)
+                }
+                .frame(width: progressWidth(proxy))
+                .animation(.easeIn, value: progress)
             }
             , alignment: .bottomLeading)
         .task {

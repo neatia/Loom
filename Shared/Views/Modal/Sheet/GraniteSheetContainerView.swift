@@ -5,6 +5,10 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
     
     @EnvironmentObject var manager : GraniteSheetManager
     
+    #if os(iOS)
+    @State private var selectedDetentIdentifier: UISheetPresentationController.Detent.Identifier? = UISheetPresentationController.Detent.Identifier.medium
+    #endif
+    
     let id: String
     let content : Content
     let modalManager: GraniteModalManager?
@@ -32,7 +36,8 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .sheet(isPresented: manager.hasContent(with: .sheet)) {
+                .shee(isPresented: manager.hasContent(with: .sheet), presentationStyle: .formSheet(properties: .init(detents: [ .medium(), .large() ], selectedDetentIdentifier: $selectedDetentIdentifier, animatesSelectedDetentIdentifierChange: true))) {
+                    
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
                 }
@@ -49,7 +54,6 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
         content
             .sheet(isPresented: manager.hasContent(id: self.id, with: .sheet)) {
                 if let modalManager {
-                    
                     sheetContent(for: manager.style)
                         .addGraniteModal(modalManager)
                 } else {

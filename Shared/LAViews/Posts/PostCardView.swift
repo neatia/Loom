@@ -242,6 +242,7 @@ extension PostCardView {
                     .padding(.bottom, .layer2)
             }
             
+            //TODO: reusable
             if let contentMetadata {
                 ContentMetadataView(metadata: contentMetadata, urlToOpen: model.postURL)
                     .attach({
