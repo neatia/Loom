@@ -34,7 +34,7 @@ extension Feed: View {
             if content.state.lastVersionUpdateNotice != Device.appVersion {
                 modal.presentSheet {
                     Group {
-                        if let url = URL(string: "https://gateway.ipfs.io/ipfs/QmcsZYrrLUmi6jRqyhb4zcfijEGDUveU8HjaAgabmXfX6k") {
+                        if let url = URL(string: "https://gateway.ipfs.io/ipfs/QmZmCEbSm1GRBL8xfmSyAiEk8fu6UFhgiFf8w8pcMAWwwM") {
                             
                             PostContentView(url,
                                             fullPage: Device.isMacOS)
