@@ -106,9 +106,6 @@ struct FooterView: View {
         
         self.showScores = showScores
         self.isComposable = isComposable
-        
-        //content.preload()
-        //        config.preload()
     }
     
     var body: some View {

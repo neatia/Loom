@@ -25,7 +25,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     
     //TODO: revise prop names and consider style struct
     init(title: LocalizedStringKey? = nil,
-         maxHeight: CGFloat = 600,
+         maxHeight: CGFloat = Device.isMacOS ? 400 : 600,
          showBG: Bool = false,
          alternateBG: Bool = false,
          fullWidth: Bool = false,
@@ -111,7 +111,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
             
         }
         .frame(width: Device.isMacOS && !fullWidth ? 300 : nil)
-        .padding(.top, drawerMode ? 0 : .layer5)
+        .padding(.top, drawerMode || Device.isMacOS ? 0 : .layer5)
         .offset(x: 0, y: drawerMode ? .layer5 : 0)
     }
 }

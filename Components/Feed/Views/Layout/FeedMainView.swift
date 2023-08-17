@@ -31,33 +31,26 @@ struct FeedMainView<Content: View>: View {
     }
     
     var body: some View {
-        ZStack {
-            PagerScrollView(PostView.self,
-                            alternateAddPosition: true,
-                            useSimple: true,
-                            cacheEnabled: true,
-                            header: header) {
-                EmptyView()
-            } content: { postView in
-                PostCardView(model: postView,
-                             style: .style2,
-                             topPadding: .layer5,
-                             bottomPadding: pager.lastItem?.id == postView.id ? 0 : .layer5,
-                             linkPreviewType: .largeNoMetadata)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                .attach({ postView in
-                    showContent.perform(postView)
-                }, at: \.showContent)
-                .graniteEvent(interact)
-            }
-            .environmentObject(pager)
-            
-            Loom(communityView: communityView)
-                .padding(.bottom,
-                         isViewingCommunity ? .layer4 : 0)
+        PagerScrollView(PostView.self,
+                        alternateAddPosition: true,
+                        useSimple: true,
+                        cacheEnabled: true,
+                        header: header) {
+            EmptyView()
+        } content: { postView in
+            PostCardView(model: postView,
+                         style: .style2,
+                         topPadding: .layer5,
+                         bottomPadding: pager.lastItem?.id == postView.id ? 0 : .layer5,
+                         linkPreviewType: .largeNoMetadata)
+            .attach({ community in
+                viewCommunity.perform(community)
+            }, at: \.viewCommunity)
+            .attach({ postView in
+                showContent.perform(postView)
+            }, at: \.showContent)
+            .graniteEvent(interact)
         }
-        .adaptsToKeyboard()
+        .environmentObject(pager)
     }
 }

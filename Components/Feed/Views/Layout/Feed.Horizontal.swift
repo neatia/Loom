@@ -47,6 +47,13 @@ extension Feed {
                     fetchCommunity(community, reset: true)
                 }, at: \.viewCommunity)
                 .graniteEvent(account.center.interact)
+                .overlay(LogoView()
+                    .attach({
+                        modal.presentSheet {
+                            Write(communityView: state.communityView)
+                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
+                    }, at: \.write))
                 .environmentObject(pager)
                 .frame(minWidth: minFrameWidth, maxWidth: nil)
             FeedExtendedView(location: state.location)

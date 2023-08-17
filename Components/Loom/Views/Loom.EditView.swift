@@ -12,8 +12,6 @@ import GraniteUI
 import LemmyKit
 
 struct LoomEditView: View {
-    @Binding var intent: Loom.Intent
-    
     @State var manifest: LoomManifest
     
     @State var removeCommunities: [CommunityView] = []
@@ -24,19 +22,7 @@ struct LoomEditView: View {
     
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView(title: "Edit Loom",
-                                 maxHeight: 600,
-                                 showBG: true,
-                                 alternateBG: true,
-                                 fullWidth: true,
-                                 drawerMode: true,
-                                 shouldShowDrawer: .init(get: {
-                                    true
-                                 }, set: { state in
-                                    if !state {
-                                        intent = .idle
-                                    }
-                                 })) {
+        GraniteStandardModalView(title: "Edit Loom") {
             VStack(spacing: 0) {
                 //TODO: localize
                 TextField("Name", text: $manifest.meta.name)
@@ -112,7 +98,6 @@ struct LoomEditView: View {
                         var mutable = manifest
                         mutable.communities.removeAll(where: { removeCommunities.contains($0) })
                         edit.perform(mutable)
-                        intent = .idle
                     } label: {
                         //TODO: localize
                         Text("Save")

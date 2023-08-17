@@ -1,52 +1,92 @@
 import Granite
+import GraniteUI
 import SwiftUI
 
 extension Loom: View {
     public var view: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
-                LoomSymbolView(displayKind: service._state.display,
-                               intent: service._state.intent,
-                               communityView: communityView)
-                
-                if service.state.display == .expanded {
-                    LoomCollectionsView(intent: service._state.intent,
-                                        activeManifest: service._state.activeManifest,
-                                        manifests: service.manifests)
-                    .attach({ intent in
-                        service.center.modify.send(intent)
-                    }, at: \.add)
-                    .attach({ manifest in
-                        service.center.modify.send(LoomService.Modify.Intent.toggle(manifest))
-                    }, at: \.toggle)
-                    .attach({ manifest in
-                        service._state.intent.wrappedValue = .edit(manifest)
-                    }, at: \.edit)
+                HStack(spacing: .layer4) {
+                    VStack {
+                        Spacer()
+                        //TODO: localize
+                        Text("Looms")
+                            .font(.title.bold())
+                    }
+                    
+                    Spacer()
+                    
+                    if service.state.intent.isAdding {
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            service._state.intent.wrappedValue = .idle
+                        } label: {
+                            Text("MISC_DONE")
+                                .font(.subheadline)
+                                .lineLimit(1)
+                                .readability()
+                                .outline()
+                        }.buttonStyle(.plain)
+                    } else {
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            
+                            modal.presentSheet {
+                                LoomCreateView(communityView: communityView)
+                                    .attach({ name in
+                                        service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
+                                        DispatchQueue.main.async {
+                                            modal.dismissSheet()
+                                        }
+                                    }, at: \.create)
+                            }
+                            
+                        } label: {
+                            Image(systemName: "plus.circle")
+                                .font(.title3)
+                        }.buttonStyle(.plain)
+                    }
                 }
-            }
-            
-            switch service.state.intent {
-            case .edit(let model):
-                LoomEditView(intent: service._state.intent,
-                             manifest: model)
+                .frame(height: 36)
+                .padding(.bottom, .layer4)
+                .padding(.leading, .layer4)
+                .padding(.trailing, .layer4)
+                
+                Divider()
+                
+                LoomCollectionsView()
                 .attach({ manifest in
-                    service.center.modify.send(LoomService.Modify.Intent.update(manifest))
+                    modal.presentSheet {
+                        CommunityPickerView()
+                            .attach({ communityView in
+                                GraniteHaptic.light.invoke()
+                                
+                                service.center.modify.send(LoomService.Modify.Intent.add(communityView, manifest))
+                            }, at: \.pickedCommunity)
+                            .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
+                    }
+                }, at: \.add)
+//                .attach({ manifest in
+//                    service.center.modify.send(LoomService.Modify.Intent.toggle(manifest))
+//                }, at: \.toggle)
+                .attach({ model in
+                    modal.presentSheet {
+                        LoomEditView(manifest: model)
+                        .attach({ manifest in
+                            service.center.modify.send(LoomService.Modify.Intent.update(manifest))
+                            modal.dismissSheet()
+                        }, at: \.edit)
+                    }
                 }, at: \.edit)
-            case .creating:
-                LoomCreateView(intent: service._state.intent,
-                               communityView: communityView)
-                    .attach({ name in
-                        service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
-                    }, at: \.create)
-                    .shadow(color: Brand.Colors.black, radius: 6)
-            default:
-                EmptyView()
+                .padding(.layer4)
             }
             
         }
-//        .task {
-//            service._state.display.wrappedValue = .compact
-//        }
+        .padding(.top, ContainerConfig.generalViewTopPadding)
+        .addGraniteSheet(modal.sheetManager,
+                         modalManager: modal.modalSheetManager,
+                         background: Color.clear)
+        .addGraniteModal(modal.modalManager)
         .onChange(of: service.state.intent) { newIntent in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 switch newIntent {

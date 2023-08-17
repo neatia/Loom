@@ -105,6 +105,7 @@ struct PostDisplayView: View {
                     .attach({ community in
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
+                    //TODO: combine reply and edit
                     .attach({ (model, update) in
                         DispatchQueue.main.async {
                             modal.presentSheet {

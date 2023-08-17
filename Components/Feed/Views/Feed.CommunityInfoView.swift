@@ -113,7 +113,12 @@ extension Feed {
             Button {
                 guard let communityView = state.communityView else { return }
                 GraniteHaptic.light.invoke()
-                loom._state.intent.wrappedValue = .adding(communityView)
+                
+                modal.presentSheet {
+                    LoomCollectionsView(modalIntent: .adding(communityView))
+                        .frame(width: Device.isMacOS ? 400 : nil)
+                        .frame(maxHeight: Device.isMacOS ? 600 : nil)
+                }
                 LoomLog("🪡 Adding loom, triggering intent", level: .debug)
             } label: {
                 //TODO: localize

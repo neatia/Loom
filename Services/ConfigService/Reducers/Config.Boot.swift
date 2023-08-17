@@ -11,7 +11,7 @@ extension ConfigService {
         @Relay var layout: LayoutService
         @Relay var loom: LoomService
         
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             LemmyKit.baseUrl = state.config.baseUrl
             ConfigService.configureIPFS(state.ipfsGatewayUrl)
             
@@ -44,6 +44,10 @@ extension ConfigService {
             loom.preload()
             loom._state.intent.wrappedValue = .idle
             loom._state.display.wrappedValue = .compact
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
 }

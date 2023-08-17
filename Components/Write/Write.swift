@@ -43,8 +43,12 @@ struct Write: GraniteComponent {
     
     var kind: Kind
     
-    init(kind: Write.Kind? = nil, postView: PostView? = nil) {
-        _center = .init(.init(editingPostView: postView, title: postView?.post.name ?? "", content: postView?.post.body ?? "", postURL: postView?.post.url ?? ""))
+    init(kind: Write.Kind? = nil, communityView: CommunityView? = nil, postView: PostView? = nil) {
+        _center = .init(.init(editingPostView: postView,
+                              title: postView?.post.name ?? "",
+                              content: postView?.post.body ?? "",
+                              postURL: postView?.post.url ?? "",
+                              postCommunity: communityView))
         
         if let kind {
             self.kind = kind

@@ -78,7 +78,7 @@ extension Home: View {
             
             Color.background.fitToContainer()
             
-        }, currentTab: 0) {
+        }, currentTab: 2) {
             GraniteTab {
                 Feed()
 //                DebugComponent()
@@ -93,7 +93,7 @@ extension Home: View {
             }
 
             GraniteTab {
-                Write()
+                Loom()
             } icon: {
                 GraniteTabIcon(name: "applescript")
             }

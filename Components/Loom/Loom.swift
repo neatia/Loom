@@ -6,6 +6,7 @@ struct Loom: GraniteComponent {
     @Command var center: Center
     
     @Relay var service: LoomService
+    @Relay var modal: ModalService
     
     let communityView: CommunityView?
     
