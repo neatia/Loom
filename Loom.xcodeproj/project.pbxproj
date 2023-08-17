@@ -233,6 +233,26 @@
 		7167E41B2A2AF34F0061AA26 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7167E41A2A2AF34F0061AA26 /* Launch Screen.storyboard */; };
 		716CCAD22A8ACCC2009F9413 /* StandardToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */; };
 		716CCAD32A8ACCC2009F9413 /* StandardToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */; };
+		716CCAD92A8C6DAD009F9413 /* Config.Restart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAD82A8C6DAD009F9413 /* Config.Restart.swift */; };
+		716CCADA2A8C6DAD009F9413 /* Config.Restart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAD82A8C6DAD009F9413 /* Config.Restart.swift */; };
+		716CCADC2A8CA28E009F9413 /* Loom+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCADB2A8CA28E009F9413 /* Loom+Center.swift */; };
+		716CCADD2A8CA28E009F9413 /* Loom+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCADB2A8CA28E009F9413 /* Loom+Center.swift */; };
+		716CCAF92A8CDAC4009F9413 /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF02A8CDAC4009F9413 /* SheetModifier.swift */; };
+		716CCAFA2A8CDAC4009F9413 /* SheetModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF02A8CDAC4009F9413 /* SheetModifier.swift */; };
+		716CCAFD2A8CDAC4009F9413 /* SheeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF22A8CDAC4009F9413 /* SheeExtensions.swift */; };
+		716CCAFE2A8CDAC4009F9413 /* SheeExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF22A8CDAC4009F9413 /* SheeExtensions.swift */; };
+		716CCAFF2A8CDAC4009F9413 /* SheetProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF32A8CDAC4009F9413 /* SheetProperties.swift */; };
+		716CCB002A8CDAC4009F9413 /* SheetProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF32A8CDAC4009F9413 /* SheetProperties.swift */; };
+		716CCB012A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF42A8CDAC4009F9413 /* UIViewControllerProxy.swift */; };
+		716CCB022A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF42A8CDAC4009F9413 /* UIViewControllerProxy.swift */; };
+		716CCB032A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF52A8CDAC4009F9413 /* ModalPresentationStyle.swift */; };
+		716CCB042A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF52A8CDAC4009F9413 /* ModalPresentationStyle.swift */; };
+		716CCB052A8CDAC4009F9413 /* SheetHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF62A8CDAC4009F9413 /* SheetHostingController.swift */; };
+		716CCB062A8CDAC4009F9413 /* SheetHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF62A8CDAC4009F9413 /* SheetHostingController.swift */; };
+		716CCB072A8CDAC4009F9413 /* SheetPresenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF72A8CDAC4009F9413 /* SheetPresenterController.swift */; };
+		716CCB082A8CDAC4009F9413 /* SheetPresenterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF72A8CDAC4009F9413 /* SheetPresenterController.swift */; };
+		716CCB092A8CDAC4009F9413 /* AdaptiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF82A8CDAC4009F9413 /* AdaptiveDelegate.swift */; };
+		716CCB0A2A8CDAC4009F9413 /* AdaptiveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCAF82A8CDAC4009F9413 /* AdaptiveDelegate.swift */; };
 		717090A72A7ED7DC009F1FB7 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090832A7ED7DC009F1FB7 /* Lock.swift */; };
 		717090A82A7ED7DC009F1FB7 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090832A7ED7DC009F1FB7 /* Lock.swift */; };
 		717090A92A7ED7DC009F1FB7 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090842A7ED7DC009F1FB7 /* MD5.swift */; };
@@ -265,8 +285,6 @@
 		717E613428A0D69B009A2B1A /* Home._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E613228A0D69B009A2B1A /* Home._.swift */; };
 		71899E272A8952100073158F /* Loom+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E232A8952100073158F /* Loom+View.swift */; };
 		71899E282A8952100073158F /* Loom+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E232A8952100073158F /* Loom+View.swift */; };
-		71899E292A8952100073158F /* Loom+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E242A8952100073158F /* Loom+Center.swift */; };
-		71899E2A2A8952100073158F /* Loom+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E242A8952100073158F /* Loom+Center.swift */; };
 		71899E2B2A8952100073158F /* Loom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E252A8952100073158F /* Loom.swift */; };
 		71899E2C2A8952100073158F /* Loom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E252A8952100073158F /* Loom.swift */; };
 		71899E342A89528C0073158F /* LoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E312A89528C0073158F /* LoomService.swift */; };
@@ -317,8 +335,6 @@
 		7197FB1C2964B4C0005EBBA4 /* GraniteSheetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */; };
 		7197FB1D2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */; };
 		7197FB1E2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */; };
-		7197FB1F2964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */; };
-		7197FB202964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */; };
 		7197FB212964B4C0005EBBA4 /* GraniteModalWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */; };
 		7197FB222964B4C0005EBBA4 /* GraniteModalWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */; };
 		7197FB272964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7197FB242964B4EC005EBBA4 /* ModalService+Actions.swift */; };
@@ -428,8 +444,6 @@
 		71C69E492A70558100B54AD6 /* Search.HeaderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E472A70558100B54AD6 /* Search.HeaderMenuView.swift */; };
 		71C69E4B2A70638D00B54AD6 /* Search.AllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E4A2A70638D00B54AD6 /* Search.AllView.swift */; };
 		71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E4A2A70638D00B54AD6 /* Search.AllView.swift */; };
-		71C69E4E2A7063EB00B54AD6 /* Search.CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E4D2A7063EB00B54AD6 /* Search.CollectionView.swift */; };
-		71C69E4F2A7063EB00B54AD6 /* Search.CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E4D2A7063EB00B54AD6 /* Search.CollectionView.swift */; };
 		71C69E512A7064AE00B54AD6 /* UserCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E502A7064AE00B54AD6 /* UserCardView.swift */; };
 		71C69E522A7064AE00B54AD6 /* UserCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E502A7064AE00B54AD6 /* UserCardView.swift */; };
 		71C69E542A70747E00B54AD6 /* CommunityCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C69E532A70747E00B54AD6 /* CommunityCardView.swift */; };
@@ -767,6 +781,16 @@
 		7167A8642A773C8E006F901E /* FeedSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSidebarView.swift; sourceTree = "<group>"; };
 		7167E41A2A2AF34F0061AA26 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardToolbarView.swift; sourceTree = "<group>"; };
+		716CCAD82A8C6DAD009F9413 /* Config.Restart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.Restart.swift; sourceTree = "<group>"; };
+		716CCADB2A8CA28E009F9413 /* Loom+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loom+Center.swift"; sourceTree = "<group>"; };
+		716CCAF02A8CDAC4009F9413 /* SheetModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetModifier.swift; sourceTree = "<group>"; };
+		716CCAF22A8CDAC4009F9413 /* SheeExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheeExtensions.swift; sourceTree = "<group>"; };
+		716CCAF32A8CDAC4009F9413 /* SheetProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetProperties.swift; sourceTree = "<group>"; };
+		716CCAF42A8CDAC4009F9413 /* UIViewControllerProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerProxy.swift; sourceTree = "<group>"; };
+		716CCAF52A8CDAC4009F9413 /* ModalPresentationStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalPresentationStyle.swift; sourceTree = "<group>"; };
+		716CCAF62A8CDAC4009F9413 /* SheetHostingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetHostingController.swift; sourceTree = "<group>"; };
+		716CCAF72A8CDAC4009F9413 /* SheetPresenterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetPresenterController.swift; sourceTree = "<group>"; };
+		716CCAF82A8CDAC4009F9413 /* AdaptiveDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdaptiveDelegate.swift; sourceTree = "<group>"; };
 		717090832A7ED7DC009F1FB7 /* Lock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
 		717090842A7ED7DC009F1FB7 /* MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
 		717090852A7ED7DC009F1FB7 /* Gap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gap.swift; sourceTree = "<group>"; };
@@ -783,7 +807,6 @@
 		717D388A2887A44D00165D7D /* Home+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+View.swift"; sourceTree = "<group>"; };
 		717E613228A0D69B009A2B1A /* Home._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home._.swift; sourceTree = "<group>"; };
 		71899E232A8952100073158F /* Loom+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loom+View.swift"; sourceTree = "<group>"; };
-		71899E242A8952100073158F /* Loom+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loom+Center.swift"; sourceTree = "<group>"; };
 		71899E252A8952100073158F /* Loom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loom.swift; sourceTree = "<group>"; };
 		71899E312A89528C0073158F /* LoomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoomService.swift; sourceTree = "<group>"; };
 		71899E322A89528C0073158F /* LoomService+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoomService+Center.swift"; sourceTree = "<group>"; };
@@ -809,7 +832,6 @@
 		7197FAFE2964B4BF005EBBA4 /* GraniteSheetContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheetContainerView.swift; sourceTree = "<group>"; };
 		7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheetManager.swift; sourceTree = "<group>"; };
 		7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheetPresenterView.swift; sourceTree = "<group>"; };
-		7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteSheet.View.swift; sourceTree = "<group>"; };
 		7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraniteModalWindow.swift; sourceTree = "<group>"; };
 		7197FB242964B4EC005EBBA4 /* ModalService+Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModalService+Actions.swift"; sourceTree = "<group>"; };
 		7197FB252964B4EC005EBBA4 /* ModalService+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ModalService+Center.swift"; sourceTree = "<group>"; };
@@ -863,7 +885,6 @@
 		71C69E432A70515F00B54AD6 /* SearchConductor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchConductor.swift; sourceTree = "<group>"; };
 		71C69E472A70558100B54AD6 /* Search.HeaderMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.HeaderMenuView.swift; sourceTree = "<group>"; };
 		71C69E4A2A70638D00B54AD6 /* Search.AllView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.AllView.swift; sourceTree = "<group>"; };
-		71C69E4D2A7063EB00B54AD6 /* Search.CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.CollectionView.swift; sourceTree = "<group>"; };
 		71C69E502A7064AE00B54AD6 /* UserCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCardView.swift; sourceTree = "<group>"; };
 		71C69E532A70747E00B54AD6 /* CommunityCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityCardView.swift; sourceTree = "<group>"; };
 		71C69E562A70DC1400B54AD6 /* SearchScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScrollView.swift; sourceTree = "<group>"; };
@@ -936,6 +957,8 @@
 		71F042212A6A3AD700788CDC /* Write+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Write+View.swift"; sourceTree = "<group>"; };
 		71F042232A6A3AD700788CDC /* Write+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Write+Center.swift"; sourceTree = "<group>"; };
 		71F042382A6A682C00788CDC /* Write.Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Create.swift; sourceTree = "<group>"; };
+		71F047602A8DD53900DB7E81 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
+		71F047642A8E030A00DB7E81 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
 		71F778B12A719C6A00C9C5C4 /* HeaderCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCardView.swift; sourceTree = "<group>"; };
 		71F778B42A719D4400C9C5C4 /* HeaderCardAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCardAvatarView.swift; sourceTree = "<group>"; };
 		71F778B82A71A95300C9C5C4 /* SfSafariView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SfSafariView.swift; sourceTree = "<group>"; };
@@ -1280,6 +1303,8 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71F047642A8E030A00DB7E81 /* LemmyKit */,
+				71F047602A8DD53900DB7E81 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -1572,6 +1597,21 @@
 			path = LAExtensions;
 			sourceTree = "<group>";
 		};
+		716CCAEE2A8CDAC4009F9413 /* SheeKit */ = {
+			isa = PBXGroup;
+			children = (
+				716CCAF02A8CDAC4009F9413 /* SheetModifier.swift */,
+				716CCAF22A8CDAC4009F9413 /* SheeExtensions.swift */,
+				716CCAF32A8CDAC4009F9413 /* SheetProperties.swift */,
+				716CCAF42A8CDAC4009F9413 /* UIViewControllerProxy.swift */,
+				716CCAF52A8CDAC4009F9413 /* ModalPresentationStyle.swift */,
+				716CCAF62A8CDAC4009F9413 /* SheetHostingController.swift */,
+				716CCAF72A8CDAC4009F9413 /* SheetPresenterController.swift */,
+				716CCAF82A8CDAC4009F9413 /* AdaptiveDelegate.swift */,
+			);
+			path = SheeKit;
+			sourceTree = "<group>";
+		};
 		717090812A7ED7DC009F1FB7 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1630,7 +1670,7 @@
 			children = (
 				71899E262A8952100073158F /* Reducers */,
 				71899E3C2A8958E30073158F /* Views */,
-				71899E242A8952100073158F /* Loom+Center.swift */,
+				716CCADB2A8CA28E009F9413 /* Loom+Center.swift */,
 				71899E232A8952100073158F /* Loom+View.swift */,
 				71899E252A8952100073158F /* Loom.swift */,
 			);
@@ -1720,6 +1760,7 @@
 		7197FAEF2964B4BF005EBBA4 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
+				716CCAEE2A8CDAC4009F9413 /* SheeKit */,
 				7197FAFC2964B4BF005EBBA4 /* Sheet */,
 				7197FAF72964B4BF005EBBA4 /* Toast */,
 				7197FAF22964B4BF005EBBA4 /* Alert */,
@@ -1759,7 +1800,6 @@
 				7197FAFE2964B4BF005EBBA4 /* GraniteSheetContainerView.swift */,
 				7197FB002964B4BF005EBBA4 /* GraniteSheetPresenterView.swift */,
 				7197FAFF2964B4BF005EBBA4 /* GraniteSheetManager.swift */,
-				7197FB012964B4BF005EBBA4 /* GraniteSheet.View.swift */,
 			);
 			path = Sheet;
 			sourceTree = "<group>";
@@ -1928,7 +1968,6 @@
 			children = (
 				71C69E472A70558100B54AD6 /* Search.HeaderMenuView.swift */,
 				71C69E4A2A70638D00B54AD6 /* Search.AllView.swift */,
-				71C69E4D2A7063EB00B54AD6 /* Search.CollectionView.swift */,
 				71C69E562A70DC1400B54AD6 /* SearchScrollView.swift */,
 			);
 			path = Views;
@@ -2003,6 +2042,7 @@
 			isa = PBXGroup;
 			children = (
 				71C9F9062A60B9C10089D7EA /* Config.Boot.swift */,
+				716CCAD82A8C6DAD009F9413 /* Config.Restart.swift */,
 				71F778D52A72187000C9C5C4 /* Config.Update.swift */,
 			);
 			path = Reducers;
@@ -2548,6 +2588,7 @@
 				71B7A1D92A68E2C7003E6D4D /* Feed.HeaderMenuView.swift in Sources */,
 				71A28E02295233A300EAE8EE /* Brand.swift in Sources */,
 				710283B12A2A54C300010877 /* ValueSliderStyleConfiguration.swift in Sources */,
+				716CCB052A8CDAC4009F9413 /* SheetHostingController.swift in Sources */,
 				71A4A11F2A61C41000689DF2 /* AccountService.swift in Sources */,
 				710283BF2A2A54C300010877 /* ValueTrackConfiguration.swift in Sources */,
 				71DF107F28CC697600559DBC /* ProgressContent.swift in Sources */,
@@ -2572,6 +2613,7 @@
 				71C69E242A70469900B54AD6 /* Search+View.swift in Sources */,
 				710283BD2A2A54C300010877 /* EnviromnentValues+ValueTrackConfiguration.swift in Sources */,
 				71F778C52A71ABAC00C9C5C4 /* CensorView.swift in Sources */,
+				716CCADC2A8CA28E009F9413 /* Loom+Center.swift in Sources */,
 				71F042282A6A3AD700788CDC /* Write+Center.swift in Sources */,
 				713129B52A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */,
 				7166E9EB2A751441004F88D7 /* UserInfo.swift in Sources */,
@@ -2591,6 +2633,7 @@
 				71B7A1F12A691470003E6D4D /* ShinyView.swift in Sources */,
 				717090A92A7ED7DC009F1FB7 /* MD5.swift in Sources */,
 				710283972A2A54C300010877 /* AnyPointSliderStyle.swift in Sources */,
+				716CCB032A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */,
 				710283832A2A54C300010877 /* RangeSlider.swift in Sources */,
 				71FCDD002A758AEF000A6309 /* ProfilePickerView.swift in Sources */,
 				710283C72A2A54C300010877 /* DefaultVerticalValueView.swift in Sources */,
@@ -2599,7 +2642,6 @@
 				71899E362A89528C0073158F /* LoomService+Center.swift in Sources */,
 				715826782A881DD8000E4B49 /* ViewingContext.swift in Sources */,
 				71A4A1142A61C39600689DF2 /* Bookmark+View.swift in Sources */,
-				71C69E4E2A7063EB00B54AD6 /* Search.CollectionView.swift in Sources */,
 				71F042262A6A3AD700788CDC /* Write+View.swift in Sources */,
 				71C5FF682A64688B00F99A84 /* Drawer+Modifiers.swift in Sources */,
 				717C8FB82A6FCBAD00DF6037 /* Feed.CommunityInfoView.swift in Sources */,
@@ -2654,6 +2696,7 @@
 				710BEAA52A86E87B0075A141 /* SortType.swift in Sources */,
 				710BEAA22A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift in Sources */,
 				71FCDD102A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
+				716CCB092A8CDAC4009F9413 /* AdaptiveDelegate.swift in Sources */,
 				71A28D9A295231E600EAE8EE /* Array.swift in Sources */,
 				71DF107728CC697600559DBC /* NumberFormatter.swift in Sources */,
 				71C9F9072A60B9C10089D7EA /* Config.Boot.swift in Sources */,
@@ -2679,6 +2722,7 @@
 				7158267B2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */,
 				71F778CF2A71C99900C9C5C4 /* Profile.TitleBarView.swift in Sources */,
 				717090E92A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
+				716CCAFD2A8CDAC4009F9413 /* SheeExtensions.swift in Sources */,
 				710283C12A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
 				71A4A1322A6352CA00689DF2 /* CGFloat.swift in Sources */,
 				711D392F2A84A96200CF2DB2 /* DebugComponent.swift in Sources */,
@@ -2716,17 +2760,19 @@
 				71C9F8D62A60B7C10089D7EA /* Feed+Center.swift in Sources */,
 				7197FB1B2964B4C0005EBBA4 /* GraniteSheetManager.swift in Sources */,
 				71C69E262A70469900B54AD6 /* Search.swift in Sources */,
-				71899E292A8952100073158F /* Loom+Center.swift in Sources */,
 				71622E9F2A6E5796006233F3 /* Reply.swift in Sources */,
 				714FA06229FF11E1002E4A7C /* InfoIconView.swift in Sources */,
 				710283CF2A2A54C400010877 /* AccentColor.swift in Sources */,
 				71FBA7F9296D16110090B630 /* GranitePagingView.swift in Sources */,
 				714B48782A816CF900AC6199 /* Logger.swift in Sources */,
+				716CCAF92A8CDAC4009F9413 /* SheetModifier.swift in Sources */,
+				716CCAFF2A8CDAC4009F9413 /* SheetProperties.swift in Sources */,
 				71622E9D2A6E5796006233F3 /* Reply+Center.swift in Sources */,
 				7166E9E22A74A2CE004F88D7 /* Comment.swift in Sources */,
 				71C9F91A2A60BFEA0089D7EA /* ContentService+Center.swift in Sources */,
 				710283A72A2A54C300010877 /* EnvironmentValues+RangeTrackConfiguration.swift in Sources */,
 				71899E3A2A8952E00073158F /* LoomManifest.swift in Sources */,
+				716CCB072A8CDAC4009F9413 /* SheetPresenterController.swift in Sources */,
 				716157D92A85C29500449EE4 /* WebView.swift in Sources */,
 				7102837D2A2A54C300010877 /* PointTrackConfiguration.swift in Sources */,
 				710283AB2A2A54C300010877 /* ValueSlider.swift in Sources */,
@@ -2753,7 +2799,6 @@
 				710283952A2A54C300010877 /* EnvironmentValues+PointSliderStyle.swift in Sources */,
 				717E613328A0D69B009A2B1A /* Home._.swift in Sources */,
 				7197FB112964B4C0005EBBA4 /* GraniteToastViewStyle.swift in Sources */,
-				7197FB1F2964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */,
 				71DF107928CC697600559DBC /* Outcome.swift in Sources */,
 				711B3FD92885D4F000F3080D /* Home+Center.swift in Sources */,
 				71CB6C382A6B81E500084ECC /* Write.Set.swift in Sources */,
@@ -2765,6 +2810,7 @@
 				71F778BC2A71A95300C9C5C4 /* SfSafariView.swift in Sources */,
 				71C9F8EE2A60B7F40089D7EA /* Settings+View.swift in Sources */,
 				71C69E442A70515F00B54AD6 /* SearchConductor.swift in Sources */,
+				716CCB012A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */,
 				71C9F9362A6116B20089D7EA /* ContentService.Boot.swift in Sources */,
 				71FCDD0D2A75EC69000A6309 /* Feed.Vertical.swift in Sources */,
 				717090A72A7ED7DC009F1FB7 /* Lock.swift in Sources */,
@@ -2807,6 +2853,7 @@
 				717090EE2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
 				710283CD2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
+				716CCAD92A8C6DAD009F9413 /* Config.Restart.swift in Sources */,
 				710283A32A2A54C300010877 /* HorizontalRangeTrack.swift in Sources */,
 				7197FB132964B4C0005EBBA4 /* GraniteToastViewEvent.swift in Sources */,
 				71C69E542A70747E00B54AD6 /* CommunityCardView.swift in Sources */,
@@ -2845,7 +2892,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7197FB202964B4C0005EBBA4 /* GraniteSheet.View.swift in Sources */,
 				71C69E232A70469900B54AD6 /* Search+Center.swift in Sources */,
 				7197FB282964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71A4A1202A61C41000689DF2 /* AccountService.swift in Sources */,
@@ -2935,6 +2981,7 @@
 				7102839E2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71FBA800296D16110090B630 /* GraniteScrollViewStyle.swift in Sources */,
 				71F0420A2A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */,
+				716CCB042A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */,
 				71CB6C392A6B823D00084ECC /* Write.Set.swift in Sources */,
 				71F778B62A719D4400C9C5C4 /* HeaderCardAvatarView.swift in Sources */,
 				71DF107628CC697600559DBC /* Style.swift in Sources */,
@@ -2942,6 +2989,7 @@
 				71F0421E2A6A3AD100788CDC /* Globe.swift in Sources */,
 				71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71CB6C342A6B742200084ECC /* Write.Import.swift in Sources */,
+				716CCAFE2A8CDAC4009F9413 /* SheeExtensions.swift in Sources */,
 				710BEAA02A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */,
 				710283B42A2A54C300010877 /* AnyValueSliderStyle.swift in Sources */,
 				7197FB182964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,
@@ -2951,7 +2999,9 @@
 				71B7A1DA2A68E2C7003E6D4D /* Feed.HeaderMenuView.swift in Sources */,
 				710283C82A2A54C300010877 /* DefaultVerticalValueView.swift in Sources */,
 				717090EC2A7EEF0B009F1FB7 /* LayoutService+Center.swift in Sources */,
+				716CCB002A8CDAC4009F9413 /* SheetProperties.swift in Sources */,
 				7166E9E32A74A2CE004F88D7 /* Comment.swift in Sources */,
+				716CCADA2A8C6DAD009F9413 /* Config.Restart.swift in Sources */,
 				71A4A1332A6352CA00689DF2 /* CGFloat.swift in Sources */,
 				710283CC2A2A54C300010877 /* DefaultHorizontalValueView.swift in Sources */,
 				71B7A1F02A691470003E6D4D /* Gradient.swift in Sources */,
@@ -3009,8 +3059,10 @@
 				71C9F8ED2A60B7F40089D7EA /* Settings+Center.swift in Sources */,
 				7145EF1A28D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */,
 				710283A02A2A54C300010877 /* PointSlider.swift in Sources */,
+				716CCB062A8CDAC4009F9413 /* SheetHostingController.swift in Sources */,
 				71B7A1F42A691470003E6D4D /* MotionManager.swift in Sources */,
 				717C8FB92A6FCD8B00DF6037 /* Feed.CommunityInfoView.swift in Sources */,
+				716CCADD2A8CA28E009F9413 /* Loom+Center.swift in Sources */,
 				71F778D32A71CE7200C9C5C4 /* ProfileSettingsView.swift in Sources */,
 				71EAF47C2A7DA3320034FCB9 /* ExplorerService.swift in Sources */,
 				717C8FB62A6F9F4000DF6037 /* Pager.swift in Sources */,
@@ -3029,13 +3081,14 @@
 				710283862A2A54C300010877 /* RangeSliderStyle.swift in Sources */,
 				7197FB1A2964B4C0005EBBA4 /* GraniteSheetContainerView.swift in Sources */,
 				71FCDD072A759EBF000A6309 /* BannerView.swift in Sources */,
+				716CCB0A2A8CDAC4009F9413 /* AdaptiveDelegate.swift in Sources */,
 				71899E3B2A8952E00073158F /* LoomManifest.swift in Sources */,
+				716CCB082A8CDAC4009F9413 /* SheetPresenterController.swift in Sources */,
 				71D028012A6F1AD400EA781A /* AccountService.Profile.swift in Sources */,
 				71B21B822A6C791E005B3BFB /* GraniteStandardModalView.swift in Sources */,
 				71F778D72A72187000C9C5C4 /* Config.Update.swift in Sources */,
 				71C9F9012A60B9460089D7EA /* ConfigService+Center.swift in Sources */,
 				71622E912A6E3DED006233F3 /* AdaptsToKeyboard.swift in Sources */,
-				71899E2A2A8952100073158F /* Loom+Center.swift in Sources */,
 				7197FB162964B4C0005EBBA4 /* GraniteModalContainerView.swift in Sources */,
 				71C9F8E72A60B7E10089D7EA /* Profile+View.swift in Sources */,
 				710283CE2A2A54C300010877 /* DefaultThumb.swift in Sources */,
@@ -3084,7 +3137,6 @@
 				71BEA9C828E3D95B00B58933 /* String.swift in Sources */,
 				71C9F9312A6107D20089D7EA /* HeaderView.swift in Sources */,
 				71E5F3C02A7320EE00299558 /* ScrollView+Overflow.swift in Sources */,
-				71C69E4F2A7063EB00B54AD6 /* Search.CollectionView.swift in Sources */,
 				71F778CD2A71C5EA00C9C5C4 /* Profile.HeaderView.swift in Sources */,
 				71C69E582A70DC1400B54AD6 /* SearchScrollView.swift in Sources */,
 				712427B92A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
@@ -3094,6 +3146,8 @@
 				716157E02A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */,
 				715826802A886752000E4B49 /* Marble.swift in Sources */,
 				71FCDD112A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
+				716CCB022A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */,
+				716CCAFA2A8CDAC4009F9413 /* SheetModifier.swift in Sources */,
 				7197FB1E2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
 				71C8BE762A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
 				71C8BE732A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */,
@@ -3325,7 +3379,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3361,7 +3415,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3400,7 +3454,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3430,7 +3484,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

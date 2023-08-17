@@ -14,7 +14,7 @@ import Nuke
 import NukeUI
 
 struct PostCardView: View {
-    @Environment(\.graniteEvent) var interact
+    @Environment(\.graniteEvent) var interact //account.center.interact
     @Environment(\.pagerMetadata) var contentMetadata
     
     @GraniteAction<PostView> var showContent
@@ -129,6 +129,9 @@ struct PostCardView: View {
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
+                        .attach({
+                            interact?.send(AccountService.Interact.Meta(intent: .editPost(self.model)))
+                        }, at: \.edit)
                         .graniteEvent(interact)
                         
                         content
@@ -242,6 +245,7 @@ extension PostCardView {
                     .padding(.bottom, .layer2)
             }
             
+            //TODO: reusable
             if let contentMetadata {
                 ContentMetadataView(metadata: contentMetadata, urlToOpen: model.postURL)
                     .attach({

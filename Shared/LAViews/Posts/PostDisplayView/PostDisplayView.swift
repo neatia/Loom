@@ -20,7 +20,7 @@ struct PostDisplayView: View {
     @Relay var config: ConfigService
     @Relay var modal: ModalService
     
-    let model: PostView
+    @State var model: PostView
     var style: FeedStyle = .style2
     
     @State var showDrawer: Bool = false
@@ -65,6 +65,18 @@ struct PostDisplayView: View {
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
+                .attach({
+                    modal.presentSheet {
+                        Write(postView: model)
+                            .attach({ updatedModel in
+                                DispatchQueue.main.async {
+                                    self.model = updatedModel
+                                    self.modal.dismissSheet()
+                                }
+                            }, at: \.updatedPost)
+                            .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
+                    }
+                }, at: \.edit)
                 .padding(.horizontal, .layer3)
                 .padding(.bottom, .layer4)
 

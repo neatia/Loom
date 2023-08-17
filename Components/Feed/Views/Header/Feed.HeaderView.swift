@@ -93,7 +93,7 @@ extension Feed {
                     Color.background.opacity(0.75)
                         .cornerRadius(4)
                 }
-                .padding(.trailing, Device.isExpandedLayout ? 0 : .layer2)
+                .padding(.trailing, Device.isExpandedLayout ? 0 : .layer3)
             } else {
                 if Device.isExpandedLayout {
                     ProgressView()
@@ -113,7 +113,7 @@ extension Feed {
                             Color.background.opacity(0.75)
                                 .cornerRadius(6)
                         }
-                        .padding(.trailing, .layer2)
+                        .padding(.trailing, .layer3)
                 }
             }
         }

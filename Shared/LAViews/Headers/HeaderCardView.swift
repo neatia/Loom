@@ -16,9 +16,12 @@ import Combine
 struct HeaderCardView: View {
     @Environment(\.graniteEvent) var interact
     
+    @Relay var layout: LayoutService
+    
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
+    @GraniteAction<Void> var edit
     
     @State var enableRoute: Bool = false
     @State var enablePostViewRoute: Bool = false
@@ -36,7 +39,7 @@ struct HeaderCardView: View {
     var shouldRoutePost: Bool = false
     
     let person: Person?
-    let postView: PostView?
+    @State var postView: PostView?
     let commentView: CommentView?
     
     let headline: String
@@ -82,13 +85,14 @@ struct HeaderCardView: View {
         
         self.badge = badge ?? .community(model.community.name)
         
-        self.postView = model
+        self._postView = .init(initialValue: model)
         
         self.isCompact = isCompact
         
         self.location = model.post.location ?? .base
         
         Colors.update(model.community.name)
+        
     }
     
     init(_ model: CommentView,
@@ -114,15 +118,7 @@ struct HeaderCardView: View {
         self.shouldRouteCommunity = shouldRouteCommunity
         self.shouldRoutePost = shouldRoutePost
         
-        self.badge = badge ?? .none//((model.creator.domain != nil && model.creator.local == false) ? .host(model.creator.domain!) : .none)//.community(model.community.name)
-        //Colors.update(model.creator.domain ?? model.community.name)
-        
-        switch badge {
-        case .post(let postView):
-            self.postView = postView
-        default:
-            self.postView = nil
-        }
+        self.badge = badge ?? .none
         
         self.isCompact = isCompact
         
@@ -157,13 +153,18 @@ struct HeaderCardView: View {
             if isCompact {
                 VStack(alignment: .trailing, spacing: 0) {
                     PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                    enablePostRoute: shouldRoutePost ? $enablePostViewRoute : .constant(false),
                                     community: shouldRouteCommunity ? community : nil,
                                     postView: shouldRoutePost ? postView : nil,
                                     person: person,
                                     bookmarkKind: bookmarkKind,
                                     isCompact: isCompact)
-                    .graniteEvent(interact)
+                        .attach({
+                            self.fetchPostView()
+                        }, at: \.goToPost)
+                        .attach({
+                            edit.perform()
+                        }, at: \.edit)
+                        .graniteEvent(interact)
                     
                     if let subtitle {
                         Text(subtitle)
@@ -187,19 +188,52 @@ struct HeaderCardView: View {
                 }
                 
                 PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                enablePostRoute: shouldRoutePost ? $enablePostViewRoute : .constant(false),
                                 community: shouldRouteCommunity ? community : nil,
-                                postView: shouldRoutePost ? postView : nil,
+                                postView: postView,
                                 person: person,
                                 bookmarkKind: bookmarkKind)
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
+                .attach({
+                    self.fetchPostView()
+                }, at: \.goToPost)
+                .attach({
+                    edit.perform()
+                }, at: \.edit)
                 .graniteEvent(interact)
             }
-            
-            
         }
         .offset(y: -4)//based on badge's vertical padding + text container of header (.headline at the time)
+    }
+    
+    func fetchPostView() {
+        if let postView {
+            self.route(postView)
+            return
+        }
+        
+        guard let commentView else { return }
+        
+        Task.detached { @MainActor in
+            guard let postView = await Lemmy.post(commentView.post.id, comment: commentView.comment) else {
+                return
+            }
+            
+            self.postView = postView
+            
+            DispatchQueue.main.async {
+                self.route(postView)
+            }
+        }
+    }
+    
+    func route(_ postView: PostView) {
+        if Device.isExpandedLayout {
+            self.layout._state.feedContext.wrappedValue = .viewPost(postView)
+        } else {
+            self.postView = postView
+            self.enablePostViewRoute = true
+        }
     }
 }

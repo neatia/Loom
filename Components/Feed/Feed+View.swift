@@ -2,6 +2,7 @@ import Granite
 import GraniteUI
 import SwiftUI
 import LemmyKit
+import Nuke
 
 extension Feed: View {
     var safeAreaTop: CGFloat {
@@ -29,6 +30,30 @@ extension Feed: View {
             communityInfoView
         })
         .background(Color.background)
+        .onAppear {
+            if content.state.lastVersionUpdateNotice != Device.appVersion {
+                modal.presentSheet {
+                    Group {
+                        if let url = URL(string: "https://gateway.ipfs.io/ipfs/QmZmCEbSm1GRBL8xfmSyAiEk8fu6UFhgiFf8w8pcMAWwwM") {
+                            
+                            PostContentView(url,
+                                            fullPage: Device.isMacOS)
+                                .frame(width: Device.isMacOS ? 600 : nil,
+                                       height: Device.isMacOS ? 500 : nil)
+                                .onAppear {
+                                    
+                                    content._state.lastVersionUpdateNotice.wrappedValue = Device.appVersion ?? ""
+                                }
+                        } else {
+                            EmptyView()
+                        }
+                    }
+                }
+                
+                LoomLog("\(Device.appVersion ?? "unknown app version")", level: .debug)
+                
+            }
+        }
         .task {
             guard pager.isEmpty else { return }
             
@@ -55,6 +80,10 @@ extension Feed: View {
                     
                     return posts
                 }
+            }
+            
+            pager.onReset {
+                //Nuke.ImageCache.shared.removeAll()
             }
             
             if let community = state.community {

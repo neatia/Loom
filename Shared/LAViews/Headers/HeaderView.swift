@@ -36,6 +36,7 @@ struct HeaderView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
+    @GraniteAction<Void> var edit
     
     @State var enableRoute: Bool = false
     @State var enablePostViewRoute: Bool = false
@@ -244,7 +245,7 @@ struct HeaderView: View {
             
             if showPostActions {
                 PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                enablePostRoute: shouldRoutePost ? $enablePostViewRoute : .constant(false),
+                                shouldRouteToPost: false,
                                 community: shouldRouteCommunity ? community : nil,
                                 postView: shouldRoutePost ? postView : nil,
                                 person: person,
@@ -252,6 +253,9 @@ struct HeaderView: View {
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
+                .attach({
+                    edit.perform()
+                }, at: \.edit)
             }
         }
     }

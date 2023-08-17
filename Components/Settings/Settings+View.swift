@@ -69,7 +69,7 @@ extension Settings: View {
                     HStack {
                         Group {
                             //TODO: Localize
-                            Text("Marbler")
+                            Text("Marble")
                                 .font(.title2.bold())
                         }
                         //TODO: Localize
@@ -82,6 +82,7 @@ extension Settings: View {
                     
                     Divider()
                         .padding(.bottom, .layer2)
+                        .padding(.leading, .layer4)
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {

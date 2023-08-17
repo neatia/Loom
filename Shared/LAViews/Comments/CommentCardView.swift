@@ -11,15 +11,16 @@ struct CommentCardView: View {
     
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
+    @GraniteAction<Void> var edit
     
     @Relay var config: ConfigService
     
     @State var model: CommentView
-    var postView: PostView? = nil
+    @State var postView: PostView? = nil
     
     //TODO: env. props
     var shouldRouteCommunity: Bool = true
-    var shouldLinkToPost: Bool = false
+    var shouldLinkToPost: Bool = true
     var parentModel: CommentView? = nil
     var isInline: Bool = false
     
@@ -72,10 +73,18 @@ struct CommentCardView: View {
                 HStack(spacing: .layer3) {
                     HeaderCardAvatarView(model, postView: postView, showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
-                        HeaderCardView(model, badge: shouldLinkToPost ? (postView == nil ? nil : .post(postView!)) : nil)
+                        HeaderCardView(model,
+                                       shouldRoutePost: self.shouldLinkToPost)
                             .attach({ community in
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
+                            .attach({
+                                if let interact {
+                                    interact.send(AccountService.Interact.Meta(intent: .editComment(self.model)))
+                                } else {
+                                    edit.perform()
+                                }
+                            }, at: \.edit)
                             .graniteEvent(interact)
                         content
                     }

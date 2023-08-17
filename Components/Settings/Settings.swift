@@ -23,4 +23,5 @@ struct Settings: GraniteComponent {
                 }
             }
     }
+    
 }

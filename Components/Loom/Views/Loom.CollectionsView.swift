@@ -22,8 +22,7 @@ struct LoomCollectionsView: View {
     
     
     var body: some View {
-        GraniteStandardModalView(maxHeight: 600,
-                                 showBG: true,
+        GraniteStandardModalView(showBG: true,
                                  alternateBG: true,
                                  fullWidth: true,
                                  drawerMode: true) {
@@ -94,7 +93,7 @@ struct LoomCollectionsView: View {
                             }
                         }
                     }
-                    .frame(minHeight: manifests.count > 1 ? 400 : nil)
+                    .frame(minHeight: manifests.count > 1 ? 400 : 240)
                 } else {
                     Spacer()
                 }

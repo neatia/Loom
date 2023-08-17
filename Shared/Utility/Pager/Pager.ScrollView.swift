@@ -14,13 +14,9 @@ import GraniteUI
 struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content: View>: View {
     @EnvironmentObject private var pager: Pager<Model>
     
-    #if os(macOS)
     var currentItems: [Model] {
         pager.currentItems
     }
-    #else
-    @State private var currentItems: [Model] = []
-    #endif
     
     let cache: LazyScrollViewCache<AnyView> = .init()
     
@@ -101,13 +97,16 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 }
             }
         }
-        .task {
-            #if os(iOS)
-            pager.getItems { items in
-                self.currentItems = items
-            }
-            #endif
-        }
+//        .onAppear {
+//            /*
+//             To avoid @published redraws
+//             */
+//            #if os(iOS)
+//            pager.getItems { items in
+//                self.currentItems = items
+//            }
+//            #endif
+//        }
     }
     
     var normalScrollView: some View {

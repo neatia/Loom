@@ -5,6 +5,11 @@ import LemmyKit
 extension Write {
     struct Center: GraniteCenter {
         struct State: GraniteState {
+            var isEditing: Bool {
+                editingPostView != nil
+            }
+            var editingPostView: PostView? = nil
+            
             var title: String = ""
             var content: String = ""
             

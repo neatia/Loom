@@ -24,8 +24,9 @@ struct Feed: GraniteComponent {
     
     init(_ community: Community? = nil) {
         _center = .init(.init(community: community, location: community?.location ?? .base, peerLocation: community?.location?.isPeer == true ? community?.location : nil))
-        content.silence()
         
+        content.preload()
+        content.silence(viewUpdatesOnly: true)
         loom.silence(viewUpdatesOnly: true)
     }
 }

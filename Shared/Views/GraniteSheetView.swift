@@ -10,6 +10,11 @@ import Granite
 import GraniteUI
 import SwiftUI
 
+/*
+ TODO: Remove in favor of GraniteStandardModalView?
+ 
+ */
+
 struct GraniteSheetView<Content: View>: View {
     var title: LocalizedStringKey?
     let height: CGFloat

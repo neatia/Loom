@@ -81,7 +81,7 @@ struct ProfilePickerView: View {
                 
                 Spacer()
             }
-            .frame(height: 36)
+            .frame(height: 40)
             .padding(.bottom, .layer4)
             .padding(.leading, .layer4)
             .padding(.trailing, .layer4)

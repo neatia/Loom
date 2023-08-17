@@ -60,6 +60,7 @@ struct LoomCreateView: View {
                         .foregroundColor(.red.opacity(0.8))
                         .padding(.bottom, .layer4)
                 }
+                
                 HStack {
                     Button {
                         GraniteHaptic.light.invoke()

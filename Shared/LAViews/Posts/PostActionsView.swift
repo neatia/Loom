@@ -13,10 +13,13 @@ import LemmyKit
 
 struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
+    @GraniteAction<Void> var goToPost
+    @GraniteAction<Void> var edit
     @Environment(\.graniteEvent) var interact
     
     @Binding var enableCommunityRoute: Bool
-    @Binding var enablePostRoute: Bool
+    
+    var shouldRouteToPost: Bool = true
     
     var community: Community?
     var postView: PostView?
@@ -30,7 +33,6 @@ struct PostActionsView: View {
     @Relay var bookmark: BookmarkService
     @Relay var config: ConfigService
     @Relay var content: ContentService
-    @Relay var layout: LayoutService
     
     var modelIsRemoved: Bool {
         switch bookmarkKind {
@@ -64,15 +66,10 @@ struct PostActionsView: View {
                 .buttonStyle(PlainButtonStyle())
             }
             
-            if postView != nil {
+            if shouldRouteToPost {
                 Button {
                     GraniteHaptic.light.invoke()
-                    if Device.isExpandedLayout {
-                        guard let postView else { return }
-                        layout._state.feedContext.wrappedValue = .viewPost(postView)
-                    } else {
-                        enablePostRoute = true
-                    }
+                    goToPost.perform()
                 } label: {
                     Text("POST_ACTIONS_GO_TO_POST")
                     Image(systemName: "arrow.right.circle")
@@ -127,6 +124,19 @@ struct PostActionsView: View {
             }
             .buttonStyle(PlainButtonStyle())
             #endif
+            
+            if person?.isMe == true {
+                Divider()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    edit.perform()
+                } label: {
+                    Text("MISC_EDIT")
+                    Image(systemName: "square.and.pencil")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
             
             Divider()
             

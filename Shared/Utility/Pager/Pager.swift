@@ -58,11 +58,7 @@ class Pager<Model: Pageable>: ObservableObject {
     var itemMetadatas: [String: PageableMetadata] = [:]
     
     //main data source
-    #if os(macOS)
     @Published var currentItems: [Model] = []
-    #else
-    var currentItems: [Model] = []
-    #endif
     
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
@@ -87,9 +83,10 @@ class Pager<Model: Pageable>: ObservableObject {
     private var rlProcessorTask: Task<Void, Error>? = nil
     
     //handlers
-    private var handler: ((Int?) async -> [Model])?
+    private var handler: ((Int?) async -> [Model])?//fetch
     private var progressHandler: ((CGFloat) -> Void)?
     private var currentItemsHandler: (([Model]) -> Void)?
+    private var resetHandler: (() -> Void)?
     
     var enableAuxiliaryLoaders: Bool = false
     
@@ -122,7 +119,13 @@ class Pager<Model: Pageable>: ObservableObject {
     
     func refresh(_ handler: GraniteScrollView.CompletionHandler?) {
         self.onRefreshHandler = handler
-        self.reset()
+        self.fetch(force: true)
+    }
+    
+    @discardableResult
+    func onReset(_ commit: @escaping (() -> Void)) -> Self {
+        self.resetHandler = commit
+        return self
     }
     
     func fetch(force: Bool = false) {
@@ -179,6 +182,21 @@ class Pager<Model: Pageable>: ObservableObject {
             } else {
                 let count = CGFloat(thumbURLs.count)
                 self?.rlProcessorTask?.cancel()
+                
+                /*
+                 TODO: revise importance
+                 
+                 PROs:
+                 - more options for a rich-link preview
+                   - goes past og:meta headers
+                   - feeds feel more "alive"
+                 
+                 CONs:
+                 - requires main thread
+                   - handled per view is horrible scrolling performance
+                   - queued like this is a slow loading experience
+                 
+                 */
                 self?.rlProcessorTask = Task(priority: .userInitiated) { [weak self] in
                     var completed: CGFloat = 0.0
                     for (id, url) in thumbURLs {
@@ -216,7 +234,7 @@ class Pager<Model: Pageable>: ObservableObject {
                 }
 
                 if models.isEmpty {
-                    //self?.hasMore = false
+                    self?.hasMore = false
                 }
                 
                 self?.lastItem = lastModel
@@ -364,12 +382,13 @@ extension Pager {
 //MARK: user-interactive modifiers
 extension Pager{
     func reset() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.clear()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            self?.clear()
+            self?.resetHandler?()
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.fetch(force: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            self?.fetch(force: true)
         }
     }
     

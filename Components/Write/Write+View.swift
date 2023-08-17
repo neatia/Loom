@@ -6,8 +6,10 @@ import LemmyKit
 extension Write: View {
     public var view: some View {
         VStack(spacing: 0) {
-            GraniteRoute(_state.showPost) {
-                PostDisplayView(model: state.createdPostView ?? .mock)
+            if state.isEditing == false {
+                GraniteRoute(_state.showPost) {
+                    PostDisplayView(model: state.createdPostView ?? .mock)
+                }
             }
             
             HStack(spacing: .layer3) {
@@ -100,30 +102,32 @@ extension Write: View {
                     #endif
                 } else {
                     
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        setCommunity()
-                    } label : {
-                        if let communityView = state.postCommunity {
-                            Text(communityView.community.name)
-                                .font(.headline.bold())
-                                .offset(x: 0, y: -1)
-                        } else if Device.isMacOS {
-                            Text("TITLE_SET_COMMUNITY")
-                                .font(.headline.bold())
-                                .offset(x: 0, y: -1)
+                    if state.isPosting == false && state.isEditing == false {
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            setCommunity()
+                        } label : {
+                            if let communityView = state.postCommunity {
+                                Text(communityView.community.name)
+                                    .font(.headline.bold())
+                                    .offset(x: 0, y: -1)
+                            } else if Device.isMacOS {
+                                Text("TITLE_SET_COMMUNITY")
+                                    .font(.headline.bold())
+                                    .offset(x: 0, y: -1)
+                            }
+                            if let communityView = state.postCommunity {
+                                AvatarView(communityView.iconURL, size: .mini, isCommunity: true)
+                            } else {
+                                Image(systemName: "globe")
+                                    .font(.title3)
+                            }
                         }
-                        if let communityView = state.postCommunity {
-                            AvatarView(communityView.iconURL, size: .mini, isCommunity: true)
-                        } else {
-                            Image(systemName: "globe")
-                                .font(.title3)
-                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .foregroundColor(state.postCommunity != nil ? .foreground : .red)
+                        .opacity(0.8)
+                        .fixedSize(horizontal: false, vertical: true)
                     }
-                    .buttonStyle(PlainButtonStyle())
-                    .foregroundColor(state.postCommunity != nil ? .foreground : .red)
-                    .opacity(0.8)
-                    .fixedSize(horizontal: false, vertical: true)
                     
                     Button {
                         guard state.isPosting == false else {
@@ -134,8 +138,8 @@ extension Write: View {
                         _state.isPosting.wrappedValue = true
                         center.create.send()
                     } label: {
-                        Image(systemName: "paperplane.fill")
-                            .font(.headline)
+                        Image(systemName: state.isEditing ? "sdcard.fill" : "paperplane.fill")
+                            .font(state.isEditing ? .title3 : .headline)
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -202,7 +206,7 @@ extension Write: View {
                     .padding(.bottom, .layer2)
             }
             
-            if isTabSelected == true {
+            if isTabSelected == true || state.isEditing {
                 WriteView(kind: self.kind,
                           title: _state.title,
                           content: _state.content)
@@ -211,6 +215,7 @@ extension Write: View {
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
         .addGraniteModal(modal.modalManager)
+        .background(Color.background)
         .onAppear {
             #if os(iOS)
             UITextView.appearance().backgroundColor = .clear

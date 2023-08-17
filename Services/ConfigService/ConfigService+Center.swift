@@ -9,6 +9,7 @@ extension ConfigService {
         struct State: GraniteState {
             var config: InstanceConfig = .default
             
+            
             //Feed
             var linkPreviewMetaData: Bool = false
             
@@ -50,7 +51,7 @@ extension ConfigService {
         @Event(debounce: 0.25) var restart: Restart.Reducer
         @Event(debounce: 0.25) var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0021", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0022", autoSave: true, preload: true) public var state: State
     }
     
     struct Preferences {

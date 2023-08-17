@@ -85,6 +85,7 @@ struct AccountModifyMeta: StandardMotify {
 }
 
 struct ProfileSettingsView: View {
+    @Environment(\.presentationMode) var presentationMode
     
     @Relay var account: AccountService
     @Relay var config: ConfigService
@@ -159,6 +160,7 @@ struct ProfileSettingsView: View {
                                 sortType: config.state.sortType,
                                 listingType: config.state.listingType)
         
+        config.silence(viewUpdatesOnly: true)
         #if os(iOS)
         UITextView.appearance().backgroundColor = .clear
         #else
@@ -193,6 +195,7 @@ struct ProfileSettingsView: View {
                                 Button {
                                     GraniteHaptic.light.invoke()
                                     config.center.update.send(currentMeta)
+                                    account.center.update.send(currentMeta)
                                     isUpdating = true
                                 } label: {
                                     Text("MISC_UPDATE")
@@ -255,6 +258,7 @@ struct ProfileSettingsView: View {
                             .center
                             .logout
                             .send()
+                        presentationMode.wrappedValue.dismiss()
                     } label: {
                         Text("MISC_LOGOUT")
                             .font(Device.isMacOS ? .title3.bold() : .headline.bold())

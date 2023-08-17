@@ -67,9 +67,9 @@ struct PostContentView: View {
         _contentKind = .init(initialValue: PostContentKind.from(urlString: postView.post.url))
     }
     
-    init(_ url: URL) {
+    init(_ url: URL, fullPage: Bool = true) {
         _contentKind = .init(initialValue: PostContentKind.from(url: url))
-        fullPage = true
+        self.fullPage = fullPage
     }
     
     var body: some View {
