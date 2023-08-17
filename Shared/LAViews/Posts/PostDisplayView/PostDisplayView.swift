@@ -94,7 +94,7 @@ struct PostDisplayView: View {
             PagerScrollView(CommentView.self) {
                 EmptyView()
             } inlineBody: {
-                content
+                contentView
             } content: { comment in
                 CommentCardView(model: comment,
                                 postView: model)
@@ -106,18 +106,32 @@ struct PostDisplayView: View {
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
                     .attach({ (model, update) in
-                        modal.presentSheet {
-                            Reply(kind: .replyComment(model))
-                                .attach({ replyModel in
-                                    update(replyModel)
-                                    
-                                    modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
-                                    
-                                    modal.dismissSheet()
-                                }, at: \.updateComment)
-                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                        DispatchQueue.main.async {
+                            modal.presentSheet {
+                                Reply(kind: .replyComment(model))
+                                    .attach({ replyModel in
+                                        update(replyModel)
+                                        
+                                        modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
+                                        
+                                        modal.dismissSheet()
+                                    }, at: \.updateComment)
+                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                            }
                         }
                     }, at: \.reply)
+                    .attach({ (model, update) in
+                        DispatchQueue.main.async {
+                            modal.presentSheet {
+                                Reply(kind: .editReplyComment(model))
+                                    .attach({ replyModel in
+                                        update(replyModel)
+                                        modal.dismissSheet()
+                                    }, at: \.updateCommentView)
+                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                            }
+                        }
+                    }, at: \.edit)
             }
             .environmentObject(comments)
         }
@@ -146,7 +160,7 @@ struct PostDisplayView: View {
 
 extension PostDisplayView {
     
-    var content: some View {
+    var contentView: some View {
         VStack(alignment: .leading, spacing: 0) {
             if model.hasContent {
                 if model.post.url != nil {

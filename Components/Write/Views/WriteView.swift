@@ -37,7 +37,10 @@ struct WriteView: View {
                     .adaptsToKeyboard()
             case .full:
                 horizontalContent
-            case .replyPost, .replyComment:
+            case .replyPost,
+                    .replyComment,
+                    .editReplyPost,
+                    .editReplyComment:
                 if Device.isExpandedLayout {
                     horizontalContent
                 } else {
@@ -60,7 +63,10 @@ extension WriteView {
         VStack(spacing: 0) {
             
             switch kind {
-            case .replyComment, .replyPost:
+            case .replyComment,
+                    .replyPost,
+                    .editReplyPost,
+                    .editReplyComment:
                 EmptyView()
             default:
                 TextField("MISC_TITLE", text: $title)

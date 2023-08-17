@@ -15,7 +15,7 @@ struct Write: GraniteComponent {
         case compact
         case full
         case replyPost(PostView)
-        case editReplyPost(CommentView)
+        case editReplyPost(CommentView, PostView)
         case replyComment(CommentView)
         case editReplyComment(CommentView)
         

@@ -10,6 +10,7 @@ struct ThreadView: View {
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<Void> var closeDrawer
     @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
     
     let model: CommentView
     var postView: PostView? = nil
@@ -57,6 +58,9 @@ struct ThreadView: View {
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
+                    .attach({ model in
+                        edit.perform(model)
+                    }, at: \.edit)
                     .attach({ model in
                         if isModal {
                             breadCrumbs.append(model)

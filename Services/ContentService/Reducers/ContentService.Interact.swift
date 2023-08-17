@@ -27,6 +27,8 @@ extension ContentService {
             case replyPostSubmit(Comment, PostView)
             case replyComment(CommentView, String)
             case replyCommentSubmit(Comment, CommentView)
+            case editComment(CommentView, PostView?)
+            case editCommentSubmit(CommentView, String)
         }
         
         struct Meta: GranitePayload {
@@ -147,13 +149,29 @@ extension ContentService {
                 
                 broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result, model)))
             case .savePost(let model):
-                let result = await Lemmy.savePost(model.post, save: true)
+                _ = await Lemmy.savePost(model.post, save: true)
             case .unsavePost(let model):
-                let result = await Lemmy.savePost(model.post, save: false)
+                _ = await Lemmy.savePost(model.post, save: false)
             case .saveComment(let model):
-                let result = await Lemmy.saveComment(model.comment, save: true)
+                _ = await Lemmy.saveComment(model.comment, save: true)
             case .unsaveComment(let model):
-                let result = await Lemmy.saveComment(model.comment, save: false)
+                _ = await Lemmy.saveComment(model.comment, save: false)
+                
+            /*
+             TODO: the concept behind using reducers as proxies
+             for broadcasts needs to be revised. Should they be
+             handled outside, directly?
+             
+             */
+            case .editComment:
+                broadcast.send(meta)
+                
+            case .editCommentSubmit(let model, let content):
+                guard let updatedModel = await Lemmy.editComment(model.comment.id, content: content) else {
+                    //TODO: error  toast
+                    return
+                }
+                broadcast.send(Meta(kind: .editCommentSubmit(updatedModel.asView(with: model), content)))
             default:
                 break
             }
