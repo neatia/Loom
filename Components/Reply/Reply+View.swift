@@ -6,32 +6,6 @@ import MarkdownView
 extension Reply: View {
     public var view: some View {
         VStack(alignment: .leading, spacing: 0) {
-//            HStack(spacing: .layer3) {
-//                Button {
-//                    GraniteHaptic.light.invoke()
-//                } label : {
-//                    Image(systemName: "link.badge.plus")
-//                        .font(.title3)
-//                        .foregroundColor(.foreground)
-//                        .scaleEffect(.init(width: -1, height: 1))
-//                }
-//                .buttonStyle(PlainButtonStyle())
-//
-//                Spacer()
-//
-//                Button {
-//                    GraniteHaptic.light.invoke()
-//                } label: {
-//                    Image(systemName: "paperplane.fill")
-//                        .font(.headline)
-//                }
-//                .buttonStyle(PlainButtonStyle())
-//            }
-//            .frame(height: 24)
-//            .padding(.leading, .layer4)
-//            .padding(.trailing, .layer4)
-//            .padding(.bottom, .layer4)
-            
             switch kind {
             case .replyPost(let model):
                 HeaderView(model, showPostActions: false)

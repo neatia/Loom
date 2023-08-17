@@ -29,13 +29,11 @@ struct CommunitySidebarView: View {
         } view: {
             ScrollView(showsIndicators: false) {
                 if let description = community.description {
-                    ScrollView {
-                        MarkdownView(text: description)
-                            .markdownViewRole(.editor)
-                            .padding(.layer3)
-                            .background(Color.tertiaryBackground)
-                            .cornerRadius(8)
-                    }.frame(minHeight: 400, maxHeight: 400)
+                    MarkdownView(text: description)
+                        .markdownViewRole(.editor)
+                        .padding(.layer3)
+                        .background(Color.tertiaryBackground)
+                        .cornerRadius(8)
                 }
                 
                 //TODO: admin list

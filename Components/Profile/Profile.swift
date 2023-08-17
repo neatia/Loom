@@ -41,6 +41,29 @@ struct Profile: GraniteComponent {
                     modal.presentModal(GraniteToastView(response.notification))
                 }
             }
+        
+        account
+            .center
+            .interact
+            .listen(.beam) { value in
+                if let meta = value as? AccountService.Interact.Meta {
+                    switch meta.intent {
+                    case .editPost(let model):
+                        modal.presentSheet {
+                            Write(postView: model)
+                                .attach({ updatedModel in
+                                    DispatchQueue.main.async {
+                                        pager.update(item: .init(commentView: nil, postView: updatedModel, isMention: false, isReply: false))
+                                        self.modal.dismissSheet()
+                                    }
+                                }, at: \.updatedPost)
+                                .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
+                    default:
+                        break
+                    }
+                }
+            }
     }
     
     let isMe: Bool

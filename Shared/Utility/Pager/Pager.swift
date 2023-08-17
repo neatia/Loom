@@ -119,7 +119,7 @@ class Pager<Model: Pageable>: ObservableObject {
     
     func refresh(_ handler: GraniteScrollView.CompletionHandler?) {
         self.onRefreshHandler = handler
-        self.reset()
+        self.fetch(force: true)
     }
     
     @discardableResult

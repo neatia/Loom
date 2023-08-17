@@ -276,8 +276,6 @@ struct ProfileSettingsView: View {
             updateLocalSettings()
         }
         .task {
-            account.preload()
-            
             if offline == false,
                let model {
                 content.preload()

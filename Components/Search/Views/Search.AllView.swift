@@ -123,13 +123,13 @@ struct SearchAllView: View {
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {
-                                ForEach(model.comments) { cModel in
-                                    CommentCardView(model: cModel,
+                                ForEach(model.comments) { commentView in
+                                    CommentCardView(model: commentView,
                                                     viewingContext: .search)
                                     .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
                                     .frame(height: 240)
 
-                                    if cModel.id != model.comments.last?.id {
+                                    if commentView.id != model.comments.last?.id {
 
                                         Divider()
                                             .padding(.horizontal, .layer2)

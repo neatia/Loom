@@ -26,7 +26,7 @@ extension Write {
             
             state.isPosting = false
             
-            guard let community = postCommunity?.community else {
+            guard postCommunity?.community != nil || state.isEditing else {
                 return
             }
             
@@ -46,19 +46,39 @@ extension Write {
                 url = postURL
             }
             
-            let value = await Lemmy.createPost(title,
+            let value: PostView?
+            //TODO: nsfw and languageid options
+            
+            if let id = state.editingPostView?.post.id {
+                value = await Lemmy.editPost(id,
+                                             title: title,
+                                             url: url?.isEmpty == true ? nil : url,
+                                             body: includeBody ? (content + subcontent) : nil)
+                
+                //TODO: edit failed error
+                
+                
+                if let value {
+                    beam.send(ResponseMeta(postView: value))
+                }
+            } else if let community = postCommunity?.community {
+                
+                value = await Lemmy.createPost(title,
                                                content: content,
                                                url: url?.isEmpty == true ? nil : url,
                                                body: includeBody ? (content + subcontent) : nil,
                                                community: community)
-
-            guard let value else {
-                beam.send(StandardNotificationMeta(title: "MISC_ERROR_2", message: "ALERT_CREATE_POST_FAILED \("!"+community.name)", event: .error))
-                return
+                
+                guard let value else {
+                    beam.send(StandardNotificationMeta(title: "MISC_ERROR_2", message: "ALERT_CREATE_POST_FAILED \("!"+community.name)", event: .error))
+                    return
+                }
+                
+                state.createdPostView = value
+                state.showPost = true
+            } else {
+                value = nil
             }
-            
-            state.createdPostView = value
-            state.showPost = true
         }
         
         struct IPFSContent {

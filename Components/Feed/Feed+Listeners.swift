@@ -50,6 +50,17 @@ extension Feed {
                         modal.presentSheet {
                             ReportView(kind: .comment(model))
                         }
+                    case .editPost(let model):
+                        modal.presentSheet {
+                            Write(postView: model)
+                                .attach({ updatedModel in
+                                    DispatchQueue.main.async {
+                                        pager.update(item: updatedModel)
+                                        self.modal.dismissSheet()
+                                    }
+                                }, at: \.updatedPost)
+                                .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
                     default:
                         break
                     }
