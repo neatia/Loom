@@ -11,6 +11,7 @@ struct CommentCardView: View {
     
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
+    @GraniteAction<Void> var edit
     
     @Relay var config: ConfigService
     
@@ -77,6 +78,13 @@ struct CommentCardView: View {
                             .attach({ community in
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
+                            .attach({
+                                if let interact {
+                                    interact.send(AccountService.Interact.Meta(intent: .editComment(self.model)))
+                                } else {
+                                    edit.perform()
+                                }
+                            }, at: \.edit)
                             .graniteEvent(interact)
                         content
                     }

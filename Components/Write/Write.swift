@@ -15,7 +15,18 @@ struct Write: GraniteComponent {
         case compact
         case full
         case replyPost(PostView)
+        case editReplyPost(CommentView)
         case replyComment(CommentView)
+        case editReplyComment(CommentView)
+        
+        var isEditingReply: Bool {
+            switch self {
+            case .editReplyPost, .editReplyComment:
+                return true
+            default:
+                return false
+            }
+        }
     }
     
     var listeners: Void {

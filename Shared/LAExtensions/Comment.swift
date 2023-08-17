@@ -66,6 +66,10 @@ extension Comment {
     func asView(creator: Person, postView: PostView) -> CommentView {
         .init(comment: self, creator: creator, post: postView.post, community: postView.community, counts: .new(commentId: self.id, published: self.published), creator_banned_from_community: postView.creator_banned_from_community, subscribed: postView.subscribed, saved: false, creator_blocked: false)
     }
+    
+    func asView(with model: CommentView) -> CommentView {
+        .init(comment: self, creator: model.creator, post: model.post, community: model.community, counts: model.counts, creator_banned_from_community: model.creator_banned_from_community, subscribed: model.subscribed, saved: model.saved, creator_blocked: model.creator_blocked)
+    }
 }
 
 extension CommentAggregates {

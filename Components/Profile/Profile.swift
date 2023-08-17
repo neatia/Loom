@@ -59,6 +59,17 @@ struct Profile: GraniteComponent {
                                 }, at: \.updatedPost)
                                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
                         }
+                    case .editComment(let model):
+                        modal.presentSheet {
+                            Reply(kind: .editReplyComment(model))
+                                .attach({ updatedModel in
+                                DispatchQueue.main.async {
+                                    pager.update(item: .init(commentView: updatedModel.asView(with: model), postView: nil, isMention: false, isReply: false))
+                                    self.modal.dismissSheet()
+                                }
+                            }, at: \.updateComment)
+                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
                     default:
                         break
                     }

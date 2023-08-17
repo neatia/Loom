@@ -169,6 +169,8 @@ extension AccountService {
                 broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_POST_REPORT_SUCCESS", event: .success), intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
             case .editPost:
                 beam.send(meta)
+            case .editComment:
+                beam.send(meta)
             default:
                 break
             }
