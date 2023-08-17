@@ -21,7 +21,28 @@ struct LoomCreateView: View {
     
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView(title: "New Loom") {
+        GraniteStandardModalView {
+            HStack(spacing: .layer4) {
+                //TODO: localize
+                Text("New Loom")
+                    .font(.title.bold())
+                
+                Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard trimmed.isNotEmpty else {
+                        invalidName = true
+                        return
+                    }
+                    create.perform(trimmed)
+                } label: {
+                    Image(systemName: "checkmark")
+                        .font(.title3)
+                }.buttonStyle(.plain)
+            }
+        } content: {
             VStack(spacing: 0) {
                 //TODO: localize
                 TextField("Name", text: $name)
@@ -49,23 +70,6 @@ struct LoomCreateView: View {
                         .padding(.bottom, .layer4)
                 }
                 
-                HStack {
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard trimmed.isNotEmpty else {
-                            invalidName = true
-                            return
-                        }
-                        create.perform(trimmed)
-                    } label: {
-                        //TODO: localize
-                        Text("Create")
-                            .font(.headline)
-                            .foregroundColor(.foreground)
-                    }
-                    .buttonStyle(.plain)
-                }
                 Spacer()
             }
         }

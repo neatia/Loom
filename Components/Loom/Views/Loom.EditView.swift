@@ -22,7 +22,34 @@ struct LoomEditView: View {
     
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView(title: "Edit Loom") {
+        GraniteStandardModalView {
+            HStack(spacing: .layer4) {
+                //TODO: localize
+                Text("Edit Loom")
+                    .font(.title.bold())
+                
+                Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    
+                    let trimmed = manifest.meta.name.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard trimmed.isNotEmpty else {
+                        invalidName = true
+                        return
+                    }
+                    var mutable = manifest
+                    mutable.communities.removeAll(where: { removeCommunities.contains($0) })
+                    
+                    edit.perform(mutable)
+                    
+                } label: {
+                    Image(systemName: "sdcard.fill")
+                        .font(.title3)
+                }.buttonStyle(.plain)
+            }
+            
+        } content: {
             VStack(spacing: 0) {
                 //TODO: localize
                 TextField("Name", text: $manifest.meta.name)
@@ -33,7 +60,7 @@ struct LoomEditView: View {
                     .font(.title3.bold())
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color.background)
+                            .foregroundColor(Color.tertiaryBackground)
                     )
                     .padding(.bottom, invalidName ? .layer2 : .layer4)
                     .toolbar {
@@ -86,28 +113,6 @@ struct LoomEditView: View {
                     }
                 }
                 .padding(.bottom, .layer2)
-                
-                HStack {
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        let trimmed = manifest.meta.name.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard trimmed.isNotEmpty else {
-                            invalidName = true
-                            return
-                        }
-                        var mutable = manifest
-                        mutable.communities.removeAll(where: { removeCommunities.contains($0) })
-                        edit.perform(mutable)
-                    } label: {
-                        //TODO: localize
-                        Text("Save")
-                            .font(.headline)
-                            .foregroundColor(.foreground)
-                    }
-                    .buttonStyle(.plain)
-                }
-                .padding(.bottom, .layer4)
-                Spacer()
             }
         }
     }

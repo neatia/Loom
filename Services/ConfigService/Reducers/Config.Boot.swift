@@ -44,6 +44,7 @@ extension ConfigService {
             loom.preload()
             loom._state.intent.wrappedValue = .idle
             loom._state.display.wrappedValue = .compact
+            loom._state.activeManifest.wrappedValue = nil
         }
         
         var behavior: GraniteReducerBehavior {

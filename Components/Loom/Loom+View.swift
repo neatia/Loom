@@ -39,6 +39,7 @@ extension Loom: View {
                                             modal.dismissSheet()
                                         }
                                     }, at: \.create)
+                                    .graniteNavigation(backgroundColor: Color.background)
                             }
                             
                         } label: {
@@ -76,6 +77,7 @@ extension Loom: View {
                             service.center.modify.send(LoomService.Modify.Intent.update(manifest))
                             modal.dismissSheet()
                         }, at: \.edit)
+                        .graniteNavigation(backgroundColor: Color.background)
                     }
                 }, at: \.edit)
                 .padding(.layer4)

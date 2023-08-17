@@ -89,5 +89,6 @@ struct LoomCollectionsView: View {
             }
             Spacer()
         }
+        .background(Color.background)
     }
 }

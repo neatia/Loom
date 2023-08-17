@@ -9,5 +9,6 @@ struct Bookmark: GraniteComponent {
     let showHeader: Bool
     init(showHeader: Bool = true) {
         self.showHeader = showHeader
+        service.preload()
     }
 }

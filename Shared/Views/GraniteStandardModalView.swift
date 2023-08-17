@@ -94,7 +94,6 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                     .frame(height: 36)
                     .padding(.bottom, Device.isMacOS ? .layer4 : .layer5)
                     .padding(.horizontal, Device.isMacOS ? .layer4 : .layer5)
-                    .padding(.top, Device.isMacOS ? nil : .layer5)
                     
                     Divider()
                         .padding(.bottom, .layer4)

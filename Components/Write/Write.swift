@@ -9,8 +9,6 @@ struct Write: GraniteComponent {
     
     @GraniteAction<PostView> var updatedPost
     
-    @Environment(\.graniteTabSelected) var isTabSelected
-    
     enum Kind {
         case compact
         case full
