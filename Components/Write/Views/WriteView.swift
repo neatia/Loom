@@ -123,7 +123,10 @@ extension WriteView {
     var verticalContent: some View {
         VStack(spacing: 0) {
             switch kind {
-            case .replyComment, .replyPost:
+            case .replyComment,
+                    .replyPost,
+                    .editReplyPost,
+                    .editReplyComment:
                 EmptyView()
             default:
                 TextField("MISC_TITLE", text: $title)

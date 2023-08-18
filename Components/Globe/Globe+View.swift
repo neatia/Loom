@@ -8,23 +8,7 @@ extension Globe: View {
         VStack(spacing: 0) {
             
             if Device.isExpandedLayout == false {
-                VStack(spacing: 0) {
-                    mainView
-                    switch state.tab {
-                    case .explorer:
-                        EmptyView()
-                    default:
-                        accountsPickerView
-                        
-                        if state.socialViewOptions == 0 {
-                            socialViews
-                                .id(isTabSelected)
-                        } else {
-                            blockedView
-                                .id(isTabSelected)
-                        }
-                    }
-                }
+                mainView
             } else {
                 VStack(spacing: 0) {
                     switch state.tab {
@@ -78,46 +62,6 @@ extension Globe: View {
         .frame(width: state.accountModuleSize, height: state.accountModuleSize)
     }
     
-    var accountsView: some View {
-        ScrollView([.vertical]) {
-            HStack {
-                LazyHGrid(rows: [GridItem(.flexible())],
-                          alignment: .top,
-                          spacing: .layer4) {
-                    
-                    addView
-                    
-                    ForEach(Array(account.state.profiles)) { meta in
-                        
-                        Button {
-                            GraniteHaptic.light.invoke()
-                            
-                            modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
-                                
-                                GraniteAlertAction(title: "MISC_NO")
-                                GraniteAlertAction(title: "MISC_YES") {
-                                    config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
-                                }
-                            })
-                            
-                        } label: {
-                            AccountModuleView(model: meta,
-                                              size: .init(width: state.accountModuleSize, height: state.accountModuleSize),
-                                              isActive: account.state.meta?.id == meta.id)
-                            .id(account.state.meta)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .frame(width: state.accountModuleSize, height: state.accountModuleSize)
-                    }
-                    Spacer()
-                }
-                .padding(.layer4)
-                
-                Spacer()
-            }
-        }
-    }
-    
     var socialViews: some View {
         HStack(spacing: 0) {
             VStack(spacing: 0) {
@@ -165,46 +109,5 @@ extension Globe: View {
                               verticalPadding: 0)
             .graniteEvent(account.center.interact)
         }
-    }
-}
-
-extension Globe {
-    var accountsPickerView: some View {
-        HStack(spacing: .layer4) {
-            Button {
-                guard state.socialViewOptions != 0 else { return }
-                GraniteHaptic.light.invoke()
-                _state.socialViewOptions.wrappedValue = 0
-            } label: {
-                VStack {
-                    Spacer()
-                    Text("TITLE_COMMUNITIES")
-                        .font(state.socialViewOptions == 0 ? .title.bold() : .title2.bold())
-                        .opacity(state.socialViewOptions == 0 ? 1.0 : 0.6)
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-            
-            Button {
-                guard state.socialViewOptions != 1 else { return }
-                GraniteHaptic.light.invoke()
-                _state.socialViewOptions.wrappedValue = 1
-            } label: {
-                VStack {
-                    Spacer()
-                    Text("TITLE_BLOCKED")
-                        .font(state.socialViewOptions == 1 ? .title.bold() : .title2.bold())
-                        .opacity(state.socialViewOptions == 1 ? 1.0 : 0.6)
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-            
-            Spacer()
-        }
-        .frame(height: 36)
-        .padding(.top, ContainerConfig.generalViewTopPadding)
-        .padding(.leading, .layer4)
-        .padding(.trailing, .layer4)
-        .padding(.bottom, .layer3)
     }
 }

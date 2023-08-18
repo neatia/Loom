@@ -28,41 +28,10 @@ extension Settings: View {
             Divider()
             
             ScrollView(showsIndicators: false) {
-                
-//                VStack(alignment: .leading, spacing: 0) {
-//                    Spacer()
-//                    HStack {
-//                        Text("TITLE_FEED")
-//                            .font(.title2.bold())
-//
-//                        Spacer()
-//                    }
-//
-//                    HStack {
-//                        VStack(alignment: .leading, spacing: 0) {
-//                            Toggle(isOn: config._state.linkPreviewMetaData) {
-//                                Text("SETTINGS_FEED_LINK_DETAILS")
-//                                    .font(.headline)
-//                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
-//                            }
-//                        }
-//                        .padding(.vertical, .layer3)
-//
-//
-//                        #if os(macOS)
-//                        Spacer()
-//                        #endif
-//                    }
-//                }
-//                .padding(.top, .layer4)
-//                .padding(.horizontal, .layer4)
-                
-                
-                if isTabSelected == true {
-                    ProfileSettingsView(showProfileSettings: false,
-                                        modal: modal)
+                ProfileSettingsView(showProfileSettings: false,
+                                    offline: true,
+                                    modal: modal)
                     .padding(.top, .layer4)
-                }
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer()

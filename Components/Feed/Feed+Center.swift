@@ -18,12 +18,16 @@ extension Feed {
             var selectedListing: Int = 0
             var listingType: [ListingType] = ListingType.allCases
             
+            var socialViewOptions: Int = 0
+            
             var sortingOrListingChanged: Int {
                 selectedListing + selectedSorting + selectedTimeCategory
             }
             
             var location: FetchType = .base
             var peerLocation: FetchType? = nil
+            
+            var isShowing: Bool = false
             
             //Loom
             var currentLoomManifest: LoomManifest? = nil

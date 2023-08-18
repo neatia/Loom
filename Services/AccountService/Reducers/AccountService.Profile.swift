@@ -26,8 +26,11 @@ extension AccountService {
             
             let username = state.meta?.username
             let host = state.meta?.host
-            guard let auth = LemmyKit.auth else { return }
-            let info = await Lemmy.saveUserSettings(show_nsfw: meta.showNSFW,
+            guard let auth = LemmyKit.auth, let host else { return }
+            
+            let client = Lemmy(apiUrl: host)
+            
+            let info = await client.saveUserSettings(show_nsfw: meta.showNSFW,
                                                     show_scores: meta.showScores,
 //                                                        theme: String? = nil,
                                                     default_sort_type: meta.sortType,
@@ -52,8 +55,7 @@ extension AccountService {
                                                     )
             
             guard let data = info?.jwt?.data(using: .utf8),
-                      let username,
-                      let host else {
+                  let username else {
                 broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_UPDATE_SETTINGS_FAILED", event: .error))
                 return
             }

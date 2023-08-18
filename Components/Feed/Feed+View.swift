@@ -59,12 +59,6 @@ extension Feed: View {
             
             pager.hook { page in
                 
-                if loom.state.display == .expanded {
-                    DispatchQueue.main.async {
-                        loom._state.display.wrappedValue = .compact
-                    }
-                }
-                
                 if isLoom,
                    let manifest = state.currentLoomManifest {
                     return await manifest.fetch(page ?? 0,

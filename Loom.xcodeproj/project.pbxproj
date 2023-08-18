@@ -175,6 +175,12 @@
 		714B48992A8238A400AC6199 /* GlobeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B488D2A8238A400AC6199 /* GlobeView.swift */; };
 		714FA06229FF11E1002E4A7C /* InfoIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FA06129FF11E1002E4A7C /* InfoIconView.swift */; };
 		714FA06329FF11E1002E4A7C /* InfoIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714FA06129FF11E1002E4A7C /* InfoIconView.swift */; };
+		7151511F2A8F6D0B00251978 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7151511E2A8F6D0B00251978 /* SideMenu.swift */; };
+		715151202A8F6D0B00251978 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7151511E2A8F6D0B00251978 /* SideMenu.swift */; };
+		715151222A8F705300251978 /* Globe.AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151212A8F705300251978 /* Globe.AccountsView.swift */; };
+		715151232A8F705300251978 /* Globe.AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151212A8F705300251978 /* Globe.AccountsView.swift */; };
+		715151262A8F720300251978 /* ContentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151252A8F720300251978 /* ContentContext.swift */; };
+		715151272A8F720300251978 /* ContentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151252A8F720300251978 /* ContentContext.swift */; };
 		71539A8B2A7AAD6500B85FB9 /* Settings.SetIPFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */; };
 		71539A8C2A7AAD6500B85FB9 /* Settings.SetIPFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */; };
 		7157976E2A7B833400B7FEC9 /* Granite in Frameworks */ = {isa = PBXBuildFile; productRef = 7157976D2A7B833400B7FEC9 /* Granite */; };
@@ -756,6 +762,10 @@
 		714B488B2A8238A400AC6199 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		714B488D2A8238A400AC6199 /* GlobeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobeView.swift; sourceTree = "<group>"; };
 		714FA06129FF11E1002E4A7C /* InfoIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoIconView.swift; sourceTree = "<group>"; };
+		7151511D2A8F397700251978 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
+		7151511E2A8F6D0B00251978 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
+		715151212A8F705300251978 /* Globe.AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globe.AccountsView.swift; sourceTree = "<group>"; };
+		715151252A8F720300251978 /* ContentContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentContext.swift; sourceTree = "<group>"; };
 		71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.SetIPFS.swift; sourceTree = "<group>"; };
 		7157977A2A7B86D600B7FEC9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7157977B2A7B86F000B7FEC9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -1315,6 +1325,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				7151511D2A8F397700251978 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -1545,6 +1556,14 @@
 			path = SwiftUI;
 			sourceTree = "<group>";
 		};
+		715151242A8F71E600251978 /* ContentContext */ = {
+			isa = PBXGroup;
+			children = (
+				715151252A8F720300251978 /* ContentContext.swift */,
+			);
+			path = ContentContext;
+			sourceTree = "<group>";
+		};
 		71539A892A7AAD4C00B85FB9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1661,6 +1680,7 @@
 		717C8FB32A6F9EA000DF6037 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				715151242A8F71E600251978 /* ContentContext */,
 				717C12A1293BF02D0060A446 /* Animations */,
 				711D39202A8408C000CF2DB2 /* Search */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
@@ -1764,6 +1784,7 @@
 				716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */,
 				711849482A8EC5D5000F5A67 /* LogoView.swift */,
 				71622E8F2A6E3DED006233F3 /* AdaptsToKeyboard.swift */,
+				7151511E2A8F6D0B00251978 /* SideMenu.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2234,6 +2255,7 @@
 				71EAF46C2A7D99C30034FCB9 /* GlobeExplorerView.swift */,
 				71EB91C42A803F240091EE5B /* InstanceMetaView.swift */,
 				71EAF46F2A7D9A310034FCB9 /* Globe.MainView.swift */,
+				715151212A8F705300251978 /* Globe.AccountsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2698,6 +2720,7 @@
 				71C9F8D82A60B7C10089D7EA /* Feed.swift in Sources */,
 				71A28E08295233B200EAE8EE /* MenloFont.swift in Sources */,
 				71899E5C2A89D66D0073158F /* Loom.SymbolView.swift in Sources */,
+				715151262A8F720300251978 /* ContentContext.swift in Sources */,
 				71C9F8D42A60B7C10089D7EA /* Feed+View.swift in Sources */,
 				71F778C82A71AE0300C9C5C4 /* FeedStyle.swift in Sources */,
 				716CCAD22A8ACCC2009F9413 /* StandardToolbarView.swift in Sources */,
@@ -2862,6 +2885,7 @@
 				71C9F9302A6107D20089D7EA /* HeaderView.swift in Sources */,
 				71C8BE6E2A7F1C79008694C7 /* View+OnLoad.swift in Sources */,
 				710283AF2A2A54C300010877 /* EnvironmentValues+ValueSliderStyle.swift in Sources */,
+				7151511F2A8F6D0B00251978 /* SideMenu.swift in Sources */,
 				710283A92A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
 				717090EE2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
 				710283CD2A2A54C300010877 /* DefaultThumb.swift in Sources */,
@@ -2893,6 +2917,7 @@
 				717C12A3293BF03C0060A446 /* Animations._.swift in Sources */,
 				7102838F2A2A54C300010877 /* RangeSliderOptions.swift in Sources */,
 				71FCDD032A758D92000A6309 /* Profile.InlineView.swift in Sources */,
+				715151222A8F705300251978 /* Globe.AccountsView.swift in Sources */,
 				715826822A889506000E4B49 /* View+Readability.swift in Sources */,
 				71539A8B2A7AAD6500B85FB9 /* Settings.SetIPFS.swift in Sources */,
 				714B48902A8238A400AC6199 /* EarthNode.swift in Sources */,
@@ -2931,6 +2956,7 @@
 				71F778BD2A71A95300C9C5C4 /* SfSafariView.swift in Sources */,
 				71C9F9452A613EA30089D7EA /* BookmarkService.Modify.swift in Sources */,
 				71EAF47A2A7DA3320034FCB9 /* ExplorerService+Center.swift in Sources */,
+				715151272A8F720300251978 /* ContentContext.swift in Sources */,
 				71C9F9402A613E750089D7EA /* BookmarkService+Center.swift in Sources */,
 				710283AC2A2A54C300010877 /* ValueSlider.swift in Sources */,
 				71B7A1E72A68FEA8003E6D4D /* AccountService.Boot.swift in Sources */,
@@ -2957,6 +2983,7 @@
 				71C9F9272A60ECEF0089D7EA /* CommentCardView.swift in Sources */,
 				714B48912A8238A400AC6199 /* EarthNode.swift in Sources */,
 				71A4A1252A61C51600689DF2 /* AccountService.Auth.swift in Sources */,
+				715151232A8F705300251978 /* Globe.AccountsView.swift in Sources */,
 				71A28E2E295237AE00EAE8EE /* Run.swift in Sources */,
 				712BEB5D29074CFB00D257B7 /* CameraContent.swift in Sources */,
 				717C8FBF2A6FD51F00DF6037 /* Feed.TitleBarView.swift in Sources */,
@@ -2993,6 +3020,7 @@
 				712BEB5F29074CFB00D257B7 /* CameraView.swift in Sources */,
 				71FCDD0E2A75EC69000A6309 /* Feed.Vertical.swift in Sources */,
 				7102839E2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
+				715151202A8F6D0B00251978 /* SideMenu.swift in Sources */,
 				71FBA800296D16110090B630 /* GraniteScrollViewStyle.swift in Sources */,
 				71F0420A2A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */,
 				716CCB042A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */,
@@ -3470,7 +3498,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3500,7 +3528,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

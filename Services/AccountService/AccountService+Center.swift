@@ -21,7 +21,9 @@ extension AccountService {
         @Event(debounce: 0.25) var update: Update.Reducer
         @Event(debounce: 0.5) var interact: Interact.Reducer
         
-        @Store(persist: "persistence.Loom.account.0006", autoSave: true, preload: true) public var state: State
+        @Store(persist: "persistence.Loom.account.0006",
+               autoSave: true,
+               preload: true) public var state: State
     }
     
     var blockedUsers: [PersonBlockView] {

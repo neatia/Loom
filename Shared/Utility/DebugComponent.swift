@@ -30,7 +30,7 @@ struct DebugComponent: GraniteComponent {
     var view: some View {
         VStack {
             if toggle {
-                PostCardView(model: .mock)
+                //PostCardView(model: .mock)
             }
             
             Text("\(state.index)")

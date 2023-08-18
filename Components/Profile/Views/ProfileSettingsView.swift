@@ -85,6 +85,7 @@ struct AccountModifyMeta: StandardMotify {
 }
 
 struct ProfileSettingsView: View {
+    @Environment(\.graniteEvent) var update
     @Environment(\.presentationMode) var presentationMode
     
     @Relay var account: AccountService
@@ -112,7 +113,7 @@ struct ProfileSettingsView: View {
     @State var lastUpdated: String?
     
     var offline: Bool {
-        account.isLoggedIn == false
+        forceOffline ? true : account.isLoggedIn == false
     }
     
     var currentMeta: AccountModifyMeta {
@@ -146,12 +147,14 @@ struct ProfileSettingsView: View {
     let showProfileSettings: Bool
     let isModal: Bool
     let modal: ModalService
+    let forceOffline: Bool
     
     init(showProfileSettings: Bool = true,
          offline: Bool = false,
          isModal: Bool = false,
          modal: ModalService) {
         self.showProfileSettings = showProfileSettings
+        self.forceOffline = offline
         self.isModal = isModal
         self.modal = modal
         self.localModel = .init(showNSFW: config.state.showNSFW,
