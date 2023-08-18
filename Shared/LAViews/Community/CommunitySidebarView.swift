@@ -23,7 +23,7 @@ struct CommunitySidebarView: View {
         GraniteSheetCustomTitleView(height: 600) {
             Group {
                 if let communityView {
-                    CommunityCardView(model: communityView)
+                    CommunityCardView(model: communityView, fullWidth: true)
                 }
             }
         } view: {
@@ -48,8 +48,6 @@ struct CommunitySidebarView: View {
                         Spacer()
                     }
                     .frame(height: 36)
-                    .padding(.leading, .layer4)
-                    .padding(.trailing, .layer4)
                 }
             }
         }

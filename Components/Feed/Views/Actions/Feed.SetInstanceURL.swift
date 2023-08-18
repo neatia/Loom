@@ -1,8 +1,8 @@
 //
-//  Write.Set.swift
-//  Loom (iOS)
+//  Feed.SetInstanceURL.swift
+//  Loom
 //
-//  Created by PEXAVC on 7/21/23.
+//  Created by Ritesh Pakala on 8/17/23.
 //
 
 import Foundation
@@ -10,9 +10,8 @@ import SwiftUI
 import Granite
 import GraniteUI
 
-extension Write {
-    func setPostURL() {
-        let lastState: String = state.postURL
+extension Feed {
+    func setInstanceURL() {
         var value: String = ""
         var bindingString = Binding<String>.init(get: {
             return value
@@ -20,7 +19,8 @@ extension Write {
             value = newValue
         })
         modal.presentSheet {
-            GraniteSheetView(title: "TITLE_SET_URL", height: 140) {
+            //TODO: localize
+            GraniteSheetView(title: "Set Instance URL", height: 140) {
                 VStack(spacing: 0) {
                     TextField("MISC_URL", text: bindingString)
                         .textFieldStyle(.plain)
@@ -39,7 +39,6 @@ extension Write {
                         
                         Button {
                             GraniteHaptic.light.invoke()
-                            _state.postURL.wrappedValue = lastState
                             modal.dismissSheet()
                         } label: {
                             Text("MISC_CANCEL")
@@ -48,20 +47,12 @@ extension Write {
                         .buttonStyle(PlainButtonStyle())
                         .padding(.trailing, .layer2)
                         
-                        Button {
-                            GraniteHaptic.light.invoke()
-                            _state.postURL.wrappedValue = ""
-                            modal.dismissSheet()
-                        } label: {
-                            Text("MISC_REMOVE")
-                                .font(.headline)
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .padding(.trailing, .layer2)
                         
                         Button {
                             GraniteHaptic.light.invoke()
-                            _state.postURL.wrappedValue = value
+                            
+                            config.center.restart.send(ConfigService.Restart.Meta(host: value))
+                            
                             modal.dismissSheet()
                         } label: {
                             Text("MISC_DONE")
@@ -74,19 +65,6 @@ extension Write {
                     .padding(.top, .layer4)
                 }
             }
-        }
-    }
-}
-
-extension Write {
-    func setCommunity() {
-        modal.presentSheet {
-            CommunityPickerView()
-                .attach({ communityView in
-                    GraniteHaptic.light.invoke()
-                    _state.postCommunity.wrappedValue = communityView
-                }, at: \.pickedCommunity)
-                .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
         }
     }
 }

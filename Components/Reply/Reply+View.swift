@@ -7,11 +7,12 @@ extension Reply: View {
     public var view: some View {
         VStack(alignment: .leading, spacing: 0) {
             switch kind {
-            case .replyPost(let model):
+            case .replyPost(let model), .editReplyPost(_, let model):
                 HeaderView(model, showPostActions: false)
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer3)
-            case .replyComment(let model):
+            case .replyComment(let model),
+                    .editReplyComment(let model):
                 HeaderView(model, showPostActions: false)
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer3)
@@ -24,7 +25,7 @@ extension Reply: View {
             VStack {
                 ScrollView(showsIndicators: false) {
                     switch kind {
-                    case .replyPost(let model):
+                    case .replyPost(let model), .editReplyPost(_, let model):
                         if let url = postUrl {
                             HStack {
                                 LinkPreview(url: url)
@@ -66,17 +67,19 @@ extension Reply: View {
                 
                 Button {
                     GraniteHaptic.light.invoke()
+                    
                     switch kind {
                     case .replyPost(let model):
                         content.center.interact.send(ContentService.Interact.Meta(kind: .replyPost(model, state.content)))
                     case .replyComment(let model):
                         content.center.interact.send(ContentService.Interact.Meta(kind: .replyComment(model, state.content)))
+                    case .editReplyPost(let model, _), .editReplyComment(let model):
+                        content.center.interact.send(ContentService.Interact.Meta(kind: .editCommentSubmit(model, state.content)))
                     default:
                         break
-                        
                     }
                 } label: {
-                    Image(systemName: "paperplane.fill")
+                    Image(systemName: kind.isEditingReply ? "sdcard.fill" : "paperplane.fill")
                         .font(.headline)
                 }
                 .buttonStyle(PlainButtonStyle())

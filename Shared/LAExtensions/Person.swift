@@ -47,6 +47,10 @@ extension Person {
         domain == LemmyKit.current.user?.local_user_view.person.domain && name == LemmyKit.current.user?.local_user_view.person.name
     }
     
+    var username: String {
+        self.name + "@" + self.actor_id.host
+    }
+    
     public func equals(_ person: Person) -> Bool {
         return domain == person.domain && name == person.name
     }

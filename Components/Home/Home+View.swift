@@ -81,7 +81,6 @@ extension Home: View {
         }, currentTab: 0) {
             GraniteTab {
                 Feed()
-//                DebugComponent()
             } icon: {
                 GraniteTabIcon(name: "house")
             }
@@ -93,7 +92,7 @@ extension Home: View {
             }
 
             GraniteTab {
-                Write()
+                Loom()
             } icon: {
                 GraniteTabIcon(name: "applescript")
             }
@@ -119,10 +118,9 @@ extension Home: View {
         .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
-                .font(.title2)
-                .frame(width: 24, height: 24)
+                .font(.title3)
                 .contentShape(Rectangle())
-                .offset(x: -2)
+                .offset(x: -.layer1)
         }
     }
 }

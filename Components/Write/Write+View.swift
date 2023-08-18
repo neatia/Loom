@@ -206,15 +206,20 @@ extension Write: View {
                     .padding(.bottom, .layer2)
             }
             
-            if isTabSelected == true || state.isEditing {
-                WriteView(kind: self.kind,
-                          title: _state.title,
-                          content: _state.content)
-            }
+            WriteView(kind: self.kind,
+                      title: _state.title,
+                      content: _state.content)
         }
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
         .addGraniteModal(modal.modalManager)
+        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
+            Image(systemName: "chevron.backward")
+                .renderingMode(.template)
+                .font(.title3)
+                .contentShape(Rectangle())
+                .offset(x: -.layer1)
+        }
         .background(Color.background)
         .onAppear {
             #if os(iOS)

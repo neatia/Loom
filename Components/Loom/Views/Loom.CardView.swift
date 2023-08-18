@@ -13,6 +13,7 @@ import GraniteUI
 struct LoomCardView: View {
     @GraniteAction<LoomManifest> var toggle
     @GraniteAction<LoomManifest> var edit
+    @GraniteAction<LoomManifest> var add
     var isActive: Bool = false
     var manifest: LoomManifest
     
@@ -38,10 +39,16 @@ struct LoomCardView: View {
                 if collectionNames.isNotEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: .layer3) {
-                            ForEach(manifest.communities) { model in
-                                CommunityCardView(model: model,
-                                                  showCounts: false)
-                                .frame(minWidth: 240)
+                            ForEach(manifest.communities, id: \.id) { model in
+                                Group {
+                                    if let lemmyView = model.lemmy {
+                                        CommunityCardView(model: lemmyView,
+                                                          showCounts: false)
+                                        .frame(minWidth: 240)
+                                    } else {
+                                        EmptyView()
+                                    }
+                                }
                             }
                             
                             Spacer()
@@ -82,14 +89,22 @@ struct LoomCardView: View {
                     GraniteHaptic.light.invoke()
                     edit.perform(manifest)
                 } label: {
-                    Text("MISC_EDIT")
-                        .font(.subheadline)
-                        .lineLimit(1)
-                        .readability()
-                        .outline()
-                }.buttonStyle(.plain)
+                    Image(systemName: "slider.horizontal.3")
+                        .font(.headline)
+                }
+                .buttonStyle(.plain)
+                .padding(.trailing, .layer4)
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    add.perform(manifest)
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.headline)
+                }
+                .buttonStyle(.plain)
             }
-            .padding(.top, .layer2)
+            .padding(.vertical, .layer2)
         }
         .padding(.leading, .layer1)
         .readability()

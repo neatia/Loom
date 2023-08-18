@@ -7,6 +7,7 @@ struct Reply: GraniteComponent {
     
     @GraniteAction<(Comment, CommentView)> var updatePost
     @GraniteAction<Comment> var updateComment
+    @GraniteAction<CommentView> var updateCommentView
     
     var listeners: Void {
         content
@@ -26,6 +27,13 @@ struct Reply: GraniteComponent {
                     default:
                         break
                     }
+                } else if let response = value as? ContentService.Interact.Meta {
+                    switch response.kind {
+                    case .editCommentSubmit(let model, _):
+                        updateCommentView.perform(model)
+                    default:
+                        break
+                    }
                 }
         }
     }
@@ -33,6 +41,12 @@ struct Reply: GraniteComponent {
     
     let kind: Write.Kind
     init(kind: Write.Kind) {
+        switch kind {
+        case .editReplyPost(let model, _), .editReplyComment(let model):
+            _center = .init(.init(content: model.comment.content))
+        default:
+            break
+        }
         self.kind = kind
     }
 }

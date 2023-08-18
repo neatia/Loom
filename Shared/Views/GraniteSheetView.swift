@@ -51,21 +51,24 @@ struct GraniteSheetView<Content: View>: View {
                         }
                         .frame(height: 36)
                         .padding(.bottom, .layer4)
+                        .padding(.horizontal, .layer5)
                         
                         Divider()
                             .padding(.bottom, .layer4)
                     }
                     
                     content()
+                        .padding(.horizontal, .layer5)
                     
                     Spacer()
                 }
-                .padding(.layer5)
+                .padding(.top, Device.isMacOS ? 0 : .layer5)
+                .padding(.bottom, .layer5)
             }
             .frame(maxHeight: height)
         }
-        .padding(.top, .layer5)
-        .padding(.bottom, .layer5)
+        .padding(.top, Device.isMacOS ? .layer4 : .layer5)
+        .padding(.bottom, Device.isMacOS ? .layer4 : .layer5)
     }
 }
 

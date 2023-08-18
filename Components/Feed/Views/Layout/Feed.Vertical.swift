@@ -28,6 +28,13 @@ extension Feed {
                 }
             }, at: \.showContent)
             .graniteEvent(account.center.interact)
+            .overlay(LogoView()
+                .attach({
+                    modal.presentSheet {
+                        Write(communityView: state.communityView)
+                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                    }
+                }, at: \.write))
             .environmentObject(pager)
         }
         .edgesIgnoringSafeArea(state.community != nil ? [.bottom] : [])

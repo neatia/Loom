@@ -9,11 +9,12 @@ struct CommentCardView: View {
     @GraniteAction<Community> var viewCommunity
     @Environment(\.graniteEvent) var interact
     
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
-    @GraniteAction<Void> var edit
     
     @Relay var config: ConfigService
+    @Relay(.silence) var content: ContentService
     
     @State var model: CommentView
     @State var postView: PostView? = nil
@@ -65,7 +66,7 @@ struct CommentCardView: View {
                 }, at: \.viewCommunity)
                     .padding(.trailing, .layer3)
                     .padding(.bottom, .layer3)
-                content
+                contentView
                     .padding(.leading, .layer3 + AvatarView.containerPadding)
                     .padding(.trailing, .layer3)
                     .padding(.bottom, .layer3)
@@ -79,14 +80,19 @@ struct CommentCardView: View {
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                if let interact {
-                                    interact.send(AccountService.Interact.Meta(intent: .editComment(self.model)))
-                                } else {
-                                    edit.perform()
+                                switch viewingContext {
+                                case .base:
+                                    edit.perform((model, { updatedModel in
+                                        DispatchQueue.main.async {
+                                            self.model = updatedModel
+                                        }
+                                    }))
+                                default:
+                                    content.center.interact.send(ContentService.Interact.Meta(kind: .editComment(model, postView)))
                                 }
                             }, at: \.edit)
                             .graniteEvent(interact)
-                        content
+                        contentView
                     }
                 }
                 .padding(.trailing, .layer3)
@@ -100,6 +106,9 @@ struct CommentCardView: View {
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
+                    .attach({ model in
+                        edit.perform(model)
+                    }, at: \.edit)
                     .attach({ model in
                         showDrawer.perform(model)
                     }, at: \.showDrawer)
@@ -130,7 +139,7 @@ struct CommentCardView: View {
 }
 
 extension CommentCardView {
-    var content: some View {
+    var contentView: some View {
         VStack(alignment: .leading, spacing: .layer3) {
             #if os(macOS)
             contentBody

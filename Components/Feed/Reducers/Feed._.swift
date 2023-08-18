@@ -14,13 +14,17 @@ extension Feed {
         
         @Relay var layout: LayoutService
         
-        func reduce(state: inout Center.State) {
+        func reduce(state: inout Center.State) async {
             layout.preload()
             layout._state.feedCommunityContext.wrappedValue = .idle
             state.community = nil
             state.communityView = nil
             state.location = .base
             state.peerLocation = nil
+        }
+        
+        var behavior: GraniteReducerBehavior {
+            .task(.userInitiated)
         }
     }
 }

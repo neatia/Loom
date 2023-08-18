@@ -22,6 +22,10 @@ extension Feed {
                     Color.background.opacity(0.75)
                         .cornerRadius(4)
                 }
+                .onTapIf(state.community == nil) {
+                    GraniteHaptic.light.invoke()
+                    self.setInstanceURL()
+                }
             
             HStack(spacing: 0) {
                 Text(headerTitle)
@@ -34,6 +38,10 @@ extension Feed {
                             .cornerRadius(4)
                     }
                     .padding(.bottom, .layer1)
+                    .onTapIf(state.community == nil) {
+                        GraniteHaptic.light.invoke()
+                        self.setInstanceURL()
+                    }
                 
                 Spacer()
                 

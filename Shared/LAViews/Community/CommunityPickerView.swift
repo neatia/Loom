@@ -109,7 +109,7 @@ struct CommunityPickerView: View {
                 }
                 .padding(.top, Device.isMacOS == false && modal ? .layer5 : 0)
             }
-            .frame(maxHeight: modal ? 400 : nil)
+            .frame(maxHeight: modal ? (Device.isMacOS ? 400 : 600) : nil)
         }
         .padding(.top, modal ? 0 : verticalPadding)
         .padding(.bottom, modal ? 0 : verticalPadding)

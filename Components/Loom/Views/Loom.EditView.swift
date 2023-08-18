@@ -12,31 +12,54 @@ import GraniteUI
 import LemmyKit
 
 struct LoomEditView: View {
-    @Binding var intent: Loom.Intent
-    
     @State var manifest: LoomManifest
     
-    @State var removeCommunities: [CommunityView] = []
+    @State var removeCommunities: [FederatedCommunity] = []
     
     @State var invalidName: Bool = false
     
     @GraniteAction<LoomManifest> var edit
+    @GraniteAction<LoomManifest> var remove
     
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView(title: "Edit Loom",
-                                 maxHeight: 600,
-                                 showBG: true,
-                                 alternateBG: true,
-                                 fullWidth: true,
-                                 drawerMode: true,
-                                 shouldShowDrawer: .init(get: {
-                                    true
-                                 }, set: { state in
-                                    if !state {
-                                        intent = .idle
-                                    }
-                                 })) {
+        GraniteStandardModalView(maxHeight: nil) {
+            HStack(spacing: .layer4) {
+                //TODO: localize
+                Text("Edit Loom")
+                    .font(.title.bold())
+                
+                Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    remove.perform(manifest)
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.headline.bold())
+                        .foregroundColor(.red)
+                }.buttonStyle(.plain)
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    
+                    let trimmed = manifest.meta.name.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard trimmed.isNotEmpty else {
+                        invalidName = true
+                        return
+                    }
+                    var mutable = manifest
+                    mutable.communities.removeAll(where: { model in  removeCommunities.contains(where: { model.id == $0.id } ) })
+                    
+                    edit.perform(mutable)
+                    
+                } label: {
+                    Image(systemName: "sdcard.fill")
+                        .font(.title3)
+                }.buttonStyle(.plain)
+            }
+            
+        } content: {
             VStack(spacing: 0) {
                 //TODO: localize
                 TextField("Name", text: $manifest.meta.name)
@@ -47,7 +70,7 @@ struct LoomEditView: View {
                     .font(.title3.bold())
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color.background)
+                            .foregroundColor(Color.tertiaryBackground)
                     )
                     .padding(.bottom, invalidName ? .layer2 : .layer4)
                     .toolbar {
@@ -66,10 +89,12 @@ struct LoomEditView: View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: .layer4) {
-                        ForEach(manifest.communities) { model in
-                            let isRemoving: Bool = removeCommunities.contains(model)
+                        ForEach(manifest.communities, id: \.id) { model in
+                            let isRemoving: Bool = removeCommunities.contains(where: { $0.id == model.id })
                             ZStack {
-                                CommunityCardView(model: model, showCounts: false)
+                                if let lemmyView = model.lemmy {
+                                    CommunityCardView(model: lemmyView, showCounts: false)
+                                }
                                 
                                 Brand.Colors.black.opacity(0.75)
                                     .cornerRadius(8)
@@ -78,7 +103,7 @@ struct LoomEditView: View {
                                 Button {
                                     GraniteHaptic.light.invoke()
                                     if isRemoving {
-                                        removeCommunities.removeAll(where: { $0 == model })
+                                        removeCommunities.removeAll(where: { $0.id == model.id })
                                     } else {
                                         removeCommunities.append(model)
                                     }
@@ -100,29 +125,6 @@ struct LoomEditView: View {
                     }
                 }
                 .padding(.bottom, .layer2)
-                
-                HStack {
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        let trimmed = manifest.meta.name.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard trimmed.isNotEmpty else {
-                            invalidName = true
-                            return
-                        }
-                        var mutable = manifest
-                        mutable.communities.removeAll(where: { removeCommunities.contains($0) })
-                        edit.perform(mutable)
-                        intent = .idle
-                    } label: {
-                        //TODO: localize
-                        Text("Save")
-                            .font(.headline)
-                            .foregroundColor(.foreground)
-                    }
-                    .buttonStyle(.plain)
-                }
-                .padding(.bottom, .layer4)
-                Spacer()
             }
         }
     }

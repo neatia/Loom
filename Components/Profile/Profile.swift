@@ -7,6 +7,7 @@ struct Profile: GraniteComponent {
     
     @Relay var modal: ModalService
     @Relay var account: AccountService
+    @Relay var content: ContentService
     
     var pager: Pager<PersonDetailsPageable> = .init(emptyText: "EMPTY_STATE_MISC")
     
@@ -59,16 +60,44 @@ struct Profile: GraniteComponent {
                                 }, at: \.updatedPost)
                                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
                         }
-                    case .editComment(let model):
-                        modal.presentSheet {
-                            Reply(kind: .editReplyComment(model))
-                                .attach({ updatedModel in
-                                DispatchQueue.main.async {
-                                    pager.update(item: .init(commentView: updatedModel.asView(with: model), postView: nil, isMention: false, isReply: false))
-                                    self.modal.dismissSheet()
-                                }
-                            }, at: \.updateComment)
-                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                    default:
+                        break
+                    }
+                }
+            }
+        
+        content
+            .center
+            .interact
+            .listen(.broadcast) { value in
+                if let response = value as? ContentService.Interact.Meta {
+                    
+                    switch response.kind {
+                    case .editCommentSubmit(let model, _):
+                        DispatchQueue.main.async {
+                            pager.update(item: .init(commentView: model, postView: nil, isMention: false, isReply: false))
+                            modal.dismissSheet()
+                        }
+                    case .editComment(let commentView, let postView):
+                        let replyKind: Write.Kind
+                        
+                        if let postView {
+                            replyKind = .editReplyPost(commentView, postView)
+                        } else {
+                            replyKind = .editReplyComment(commentView)
+                        }
+                        
+                        DispatchQueue.main.async {
+                            modal.presentSheet {
+                                Reply(kind: replyKind)
+                                    .attach({ model in
+                                        DispatchQueue.main.async {
+                                            pager.update(item: .init(commentView: model, postView: nil, isMention: false, isReply: false))
+                                            modal.dismissSheet()
+                                        }
+                                    }, at: \.updateCommentView)
+                                    .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
+                            }
                         }
                     default:
                         break
@@ -82,6 +111,7 @@ struct Profile: GraniteComponent {
     init(_ person: Person? = nil) {
         isMe = person?.isMe == true
         _center = .init(.init(person: person ?? LemmyKit.current.user?.local_user_view.person))
+        content.silence(viewUpdatesOnly: true)
     }
     
     /*

@@ -9,13 +9,11 @@ struct Write: GraniteComponent {
     
     @GraniteAction<PostView> var updatedPost
     
-    @Environment(\.graniteTabSelected) var isTabSelected
-    
     enum Kind {
         case compact
         case full
         case replyPost(PostView)
-        case editReplyPost(CommentView)
+        case editReplyPost(CommentView, PostView)
         case replyComment(CommentView)
         case editReplyComment(CommentView)
         
@@ -43,8 +41,12 @@ struct Write: GraniteComponent {
     
     var kind: Kind
     
-    init(kind: Write.Kind? = nil, postView: PostView? = nil) {
-        _center = .init(.init(editingPostView: postView, title: postView?.post.name ?? "", content: postView?.post.body ?? "", postURL: postView?.post.url ?? ""))
+    init(kind: Write.Kind? = nil, communityView: CommunityView? = nil, postView: PostView? = nil) {
+        _center = .init(.init(editingPostView: postView,
+                              title: postView?.post.name ?? "",
+                              content: postView?.post.body ?? "",
+                              postURL: postView?.post.url ?? "",
+                              postCommunity: communityView))
         
         if let kind {
             self.kind = kind
