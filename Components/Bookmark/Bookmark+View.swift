@@ -114,7 +114,6 @@ extension Bookmark: View {
                         commentViews()
                     }.padding(.top, 1)
                 }
-                .id(service.isLoaded)
                 .background(Color.alternateBackground)
             }
         }
