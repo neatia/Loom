@@ -181,6 +181,8 @@
 		715151232A8F705300251978 /* Globe.AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151212A8F705300251978 /* Globe.AccountsView.swift */; };
 		715151262A8F720300251978 /* ContentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151252A8F720300251978 /* ContentContext.swift */; };
 		715151272A8F720300251978 /* ContentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151252A8F720300251978 /* ContentContext.swift */; };
+		715151292A8F79A200251978 /* ContentContext.Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151282A8F79A200251978 /* ContentContext.Display.swift */; };
+		7151512A2A8F79A200251978 /* ContentContext.Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715151282A8F79A200251978 /* ContentContext.Display.swift */; };
 		71539A8B2A7AAD6500B85FB9 /* Settings.SetIPFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */; };
 		71539A8C2A7AAD6500B85FB9 /* Settings.SetIPFS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */; };
 		7157976E2A7B833400B7FEC9 /* Granite in Frameworks */ = {isa = PBXBuildFile; productRef = 7157976D2A7B833400B7FEC9 /* Granite */; };
@@ -766,6 +768,7 @@
 		7151511E2A8F6D0B00251978 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		715151212A8F705300251978 /* Globe.AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globe.AccountsView.swift; sourceTree = "<group>"; };
 		715151252A8F720300251978 /* ContentContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentContext.swift; sourceTree = "<group>"; };
+		715151282A8F79A200251978 /* ContentContext.Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentContext.Display.swift; sourceTree = "<group>"; };
 		71539A8A2A7AAD6500B85FB9 /* Settings.SetIPFS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.SetIPFS.swift; sourceTree = "<group>"; };
 		7157977A2A7B86D600B7FEC9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7157977B2A7B86F000B7FEC9 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -1560,6 +1563,7 @@
 			isa = PBXGroup;
 			children = (
 				715151252A8F720300251978 /* ContentContext.swift */,
+				715151282A8F79A200251978 /* ContentContext.Display.swift */,
 			);
 			path = ContentContext;
 			sourceTree = "<group>";
@@ -2704,6 +2708,7 @@
 				71C9F8E42A60B7E10089D7EA /* Profile.swift in Sources */,
 				71EB91CF2A80A75B0091EE5B /* DebugSettingsView.swift in Sources */,
 				7118494C2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */,
+				715151292A8F79A200251978 /* ContentContext.Display.swift in Sources */,
 				71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */,
 				7102839D2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71A28E2D295237AE00EAE8EE /* Run.swift in Sources */,
@@ -2934,6 +2939,7 @@
 				71C69E232A70469900B54AD6 /* Search+Center.swift in Sources */,
 				7197FB282964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71A4A1202A61C41000689DF2 /* AccountService.swift in Sources */,
+				7151512A2A8F79A200251978 /* ContentContext.Display.swift in Sources */,
 				710283CA2A2A54C300010877 /* LinearRangeMath.swift in Sources */,
 				71899E282A8952100073158F /* Loom+View.swift in Sources */,
 				713129B32A82BEF700C6B31D /* GlobeScene.swift in Sources */,

@@ -38,9 +38,7 @@ struct FeedMainView<Content: View>: View {
                         header: header) {
             EmptyView()
         } content: { postView in
-            PostCardView(model: postView,
-                         style: .style2,
-                         topPadding: .layer5,
+            PostCardView(topPadding: .layer5,
                          bottomPadding: pager.lastItem?.id == postView.id ? 0 : .layer5,
                          linkPreviewType: .largeNoMetadata)
             .attach({ community in
@@ -50,6 +48,7 @@ struct FeedMainView<Content: View>: View {
                 showContent.perform(postView)
             }, at: \.showContent)
             .graniteEvent(interact)
+            .contentContext(.init(postModel: postView))
         }
         .environmentObject(pager)
     }

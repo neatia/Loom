@@ -33,7 +33,11 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
     public init(isShowing: Binding<Bool>,
                 @ViewBuilder menuContent: @escaping () -> MenuContent) {
         _isShowing = isShowing
+        #if os(iOS)
         let viewingWidth: CGFloat = UIScreen.main.bounds.width * viewingThreshold
+        #else
+        let viewingWidth: CGFloat = ContainerConfig.iPhoneScreenWidth
+        #endif
         self.width = viewingWidth
         self.startWidth = viewingWidth * startThreshold
         self.menuContent = menuContent

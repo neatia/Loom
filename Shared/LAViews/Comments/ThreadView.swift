@@ -7,35 +7,34 @@ import LemmyKit
 import MarkdownView
 
 struct ThreadView: View {
+    @Environment(\.contentContext) var context
+    @Environment(\.colorScheme) var colorScheme
+    
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<Void> var closeDrawer
-    @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
     
-    let model: CommentView
-    var postView: PostView? = nil
+    //drawer
     var isModal: Bool = true
+    //in PostDisplay
     var isInline: Bool = false
-    
-    @Environment(\.colorScheme) var colorScheme
     
     @Relay var config: ConfigService
     @Relay var modalService: ModalService
     
     @State var breadCrumbs: [CommentView] = []
     
-    var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
-    var currentModel: CommentView {
-        breadCrumbs.last ?? model
+    var currentModel: CommentView? {
+        breadCrumbs.last ?? context.commentModel
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if isModal {
-                HeaderView(model,
-                           postView: postView,
-                           crumbs: breadCrumbs.reversed())
+                HeaderView(crumbs: breadCrumbs.reversed())
                     .attach({ id in
                         viewReplies(id)
                     }, at: \.tappedCrumb)
@@ -50,10 +49,8 @@ struct ThreadView: View {
                 Divider()
             }
             
-            PagerScrollView(CommentView.self) { comment in
-                CommentCardView(model: comment,
-                                postView: postView,
-                                parentModel: currentModel,
+            PagerScrollView(CommentView.self) { commentView in
+                CommentCardView(parentModel: currentModel,
                                 isInline: isInline)
                     .attach({ model in
                         reply.perform(model)
@@ -64,27 +61,29 @@ struct ThreadView: View {
                     .attach({ model in
                         if isModal {
                             breadCrumbs.append(model)
-                            comments.fetch()
+                            pager.fetch()
                         } else {
                             showDrawer.perform(model)
                         }
                     }, at: \.showDrawer)
+                    .contentContext(.addCommentModel(model: commentView, context))
             }
-            .environmentObject(comments)
+            .environmentObject(pager)
             .background(Color.alternateBackground)
         }
         .background(Color.background)
         .padding(.top, (Device.isMacOS || !isModal) ? 0 : .layer3)
         .task {
-            comments.hook { page in
+            pager.hook { page in
                 let comments = await Lemmy
-                    .comments(currentModel.post,
-                              comment: currentModel.comment, community: currentModel.community,
+                    .comments(context.commentModel?.post,
+                              comment: context.commentModel?.comment,
+                              community: context.community?.lemmy,
                               page: page,
                               type: .all,
-                              location: currentModel.comment.location)
+                              location: context.location)
                 
-                return comments.filter { $0.comment.id != currentModel.comment.id }
+                return comments.filter { $0.comment.id != context.id }
             }.fetch()
         }
     }
@@ -115,9 +114,7 @@ extension ThreadView {
                 .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.5)
             #endif
             
-            FooterView(postView: postView,
-                       commentView: currentModel,
-                       isHeader: true,
+            FooterView(isHeader: true,
                        showScores: config.state.showScores)
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -126,32 +123,9 @@ extension ThreadView {
     var contentBody: some View {
         VStack(spacing: 0) {
             ScrollView {
-                MarkdownView(text: currentModel.comment.content)
+                MarkdownView(text: context.commentModel?.comment.content ?? "")
                     .markdownViewRole(.editor)
             }
         }
-//        HStack {
-////                Markdown(content: .constant(currentModel.comment.content),
-////                         theme: colorScheme)
-////                .markdownStyle(
-////                    MarkdownStyle(
-////                        padding: 0,
-////                        paddingTop: 0,
-////                        paddingBottom: 0,
-////                        paddingLeft: 0,
-////                        paddingRight: 0,
-////                        size: Device.isMacOS ? .el1 : .el3
-////                    ))
-////                .frame(minHeight: 100, maxHeight: 300)
-////                .id(currentModel.comment.id)
-//
-//            //            VStack(alignment: .leading, spacing: 0) {
-//            //                Text(model.comment.content)
-//            //                    .font(.title3.bold())
-//            //                    .opacity(0.9)
-//            //            }
-//
-//            Spacer()
-//        }
     }
 }

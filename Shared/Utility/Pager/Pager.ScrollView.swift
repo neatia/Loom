@@ -148,6 +148,10 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             }
             
         }) {
+            if !alternateAddPosition {
+                addContent()
+            }
+            
             LazyVStack(spacing: 0) {
                 ForEach(currentItems) { item in
                     mainContent(item)

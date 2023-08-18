@@ -33,6 +33,8 @@ struct HeaderView: View {
         case none
     }
     
+    @Environment(\.contentContext) var context
+    
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
@@ -41,126 +43,40 @@ struct HeaderView: View {
     @State var enableRoute: Bool = false
     @State var enablePostViewRoute: Bool = false
     
-    var bookmarkKind: BookmarkService.Kind? {
-        if let commentView {
-            return .comment(commentView, postView)
-        } else if let postView {
-            return .post(postView)
-        }
-        return nil
-    }
-    
     var shouldRouteCommunity: Bool = false
     var shouldRoutePost: Bool = false
     
-    let headline: String
-    let subheadline: String?
-    let subtitle: String?
-    let badge: Badge
-    let avatarURL: URL?
-    let time: Date?
     let showPostActions: Bool
     
-    let id: Int
-    let community: Community?
-    let person: Person?
-    let postView: PostView?
-    let commentView: CommentView?
-    
-    var isAdmin: Bool {
-        postView?.creator.admin == true && commentView == nil
-    }
-    
-    var isOP: Bool {
-        guard let poster = postView?.creator else {
-            return false
-        }
-        
-        return commentView?.creator.equals(poster) == true
-    }
-    
     var avatarBorderColor: Color {
-        if isAdmin {
+        if context.isPostAdmin {
             return .red.opacity(0.8)
-        } else if isOP {
+        } else if context.isOP {
             return .blue.opacity(0.8)
         } else {
             return .clear
         }
     }
     
+    //Not used currently
+    let badge: Badge
+    
     typealias Crumb = (Int, Person)
     let crumbs: [Crumb]
     
-    init(_ model: PostView,
-         crumbs: [PostView] = [],
+    init(crumbs: [CommentView] = [],
          shouldRouteCommunity: Bool = true,
          shouldRoutePost: Bool = true,
          showPostActions: Bool = true,
          badge: Badge? = nil) {
-        self.headline = model.creator.name
-        self.subheadline = model.post.local ? nil : model.creator.domain
-        self.subtitle = nil
-        
-        self.avatarURL = model.avatarURL
-        self.id = model.post.id
-        self.community = model.community
-        self.crumbs = []
-        
-        self.time = model.counts.published.serverTimeAsDate
-        
-        self.person = model.creator
-        
-        self.showPostActions = showPostActions
-        
-        self.postView = model
-        self.commentView = nil
-        
-        self.shouldRouteCommunity = shouldRouteCommunity
-        self.shouldRoutePost = shouldRoutePost
-        
-        self.badge = badge ?? .community(model.community.name)
-        Colors.update(model.community.name)
-    }
-    
-    init(_ model: CommentView,
-         postView: PostView? = nil,
-         crumbs: [CommentView] = [],
-         shouldRouteCommunity: Bool = true,
-         shouldRoutePost: Bool = true,
-         showPostActions: Bool = true,
-         badge: Badge? = nil) {
-        self.headline = model.creator.name
-        self.subheadline = model.comment.local ? nil : model.creator.domain
-        self.subtitle = nil
-        
-        self.avatarURL = model.avatarURL
-        self.id = model.comment.id
-        self.community = model.community
         self.crumbs = crumbs.map { ($0.comment.id, $0.creator) }
         
-        self.time = model.counts.published.serverTimeAsDate
-        
-        self.commentView = model
-        
         self.shouldRouteCommunity = shouldRouteCommunity
         self.shouldRoutePost = shouldRoutePost
         
-        self.person = model.creator
-        
-        self.postView = postView
-        
         self.showPostActions = showPostActions
         
-        self.badge = badge ?? .none//((model.creator.domain != nil && model.creator.local == false) ? .host(model.creator.domain!) : .none)//.community(model.community.name)
-        //Colors.update(model.creator.domain ?? model.community.name)
-        
-//        switch badge {
-//        case .post(let postView):
-//            self.postView = postView
-//        default:
-//            self.postView = nil
-//        }
+        self.badge = badge ?? .none
     }
     
     var body: some View {
@@ -190,29 +106,29 @@ struct HeaderView: View {
                         }
                         
                         HStack(spacing: .layer2) {
-                            AvatarView(avatarURL)
+                            AvatarView(context.person?.avatarURL)
                                 .overlay(Circle()
                                     .stroke(avatarBorderColor, lineWidth: 1.0))
                             
-                            Text(headline)
+                            Text(context.display.author.headline)
                                 .font(.headline)
                         }
                         .onTapGesture {
                             GraniteHaptic.light.invoke()
-                            tappedCrumb.perform(id)
+                            tappedCrumb.perform(context.id)
                         }
                     }
                 }
                 .frame(maxHeight: 36)
             } else {
-                AvatarView(person)
+                AvatarView(context.person?.lemmy)
                     .overlay(Circle()
                         .stroke(avatarBorderColor, lineWidth: 1.0))
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(headline)
+                    Text(context.display.author.headline)
                         .font(.headline)
-                    if let subheadline {
+                    if let subheadline = context.display.author.subheadline {
                         Text("@"+subheadline)
                             .font(.caption2)
                     }
@@ -221,23 +137,20 @@ struct HeaderView: View {
             
             Spacer()
             
-            if let community {
+            if let community = context.community?.lemmy {
                 GraniteRoute($enableRoute, window: .resizable(600, 500)) {
                     Feed(community)
                 }
             }
             
-            if let postView {
+            if context.isPostAvailable {
                 GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                    PostDisplayView(model: postView)
+                    PostDisplayView()
+                        .contentContext(context)
                 }
             }
             
-            if let subtitle {
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundColor(.foreground)
-            } else if let time {
+            if let time = context.display.author.time {
                 Text(time.timeAgoDisplay())
                     .font(.subheadline)
                     .foregroundColor(.foreground.opacity(0.5))
@@ -246,10 +159,10 @@ struct HeaderView: View {
             if showPostActions {
                 PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
                                 shouldRouteToPost: false,
-                                community: shouldRouteCommunity ? community : nil,
-                                postView: shouldRoutePost ? postView : nil,
-                                person: person,
-                                bookmarkKind: bookmarkKind)
+                                community: shouldRouteCommunity ? context.community?.lemmy : nil,
+                                postView: shouldRoutePost ? context.postModel : nil,
+                                person: context.person?.lemmy,
+                                bookmarkKind: context.bookmarkKind)
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
@@ -261,7 +174,7 @@ struct HeaderView: View {
     }
     
     func crumbColor(_ model: Person) -> Color {
-        if postView?.creator.equals(model) == true {
+        if context.postModel?.creator.equals(model) == true {
             return .blue.opacity(0.8)
         } else if model.admin {
             return .red.opacity(0.8)

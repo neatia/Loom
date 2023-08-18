@@ -12,8 +12,8 @@ import Granite
 import GraniteUI
 import Combine
 
-
 struct HeaderCardView: View {
+    @Environment(\.contentContext) var context
     @Environment(\.graniteEvent) var interact
     
     @Relay var layout: LayoutService
@@ -26,111 +26,40 @@ struct HeaderCardView: View {
     @State var enableRoute: Bool = false
     @State var enablePostViewRoute: Bool = false
     
-    var bookmarkKind: BookmarkService.Kind? {
-        if let commentView {
-            return .comment(commentView, postView)
-        } else if let postView {
-            return .post(postView)
-        }
-        return nil
-    }
+    @State var postView: PostView? = nil
     
-    var shouldRouteCommunity: Bool = false
-    var shouldRoutePost: Bool = false
+    var shouldRouteCommunity: Bool
+    var shouldRoutePost: Bool
     
-    let person: Person?
-    @State var postView: PostView?
-    let commentView: CommentView?
-    
-    let headline: String
-    let subheadline: String?
-    let subtitle: String?
     let badge: HeaderView.Badge
     
     let isCompact: Bool
     
-    let avatarURL: URL?
-    let time: Date?
-    
-    let id: Int
-    let community: Community?
-    
     typealias Crumb = (Int, Person)
     let crumbs: [Crumb]
     
-    let location: FetchType
-    
-    init(_ model: PostView,
-         crumbs: [PostView] = [],
+    init(crumbs: [CommentView] = [],
          shouldRouteCommunity: Bool = true,
          shouldRoutePost: Bool = true,
          badge: HeaderView.Badge? = nil,
          isCompact: Bool = false) {
-        self.headline = model.creator.name
-        self.subheadline = model.post.local ? nil : model.creator.domain
-        self.subtitle = nil
-        self.commentView = nil
-        
-        self.person = model.creator
-        
-        self.avatarURL = model.avatarURL
-        self.id = model.post.id
-        self.community = model.community
-        self.crumbs = []
-        
-        self.time = model.counts.published.serverTimeAsDate
         
         self.shouldRouteCommunity = shouldRouteCommunity
         self.shouldRoutePost = shouldRoutePost
         
-        self.badge = badge ?? .community(model.community.name)
-        
-        self._postView = .init(initialValue: model)
+        self.badge = .noBadge
         
         self.isCompact = isCompact
         
-        self.location = model.post.location ?? .base
-        
-        Colors.update(model.community.name)
-        
-    }
-    
-    init(_ model: CommentView,
-         crumbs: [CommentView] = [],
-         shouldRouteCommunity: Bool = true,
-         shouldRoutePost: Bool = true,
-         badge: HeaderView.Badge? = nil,
-         isCompact: Bool = false) {
-        self.headline = model.creator.name
-        self.subheadline = model.comment.local ? nil : model.creator.domain
-        self.subtitle = nil
-        self.commentView = model
-        
-        self.person = model.creator
-        
-        self.avatarURL = model.avatarURL
-        self.id = model.comment.id
-        self.community = model.community
         self.crumbs = crumbs.map { ($0.comment.id, $0.creator) }
-        
-        self.time = model.counts.published.serverTimeAsDate
-        
-        self.shouldRouteCommunity = shouldRouteCommunity
-        self.shouldRoutePost = shouldRoutePost
-        
-        self.badge = badge ?? .none
-        
-        self.isCompact = isCompact
-        
-        self.location = model.comment.location ?? .base
     }
     
     var body: some View {
         HStack(spacing: .layer2) {
             VStack(alignment: .leading, spacing: 0) {
-                Text(headline)
+                Text(context.display.author.headline)
                     .font(isCompact ? .subheadline : .headline)
-                if let subheadline {
+                if let subheadline = context.display.author.subheadline {
                     Text("@"+subheadline)
                         .font(.caption2)
                 }
@@ -138,71 +67,40 @@ struct HeaderCardView: View {
             
             Spacer()
             
-            if let community {
+            if let community = context.community?.lemmy {
                 GraniteRoute($enableRoute, window: .resizable(600, 500)) {
                     Feed(community)
                 }
             }
             
-            if let postView {
+            if context.isPostAvailable {
                 GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                    PostDisplayView(model: postView)
+                    PostDisplayView()
+                        .contentContext(context)
                 }
             }
             
-            if isCompact {
-                VStack(alignment: .trailing, spacing: 0) {
-                    PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                    community: shouldRouteCommunity ? community : nil,
-                                    postView: shouldRoutePost ? postView : nil,
-                                    person: person,
-                                    bookmarkKind: bookmarkKind,
-                                    isCompact: isCompact)
-                        .attach({
-                            self.fetchPostView()
-                        }, at: \.goToPost)
-                        .attach({
-                            edit.perform()
-                        }, at: \.edit)
-                        .graniteEvent(interact)
-                    
-                    if let subtitle {
-                        Text(subtitle)
-                            .font(.subheadline)
-                            .foregroundColor(.foreground)
-                    } else if let time {
-                        Text(time.timeAgoDisplay())
-                            .font(.subheadline)
-                            .foregroundColor(.foreground.opacity(0.5))
-                    }
-                }
-            } else {
-                if let subtitle {
-                    Text(subtitle)
-                        .font(.subheadline)
-                        .foregroundColor(.foreground)
-                } else if let time {
-                    Text(time.timeAgoDisplay())
-                        .font(.subheadline)
-                        .foregroundColor(.foreground.opacity(0.5))
-                }
-                
+            VStack(alignment: .trailing, spacing: 0) {
                 PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                community: shouldRouteCommunity ? community : nil,
-                                postView: postView,
-                                person: person,
-                                bookmarkKind: bookmarkKind)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                .attach({
-                    self.fetchPostView()
-                }, at: \.goToPost)
-                .attach({
-                    edit.perform()
-                }, at: \.edit)
-                .graniteEvent(interact)
+                                community: shouldRouteCommunity ? context.community?.lemmy : nil,
+                                postView: (shouldRoutePost || !isCompact) ? postView : nil,
+                                person: context.person?.lemmy,
+                                bookmarkKind: context.bookmarkKind,
+                                isCompact: isCompact)
+                    .attach({ community in
+                        viewCommunity.perform(community)
+                    }, at: \.viewCommunity)
+                    .attach({
+                        self.fetchPostView()
+                    }, at: \.goToPost)
+                    .attach({
+                        edit.perform()
+                    }, at: \.edit)
+                    .graniteEvent(interact)
             }
+        }
+        .task {
+            postView = context.postModel
         }
         .offset(y: -4)//based on badge's vertical padding + text container of header (.headline at the time)
     }
@@ -213,7 +111,7 @@ struct HeaderCardView: View {
             return
         }
         
-        guard let commentView else { return }
+        guard let commentView = context.commentModel else { return }
         
         Task.detached { @MainActor in
             guard let postView = await Lemmy.post(commentView.post.id, comment: commentView.comment) else {

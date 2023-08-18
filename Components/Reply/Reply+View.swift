@@ -8,14 +8,16 @@ extension Reply: View {
         VStack(alignment: .leading, spacing: 0) {
             switch kind {
             case .replyPost(let model), .editReplyPost(_, let model):
-                HeaderView(model, showPostActions: false)
+                HeaderView(showPostActions: false)
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer3)
+                    .contentContext(.init(postModel: model))
             case .replyComment(let model),
                     .editReplyComment(let model):
-                HeaderView(model, showPostActions: false)
+                HeaderView(showPostActions: false)
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer3)
+                    .contentContext(.init(commentModel: model))
             default:
                 EmptyView()
             }

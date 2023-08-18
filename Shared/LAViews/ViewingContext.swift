@@ -28,6 +28,25 @@ extension ViewingContext {
         }
     }
     
+    var isBookmarkExpanded: Bool {
+        switch self {
+        case .bookmarkExpanded:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    //TODO: think of a better name?
+    var isBookmarkComponent: Bool {
+        switch self {
+        case .bookmark:
+            return true
+        default:
+            return false
+        }
+    }
+    
     var bookmarkLocation: FetchType {
         switch self {
         case .bookmark(let host), .bookmarkExpanded(let host):

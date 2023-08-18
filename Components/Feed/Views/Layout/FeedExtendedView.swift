@@ -35,15 +35,17 @@ struct FeedExtendedView: View {
                 switch layout.state.feedContext {
                 case .viewPost(let model):
                     Divider()
-                    PostDisplayView(model: model)
+                    PostDisplayView()
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
-                    .id(model.id)
+                        .contentContext(.init(postModel: model))
+                        .id(model.id)
                 default:
                     Spacer()
                 }
             }
+            
             Divider()
             
             Button {

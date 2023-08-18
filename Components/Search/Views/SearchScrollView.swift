@@ -50,7 +50,7 @@ struct SearchScrollView: View {
                 } inlineBody: {
                     EmptyView()
                 } content: { model in
-                    PostCardView(model: model)
+                    PostCardView()
                         .attach({ postView in
                             GraniteHaptic.light.invoke()
 //                            modal.presentSheet {
@@ -58,6 +58,7 @@ struct SearchScrollView: View {
 //                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
 //                            }
                         }, at: \.showContent)
+                        .contentContext(.init(postModel: model))
                 }.environmentObject(pagerPosts)
             case .communities:
                 PagerScrollView(CommunityView.self) {
@@ -74,7 +75,8 @@ struct SearchScrollView: View {
                 } inlineBody: {
                     EmptyView()
                 } content: { model in
-                    CommentCardView(model: model)
+                    CommentCardView()
+                        .contentContext(.init(commentModel: model))
                 }.environmentObject(pagerComments)
             case .users:
                 PagerScrollView(PersonView.self) {

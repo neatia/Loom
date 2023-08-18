@@ -144,10 +144,7 @@ extension Bookmark: View {
     func postViews(indent: Bool = false) -> some View {
         VStack {
             ForEach(postViews) { postView in
-                PostCardView(model: postView,
-                             style: .style2,
-                             viewingContext: showHeader ? .bookmark(state.selectedBookmarkPostKey.host) : .bookmarkExpanded(state.selectedBookmarkPostKey.host),
-                             linkPreviewType: .largeNoMetadata)
+                PostCardView(linkPreviewType: .largeNoMetadata)
                     .attach({ postView in
                         GraniteHaptic.light.invoke()
                         modal.presentSheet {
@@ -155,6 +152,9 @@ extension Bookmark: View {
                                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                         }
                     }, at: \.showContent)
+                    .contentContext(.init(postModel: postView,
+                                          viewingContext: showHeader ? .bookmark(state.selectedBookmarkPostKey.host) : .bookmarkExpanded(state.selectedBookmarkPostKey.host)))
+                
                 
                 if postView.id != postViews.last?.id {
                     Divider()
@@ -167,10 +167,11 @@ extension Bookmark: View {
     func commentViews(indent: Bool = false) -> some View {
         VStack {
             ForEach(commentViews) { commentView in
-                CommentCardView(model: commentView,
-                                postView: postForComment(commentView),
-                                shouldLinkToPost: true,
-                                viewingContext: .bookmark(state.selectedBookmarkCommentKey.host))
+                CommentCardView(shouldLinkToPost: true)
+                    .contentContext(.init(postModel: postForComment(commentView),
+                                          commentModel: commentView,
+                                          feedStyle: .style2,
+                                          viewingContext: .bookmark(state.selectedBookmarkCommentKey.host)))
                 
                 if commentView.id != commentViews.last?.id {
                     Divider()

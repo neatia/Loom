@@ -8,7 +8,8 @@ extension Write: View {
         VStack(spacing: 0) {
             if state.isEditing == false {
                 GraniteRoute(_state.showPost) {
-                    PostDisplayView(model: state.createdPostView ?? .mock)
+                    PostDisplayView()
+                        .contentContext(.init(postModel: state.createdPostView ?? .mock))
                 }
             }
             

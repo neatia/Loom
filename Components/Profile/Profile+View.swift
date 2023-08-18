@@ -15,13 +15,16 @@ extension Profile: View {
             } content: { details in
                 if let model = details.commentView,
                    !filterOverviewPosts {
-                    CommentCardView(model: model,
-                                    viewingContext: details.isReply || details.isMention ? .base : .profile)
+                    CommentCardView()
                         .graniteEvent(account.center.interact)
+                        .contentContext(.init(commentModel: model,
+                                              viewingContext: details.isReply || details.isMention ? .base : .profile))
                 } else if let model = details.postView,
                           !filterOverviewComments {
-                    PostCardView(model: model, style: .style2, viewingContext: .profile)
+                    PostCardView()
                         .graniteEvent(account.center.interact)
+                        .contentContext(.init(postModel: model, viewingContext: .profile))
+                    
                 }
             }
             .environmentObject(pager)

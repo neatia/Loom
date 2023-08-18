@@ -6,45 +6,43 @@ import GraniteUI
 import MarkdownView
 
 struct CommentCardView: View {
-    @GraniteAction<Community> var viewCommunity
+    @Environment(\.contentContext) var context
     @Environment(\.graniteEvent) var interact
+    @GraniteAction<Community> var viewCommunity
     
-    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
     @GraniteAction<CommentView> var showDrawer
-    @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     
     @Relay var config: ConfigService
     @Relay(.silence) var content: ContentService
     
-    @State var model: CommentView
+    @State var model: CommentView?
     @State var postView: PostView? = nil
-    
-    //TODO: env. props
-    var shouldRouteCommunity: Bool = true
-    var shouldLinkToPost: Bool = true
-    var parentModel: CommentView? = nil
-    var isInline: Bool = false
-    
-    let style: FeedStyle = .style2
-    var viewingContext: ViewingContext = .base
     
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
+    //TODO: env. props?
+    var parentModel: CommentView? = nil
+    var shouldRouteCommunity: Bool = true
+    var shouldLinkToPost: Bool = true
+    var isInline: Bool = false
+    
     var censorBot: Bool {
-        model.creator.bot_account && config.state.showBotAccounts == false
+        context.isBot && config.state.showBotAccounts == false
     }
     
     var isBookmark: Bool {
-        viewingContext.isBookmark
+        context.viewingContext.isBookmark
     }
     
     var isPreview: Bool {
-        viewingContext == .search
+        context.viewingContext == .search
     }
     
     var showAvatar: Bool {
-        switch viewingContext {
+        switch context.viewingContext {
         case .bookmarkExpanded, .profile:
             return false
         default:
@@ -55,32 +53,31 @@ struct CommentCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            switch style {
+            switch context.feedStyle {
             case .style1:
-                HeaderView(model,
-                           shouldRouteCommunity: shouldRouteCommunity,
-                           shouldRoutePost: shouldLinkToPost,
-                           badge: shouldLinkToPost ? (postView == nil ? .noBadge : .post(postView!)) : nil)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
+                HeaderView(shouldRouteCommunity: shouldRouteCommunity,
+                           shouldRoutePost: shouldLinkToPost)
+                    .attach({ community in
+                        viewCommunity.perform(community)
+                    }, at: \.viewCommunity)
                     .padding(.trailing, .layer3)
                     .padding(.bottom, .layer3)
+                
                 contentView
                     .padding(.leading, .layer3 + AvatarView.containerPadding)
                     .padding(.trailing, .layer3)
                     .padding(.bottom, .layer3)
             case .style2:
                 HStack(spacing: .layer3) {
-                    HeaderCardAvatarView(model, postView: postView, showAvatar: showAvatar)
+                    HeaderCardAvatarView(showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
-                        HeaderCardView(model,
-                                       shouldRoutePost: self.shouldLinkToPost)
+                        HeaderCardView(shouldRoutePost: self.shouldLinkToPost)
                             .attach({ community in
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                switch viewingContext {
+                                guard let model else { return }
+                                switch context.viewingContext {
                                 case .base:
                                     edit.perform((model, { updatedModel in
                                         DispatchQueue.main.async {
@@ -102,7 +99,7 @@ struct CommentCardView: View {
                 Divider()
                     .padding(.top, .layer5)
                 
-                ThreadView(model: model, postView: postView, isModal: false, isInline: true)
+                ThreadView(isModal: false, isInline: true)
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
@@ -117,14 +114,17 @@ struct CommentCardView: View {
         }
         .padding(.top, .layer5)
         .padding(.bottom, expandReplies ? 0 : .layer5)
-        .padding(.leading, .layer3)
+        .padding(.leading, .layer4)
         .onSwipe(edge: .trailing,
                  icon: "arrowshape.turn.up.backward.fill",
                  iconColor: Brand.Colors.babyBlue,
                  backgroundColor: .alternateBackground,
                  disabled: isPreview || isBookmark) {
+            
+            guard let model else { return }
+            
             reply.perform((model, { model in
-                self.model = self.model.incrementReplyCount()
+                self.model = self.model?.incrementReplyCount()
                 if expandReplies == false {
                     expandReplies = true
                 } else {
@@ -134,6 +134,10 @@ struct CommentCardView: View {
         }
         .transaction { tx in
             tx.animation = nil
+        }
+        .task {
+            self.model = context.commentModel
+            self.postView = context.postModel
         }
     }
 }
@@ -146,7 +150,7 @@ extension CommentCardView {
                 .censor(censorBot, kind: .bot)
                 .padding(.top, censorBot ? .layer2 : 0)
                 .onTapGesture {
-                    guard isPreview == false, model.replyCount > 0 else { return }
+                    guard isPreview == false, model?.replyCount ?? 0 > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()
                 }
@@ -161,27 +165,28 @@ extension CommentCardView {
                     .padding(.top, censorBot ? .layer2 : 0)
                     .contentShape(Rectangle())
                     .modifier(TapAndLongPressModifier(tapAction: {
-                    guard isPreview == false, model.replyCount > 0 else { return }
+                    guard let model,
+                          isPreview == false,
+                          model.replyCount > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()
                 }, longPressAction: {
-                    guard model.replyCount > 0 else { return }
+                    guard let model,
+                          model.replyCount > 0 else { return }
                     GraniteHaptic.light.invoke()
                     showDrawer.perform(model)
                 }))
             }
             #endif
-            FooterView(postView: postView,
-                       commentView: model,
-                       showScores: config.state.showScores,
-                       style: self.style)
+            FooterView(showScores: config.state.showScores)
                 .attach({ id in
-                    guard isPreview == false else { return }
+                    guard let model,
+                          isPreview == false else { return }
                     showDrawer.perform(model)
                 }, at: \.showComments)
         }
-        .padding(.leading, style == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-        .overlayIf(style == .style1) {
+        .padding(.leading, context.feedStyle == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
+        .overlayIf(context.feedStyle == .style1) {
             GeometryReader { proxy in
                 Rectangle()
                     .frame(width: 2,
@@ -197,13 +202,13 @@ extension CommentCardView {
         Group {
             if isPreview {
                 ScrollView(showsIndicators: false) {
-                    MarkdownView(text: model.comment.content)
+                    MarkdownView(text: model?.comment.content ?? "")
                         .markdownViewRole(.editor)
                 }
                 .frame(height: 120)
             } else {
                 
-                MarkdownView(text: model.comment.content)
+                MarkdownView(text: model?.comment.content ?? "")
                     .markdownViewRole(.editor)
             }
         }

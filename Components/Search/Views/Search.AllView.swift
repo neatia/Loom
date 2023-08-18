@@ -124,10 +124,11 @@ struct SearchAllView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {
                                 ForEach(model.comments) { commentView in
-                                    CommentCardView(model: commentView,
-                                                    viewingContext: .search)
-                                    .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
-                                    .frame(height: 240)
+                                    CommentCardView()
+                                        .contentContext(.init(commentModel: commentView,
+                                                              viewingContext: .search))
+                                        .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
+                                        .frame(height: 240)
 
                                     if commentView.id != model.comments.last?.id {
 
@@ -170,12 +171,15 @@ struct SearchAllView: View {
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {
-                                ForEach(model.posts) { pModel in
-                                    PostCardView(model: pModel, viewingContext: .search)
+                                ForEach(model.posts) { postView in
+                                    PostCardView()
                                         .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.9, maxWidth: 450)
                                         .frame(height: 200)
+                                        .contentContext(.init(postModel: postView,
+                                                              feedStyle: .style1,
+                                                              viewingContext: .search))
                                     
-                                    if pModel.id != model.posts.last?.id {
+                                    if postView.id != model.posts.last?.id {
                                         
                                         Divider()
                                             .padding(.horizontal, .layer2)
