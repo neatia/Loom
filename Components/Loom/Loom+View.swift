@@ -39,7 +39,7 @@ extension Loom: View {
                                             }
                                         }, at: \.create)
                                         .background(Color.background)
-                                        .graniteNavigation(backgroundColor: Color.clear)
+                                        .graniteNavigation(backgroundColor: Color.clear, disable: Device.isExpandedLayout)
                                 }
                                 
                             } label: {
@@ -81,7 +81,7 @@ extension Loom: View {
                             modal.dismissSheet()
                         }, at: \.edit)
                         .background(Color.background)
-                        .graniteNavigation(backgroundColor: Color.clear)
+                        .graniteNavigation(backgroundColor: Color.clear, disable: Device.isExpandedLayout)
                     }
                 }, at: \.edit)
             }

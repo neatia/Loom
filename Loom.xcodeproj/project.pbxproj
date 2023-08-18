@@ -966,8 +966,6 @@
 		71F042212A6A3AD700788CDC /* Write+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Write+View.swift"; sourceTree = "<group>"; };
 		71F042232A6A3AD700788CDC /* Write+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Write+Center.swift"; sourceTree = "<group>"; };
 		71F042382A6A682C00788CDC /* Write.Create.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Create.swift; sourceTree = "<group>"; };
-		71F047602A8DD53900DB7E81 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
-		71F047642A8E030A00DB7E81 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
 		71F778B12A719C6A00C9C5C4 /* HeaderCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCardView.swift; sourceTree = "<group>"; };
 		71F778B42A719D4400C9C5C4 /* HeaderCardAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCardAvatarView.swift; sourceTree = "<group>"; };
 		71F778B82A71A95300C9C5C4 /* SfSafariView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SfSafariView.swift; sourceTree = "<group>"; };
@@ -1320,8 +1318,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				71F047642A8E030A00DB7E81 /* LemmyKit */,
-				71F047602A8DD53900DB7E81 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,

@@ -16,7 +16,7 @@ struct Loom: GraniteComponent {
             .modify
             .listen(.beam) { value in
                 if let response = value as? StandardErrorMeta {
-                    modal.present(GraniteToastView(response))
+                    modal.presentModal(GraniteToastView(response))
                 }
             }
     }

@@ -92,14 +92,14 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                         }
                     }
                     .frame(height: 36)
-                    .padding(.bottom, Device.isMacOS ? .layer4 : .layer5)
-                    .padding(.horizontal, Device.isMacOS ? .layer4 : .layer5)
+                    .padding(.bottom, .layer4)
+                    .padding(.horizontal, .layer5)
                     
                     Divider()
                         .padding(.bottom, .layer4)
                     
                     content()
-                        .padding(.horizontal, Device.isMacOS ? .layer4 : .layer5)
+                        .padding(.horizontal, .layer5)
                         .padding(.top, Device.isMacOS ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                     
@@ -110,7 +110,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
             
         }
         .frame(width: Device.isMacOS && !fullWidth ? 300 : nil)
-        .padding(.top, drawerMode || Device.isMacOS ? 0 : .layer5)
+        .padding(.top, drawerMode || Device.isMacOS ? .layer4 : .layer5)
         .offset(x: 0, y: drawerMode ? .layer5 : 0)
     }
 }

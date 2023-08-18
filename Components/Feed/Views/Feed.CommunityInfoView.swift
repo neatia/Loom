@@ -114,6 +114,13 @@ extension Feed {
                 guard let communityView = state.communityView else { return }
                 GraniteHaptic.light.invoke()
                 
+                guard loom.state.manifests.isEmpty == false else {
+                    //TODO: localize
+                    modal.presentModal(GraniteToastView(StandardErrorMeta(title: "MISC_ERROR", message: "You do not have any Looms to add to", event: .error)))
+                    
+                    return
+                }
+                
                 modal.presentSheet {
                     LoomCollectionsView(modalIntent: .adding(communityView))
                         .frame(width: Device.isMacOS ? 400 : nil)

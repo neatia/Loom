@@ -213,7 +213,7 @@ extension Write: View {
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
         .addGraniteModal(modal.modalManager)
-        .graniteNavigation(backgroundColor: Color.background) {
+        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
                 .font(.title3)
