@@ -118,8 +118,7 @@ extension Bookmark: View {
                 .background(Color.alternateBackground)
             }
         }
-        .onChange(of: service.isLoaded) { isLoaded in
-            guard isLoaded else { return }
+        .task {
             _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
             _state.selectedBookmarkCommentKey.wrappedValue = service.state.comments.keys.first ?? .local
         }

@@ -78,10 +78,9 @@ extension Home: View {
             
             Color.background.fitToContainer()
             
-        }, currentTab: 2) {
+        }, currentTab: 0) {
             GraniteTab {
                 Feed()
-//                DebugComponent()
             } icon: {
                 GraniteTabIcon(name: "house")
             }

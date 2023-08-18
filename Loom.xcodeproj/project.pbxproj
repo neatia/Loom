@@ -105,6 +105,8 @@
 		7118494A2A8EC5D5000F5A67 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711849482A8EC5D5000F5A67 /* LogoView.swift */; };
 		7118494C2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */; };
 		7118494D2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */; };
+		711849502A8F079E000F5A67 /* Feed.SetInstanceURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7118494F2A8F079E000F5A67 /* Feed.SetInstanceURL.swift */; };
+		711849512A8F079E000F5A67 /* Feed.SetInstanceURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7118494F2A8F079E000F5A67 /* Feed.SetInstanceURL.swift */; };
 		711B3F8B2885D43B00F3080D /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F8A2885D43B00F3080D /* Tests_iOS.swift */; };
 		711B3F8D2885D43B00F3080D /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F8C2885D43B00F3080D /* Tests_iOSLaunchTests.swift */; };
 		711B3F972885D43B00F3080D /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F962885D43B00F3080D /* Tests_macOS.swift */; };
@@ -715,6 +717,7 @@
 		710BEAA72A86E89E0075A141 /* ListingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingType.swift; sourceTree = "<group>"; };
 		711849482A8EC5D5000F5A67 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoomTypes.swift; sourceTree = "<group>"; };
+		7118494F2A8F079E000F5A67 /* Feed.SetInstanceURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.SetInstanceURL.swift; sourceTree = "<group>"; };
 		711B3F722885D43700F3080D /* PEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEXApp.swift; sourceTree = "<group>"; };
 		711B3F742885D43B00F3080D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		711B3F792885D43B00F3080D /* Loom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1304,6 +1307,14 @@
 				710283722A2A54C300010877 /* AccentColor.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		7118494E2A8F078C000F5A67 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				7118494F2A8F079E000F5A67 /* Feed.SetInstanceURL.swift */,
+			);
+			path = Actions;
 			sourceTree = "<group>";
 		};
 		711B3F6C2885D43700F3080D = {
@@ -1912,6 +1923,7 @@
 		71B7A1D42A68DE8D003E6D4D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7118494E2A8F078C000F5A67 /* Actions */,
 				71899E592A89AF600073158F /* Header */,
 				71FCDD0B2A75EC69000A6309 /* Layout */,
 				710BEAA12A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift */,
@@ -2635,6 +2647,7 @@
 				710283B72A2A54C300010877 /* ValueSliderOptions.swift in Sources */,
 				7197FB0D2964B4C0005EBBA4 /* GraniteAlertView.swift in Sources */,
 				710283B52A2A54C300010877 /* HorizontalValueSliderStyle.swift in Sources */,
+				711849502A8F079E000F5A67 /* Feed.SetInstanceURL.swift in Sources */,
 				7166E9CF2A7472E3004F88D7 /* AccountService.Interact.swift in Sources */,
 				710283B32A2A54C300010877 /* AnyValueSliderStyle.swift in Sources */,
 				712C0D7D2A7CA32500DBDCC9 /* CGPoint.swift in Sources */,
@@ -3016,6 +3029,7 @@
 				710283CC2A2A54C300010877 /* DefaultHorizontalValueView.swift in Sources */,
 				71B7A1F02A691470003E6D4D /* Gradient.swift in Sources */,
 				713129B62A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */,
+				711849512A8F079E000F5A67 /* Feed.SetInstanceURL.swift in Sources */,
 				71D027FE2A6F15FE00EA781A /* AccountModuleView.swift in Sources */,
 				71C9F90F2A60BCF50089D7EA /* PostCardView.swift in Sources */,
 				71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
@@ -3391,7 +3405,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3427,7 +3441,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3466,7 +3480,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3496,7 +3510,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
