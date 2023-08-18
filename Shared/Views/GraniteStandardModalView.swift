@@ -18,6 +18,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     var showBG: Bool
     var alternateBG: Bool
     var drawerMode: Bool
+    var customHeaderView: Bool
     @Binding var shouldShowDrawer: Bool
     var canCloseDrawer: Bool
     var header: (() -> Header)
@@ -30,6 +31,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
          alternateBG: Bool = false,
          fullWidth: Bool = false,
          drawerMode: Bool = false,
+         customHeaderView: Bool = false,
          shouldShowDrawer: Binding<Bool>? = nil,
          @ViewBuilder header: @escaping (() -> Header) = { EmptyView() },
          @ViewBuilder content: @escaping (() -> Content)) {
@@ -41,18 +43,18 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
         self.fullWidth = fullWidth
         self.header = header
         self.content = content
+        self.customHeaderView = customHeaderView
         self._shouldShowDrawer = shouldShowDrawer ?? .constant(false)
         self.canCloseDrawer = drawerMode && shouldShowDrawer != nil
     }
     
     var body: some View {
         VStack(spacing: 0) {
-            if Device.isMacOS == false && !drawerMode {
+            if Device.isExpandedLayout == false && !drawerMode {
                 Spacer()
             }
             
             ZStack {
-                
                 if Device.isMacOS == false || showBG {
                     RoundedRectangle(cornerRadius: 16)
                         .foregroundColor(alternateBG ? .alternateBackground : Color.background)
@@ -91,19 +93,24 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .frame(height: 36)
+                    .frame(height: customHeaderView ? nil : 36)
                     .padding(.bottom, .layer4)
                     .padding(.horizontal, .layer5)
+                    .padding(.top, Device.isExpandedLayout == false ? .layer5 : 0)
                     
-                    Divider()
-                        .padding(.bottom, .layer4)
+                    if !customHeaderView {
+                        Divider()
+                            .padding(.bottom, .layer4)
+                    }
                     
                     content()
                         .padding(.horizontal, .layer5)
                         .padding(.top, Device.isMacOS ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                     
-                    Spacer()
+                    if Device.isiPad == false {
+                        Spacer()
+                    }
                 }
             }
             .frame(maxHeight: maxHeight)

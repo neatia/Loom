@@ -33,9 +33,19 @@ struct LoginView: View {
     
     @State var kind: Kind = .login
     
+    var maxHeight: CGFloat {
+        if Device.isMacOS {
+            return (addToProfiles ? 480 : 400)
+        } else if Device.isiPad {
+            return (addToProfiles ? 480 : 400)
+        } else {
+            return 600
+        }
+    }
+    
     var body: some View {
         
-        GraniteStandardModalView(maxHeight: Device.isMacOS ? (addToProfiles ? 480 : 400) : 600) {
+        GraniteStandardModalView(maxHeight: maxHeight) {
             if addToProfiles {
                 HStack {
                     Text("MISC_ADD")

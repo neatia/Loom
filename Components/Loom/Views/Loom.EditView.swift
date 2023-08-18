@@ -21,9 +21,13 @@ struct LoomEditView: View {
     @GraniteAction<LoomManifest> var edit
     @GraniteAction<LoomManifest> var remove
     
+    var maxHeight: CGFloat? {
+        return manifest.communities.isEmpty ? 210 : nil
+    }
+    
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView(maxHeight: nil) {
+        GraniteStandardModalView(maxHeight: maxHeight) {
             HStack(spacing: .layer4) {
                 //TODO: localize
                 Text("Edit Loom")
@@ -87,44 +91,46 @@ struct LoomEditView: View {
                         .padding(.bottom, .layer4)
                 }
                 
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: .layer4) {
-                        ForEach(manifest.communities, id: \.id) { model in
-                            let isRemoving: Bool = removeCommunities.contains(where: { $0.id == model.id })
-                            ZStack {
-                                if let lemmyView = model.lemmy {
-                                    CommunityCardView(model: lemmyView, showCounts: false)
-                                }
-                                
-                                Brand.Colors.black.opacity(0.75)
-                                    .cornerRadius(8)
-                                
-                                
-                                Button {
-                                    GraniteHaptic.light.invoke()
-                                    if isRemoving {
-                                        removeCommunities.removeAll(where: { $0.id == model.id })
-                                    } else {
-                                        removeCommunities.append(model)
+                if manifest.communities.isNotEmpty {
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: .layer4) {
+                            ForEach(manifest.communities, id: \.id) { model in
+                                let isRemoving: Bool = removeCommunities.contains(where: { $0.id == model.id })
+                                ZStack {
+                                    if let lemmyView = model.lemmy {
+                                        CommunityCardView(model: lemmyView, showCounts: false)
                                     }
-                                } label: {
                                     
-                                    if isRemoving {
-                                        Image(systemName: "arrow.counterclockwise")
-                                            .font(.headline.bold())
-                                            .foregroundColor(.foreground)
-                                    } else {
-                                        Image(systemName: "trash")
-                                            .font(.headline.bold())
-                                            .foregroundColor(.red)
+                                    Brand.Colors.black.opacity(0.75)
+                                        .cornerRadius(8)
+                                    
+                                    
+                                    Button {
+                                        GraniteHaptic.light.invoke()
+                                        if isRemoving {
+                                            removeCommunities.removeAll(where: { $0.id == model.id })
+                                        } else {
+                                            removeCommunities.append(model)
+                                        }
+                                    } label: {
+                                        
+                                        if isRemoving {
+                                            Image(systemName: "arrow.counterclockwise")
+                                                .font(.headline.bold())
+                                                .foregroundColor(.foreground)
+                                        } else {
+                                            Image(systemName: "trash")
+                                                .font(.headline.bold())
+                                                .foregroundColor(.red)
+                                        }
                                     }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
                             }
                         }
                     }
+                    .padding(.bottom, .layer2)
                 }
-                .padding(.bottom, .layer2)
             }
         }
     }

@@ -1,6 +1,26 @@
 import Foundation
 import SwiftUI
 
+//Compatibility
+#if os(macOS)
+public struct UISheetPresentationController {
+    open class Detent : NSObject {
+        enum Identifier {
+            case large
+            case medium
+            case small
+        }
+        
+        
+        open class func medium() -> Detent { return Detent() }
+        
+        
+        open class func large() -> Detent { return Detent() }
+        
+    }
+}
+#endif
+
 struct GraniteSheetContainerView<Content : View, Background : View> : View {
     
     @EnvironmentObject var manager : GraniteSheetManager
@@ -29,26 +49,38 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
     
     var body: some View {
 #if os(iOS)
-        if #available(iOS 14.5, *) {
+        if #available(iOS 14.5, *),
+           Device.isiPad == false {
             content
                 .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .shee(isPresented: manager.hasContent(with: .sheet), presentationStyle: .formSheet(properties: .init(detents: [ .medium(), .large() ], selectedDetentIdentifier: $selectedDetentIdentifier, animatesSelectedDetentIdentifierChange: true))) {
+                .shee(isPresented: manager.hasContent(with: .sheet),
+                      presentationStyle:
+                        .formSheet(properties:
+                                .init(detents: manager.detents(),
+                                      selectedDetentIdentifier: $selectedDetentIdentifier,
+                                      animatesSelectedDetentIdentifierChange: true))) {
                     
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
                 }
         } else {
             content
+                .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
+                    sheetContent(for: manager.style)
+                        .background(FullScreenCoverBackgroundRemovalView())
+
+                }
                 .sheet(isPresented: manager.hasContent(with: .sheet)) {
                     sheetContent(for: manager.style)
+                        .background(FullScreenCoverBackgroundRemovalView())
                 }
-                .graniteFullScreenCover(isPresented: manager.hasContent(with: .cover)) {
+                /*.graniteFullScreenCover(isPresented: manager.hasContent(with: .cover)) {
                     sheetContent(for: manager.style)
-                }
+                }*/
         }
 #else
         content
