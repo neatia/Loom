@@ -38,7 +38,7 @@
 
 | Looms    | |
 | -------- | ------- |
-| ![Image](https://gateway.ipfs.io/ipfs/QmRFMkKZ3oVHfzkduRcTKsB1SDiV2yYWT78nfg32d2czDv) | Create "Looms" of any community from any instance. Grouping their content into a singular feed
+| ![Image](https://gateway.ipfs.io/ipfs/QmRFMkKZ3oVHfzkduRcTKsB1SDiV2yYWT78nfg32d2czDv) | Create "Looms" of any community from any instance. Grouping their content into a singular feed |
 
 | Explore    | |
 | -------- | ------- |
