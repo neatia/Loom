@@ -9,7 +9,8 @@ extension Feed {
             var communityView: CommunityView? = nil
             
             var selectedTimeCategory: Int = 0
-            var sortingTimeType: [String] = ["SORT_TYPE_ALL_TIME", "SORT_TYPE_TODAY"]
+            //Listing type localizatin used for abbreviation: "All Time"
+            var sortingTimeType: [String] = ["LISTING_TYPE_ALL", "SORT_TYPE_TODAY"]
             
             var selectedSorting: Int = 0
             var sortingType: [SortType] = SortType.categoryGeneral

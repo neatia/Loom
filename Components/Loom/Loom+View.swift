@@ -38,8 +38,6 @@ extension Loom: View {
                                                 modal.dismissSheet()
                                             }
                                         }, at: \.create)
-                                        .background(Color.background)
-                                        .graniteNavigation(backgroundColor: Color.clear, disable: Device.isExpandedLayout)
                                 }
                                 
                             } label: {
@@ -80,17 +78,13 @@ extension Loom: View {
                             service.center.modify.send(LoomService.Modify.Intent.update(manifest))
                             modal.dismissSheet()
                         }, at: \.edit)
-                        .background(Color.background)
-                        .graniteNavigation(backgroundColor: Color.clear, disable: Device.isExpandedLayout)
                     }
                 }, at: \.edit)
             }
             
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
-        .addGraniteSheet(modal.sheetManager,
-                         modalManager: modal.modalSheetManager,
-                         background: Color.clear)
+        .addGraniteSheet(modal.sheetManager, background: Color.clear)
         .addGraniteModal(modal.modalManager)
         .onChange(of: service.state.intent) { newIntent in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
@@ -102,5 +96,6 @@ extension Loom: View {
                 }
             }
         }
+        .background(Color.background)
     }
 }

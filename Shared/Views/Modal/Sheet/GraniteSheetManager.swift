@@ -7,6 +7,7 @@ final public class GraniteSheetManager : ObservableObject {
     var style : GraniteSheetPresentationStyle = .sheet
     
     @Published var models : [String: ContentModel] = [:]
+    var detentsMap : [String: [UISheetPresentationController.Detent]] = [:]
     @Published public var shouldPreventDismissal : Bool = false
     
     struct ContentModel {
@@ -30,14 +31,21 @@ final public class GraniteSheetManager : ObservableObject {
         })
     }
     
+    func detents(id: String = GraniteSheetManager.defaultId) -> [UISheetPresentationController.Detent] {
+        return self.detentsMap[id] ?? [.medium(), .large()]
+    }
+    
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
+                                        detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
+        self.detentsMap[id] = detents
         self.models[id] = .init(id: id, content: AnyView(content()))
     }
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {
         DispatchQueue.main.async { [weak self] in
+            self?.detentsMap[id] = nil
             self?.models[id] = nil
             self?.shouldPreventDismissal = false
         }

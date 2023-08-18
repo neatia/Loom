@@ -18,9 +18,10 @@ extension Feed {
         }, set: { newValue in
             value = newValue
         })
+        
         modal.presentSheet {
             //TODO: localize
-            GraniteSheetView(title: "Set Instance URL", height: 140) {
+            GraniteStandardModalView(title: "Set Instance URL", maxHeight: 210) {
                 VStack(spacing: 0) {
                     TextField("MISC_URL", text: bindingString)
                         .textFieldStyle(.plain)

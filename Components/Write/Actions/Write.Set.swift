@@ -20,7 +20,7 @@ extension Write {
             value = newValue
         })
         modal.presentSheet {
-            GraniteSheetView(title: "TITLE_SET_URL", height: 140) {
+            GraniteStandardModalView(title: "TITLE_SET_URL", maxHeight: 210) {
                 VStack(spacing: 0) {
                     TextField("MISC_URL", text: bindingString)
                         .textFieldStyle(.plain)

@@ -49,6 +49,7 @@ extension Globe: View {
                          modalManager: modal.modalSheetManager,
                          background: Color.clear)
         .addGraniteModal(modal.modalManager)
+        .background(Color.background)
         
     }
     
@@ -56,7 +57,7 @@ extension Globe: View {
         Button {
             GraniteHaptic.light.invoke()
             
-            modal.presentSheet {
+            modal.presentSheet(detents: [.large()]) {
                 LoginView(addToProfiles: true)
                     .attach({
                         modal.dismissSheet()

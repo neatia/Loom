@@ -67,8 +67,9 @@ extension ModalService {
     }
     
     func presentSheet<Content : View>(id: String = GraniteSheetManager.defaultId,
+                                      detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
                                       style : GraniteSheetPresentationStyle = .sheet, @ViewBuilder content : () -> Content) {
-        sheetManager.present(id: id, content: content, style: style)
+        sheetManager.present(id: id, detents: detents, content: content, style: style)
     }
     
     func dismissSheet() {

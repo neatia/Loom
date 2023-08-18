@@ -327,6 +327,7 @@ extension Settings: View {
                          modalManager: modal.modalSheetManager,
                          background: Color.clear)
         .addGraniteModal(modal.modalManager)
+        .background(Color.background)
     }
     
 }

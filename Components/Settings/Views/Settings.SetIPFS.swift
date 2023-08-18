@@ -36,7 +36,7 @@ extension Settings {
         })
         
         modal.presentSheet {
-            GraniteSheetView(title: "Set IPFS Properties", height: 240) {
+            GraniteStandardModalView(title: "Set IPFS Properties", maxHeight: 360) {
                 VStack(spacing: 0) {
                     TextField("MISC_GATEWAY", text: bindingGateway)
                         .textFieldStyle(.plain)
@@ -47,7 +47,6 @@ extension Settings {
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(Color.alternateBackground.opacity(0.3))
                         )
-                        .frame(minWidth: Device.isMacOS ? 400 : nil)
                         .padding(.bottom, .layer3)
                     
                     //Only infura for now
@@ -71,7 +70,6 @@ extension Settings {
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(Color.alternateBackground.opacity(0.3))
                         )
-                        .frame(minWidth: Device.isMacOS ? 400 : nil)
                         .padding(.bottom, .layer3)
                     
                     TextField("FORM_API_SECRET", text: bindingSecret)
@@ -83,7 +81,6 @@ extension Settings {
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(Color.alternateBackground.opacity(0.3))
                         )
-                        .frame(minWidth: Device.isMacOS ? 400 : nil)
                         .padding(.bottom, .layer4)
                     
                     HStack(spacing: .layer2) {

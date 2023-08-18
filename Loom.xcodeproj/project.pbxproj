@@ -399,8 +399,6 @@
 		71B21B612A6C5743005B3BFB /* Write.Generate.Passage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B5F2A6C5743005B3BFB /* Write.Generate.Passage.swift */; };
 		71B21B812A6C791E005B3BFB /* GraniteStandardModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B802A6C791E005B3BFB /* GraniteStandardModalView.swift */; };
 		71B21B822A6C791E005B3BFB /* GraniteStandardModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B802A6C791E005B3BFB /* GraniteStandardModalView.swift */; };
-		71B21B9E2A6CC90C005B3BFB /* GraniteSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B9D2A6CC90C005B3BFB /* GraniteSheetView.swift */; };
-		71B21B9F2A6CC90C005B3BFB /* GraniteSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B9D2A6CC90C005B3BFB /* GraniteSheetView.swift */; };
 		71B7A1D62A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7A1D52A68DE9C003E6D4D /* Feed.AccountView.swift */; };
 		71B7A1D72A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7A1D52A68DE9C003E6D4D /* Feed.AccountView.swift */; };
 		71B7A1D92A68E2C7003E6D4D /* Feed.HeaderMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7A1D82A68E2C7003E6D4D /* Feed.HeaderMenuView.swift */; };
@@ -870,7 +868,6 @@
 		71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Markdown.swift; sourceTree = "<group>"; };
 		71B21B5F2A6C5743005B3BFB /* Write.Generate.Passage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Passage.swift; sourceTree = "<group>"; };
 		71B21B802A6C791E005B3BFB /* GraniteStandardModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraniteStandardModalView.swift; sourceTree = "<group>"; };
-		71B21B9D2A6CC90C005B3BFB /* GraniteSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraniteSheetView.swift; sourceTree = "<group>"; };
 		71B7A1D52A68DE9C003E6D4D /* Feed.AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.AccountView.swift; sourceTree = "<group>"; };
 		71B7A1D82A68E2C7003E6D4D /* Feed.HeaderMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.HeaderMenuView.swift; sourceTree = "<group>"; };
 		71B7A1DB2A68E5CA003E6D4D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -1764,7 +1761,6 @@
 				71E5F3C12A73244500299558 /* LazyScrollView.swift */,
 				71B21B802A6C791E005B3BFB /* GraniteStandardModalView.swift */,
 				716157D82A85C29500449EE4 /* WebView.swift */,
-				71B21B9D2A6CC90C005B3BFB /* GraniteSheetView.swift */,
 				716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */,
 				711849482A8EC5D5000F5A67 /* LogoView.swift */,
 				71622E8F2A6E3DED006233F3 /* AdaptsToKeyboard.swift */,
@@ -2600,7 +2596,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71CB6C332A6B72B700084ECC /* Write.Import.swift in Sources */,
-				71B21B9E2A6CC90C005B3BFB /* GraniteSheetView.swift in Sources */,
 				71B7A1D92A68E2C7003E6D4D /* Feed.HeaderMenuView.swift in Sources */,
 				71A28E02295233A300EAE8EE /* Brand.swift in Sources */,
 				710283B12A2A54C300010877 /* ValueSliderStyleConfiguration.swift in Sources */,
@@ -3092,7 +3087,6 @@
 				71C9F8F12A60B7F40089D7EA /* Settings.swift in Sources */,
 				71622E942A6E4103006233F3 /* View+OnSwipe.swift in Sources */,
 				710283C22A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
-				71B21B9F2A6CC90C005B3BFB /* GraniteSheetView.swift in Sources */,
 				7167A8662A773C8E006F901E /* FeedSidebarView.swift in Sources */,
 				71C9F9342A610C110089D7EA /* FooterView.swift in Sources */,
 				711D39302A84A96200CF2DB2 /* DebugComponent.swift in Sources */,
