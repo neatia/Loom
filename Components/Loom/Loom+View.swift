@@ -6,46 +6,47 @@ extension Loom: View {
     public var view: some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
-                HStack(spacing: .layer4) {
-                    VStack {
-                        Spacer()
-                        //TODO: localize
+                VStack {
+                    Spacer()
+                    //TODO: localize
+                    HStack(spacing: .layer4) {
                         Text("Looms")
                             .font(.title.bold())
-                    }
-                    
-                    Spacer()
-                    
-                    if service.state.intent.isAdding {
-                        Button {
-                            GraniteHaptic.light.invoke()
-                            service._state.intent.wrappedValue = .idle
-                        } label: {
-                            Text("MISC_DONE")
-                                .font(.subheadline)
-                                .lineLimit(1)
-                                .readability()
-                                .outline()
-                        }.buttonStyle(.plain)
-                    } else {
-                        Button {
-                            GraniteHaptic.light.invoke()
-                            
-                            modal.presentSheet {
-                                LoomCreateView(communityView: communityView)
-                                    .attach({ name in
-                                        service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
-                                        DispatchQueue.main.async {
-                                            modal.dismissSheet()
-                                        }
-                                    }, at: \.create)
-                                    .graniteNavigation(backgroundColor: Color.background)
-                            }
-                            
-                        } label: {
-                            Image(systemName: "plus.circle")
-                                .font(.title3)
-                        }.buttonStyle(.plain)
+                        
+                        Spacer()
+                        
+                        if service.state.intent.isAdding {
+                            Button {
+                                GraniteHaptic.light.invoke()
+                                service._state.intent.wrappedValue = .idle
+                            } label: {
+                                Text("MISC_DONE")
+                                    .font(.subheadline)
+                                    .lineLimit(1)
+                                    .readability()
+                                    .outline()
+                            }.buttonStyle(.plain)
+                        } else {
+                            Button {
+                                GraniteHaptic.light.invoke()
+                                
+                                modal.presentSheet {
+                                    LoomCreateView(communityView: communityView)
+                                        .attach({ name in
+                                            service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
+                                            DispatchQueue.main.async {
+                                                modal.dismissSheet()
+                                            }
+                                        }, at: \.create)
+                                        .background(Color.background)
+                                        .graniteNavigation(backgroundColor: Color.clear)
+                                }
+                                
+                            } label: {
+                                Image(systemName: "plus.circle")
+                                    .font(.title3)
+                            }.buttonStyle(.plain)
+                        }
                     }
                 }
                 .frame(height: 36)
@@ -63,24 +64,26 @@ extension Loom: View {
                                 GraniteHaptic.light.invoke()
                                 
                                 service.center.modify.send(LoomService.Modify.Intent.add(communityView, manifest))
+                                
                             }, at: \.pickedCommunity)
                             .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
                     }
                 }, at: \.add)
-//                .attach({ manifest in
-//                    service.center.modify.send(LoomService.Modify.Intent.toggle(manifest))
-//                }, at: \.toggle)
                 .attach({ model in
                     modal.presentSheet {
                         LoomEditView(manifest: model)
                         .attach({ manifest in
+                            service.center.modify.send(LoomService.Modify.Intent.removeManifest(manifest))
+                            modal.dismissSheet()
+                        }, at: \.remove)
+                        .attach({ manifest in
                             service.center.modify.send(LoomService.Modify.Intent.update(manifest))
                             modal.dismissSheet()
                         }, at: \.edit)
-                        .graniteNavigation(backgroundColor: Color.background)
+                        .background(Color.background)
+                        .graniteNavigation(backgroundColor: Color.clear)
                     }
                 }, at: \.edit)
-                .padding(.layer4)
             }
             
         }

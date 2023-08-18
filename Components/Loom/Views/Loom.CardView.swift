@@ -39,10 +39,16 @@ struct LoomCardView: View {
                 if collectionNames.isNotEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: .layer3) {
-                            ForEach(manifest.communities) { model in
-                                CommunityCardView(model: model,
-                                                  showCounts: false)
-                                .frame(minWidth: 240)
+                            ForEach(manifest.communities, id: \.id) { model in
+                                Group {
+                                    if let lemmyView = model.lemmy {
+                                        CommunityCardView(model: lemmyView,
+                                                          showCounts: false)
+                                        .frame(minWidth: 240)
+                                    } else {
+                                        EmptyView()
+                                    }
+                                }
                             }
                             
                             Spacer()

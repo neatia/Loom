@@ -103,6 +103,8 @@
 		710BEAA92A86E89E0075A141 /* ListingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BEAA72A86E89E0075A141 /* ListingType.swift */; };
 		711849492A8EC5D5000F5A67 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711849482A8EC5D5000F5A67 /* LogoView.swift */; };
 		7118494A2A8EC5D5000F5A67 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711849482A8EC5D5000F5A67 /* LogoView.swift */; };
+		7118494C2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */; };
+		7118494D2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */; };
 		711B3F8B2885D43B00F3080D /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F8A2885D43B00F3080D /* Tests_iOS.swift */; };
 		711B3F8D2885D43B00F3080D /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F8C2885D43B00F3080D /* Tests_iOSLaunchTests.swift */; };
 		711B3F972885D43B00F3080D /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711B3F962885D43B00F3080D /* Tests_macOS.swift */; };
@@ -712,6 +714,7 @@
 		710BEAA42A86E87B0075A141 /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		710BEAA72A86E89E0075A141 /* ListingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingType.swift; sourceTree = "<group>"; };
 		711849482A8EC5D5000F5A67 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
+		7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoomTypes.swift; sourceTree = "<group>"; };
 		711B3F722885D43700F3080D /* PEXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEXApp.swift; sourceTree = "<group>"; };
 		711B3F742885D43B00F3080D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		711B3F792885D43B00F3080D /* Loom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Loom.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1710,6 +1713,7 @@
 			isa = PBXGroup;
 			children = (
 				71899E392A8952E00073158F /* LoomManifest.swift */,
+				7118494B2A8EF7BD000F5A67 /* LoomTypes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2673,6 +2677,7 @@
 				71D028002A6F1AD400EA781A /* AccountService.Profile.swift in Sources */,
 				71C9F8E42A60B7E10089D7EA /* Profile.swift in Sources */,
 				71EB91CF2A80A75B0091EE5B /* DebugSettingsView.swift in Sources */,
+				7118494C2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */,
 				71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */,
 				7102839D2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71A28E2D295237AE00EAE8EE /* Run.swift in Sources */,
@@ -3020,6 +3025,7 @@
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
 				71A28D97295231E600EAE8EE /* Double.swift in Sources */,
 				710283BA2A2A54C300010877 /* VerticalValueSliderStyle.swift in Sources */,
+				7118494D2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */,
 				710283882A2A54C300010877 /* RangeSliderStyleConfiguration.swift in Sources */,
 				717090EF2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
 				71B7A1DD2A68E5CA003E6D4D /* LoginView.swift in Sources */,

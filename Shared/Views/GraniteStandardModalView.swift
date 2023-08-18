@@ -13,7 +13,7 @@ import SwiftUI
 //TODO: eventually convert all modals to this
 struct GraniteStandardModalView<Header: View, Content: View>: View {
     var title: LocalizedStringKey?
-    var maxHeight: CGFloat
+    var maxHeight: CGFloat?
     var fullWidth: Bool
     var showBG: Bool
     var alternateBG: Bool
@@ -25,7 +25,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     
     //TODO: revise prop names and consider style struct
     init(title: LocalizedStringKey? = nil,
-         maxHeight: CGFloat = Device.isMacOS ? 400 : 600,
+         maxHeight: CGFloat? = Device.isMacOS ? 400 : 600,
          showBG: Bool = false,
          alternateBG: Bool = false,
          fullWidth: Bool = false,

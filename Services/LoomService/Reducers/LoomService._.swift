@@ -9,6 +9,7 @@ extension LoomService {
             case create(String, CommunityView?)
             case add(CommunityView, LoomManifest)
             case remove(CommunityView, LoomManifest)
+            case removeManifest(LoomManifest)
             case toggle(LoomManifest)
             case update(LoomManifest)
             case idle
@@ -18,31 +19,38 @@ extension LoomService {
         
         func reduce(state: inout Center.State) {
             guard let meta else { return }
-            LoomLog("[LoomService] got intent")
             switch meta {
             case .create(let name, let model):
-                var manifest: LoomManifest = .init(meta: .init(title: name, name: name))
+                var manifest: LoomManifest = .init(meta: .init(title: name, name: name, author: "\(LemmyKit.current.user?.local_user_view.person.username ?? "")"))
                 
                 if let model {
-                    manifest.communities.append(model)
+                    manifest.insert(model)
                 }
                 
                 state.manifests[manifest.id] = manifest
                 
             case .add(let model, let manifest):
-                var mutable = manifest
-                mutable.communities.append(model)
+                var mutable = state.manifests[manifest.id] ?? manifest
+                
+                guard mutable.contains(model) == false else {
+                    //TODO: localize
+                    beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "\(model.displayName) is already in this Loom", event: .error))
+                    return
+                }
+                
+                mutable.insert(model)
                 mutable.meta.updatedDate = .init()
                 
                 state.manifests[manifest.id] = mutable
                 
             case .remove(let model, let manifest):
                 var mutable = manifest
-                mutable.communities.removeAll(where: { $0.id == model.id })
+                mutable.remove(model)
                 mutable.meta.updatedDate = .init()
                 
                 state.manifests[manifest.id] = mutable
-            
+            case .removeManifest(let manifest):
+                state.manifests[manifest.id] = nil
             case .toggle(let model):
                 if state.activeManifest == model {
                     LoomLog("🪡 removing active loom", level: .debug)

@@ -10,6 +10,17 @@ struct Loom: GraniteComponent {
     
     let communityView: CommunityView?
     
+    var listeners: Void {
+        service
+            .center
+            .modify
+            .listen(.beam) { value in
+                if let response = value as? StandardErrorMeta {
+                    modal.present(GraniteToastView(response))
+                }
+            }
+    }
+    
     init(communityView: CommunityView? = nil) {
         self.communityView = communityView
         service.preload()

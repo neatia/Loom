@@ -48,6 +48,7 @@ struct LoomCollectionsView: View {
                             .attach({ manifest in
                                 add.perform(manifest)
                             }, at: \.add)
+                            .id(manifest)
                             .opacity(intent.isAdding ? 0.7 : 1.0)
                             .allowsHitTesting(intent.isAdding == false)
                             .overlayIf(intent.isAdding) {
@@ -82,12 +83,12 @@ struct LoomCollectionsView: View {
                             }
                         }
                     }
+                    .padding(.layer4)
                 }
                 .frame(minHeight: manifests.count > 1 ? 400 : 240)
             } else {
                 Spacer()
             }
-            Spacer()
         }
         .background(Color.background)
     }

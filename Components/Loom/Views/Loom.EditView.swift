@@ -14,21 +14,31 @@ import LemmyKit
 struct LoomEditView: View {
     @State var manifest: LoomManifest
     
-    @State var removeCommunities: [CommunityView] = []
+    @State var removeCommunities: [FederatedCommunity] = []
     
     @State var invalidName: Bool = false
     
     @GraniteAction<LoomManifest> var edit
+    @GraniteAction<LoomManifest> var remove
     
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView {
+        GraniteStandardModalView(maxHeight: nil) {
             HStack(spacing: .layer4) {
                 //TODO: localize
                 Text("Edit Loom")
                     .font(.title.bold())
                 
                 Spacer()
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    remove.perform(manifest)
+                } label: {
+                    Image(systemName: "trash")
+                        .font(.headline.bold())
+                        .foregroundColor(.red)
+                }.buttonStyle(.plain)
                 
                 Button {
                     GraniteHaptic.light.invoke()
@@ -39,7 +49,7 @@ struct LoomEditView: View {
                         return
                     }
                     var mutable = manifest
-                    mutable.communities.removeAll(where: { removeCommunities.contains($0) })
+                    mutable.communities.removeAll(where: { model in  removeCommunities.contains(where: { model.id == $0.id } ) })
                     
                     edit.perform(mutable)
                     
@@ -79,10 +89,12 @@ struct LoomEditView: View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: .layer4) {
-                        ForEach(manifest.communities) { model in
-                            let isRemoving: Bool = removeCommunities.contains(model)
+                        ForEach(manifest.communities, id: \.id) { model in
+                            let isRemoving: Bool = removeCommunities.contains(where: { $0.id == model.id })
                             ZStack {
-                                CommunityCardView(model: model, showCounts: false)
+                                if let lemmyView = model.lemmy {
+                                    CommunityCardView(model: lemmyView, showCounts: false)
+                                }
                                 
                                 Brand.Colors.black.opacity(0.75)
                                     .cornerRadius(8)
@@ -91,7 +103,7 @@ struct LoomEditView: View {
                                 Button {
                                     GraniteHaptic.light.invoke()
                                     if isRemoving {
-                                        removeCommunities.removeAll(where: { $0 == model })
+                                        removeCommunities.removeAll(where: { $0.id == model.id })
                                     } else {
                                         removeCommunities.append(model)
                                     }

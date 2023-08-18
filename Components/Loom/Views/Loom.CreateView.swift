@@ -21,7 +21,7 @@ struct LoomCreateView: View {
     
     var body: some View {
         //TODO: localize
-        GraniteStandardModalView {
+        GraniteStandardModalView(maxHeight: nil) {
             HStack(spacing: .layer4) {
                 //TODO: localize
                 Text("New Loom")
