@@ -33,7 +33,6 @@ extension Feed {
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(Color.alternateBackground.opacity(0.3))
                         )
-                        .frame(minWidth: Device.isMacOS ? 400 : nil)
                     
                     HStack(spacing: .layer2) {
                         Spacer()
@@ -47,7 +46,6 @@ extension Feed {
                         }
                         .buttonStyle(PlainButtonStyle())
                         .padding(.trailing, .layer2)
-                        
                         
                         Button {
                             GraniteHaptic.light.invoke()

@@ -46,15 +46,6 @@
       }
     },
     {
-      "identity" : "markdownview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/MarkdownView",
-      "state" : {
-        "branch" : "main",
-        "revision" : "9e3e7d96bda7676f3fd8f6fcfa3980fdb204606e"
-      }
-    },
-    {
       "identity" : "nuke",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kean/Nuke",

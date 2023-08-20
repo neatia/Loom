@@ -171,6 +171,7 @@ extension ContentService {
                     //TODO: error  toast
                     return
                 }
+                
                 broadcast.send(Meta(kind: .editCommentSubmit(updatedModel.asView(with: model), content)))
             default:
                 break

@@ -49,7 +49,8 @@ struct ThreadView: View {
                 Divider()
             }
             
-            PagerScrollView(CommentView.self) { commentView in
+            PagerScrollView(CommentView.self,
+                            properties: .init(showFetchMore: false)) { commentView in
                 CommentCardView(parentModel: currentModel,
                                 isInline: isInline)
                     .attach({ model in

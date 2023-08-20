@@ -56,7 +56,7 @@ struct LocalCommunityPreview: View {
                     Divider()
                     
                     PagerScrollView(CommunityView.self,
-                                    hideDivider: true) { communityView in
+                                    properties: .init(hideDivider: true)) { communityView in
                         
                         if sidebar {
                             CommunitySidebarCardView(model: communityView,

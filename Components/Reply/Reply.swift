@@ -7,7 +7,6 @@ struct Reply: GraniteComponent {
     
     @GraniteAction<(Comment, CommentView)> var updatePost
     @GraniteAction<CommentView> var updateComment
-    @GraniteAction<CommentView> var updateCommentView
     
     var listeners: Void {
         content

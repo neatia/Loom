@@ -14,7 +14,7 @@ import GraniteUI
 import LinkPresentation
 import UniformTypeIdentifiers
 
-protocol Pageable: Equatable, Identifiable, Hashable {
+public protocol Pageable: Equatable, Identifiable, Hashable {
     var id: String { get }
     var date: Date { get }
     var blocked: Bool { get }
@@ -27,7 +27,7 @@ extension Pageable {
         false
     }
     
-    var thumbUrl: URL? {
+    public var thumbUrl: URL? {
         nil
     }
 }
@@ -37,10 +37,12 @@ struct PageableMetadata: Hashable {
     var imageThumb: GraniteImage?
 }
 
-class Pager<Model: Pageable>: ObservableObject {
+public class Pager<Model: Pageable>: ObservableObject {
     
     let insertionQueue: OperationQueue = .init()
     
+    //data source
+    var lastItemIds: [String] = []
     var itemIDs: [String]
     var itemMap: [String: Model] = [:]
     var blockedItemMap: [String: Bool] = [:]
@@ -54,18 +56,43 @@ class Pager<Model: Pageable>: ObservableObject {
             }
         }
     }
+    var lastItems: [Model] {
+        return lastItemIds.compactMap {
+            if showBlocked == false,
+               blockedItemMap[$0] == true {
+                return nil
+            } else {
+                return itemMap[$0]
+            }
+        }
+    }
     
     var itemMetadatas: [String: PageableMetadata] = [:]
     
     //main data source
+    #if os(macOS)
+    var currentItems: [Model] = [] {
+        didSet {
+            shouldUpdate = true
+        }
+    }
+    #else
     @Published var currentItems: [Model] = []
+    #endif
     
+    //Primarily used for macOS
+    var shouldUpdate: Bool = false {
+        didSet {
+            guard shouldUpdate else { return }
+            self.objectWillChange.send()
+        }
+    }
+    
+    //states
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
     
-    @Published var isFetching: Bool = false
-    
-    var pageSize: Int = ConfigService.Preferences.pageLimit
+    var isFetching: Bool = false
     
     var isEmpty: Bool {
         currentItems.isEmpty
@@ -74,20 +101,23 @@ class Pager<Model: Pageable>: ObservableObject {
     private(set) var firstItem: Model? = nil
     private(set) var lastItem: Model? = nil
     
-    var onRefreshHandler: GraniteScrollView.CompletionHandler?
-    
+    //data
     var pageIndex: Int = 1
+    var pageSize: Int = ConfigService.Preferences.pageLimit
     
+    //tasks
     private var timerCancellable: Cancellable?
     private var task: Task<Void, Error>? = nil
     private var rlProcessorTask: Task<Void, Error>? = nil
     
     //handlers
+    var onRefreshHandler: GraniteScrollView.CompletionHandler?
     private var handler: ((Int?) async -> [Model])?//fetch
     private var progressHandler: ((CGFloat) -> Void)?
     private var currentItemsHandler: (([Model]) -> Void)?
     private var resetHandler: (() -> Void)?
     
+    //preferences
     var enableAuxiliaryLoaders: Bool = false
     
     var emptyText: LocalizedStringKey
@@ -262,6 +292,10 @@ class Pager<Model: Pageable>: ObservableObject {
                     self?.itemIDs.append(contentsOf: items.map { $0.id })
                 }
                 
+                #if os(macOS)
+                self?.lastItemIds = models.map { $0.id }
+                #endif
+                
                 self?.update()
                 //self?.clean()
                 
@@ -393,12 +427,21 @@ extension Pager{
     }
     
     func update() {
+        #if os(macOS)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.currentItems = self.lastItems
+            self.currentItemsHandler?(self.currentItems)
+            self.clean()
+        }
+        #else
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.currentItems = self.items
             self.currentItemsHandler?(self.currentItems)
             self.clean()
         }
+        #endif
     }
     
     func clear() {

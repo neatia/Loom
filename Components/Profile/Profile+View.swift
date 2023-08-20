@@ -8,7 +8,7 @@ extension Profile: View {
     public var view: some View {
         VStack(spacing: 0) {
             PagerScrollView(PersonDetailsPageable.self,
-                            alternateAddPosition: true) {
+                            properties: .init(alternateContentPosition: true)) {
                 inlineView
             } inlineBody: {
                 titleBarView

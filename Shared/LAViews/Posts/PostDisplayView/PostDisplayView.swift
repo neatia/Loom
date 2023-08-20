@@ -96,7 +96,8 @@ struct PostDisplayView: View {
             }
 
             PagerScrollView(CommentView.self,
-                            useSimple: true) {
+                            properties: .init(performant: Device.isMacOS == false,
+                                              showFetchMore: false)) {
                 EmptyView()
             } inlineBody: {
                 contentView
