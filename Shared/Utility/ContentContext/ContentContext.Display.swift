@@ -2,7 +2,7 @@
 //  ContentContext.Display.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/18/23.
+//  Created by PEXAVC on 8/18/23.
 //
 
 import Foundation
@@ -31,6 +31,14 @@ extension ContentContext {
     
     var replyCount: Int? {
         commentModel?.replyCount
+    }
+    
+    var time: Date? {
+        commentModel?.counts.published.serverTimeAsDate ?? postModel?.counts.published.serverTimeAsDate
+    }
+    
+    var timeAbbreviated: String? {
+        time?.timeAgoDisplay()
     }
     
     var viewingContextHost: String {

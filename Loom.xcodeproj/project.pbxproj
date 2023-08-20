@@ -161,6 +161,10 @@
 		710540EC2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AF2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift */; };
 		710540ED2A91DF5F00B9DC8A /* PlacementLayoutSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */; };
 		710540EE2A91DF5F00B9DC8A /* PlacementLayoutSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */; };
+		710540F22A9209E200B9DC8A /* MarqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = 710540F12A9209E200B9DC8A /* MarqueKit */; };
+		710540F42A9209E800B9DC8A /* MarqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = 710540F32A9209E800B9DC8A /* MarqueKit */; };
+		710540F62A920E8200B9DC8A /* ShareModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540F52A920E8200B9DC8A /* ShareModal.swift */; };
+		710540F72A920E8200B9DC8A /* ShareModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540F52A920E8200B9DC8A /* ShareModal.swift */; };
 		71071F222A660D8E003AEC62 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71071F212A660D8E003AEC62 /* PostContentView.swift */; };
 		71071F232A660D8E003AEC62 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71071F212A660D8E003AEC62 /* PostContentView.swift */; };
 		710BEA9F2A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */; };
@@ -791,7 +795,6 @@
 		710283712A2A54C300010877 /* DefaultThumb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultThumb.swift; sourceTree = "<group>"; };
 		710283722A2A54C300010877 /* AccentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
 		710540712A91427100B9DC8A /* View+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Size.swift"; sourceTree = "<group>"; };
-		710540742A9153F400B9DC8A /* MarkdownView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MarkdownView; path = ../../../pexavc/repositories/MarkdownView; sourceTree = "<group>"; };
 		7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownFontGroup.swift; sourceTree = "<group>"; };
 		710540832A91D9CA00B9DC8A /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
 		710540862A91DF1F00B9DC8A /* WrapLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapLayout.swift; sourceTree = "<group>"; };
@@ -826,6 +829,8 @@
 		710540AD2A91DF5F00B9DC8A /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		710540AF2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutSubviews.swift; sourceTree = "<group>"; };
 		710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutSubview.swift; sourceTree = "<group>"; };
+		710540EF2A91FB4B00B9DC8A /* MarqueKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MarqueKit; path = ../../../pexavc/repositories/MarqueKit; sourceTree = "<group>"; };
+		710540F52A920E8200B9DC8A /* ShareModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareModal.swift; sourceTree = "<group>"; };
 		71071F212A660D8E003AEC62 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
 		710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Shaders.swift; sourceTree = "<group>"; };
 		710BEAA12A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.AccountInfoExpandedView.swift; sourceTree = "<group>"; };
@@ -874,7 +879,6 @@
 		714B488B2A8238A400AC6199 /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
 		714B488D2A8238A400AC6199 /* GlobeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobeView.swift; sourceTree = "<group>"; };
 		714FA06129FF11E1002E4A7C /* InfoIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoIconView.swift; sourceTree = "<group>"; };
-		7151511D2A8F397700251978 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		7151511E2A8F6D0B00251978 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		715151212A8F705300251978 /* Globe.AccountsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Globe.AccountsView.swift; sourceTree = "<group>"; };
 		715151252A8F720300251978 /* ContentContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentContext.swift; sourceTree = "<group>"; };
@@ -1152,6 +1156,7 @@
 				715797762A7B83A100B7FEC9 /* IPFSKit in Frameworks */,
 				715797792A7B843100B7FEC9 /* MarkdownView in Frameworks */,
 				7157976E2A7B833400B7FEC9 /* Granite in Frameworks */,
+				710540F22A9209E200B9DC8A /* MarqueKit in Frameworks */,
 				715797732A7B835500B7FEC9 /* LemmyKit in Frameworks */,
 				71C5FF742A646BE100F99A84 /* NukeVideo in Frameworks */,
 				71C5FF722A646BE100F99A84 /* NukeUI in Frameworks */,
@@ -1173,6 +1178,7 @@
 				71C1776F2A64A0C800A11B03 /* NukeVideo in Frameworks */,
 				712C0D742A7C46F600DBDCC9 /* MarkdownView in Frameworks */,
 				71C1776D2A64A0C800A11B03 /* NukeUI in Frameworks */,
+				710540F42A9209E800B9DC8A /* MarqueKit in Frameworks */,
 				71C177692A64A0C800A11B03 /* Nuke in Frameworks */,
 				712C0D902A7CA65D00DBDCC9 /* LemmyKit in Frameworks */,
 				71C1776B2A64A0C800A11B03 /* NukeExtensions in Frameworks */,
@@ -1550,8 +1556,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				710540742A9153F400B9DC8A /* MarkdownView */,
-				7151511D2A8F397700251978 /* Granite */,
+				710540EF2A91FB4B00B9DC8A /* MarqueKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -2016,6 +2021,7 @@
 				716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */,
 				711849482A8EC5D5000F5A67 /* LogoView.swift */,
 				71622E8F2A6E3DED006233F3 /* AdaptsToKeyboard.swift */,
+				710540F52A920E8200B9DC8A /* ShareModal.swift */,
 				7151511E2A8F6D0B00251978 /* SideMenu.swift */,
 			);
 			path = Views;
@@ -2652,6 +2658,7 @@
 				715797752A7B83A100B7FEC9 /* IPFSKit */,
 				715797782A7B843100B7FEC9 /* MarkdownView */,
 				71899E512A8977C00073158F /* MarbleKit */,
+				710540F12A9209E200B9DC8A /* MarqueKit */,
 			);
 			productName = "PEX (iOS)";
 			productReference = 711B3F792885D43B00F3080D /* Loom.app */;
@@ -2681,6 +2688,7 @@
 				71EB91C02A8037D40091EE5B /* Granite */,
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 				71899E4F2A8977AD0073158F /* MarbleKit */,
+				710540F32A9209E800B9DC8A /* MarqueKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
@@ -2952,6 +2960,7 @@
 				71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */,
 				7102839D2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71A28E2D295237AE00EAE8EE /* Run.swift in Sources */,
+				710540F62A920E8200B9DC8A /* ShareModal.swift in Sources */,
 				71CB6C362A6B7E2000084ECC /* CommunityPickerView.swift in Sources */,
 				710540D32A91DF5F00B9DC8A /* LayoutPlacement.swift in Sources */,
 				71A4A1122A61C39600689DF2 /* Bookmark+Center.swift in Sources */,
@@ -3490,6 +3499,7 @@
 				716157E02A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */,
 				715826802A886752000E4B49 /* Marble.swift in Sources */,
 				71FCDD112A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
+				710540F72A920E8200B9DC8A /* ShareModal.swift in Sources */,
 				716CCB022A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */,
 				716CCAFA2A8CDAC4009F9413 /* SheetModifier.swift in Sources */,
 				710540DE2A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift in Sources */,
@@ -4041,6 +4051,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		710540F12A9209E200B9DC8A /* MarqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MarqueKit;
+		};
+		710540F32A9209E800B9DC8A /* MarqueKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MarqueKit;
+		};
 		712C0D732A7C46F600DBDCC9 /* MarkdownView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 715797772A7B843100B7FEC9 /* XCRemoteSwiftPackageReference "MarkdownView" */;

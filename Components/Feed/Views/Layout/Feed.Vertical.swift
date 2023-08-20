@@ -31,8 +31,7 @@ extension Feed {
                  
                  modal.presentSheet {
                      GraniteStandardModalView(title: "MISC_SHARE",
-                                              maxHeight: nil,
-                                              fullWidthContent: true) {
+                                              maxHeight: nil) {
                          ShareModal(urlString: model?.post.ap_id) {
                              PostCardView()
                                  .contentContext(.init(postModel: model))

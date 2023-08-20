@@ -82,6 +82,12 @@ struct HeaderCardView: View {
                 }
             }
             
+            if let time = context.timeAbbreviated {
+                Text(time)
+                    .font(.footnote)
+                    .foregroundColor(.foreground.opacity(0.5))
+            }
+            
             VStack(alignment: .trailing, spacing: 0) {
                 PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
                                 community: shouldRouteCommunity ? context.community?.lemmy : nil,
