@@ -113,7 +113,8 @@ struct PostActionsView: View {
                 GraniteHaptic.light.invoke()
                 switch bookmarkKind {
                 case .post(let postView):
-                    share.perform()
+                    //share.perform()
+                    ModalService.share(urlString: postView.post.ap_id)
                 case .comment(let commentView, _):
                     ModalService.share(urlString: commentView.comment.ap_id)
                 default:
