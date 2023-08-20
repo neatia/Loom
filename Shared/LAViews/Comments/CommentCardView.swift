@@ -29,10 +29,6 @@ struct CommentCardView: View {
     var shouldLinkToPost: Bool = true
     var isInline: Bool = false
     
-    var censorBot: Bool {
-        context.isBot && config.state.showBotAccounts == false
-    }
-    
     var isBookmark: Bool {
         context.viewingContext.isBookmark
     }
@@ -78,7 +74,9 @@ struct CommentCardView: View {
                             .attach({
                                 guard let model else { return }
                                 switch context.viewingContext {
-                                case .base:
+                                case .base,
+                                     .bookmark,
+                                     .bookmarkExpanded:
                                     edit.perform((model, { updatedModel in
                                         DispatchQueue.main.async {
                                             self.model = updatedModel
@@ -119,7 +117,7 @@ struct CommentCardView: View {
                  icon: "arrowshape.turn.up.backward.fill",
                  iconColor: Brand.Colors.babyBlue,
                  backgroundColor: .alternateBackground,
-                 disabled: isPreview || isBookmark) {
+                 disabled: isPreview) {
             
             guard let model else { return }
             
@@ -147,8 +145,6 @@ extension CommentCardView {
         VStack(alignment: .leading, spacing: .layer3) {
             #if os(macOS)
             contentBody
-                .censor(censorBot, kind: .bot)
-                .padding(.top, censorBot ? .layer2 : 0)
                 .onTapGesture {
                     guard isPreview == false, model?.replyCount ?? 0 > 0 else { return }
                     GraniteHaptic.light.invoke()
@@ -157,12 +153,8 @@ extension CommentCardView {
             #else
             if isPreview {
                 contentBody
-                    .censor(censorBot, kind: .bot)
-                    .padding(.top, censorBot ? .layer2 : 0)
             } else {
                 contentBody
-                    .censor(censorBot, kind: .bot)
-                    .padding(.top, censorBot ? .layer2 : 0)
                     .contentShape(Rectangle())
                     .modifier(TapAndLongPressModifier(tapAction: {
                     guard let model,
@@ -203,13 +195,16 @@ extension CommentCardView {
             if isPreview {
                 ScrollView(showsIndicators: false) {
                     MarkdownView(text: model?.comment.content ?? "")
+                        .fontGroup(CommentFontGroup())
                         .markdownViewRole(.editor)
                 }
                 .frame(height: 120)
-            } else {
-                
-                MarkdownView(text: model?.comment.content ?? "")
+                .padding(.bottom, .layer3)
+            } else if let content = model?.comment.content {
+                MarkdownView(text: content)
                     .markdownViewRole(.editor)
+                    .fontGroup(CommentFontGroup())
+                    .padding(.bottom, .layer3)
             }
         }
     }

@@ -27,6 +27,20 @@ extension Feed {
                          .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                  }
              }, at: \.showContent)
+             .attach({ (model, metadata) in
+                 
+                 modal.presentSheet {
+                     GraniteStandardModalView(title: "MISC_SHARE",
+                                              maxHeight: nil,
+                                              fullWidthContent: true) {
+                         ShareModal(urlString: model?.post.ap_id) {
+                             PostCardView()
+                                 .contentContext(.init(postModel: model))
+                                 .environment(\.pagerMetadata, metadata)
+                         }
+                     }
+                 }
+             }, at: \.share)
              .graniteEvent(account.center.interact)
              .overlay(LogoView()
                 .attach({
@@ -70,19 +84,21 @@ extension Feed {
             }
             .buttonStyle(PlainButtonStyle())
             
-            Button {
-                guard state.socialViewOptions != 1 else { return }
-                GraniteHaptic.light.invoke()
-                _state.socialViewOptions.wrappedValue = 1
-            } label: {
-                VStack {
-                    Spacer()
-                    Text("TITLE_BLOCKED")
-                        .font(state.socialViewOptions == 1 ? .title.bold() : .title2.bold())
-                        .opacity(state.socialViewOptions == 1 ? 1.0 : 0.6)
+            if account.isLoggedIn {
+                Button {
+                    guard state.socialViewOptions != 1 else { return }
+                    GraniteHaptic.light.invoke()
+                    _state.socialViewOptions.wrappedValue = 1
+                } label: {
+                    VStack {
+                        Spacer()
+                        Text("TITLE_BLOCKED")
+                            .font(state.socialViewOptions == 1 ? .title.bold() : .title2.bold())
+                            .opacity(state.socialViewOptions == 1 ? 1.0 : 0.6)
+                    }
                 }
+                .buttonStyle(PlainButtonStyle())
             }
-            .buttonStyle(PlainButtonStyle())
             
             Spacer()
         }

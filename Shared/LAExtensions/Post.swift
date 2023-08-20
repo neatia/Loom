@@ -78,11 +78,12 @@ extension PostView {
     }
     
     public var thumbUrl: URL? {
-        guard let url = post.thumbnail_url else {
+        //Using LinkPresentation, it can generate thumbs via other sources
+        /*guard let url = post.thumbnail_url else {
             return nil
-        }
+        }*/
         
-        return URL(string: url)
+        return postURL
     }
 }
 

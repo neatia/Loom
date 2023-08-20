@@ -131,6 +131,7 @@ struct HeaderView: View {
                     if let subheadline = context.display.author.subheadline {
                         Text("@"+subheadline)
                             .font(.caption2)
+                            .foregroundColor(.foreground.opacity(0.5))
                     }
                 }
             }

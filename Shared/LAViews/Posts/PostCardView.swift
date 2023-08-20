@@ -21,14 +21,15 @@ struct PostCardView: View {
     @GraniteAction<PostView> var showContent
     @GraniteAction<PostView> var reply
     @GraniteAction<Community> var viewCommunity
+    @GraniteAction<(PostView?, PageableMetadata?)> var share
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
     
     @State var routePostDisplay: Bool = false
     
-    var topPadding: CGFloat = .layer5
-    var bottomPadding: CGFloat = .layer5
+    var topPadding: CGFloat = .layer6
+    var bottomPadding: CGFloat = .layer6
     
     var linkPreviewType: LinkPreviewType = .large
     
@@ -49,7 +50,7 @@ struct PostCardView: View {
     }
     
     var shouldCensor: Bool {
-        censorRemoved || censorBlocked || censorNSFW || censorBot
+        censorRemoved || censorBlocked || censorNSFW
     }
     
     var censorKind: CensorView.Kind {
@@ -80,6 +81,7 @@ struct PostCardView: View {
         isCompact == false || context.viewingContext == .profile
     }
     
+    //Desktop/iPad
     var isCompact: Bool {
         switch context.viewingContext {
         case .bookmarkExpanded:
@@ -89,12 +91,13 @@ struct PostCardView: View {
         }
     }
     
+    //primarily in SearchAllView
     var isPreview: Bool {
         context.viewingContext == .search
     }
     
     var body: some View {
-        Group {
+        VStack(spacing: 0) {
             switch context.feedStyle {
             case .style1:
                 VStack(alignment: .leading, spacing: .layer3) {
@@ -103,11 +106,10 @@ struct PostCardView: View {
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
                     content
-                        .padding(.leading, .layer3 + AvatarView.containerPadding)
                     
                 }
-                .padding(.vertical, isPreview ? 0 : .layer4)
-                .padding(.horizontal, .layer3)
+                .padding(.vertical, isPreview ? 0 : topPadding)
+                .padding(.horizontal, .layer4)
             case .style2:
                 HStack(spacing: .layer3) {
                     if isCompact == false {
@@ -115,14 +117,17 @@ struct PostCardView: View {
                     }
                     VStack(alignment: .leading, spacing: 0) {
                         HeaderCardView(badge: .noBadge, isCompact: isCompact)
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
-                        .attach({
-                            guard let model = context.postModel else { return }
-                            interact?.send(AccountService.Interact.Meta(intent: .editPost(model)))
-                        }, at: \.edit)
-                        .graniteEvent(interact)
+                            .attach({ community in
+                                viewCommunity.perform(community)
+                            }, at: \.viewCommunity)
+                            .attach({
+                                guard let model = context.postModel else { return }
+                                interact?.send(AccountService.Interact.Meta(intent: .editPost(model)))
+                            }, at: \.edit)
+                            .attach({
+                                share.perform((context.postModel, contentMetadata))
+                            }, at: \.share)
+                            .graniteEvent(interact)
                         
                         content
                     }
@@ -131,8 +136,8 @@ struct PostCardView: View {
                 .padding(.bottom, isPreview ? (isCompact ? .layer3 : 0) : bottomPadding)
                 .padding(.leading, .layer4)
                 .padding(.trailing, isCompact ? .layer3 : .layer4)
-                .backgroundIf(isSelected,
-                              overlay: Color.accentColor.opacity(0.5))
+                .overlayIf(isSelected,
+                           overlay: Color.alternateBackground.opacity(0.3))
             }
         }
     }
@@ -148,12 +153,7 @@ extension PostCardView {
             case .style2:
                 contentBodyStacked
                     .censor(shouldCensor, kind: censorKind)
-                    .padding(.top, shouldCensor ? .layer2 : 0)
-                    .padding(.bottom, .layer3)
-            }
-
-            if isPreview && !isCompact {
-                Spacer()
+                    .padding(.bottom, shouldCensor ? .layer5 : 0)
             }
             
             switch censorKind {
@@ -166,16 +166,6 @@ extension PostCardView {
                     }, at: \.reply)
             }
         }
-        .padding(.leading, context.feedStyle == .style1 ? (CGFloat.layer4 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-//        .overlayIf(style == .style1) {
-//            GeometryReader { proxy in
-//                Rectangle()
-//                    .frame(width: 2,
-//                           height: proxy.size.height)
-//                    .cornerRadius(8)
-//                    .opacity(0.5)
-//            }
-//        }
         .fixedSize(horizontal: false, vertical: isPreview ? false : true)
     }
     
@@ -219,6 +209,7 @@ extension PostCardView {
                 }
             }
         }
+        .padding(.bottom, .layer3)
     }
     
     var contentBodyStacked: some View {
@@ -227,22 +218,22 @@ extension PostCardView {
                 ScrollView {
                     contentMetaBody
                 }
-                .padding(.bottom, .layer2)
             } else {
                 contentMetaBody
-                    .padding(.bottom, .layer2)
+                    .padding(.top, shouldCensor ? .layer3 : 0)
             }
             
-            if contentMetadata != nil || context.viewingContext.isBookmarkComponent {
+            if contentMetadata != nil || context.hasURL {
                 ContentMetadataView(metadata: contentMetadata,
                                     urlToOpen: context.postModel?.postURL,
-                                    shouldLoad: context.viewingContext.isBookmarkComponent)
+                                    shouldLoad: context.hasURL)
                     .attach({
                         guard let model = context.postModel else { return }
                         showContent.perform(model)
                     }, at: \.showContent)
-                    .frame(maxWidth: Device.isMacOS ? 350 : nil)
-                    .padding(.bottom, .layer2)
+                    .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
+                    .padding(.top, .layer2)
+                    .padding(.bottom, .layer6)
             }
         }
     }
@@ -252,36 +243,42 @@ extension PostCardView {
             HStack {
                 Text(context.postModel?.post.name ?? "")
                     .font(.body)
-                    .padding(.bottom, context.hasBody ? .layer1 : 0)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.foreground.opacity(0.9))
                 Spacer()
             }
+            .padding(.bottom, !context.hasBody && !context.hasURL ? .layer5 : 0)
             
+            /*
+             contentMetadata can be nil if showing bookmarks
+             so checking posturl is better in this case
+            */
             if context.postModel?.postURL == nil,
                let body = context.postModel?.post.body {
                 let readMoreText: LocalizedStringKey = "MISC_READ_MORE"
                 HStack(spacing: .layer2) {
                     Text(String(body.previewBody) + "\(body.count < 120 ? " " : "... ")")
                         .font(Device.isExpandedLayout ? .callout : .footnote)
-                        .foregroundColor(.foreground) + Text(body.count < 120 ? "" : readMoreText)
+                        .foregroundColor(.foreground.opacity(0.9)) + Text(body.count < 120 ? "" : readMoreText)
                         .font(Device.isExpandedLayout ? .callout.italic() : .footnote.italic())
                         .foregroundColor(.secondaryForeground.opacity(0.9))
                     Spacer()
                 }
                 .multilineTextAlignment(.leading)
-                .padding(.top, 2)
+                .padding(.top, .layer2)
+                .padding(.bottom, .layer5)
             }
         }
         .frame(maxWidth: .infinity)
-        .contentShape(Rectangle())
         .onTapGesture {
+            
             guard layout.state.style == .expanded,
                   let model = context.postModel else {
                 GraniteHaptic.light.invoke()
                 routePostDisplay = true
                 return
             }
+            
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
         .routeTarget($routePostDisplay,

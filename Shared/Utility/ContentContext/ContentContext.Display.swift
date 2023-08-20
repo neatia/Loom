@@ -45,6 +45,10 @@ extension ContentContext {
         postModel?.post.body != nil
     }
     
+    var hasURL: Bool {
+        postModel?.post.url != nil
+    }
+    
     struct Display {
         var author: Author
         

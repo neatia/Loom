@@ -71,8 +71,11 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     //main data source
     #if os(macOS)
-    var currentItems: [Model] = [] {
+    var currentItems: [Model] = []
+    
+    var currentLastItems: [Model] = [] {
         didSet {
+            guard currentItems.isNotEmpty else { return }
             shouldUpdate = true
         }
     }
@@ -124,13 +127,22 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     var showBlocked: Bool
     
-    init(emptyText: LocalizedStringKey, showBlocked: Bool = false) {
+    var isStatic: Bool
+    
+    init(emptyText: LocalizedStringKey,
+         showBlocked: Bool = false,
+         isStatic: Bool = false) {
         self.emptyText = emptyText
         itemIDs = []
         self.handler = nil
         self.showBlocked = showBlocked
+        self.isStatic = isStatic
         insertionQueue.maxConcurrentOperationCount = 1
         insertionQueue.underlyingQueue = .main
+        
+        if isStatic {
+            hasMore = false
+        }
     }
     
     @discardableResult
@@ -430,7 +442,8 @@ extension Pager{
         #if os(macOS)
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.currentItems = self.lastItems
+            self.currentItems = self.items
+            self.currentLastItems = self.lastItems
             self.currentItemsHandler?(self.currentItems)
             self.clean()
         }
@@ -447,7 +460,7 @@ extension Pager{
     func clear() {
         self.clean()
         self.pageIndex = 1
-        self.hasMore = true
+        self.hasMore = isStatic == false
         self.lastItem = nil
         self.itemIDs = []
         self.itemMap = [:]

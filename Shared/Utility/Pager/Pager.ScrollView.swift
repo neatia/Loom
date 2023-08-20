@@ -18,6 +18,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         var alternateContentPosition: Bool = false
         var hideDivider: Bool = false
         var performant: Bool = false
+        var lazy: Bool = true
         var cacheViews: Bool = false
         var showFetchMore: Bool = true
         var verticalPadding: CGFloat = 0
@@ -90,7 +91,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 }
 
                 Section(header: header()) {
-
                     if !properties.alternateContentPosition {
                         addContent()
                     }
@@ -104,7 +104,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 if properties.showFetchMore {
                     PagerFooterLoadingView<Model>()
                         .environmentObject(pager)
-                        .padding(.top, .layer4)
                 }
             }.padding(.top, 1)
         }
@@ -113,12 +112,13 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     var simpleScrollView: some View {
         #if os(macOS)
         VStack(spacing: 0) {
-            if !alternateAddPosition {
+            if !properties.alternateContentPosition {
                 addContent()
             }
             NSScrollViewWrapper($pager.shouldUpdate) {
                 LazyVStack(spacing: 0) {
-                    ForEach(currentItems) { item in
+                    //Generates a section in a stackView
+                    ForEach(pager.currentLastItems) { item in
                         mainContent(item)
                             .environment(\.pagerMetadata,
                                           pager.itemMetadatas[item.id])
@@ -132,31 +132,35 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         }
         #else
         GraniteScrollView(showsIndicators: false,
-                          onRefresh: pager.refresh(_:),
-                          onReachedEdge: { edge in
-
-//            if edge == .bottom,
-//               pager.hasMore,
-//               pager.isFetching == false {
-//                pager.fetch()
-//            }
-
-        }) {
+                          onRefresh: pager.refresh(_:)) {
             if !properties.alternateContentPosition {
                 addContent()
             }
 
-            LazyVStack(spacing: 0) {
-                ForEach(currentItems) { item in
-                    mainContent(item)
-                        .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+            if properties.lazy {
+                LazyVStack(spacing: 0) {
+                    ForEach(currentItems) { item in
+                        if properties.cacheViews {
+                            cache(item)
+                                .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                        } else {
+                            mainContent(item)
+                                .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                        }
+                    }
+                }
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(currentItems) { item in
+                        mainContent(item)
+                            .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                    }
                 }
             }
             
             if properties.showFetchMore {
                 PagerFooterLoadingView<Model>()
                     .environmentObject(pager)
-                    .padding(.top, .layer4)
             }
         }
         #endif
@@ -172,8 +176,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         if retrieveOnly {
             return AnyView(EmptyView())
         }
-        
-//        let view: Content = content(item)
         
         let view: AnyView = AnyView(mainContent(item))
         

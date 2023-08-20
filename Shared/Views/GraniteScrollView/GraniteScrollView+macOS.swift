@@ -31,8 +31,6 @@ struct NSScrollViewWrapper<Content: View>: NSViewRepresentable {
         scrollView.automaticallyAdjustsContentInsets = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        let stackView = context.coordinator.stackView
-        
         context.coordinator.make()
         
         let contentView = context.coordinator.containerView

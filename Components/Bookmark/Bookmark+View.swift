@@ -97,6 +97,12 @@ extension Bookmark: View {
                 .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
                 .padding(.vertical, .layer4)
                 .padding(.horizontal, showHeader == false ? .layer3 : .layer4)
+                .animation(nil, value: true)
+                .transaction { tx in
+                    tx.animation = nil
+                }
+                //solves weird sizing issue
+                .id(state.selectedBookmarkPostKey.description + state.selectedBookmarkCommentKey.description + state.kind.rawValue)
                 
                 Divider()
             }
@@ -104,15 +110,13 @@ extension Bookmark: View {
             switch state.kind {
             case .posts:
                 ScrollView(showsIndicators: false) {
-                    LazyVStack(spacing: 0) {
-                        postViews()
-                    }.padding(.top, 1)
+                    postCardViews()
+                        .padding(.top, 1)
                 }
             case .comments:
                 ScrollView(showsIndicators: false) {
-                    LazyVStack(spacing: 0) {
-                        commentViews()
-                    }.padding(.top, 1)
+                    commentCardViews()
+                        .padding(.top, 1)
                 }
                 .background(Color.alternateBackground)
             }
@@ -141,10 +145,11 @@ extension Bookmark: View {
         .padding(.top, .layer5)
     }
     
-    func postViews(indent: Bool = false) -> some View {
-        VStack {
+    func postCardViews() -> some View {
+        LazyVStack(spacing: 0) {
             ForEach(postViews) { postView in
-                PostCardView(linkPreviewType: .largeNoMetadata)
+                PostCardView(topPadding: postViews.first?.id == postView.id ? .layer5 : .layer6,
+                             linkPreviewType: .largeNoMetadata)
                     .attach({ postView in
                         GraniteHaptic.light.invoke()
                         modal.presentSheet {
@@ -158,14 +163,13 @@ extension Bookmark: View {
                 
                 if postView.id != postViews.last?.id {
                     Divider()
-                        .padding(.leading, indent ? .layer4 : nil)
                 }
             }
         }
     }
     
-    func commentViews(indent: Bool = false) -> some View {
-        VStack {
+    func commentCardViews() -> some View {
+        LazyVStack(spacing: 0) {
             ForEach(commentViews) { commentView in
                 CommentCardView(shouldLinkToPost: true)
                     .contentContext(.init(postModel: postForComment(commentView),
@@ -175,7 +179,6 @@ extension Bookmark: View {
                 
                 if commentView.id != commentViews.last?.id {
                     Divider()
-                        .padding(.leading, indent ? .layer4 : nil)
                 }
             }
         }

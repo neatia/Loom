@@ -39,7 +39,7 @@ extension Feed {
                     self.pager.reset()
                 }
             }, at: \.pickedCommunity)
-            .frame(width: 240)
+            .frame(width: 300)
             Divider()
             FeedMainView(location: state.location,
                          communityView: state.communityView)

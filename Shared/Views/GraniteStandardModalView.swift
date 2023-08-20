@@ -15,6 +15,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     var title: LocalizedStringKey?
     var maxHeight: CGFloat?
     var fullWidth: Bool
+    var fullWidthContent: Bool
     var showBG: Bool
     var alternateBG: Bool
     var drawerMode: Bool
@@ -30,6 +31,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
          showBG: Bool = false,
          alternateBG: Bool = false,
          fullWidth: Bool = false,
+         fullWidthContent: Bool = false,
          drawerMode: Bool = false,
          customHeaderView: Bool = false,
          shouldShowDrawer: Binding<Bool>? = nil,
@@ -41,6 +43,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
         self.alternateBG = alternateBG
         self.drawerMode = drawerMode
         self.fullWidth = fullWidth
+        self.fullWidthContent = fullWidthContent
         self.header = header
         self.content = content
         self.customHeaderView = customHeaderView
@@ -104,7 +107,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                     }
                     
                     content()
-                        .padding(.horizontal, .layer5)
+                        .padding(.horizontal, fullWidthContent ? nil : .layer5)
                         .padding(.top, Device.isMacOS ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                     

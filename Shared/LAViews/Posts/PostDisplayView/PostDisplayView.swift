@@ -97,6 +97,7 @@ struct PostDisplayView: View {
 
             PagerScrollView(CommentView.self,
                             properties: .init(performant: Device.isMacOS == false,
+                                              cacheViews: true,
                                               showFetchMore: false)) {
                 EmptyView()
             } inlineBody: {
@@ -121,6 +122,7 @@ struct PostDisplayView: View {
                     }, at: \.reply)
                     .attach({ (model, update) in
                         DispatchQueue.main.async {
+                            print("{TEST}")
                             modal.presentSheet {
                                 showReplyModal(isEditing: true,
                                                model: model,
@@ -211,7 +213,7 @@ extension PostDisplayView {
                 }, at: \.reply)
                 .contentContext(.withStyle(.style1, context))
                 .padding(.horizontal, .layer4)
-                .padding(.vertical, .layer4)
+                .padding(.vertical, .layer5)
             
             Divider()
             
@@ -274,7 +276,7 @@ extension PostDisplayView {
         VStack(spacing: .layer2) {
             HStack {
                 Text(model?.post.name ?? "")
-                    .font(.title3)
+                    .font(.title3.bold())
                     .foregroundColor(.foreground.opacity(0.9))
                     .padding(.bottom, .layer1)
                 
@@ -305,6 +307,7 @@ extension PostDisplayView {
                 if let body = model?.post.body {
                     MarkdownView(text: body)
                         .markdownViewRole(.editor)
+                        .fontGroup(PostDisplayFontGroup())
                         .padding(.bottom, .layer2)
                 }
             }

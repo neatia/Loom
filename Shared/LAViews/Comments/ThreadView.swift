@@ -101,7 +101,7 @@ struct ThreadView: View {
 extension ThreadView {
     
     var content: some View {
-        VStack(alignment: .leading, spacing: .layer3) {
+        VStack(alignment: .leading, spacing: 0) {
             #if os(iOS)
             contentBody
                 .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.5)
@@ -110,9 +110,11 @@ extension ThreadView {
                     GraniteHaptic.light.invoke()
                     closeDrawer.perform()
                 }))
+                .padding(.bottom, .layer5)
             #else
             contentBody
                 .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.5)
+                .padding(.bottom, .layer5)
             #endif
             
             FooterView(isHeader: true,
@@ -125,6 +127,7 @@ extension ThreadView {
         VStack(spacing: 0) {
             ScrollView {
                 MarkdownView(text: context.commentModel?.comment.content ?? "")
+                    .fontGroup(PostDisplayFontGroup())
                     .markdownViewRole(.editor)
             }
         }

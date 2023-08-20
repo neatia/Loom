@@ -1,4 +1,5 @@
 import Foundation
+import Granite
 import GraniteUI
 import SwiftUI
 import SafariServices
@@ -85,6 +86,10 @@ extension ModalService {
         guard let url else { return }
         ModalService.presentActivitySheet(items: [url])
         #endif
+    }
+    
+    static func share(image: GraniteImage) {
+        ModalService.presentActivitySheet(items: [image])
     }
     
     static func presentActivitySheet(items : [Any]) {

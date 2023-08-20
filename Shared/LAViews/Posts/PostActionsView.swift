@@ -15,6 +15,7 @@ struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Void> var goToPost
     @GraniteAction<Void> var edit
+    @GraniteAction<Void> var share
     @Environment(\.graniteEvent) var interact
     
     @Binding var enableCommunityRoute: Bool
@@ -112,7 +113,7 @@ struct PostActionsView: View {
                 GraniteHaptic.light.invoke()
                 switch bookmarkKind {
                 case .post(let postView):
-                    ModalService.share(urlString: postView.post.ap_id)
+                    share.perform()
                 case .comment(let commentView, _):
                     ModalService.share(urlString: commentView.comment.ap_id)
                 default:

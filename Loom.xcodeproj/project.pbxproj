@@ -93,6 +93,74 @@
 		710283D02A2A54C400010877 /* AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710283722A2A54C300010877 /* AccentColor.swift */; };
 		710540722A91427100B9DC8A /* View+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540712A91427100B9DC8A /* View+Size.swift */; };
 		710540732A91427100B9DC8A /* View+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540712A91427100B9DC8A /* View+Size.swift */; };
+		710540802A91967200B9DC8A /* MarkdownFontGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */; };
+		710540812A91970700B9DC8A /* MarkdownFontGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */; };
+		710540842A91D9CA00B9DC8A /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540832A91D9CA00B9DC8A /* Snapshot.swift */; };
+		710540852A91D9EB00B9DC8A /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540832A91D9CA00B9DC8A /* Snapshot.swift */; };
+		710540872A91DF1F00B9DC8A /* WrapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540862A91DF1F00B9DC8A /* WrapLayout.swift */; };
+		710540882A91DF1F00B9DC8A /* WrapLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540862A91DF1F00B9DC8A /* WrapLayout.swift */; };
+		710540B12A91DF5F00B9DC8A /* Placement.docc in Sources */ = {isa = PBXBuildFile; fileRef = 7105408A2A91DF5F00B9DC8A /* Placement.docc */; };
+		710540B22A91DF5F00B9DC8A /* Placement.docc in Sources */ = {isa = PBXBuildFile; fileRef = 7105408A2A91DF5F00B9DC8A /* Placement.docc */; };
+		710540B32A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105408C2A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift */; };
+		710540B42A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105408C2A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift */; };
+		710540B52A91DF5F00B9DC8A /* PlacementLayoutProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105408D2A91DF5F00B9DC8A /* PlacementLayoutProperties.swift */; };
+		710540B62A91DF5F00B9DC8A /* PlacementLayoutProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105408D2A91DF5F00B9DC8A /* PlacementLayoutProperties.swift */; };
+		710540B72A91DF5F00B9DC8A /* AnyAnimatableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105408F2A91DF5F00B9DC8A /* AnyAnimatableData.swift */; };
+		710540B82A91DF5F00B9DC8A /* AnyAnimatableData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105408F2A91DF5F00B9DC8A /* AnyAnimatableData.swift */; };
+		710540B92A91DF5F00B9DC8A /* PlacementLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540912A91DF5F00B9DC8A /* PlacementLayout.swift */; };
+		710540BA2A91DF5F00B9DC8A /* PlacementLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540912A91DF5F00B9DC8A /* PlacementLayout.swift */; };
+		710540BB2A91DF5F00B9DC8A /* AnyPlacementLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540922A91DF5F00B9DC8A /* AnyPlacementLayout.swift */; };
+		710540BC2A91DF5F00B9DC8A /* AnyPlacementLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540922A91DF5F00B9DC8A /* AnyPlacementLayout.swift */; };
+		710540BD2A91DF5F00B9DC8A /* PlacementLayoutNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540932A91DF5F00B9DC8A /* PlacementLayoutNative.swift */; };
+		710540BE2A91DF5F00B9DC8A /* PlacementLayoutNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540932A91DF5F00B9DC8A /* PlacementLayoutNative.swift */; };
+		710540BF2A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540942A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift */; };
+		710540C02A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540942A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift */; };
+		710540C12A91DF5F00B9DC8A /* PlacementViewDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540962A91DF5F00B9DC8A /* PlacementViewDimensions.swift */; };
+		710540C22A91DF5F00B9DC8A /* PlacementViewDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540962A91DF5F00B9DC8A /* PlacementViewDimensions.swift */; };
+		710540C32A91DF5F00B9DC8A /* PlacementProposedViewSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540972A91DF5F00B9DC8A /* PlacementProposedViewSize.swift */; };
+		710540C42A91DF5F00B9DC8A /* PlacementProposedViewSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540972A91DF5F00B9DC8A /* PlacementProposedViewSize.swift */; };
+		710540C52A91DF5F00B9DC8A /* ProposedSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540982A91DF5F00B9DC8A /* ProposedSize.swift */; };
+		710540C62A91DF5F00B9DC8A /* ProposedSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540982A91DF5F00B9DC8A /* ProposedSize.swift */; };
+		710540C72A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409A2A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift */; };
+		710540C82A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409A2A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift */; };
+		710540C92A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409B2A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift */; };
+		710540CA2A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409B2A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift */; };
+		710540CB2A91DF5F00B9DC8A /* PlacementThatFits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409C2A91DF5F00B9DC8A /* PlacementThatFits.swift */; };
+		710540CC2A91DF5F00B9DC8A /* PlacementThatFits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409C2A91DF5F00B9DC8A /* PlacementThatFits.swift */; };
+		710540CD2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409D2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift */; };
+		710540CE2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409D2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift */; };
+		710540CF2A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409E2A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift */; };
+		710540D02A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105409E2A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift */; };
+		710540D12A91DF5F00B9DC8A /* PlacementViewSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A02A91DF5F00B9DC8A /* PlacementViewSpacing.swift */; };
+		710540D22A91DF5F00B9DC8A /* PlacementViewSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A02A91DF5F00B9DC8A /* PlacementViewSpacing.swift */; };
+		710540D32A91DF5F00B9DC8A /* LayoutPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A22A91DF5F00B9DC8A /* LayoutPlacement.swift */; };
+		710540D42A91DF5F00B9DC8A /* LayoutPlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A22A91DF5F00B9DC8A /* LayoutPlacement.swift */; };
+		710540D52A91DF5F00B9DC8A /* LayoutSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A32A91DF5F00B9DC8A /* LayoutSizeModifier.swift */; };
+		710540D62A91DF5F00B9DC8A /* LayoutSizeModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A32A91DF5F00B9DC8A /* LayoutSizeModifier.swift */; };
+		710540D72A91DF5F00B9DC8A /* LayoutChildSizingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A42A91DF5F00B9DC8A /* LayoutChildSizingView.swift */; };
+		710540D82A91DF5F00B9DC8A /* LayoutChildSizingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A42A91DF5F00B9DC8A /* LayoutChildSizingView.swift */; };
+		710540D92A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A52A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift */; };
+		710540DA2A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A52A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift */; };
+		710540DB2A91DF5F00B9DC8A /* LayoutSizingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A62A91DF5F00B9DC8A /* LayoutSizingView.swift */; };
+		710540DC2A91DF5F00B9DC8A /* LayoutSizingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A62A91DF5F00B9DC8A /* LayoutSizingView.swift */; };
+		710540DD2A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A72A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift */; };
+		710540DE2A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A72A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift */; };
+		710540DF2A91DF5F00B9DC8A /* FrameChangePlacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A82A91DF5F00B9DC8A /* FrameChangePlacer.swift */; };
+		710540E02A91DF5F00B9DC8A /* FrameChangePlacer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A82A91DF5F00B9DC8A /* FrameChangePlacer.swift */; };
+		710540E12A91DF5F00B9DC8A /* Layouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A92A91DF5F00B9DC8A /* Layouter.swift */; };
+		710540E22A91DF5F00B9DC8A /* Layouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540A92A91DF5F00B9DC8A /* Layouter.swift */; };
+		710540E32A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AA2A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift */; };
+		710540E42A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AA2A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift */; };
+		710540E52A91DF5F00B9DC8A /* PlacementModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AB2A91DF5F00B9DC8A /* PlacementModifier.swift */; };
+		710540E62A91DF5F00B9DC8A /* PlacementModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AB2A91DF5F00B9DC8A /* PlacementModifier.swift */; };
+		710540E72A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AC2A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift */; };
+		710540E82A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AC2A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift */; };
+		710540E92A91DF5F00B9DC8A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AD2A91DF5F00B9DC8A /* Coordinator.swift */; };
+		710540EA2A91DF5F00B9DC8A /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AD2A91DF5F00B9DC8A /* Coordinator.swift */; };
+		710540EB2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AF2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift */; };
+		710540EC2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540AF2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift */; };
+		710540ED2A91DF5F00B9DC8A /* PlacementLayoutSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */; };
+		710540EE2A91DF5F00B9DC8A /* PlacementLayoutSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */; };
 		71071F222A660D8E003AEC62 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71071F212A660D8E003AEC62 /* PostContentView.swift */; };
 		71071F232A660D8E003AEC62 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71071F212A660D8E003AEC62 /* PostContentView.swift */; };
 		710BEA9F2A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */; };
@@ -724,6 +792,40 @@
 		710283722A2A54C300010877 /* AccentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
 		710540712A91427100B9DC8A /* View+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Size.swift"; sourceTree = "<group>"; };
 		710540742A9153F400B9DC8A /* MarkdownView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MarkdownView; path = ../../../pexavc/repositories/MarkdownView; sourceTree = "<group>"; };
+		7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownFontGroup.swift; sourceTree = "<group>"; };
+		710540832A91D9CA00B9DC8A /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
+		710540862A91DF1F00B9DC8A /* WrapLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrapLayout.swift; sourceTree = "<group>"; };
+		7105408A2A91DF5F00B9DC8A /* Placement.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Placement.docc; sourceTree = "<group>"; };
+		7105408C2A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutValueKey.swift; sourceTree = "<group>"; };
+		7105408D2A91DF5F00B9DC8A /* PlacementLayoutProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutProperties.swift; sourceTree = "<group>"; };
+		7105408F2A91DF5F00B9DC8A /* AnyAnimatableData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyAnimatableData.swift; sourceTree = "<group>"; };
+		710540912A91DF5F00B9DC8A /* PlacementLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayout.swift; sourceTree = "<group>"; };
+		710540922A91DF5F00B9DC8A /* AnyPlacementLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyPlacementLayout.swift; sourceTree = "<group>"; };
+		710540932A91DF5F00B9DC8A /* PlacementLayoutNative.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutNative.swift; sourceTree = "<group>"; };
+		710540942A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PlacementLayout+DefaultImplementations.swift"; sourceTree = "<group>"; };
+		710540962A91DF5F00B9DC8A /* PlacementViewDimensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementViewDimensions.swift; sourceTree = "<group>"; };
+		710540972A91DF5F00B9DC8A /* PlacementProposedViewSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementProposedViewSize.swift; sourceTree = "<group>"; };
+		710540982A91DF5F00B9DC8A /* ProposedSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProposedSize.swift; sourceTree = "<group>"; };
+		7105409A2A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementThatFitsLayout.swift; sourceTree = "<group>"; };
+		7105409B2A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementThatFitsChildModifier.swift; sourceTree = "<group>"; };
+		7105409C2A91DF5F00B9DC8A /* PlacementThatFits.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementThatFits.swift; sourceTree = "<group>"; };
+		7105409D2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementThatFitsVariadicRoot.swift; sourceTree = "<group>"; };
+		7105409E2A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementThatFitsCoordinator.swift; sourceTree = "<group>"; };
+		710540A02A91DF5F00B9DC8A /* PlacementViewSpacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementViewSpacing.swift; sourceTree = "<group>"; };
+		710540A22A91DF5F00B9DC8A /* LayoutPlacement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutPlacement.swift; sourceTree = "<group>"; };
+		710540A32A91DF5F00B9DC8A /* LayoutSizeModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutSizeModifier.swift; sourceTree = "<group>"; };
+		710540A42A91DF5F00B9DC8A /* LayoutChildSizingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutChildSizingView.swift; sourceTree = "<group>"; };
+		710540A52A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementIntrinsicSizeReader.swift; sourceTree = "<group>"; };
+		710540A62A91DF5F00B9DC8A /* LayoutSizingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutSizingView.swift; sourceTree = "<group>"; };
+		710540A72A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementKeyboardAvoidingModifier.swift; sourceTree = "<group>"; };
+		710540A82A91DF5F00B9DC8A /* FrameChangePlacer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameChangePlacer.swift; sourceTree = "<group>"; };
+		710540A92A91DF5F00B9DC8A /* Layouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layouter.swift; sourceTree = "<group>"; };
+		710540AA2A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplicitAlignmentModifier.swift; sourceTree = "<group>"; };
+		710540AB2A91DF5F00B9DC8A /* PlacementModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementModifier.swift; sourceTree = "<group>"; };
+		710540AC2A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementShouldAdjustToKeyboard.swift; sourceTree = "<group>"; };
+		710540AD2A91DF5F00B9DC8A /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		710540AF2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutSubviews.swift; sourceTree = "<group>"; };
+		710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacementLayoutSubview.swift; sourceTree = "<group>"; };
 		71071F212A660D8E003AEC62 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
 		710BEA9E2A86BEE00075A141 /* Write.Generate.Shaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Shaders.swift; sourceTree = "<group>"; };
 		710BEAA12A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.AccountInfoExpandedView.swift; sourceTree = "<group>"; };
@@ -1327,6 +1429,116 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
+		710540822A91D9BA00B9DC8A /* Snapshot */ = {
+			isa = PBXGroup;
+			children = (
+				710540832A91D9CA00B9DC8A /* Snapshot.swift */,
+			);
+			path = Snapshot;
+			sourceTree = "<group>";
+		};
+		710540892A91DF5F00B9DC8A /* Placement */ = {
+			isa = PBXGroup;
+			children = (
+				7105408A2A91DF5F00B9DC8A /* Placement.docc */,
+				7105408B2A91DF5F00B9DC8A /* LayoutProperties */,
+				7105408E2A91DF5F00B9DC8A /* Animatable */,
+				710540902A91DF5F00B9DC8A /* LayoutProtocol */,
+				710540952A91DF5F00B9DC8A /* Sizing */,
+				710540992A91DF5F00B9DC8A /* PlacementThatFits */,
+				7105409F2A91DF5F00B9DC8A /* Spacing */,
+				710540A12A91DF5F00B9DC8A /* Layouting */,
+				710540AE2A91DF5F00B9DC8A /* Subview */,
+			);
+			path = Placement;
+			sourceTree = "<group>";
+		};
+		7105408B2A91DF5F00B9DC8A /* LayoutProperties */ = {
+			isa = PBXGroup;
+			children = (
+				7105408C2A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift */,
+				7105408D2A91DF5F00B9DC8A /* PlacementLayoutProperties.swift */,
+			);
+			path = LayoutProperties;
+			sourceTree = "<group>";
+		};
+		7105408E2A91DF5F00B9DC8A /* Animatable */ = {
+			isa = PBXGroup;
+			children = (
+				7105408F2A91DF5F00B9DC8A /* AnyAnimatableData.swift */,
+			);
+			path = Animatable;
+			sourceTree = "<group>";
+		};
+		710540902A91DF5F00B9DC8A /* LayoutProtocol */ = {
+			isa = PBXGroup;
+			children = (
+				710540912A91DF5F00B9DC8A /* PlacementLayout.swift */,
+				710540922A91DF5F00B9DC8A /* AnyPlacementLayout.swift */,
+				710540932A91DF5F00B9DC8A /* PlacementLayoutNative.swift */,
+				710540942A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift */,
+			);
+			path = LayoutProtocol;
+			sourceTree = "<group>";
+		};
+		710540952A91DF5F00B9DC8A /* Sizing */ = {
+			isa = PBXGroup;
+			children = (
+				710540962A91DF5F00B9DC8A /* PlacementViewDimensions.swift */,
+				710540972A91DF5F00B9DC8A /* PlacementProposedViewSize.swift */,
+				710540982A91DF5F00B9DC8A /* ProposedSize.swift */,
+			);
+			path = Sizing;
+			sourceTree = "<group>";
+		};
+		710540992A91DF5F00B9DC8A /* PlacementThatFits */ = {
+			isa = PBXGroup;
+			children = (
+				7105409A2A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift */,
+				7105409B2A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift */,
+				7105409C2A91DF5F00B9DC8A /* PlacementThatFits.swift */,
+				7105409D2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift */,
+				7105409E2A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift */,
+			);
+			path = PlacementThatFits;
+			sourceTree = "<group>";
+		};
+		7105409F2A91DF5F00B9DC8A /* Spacing */ = {
+			isa = PBXGroup;
+			children = (
+				710540A02A91DF5F00B9DC8A /* PlacementViewSpacing.swift */,
+			);
+			path = Spacing;
+			sourceTree = "<group>";
+		};
+		710540A12A91DF5F00B9DC8A /* Layouting */ = {
+			isa = PBXGroup;
+			children = (
+				710540A22A91DF5F00B9DC8A /* LayoutPlacement.swift */,
+				710540A32A91DF5F00B9DC8A /* LayoutSizeModifier.swift */,
+				710540A42A91DF5F00B9DC8A /* LayoutChildSizingView.swift */,
+				710540A52A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift */,
+				710540A62A91DF5F00B9DC8A /* LayoutSizingView.swift */,
+				710540A72A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift */,
+				710540A82A91DF5F00B9DC8A /* FrameChangePlacer.swift */,
+				710540A92A91DF5F00B9DC8A /* Layouter.swift */,
+				710540AA2A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift */,
+				710540AB2A91DF5F00B9DC8A /* PlacementModifier.swift */,
+				710540AC2A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift */,
+				710540AD2A91DF5F00B9DC8A /* Coordinator.swift */,
+			);
+			path = Layouting;
+			sourceTree = "<group>";
+		};
+		710540AE2A91DF5F00B9DC8A /* Subview */ = {
+			isa = PBXGroup;
+			children = (
+				710540AF2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift */,
+				710540B02A91DF5F00B9DC8A /* PlacementLayoutSubview.swift */,
+			);
+			path = Subview;
+			sourceTree = "<group>";
+		};
 		7118494E2A8F078C000F5A67 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1512,6 +1724,7 @@
 				71A28D95295231E600EAE8EE /* Dictionary.swift */,
 				71A28D92295231E600EAE8EE /* Double.swift */,
 				7161D2FA29540AD00070FE59 /* View+Overlay.swift */,
+				7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */,
 				71C8BE6D2A7F1C79008694C7 /* View+OnLoad.swift */,
 				712C0D7C2A7CA32500DBDCC9 /* CGPoint.swift */,
 				7166E9CB2A744A06004F88D7 /* View+Background.swift */,
@@ -1696,12 +1909,15 @@
 		717C8FB32A6F9EA000DF6037 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				710540892A91DF5F00B9DC8A /* Placement */,
+				710540822A91D9BA00B9DC8A /* Snapshot */,
 				715151242A8F71E600251978 /* ContentContext */,
 				717C12A1293BF02D0060A446 /* Animations */,
 				711D39202A8408C000CF2DB2 /* Search */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
 				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
+				710540862A91DF1F00B9DC8A /* WrapLayout.swift */,
 				71A28E18295237AE00EAE8EE /* Passthrough.swift */,
 				71AF14662A2E807300EEBD4B /* Disclaimer.swift */,
 				714B48772A816CF900AC6199 /* Logger.swift */,
@@ -2650,13 +2866,17 @@
 				71F042242A6A3AD700788CDC /* Write.swift in Sources */,
 				7197FB192964B4C0005EBBA4 /* GraniteSheetContainerView.swift in Sources */,
 				71A28E23295237AE00EAE8EE /* TapAndLongPressModifier.swift in Sources */,
+				710540EB2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift in Sources */,
 				71622E902A6E3DED006233F3 /* AdaptsToKeyboard.swift in Sources */,
 				7102838B2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
 				71C5FF6B2A64688B00F99A84 /* Drawer+Computed.swift in Sources */,
 				7151512F2A8FBE0D00251978 /* GraniteScrollView+macOS.swift in Sources */,
 				7166E9DF2A74A2C6004F88D7 /* Community.swift in Sources */,
 				710283852A2A54C300010877 /* RangeSliderStyle.swift in Sources */,
+				710540E12A91DF5F00B9DC8A /* Layouter.swift in Sources */,
 				71B7A1EF2A691470003E6D4D /* Gradient.swift in Sources */,
+				710540B72A91DF5F00B9DC8A /* AnyAnimatableData.swift in Sources */,
+				710540D72A91DF5F00B9DC8A /* LayoutChildSizingView.swift in Sources */,
 				71CB6C2F2A6B1EDA00084ECC /* WriteView.swift in Sources */,
 				71EAF47E2A7DA3440034FCB9 /* ExplorerService._.swift in Sources */,
 				71C9F9442A613EA30089D7EA /* BookmarkService.Modify.swift in Sources */,
@@ -2688,6 +2908,7 @@
 				717090A92A7ED7DC009F1FB7 /* MD5.swift in Sources */,
 				710283972A2A54C300010877 /* AnyPointSliderStyle.swift in Sources */,
 				716CCB032A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */,
+				710540C92A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift in Sources */,
 				710283832A2A54C300010877 /* RangeSlider.swift in Sources */,
 				71FCDD002A758AEF000A6309 /* ProfilePickerView.swift in Sources */,
 				710283C72A2A54C300010877 /* DefaultVerticalValueView.swift in Sources */,
@@ -2703,6 +2924,7 @@
 				71EB91BD2A8028400091EE5B /* Numbers.swift in Sources */,
 				71071F222A660D8E003AEC62 /* PostContentView.swift in Sources */,
 				710283C32A2A54C300010877 /* VerticalValueTrack.swift in Sources */,
+				710540B12A91DF5F00B9DC8A /* Placement.docc in Sources */,
 				71F042192A6A3AD100788CDC /* Globe+Center.swift in Sources */,
 				71A28E21295237AE00EAE8EE /* Passthrough.swift in Sources */,
 				71C9F9262A60ECEF0089D7EA /* CommentCardView.swift in Sources */,
@@ -2713,6 +2935,7 @@
 				7197FB1D2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
 				71A4A1242A61C51600689DF2 /* AccountService.Auth.swift in Sources */,
 				71F778B52A719D4400C9C5C4 /* HeaderCardAvatarView.swift in Sources */,
+				710540852A91D9EB00B9DC8A /* Snapshot.swift in Sources */,
 				71E5F3CB2A73A02500299558 /* Haptic.swift in Sources */,
 				714B48982A8238A400AC6199 /* GlobeView.swift in Sources */,
 				714B48812A81A5D600AC6199 /* Locateable.swift in Sources */,
@@ -2724,19 +2947,23 @@
 				71C9F8E42A60B7E10089D7EA /* Profile.swift in Sources */,
 				71EB91CF2A80A75B0091EE5B /* DebugSettingsView.swift in Sources */,
 				7118494C2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */,
+				710540812A91970700B9DC8A /* MarkdownFontGroup.swift in Sources */,
 				715151292A8F79A200251978 /* ContentContext.Display.swift in Sources */,
 				71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */,
 				7102839D2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71A28E2D295237AE00EAE8EE /* Run.swift in Sources */,
 				71CB6C362A6B7E2000084ECC /* CommunityPickerView.swift in Sources */,
+				710540D32A91DF5F00B9DC8A /* LayoutPlacement.swift in Sources */,
 				71A4A1122A61C39600689DF2 /* Bookmark+Center.swift in Sources */,
 				71C9F9412A613E750089D7EA /* BookmarkService.swift in Sources */,
+				710540E52A91DF5F00B9DC8A /* PlacementModifier.swift in Sources */,
 				7166E9E82A7503A0004F88D7 /* CardActionsView.swift in Sources */,
 				710283A12A2A54C300010877 /* RangeTrackConfiguration.swift in Sources */,
 				71F778D22A71CE7200C9C5C4 /* ProfileSettingsView.swift in Sources */,
 				71C69E292A70492100B54AD6 /* Brand.Color.swift in Sources */,
 				71C9F92C2A61064D0089D7EA /* AvatarView.swift in Sources */,
 				712BEB5C29074CFB00D257B7 /* CameraContent.swift in Sources */,
+				710540E32A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift in Sources */,
 				717C8FB52A6F9F3D00DF6037 /* Pager.swift in Sources */,
 				71C9F8D82A60B7C10089D7EA /* Feed.swift in Sources */,
 				71A28E08295233B200EAE8EE /* MenloFont.swift in Sources */,
@@ -2769,6 +2996,7 @@
 				71F778C22A71A95300C9C5C4 /* LinkPreviewDesign.swift in Sources */,
 				71899E2B2A8952100073158F /* Loom.swift in Sources */,
 				710283932A2A54C300010877 /* PointSliderStyleConfiguration.swift in Sources */,
+				710540B32A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift in Sources */,
 				71899E5F2A89D68E0073158F /* Loom.CollectionsView.swift in Sources */,
 				71B7A1DC2A68E5CA003E6D4D /* LoginView.swift in Sources */,
 				7167A8652A773C8E006F901E /* FeedSidebarView.swift in Sources */,
@@ -2776,9 +3004,11 @@
 				7197FB172964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,
 				71B7A1E62A68FEA8003E6D4D /* AccountService.Boot.swift in Sources */,
 				71EB91C52A803F240091EE5B /* InstanceMetaView.swift in Sources */,
+				710540ED2A91DF5F00B9DC8A /* PlacementLayoutSubview.swift in Sources */,
 				7158267B2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */,
 				71F778CF2A71C99900C9C5C4 /* Profile.TitleBarView.swift in Sources */,
 				717090E92A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
+				710540C32A91DF5F00B9DC8A /* PlacementProposedViewSize.swift in Sources */,
 				716CCAFD2A8CDAC4009F9413 /* SheeExtensions.swift in Sources */,
 				710283C12A2A54C300010877 /* EnvironmentValues+TrackValue.swift in Sources */,
 				71A4A1322A6352CA00689DF2 /* CGFloat.swift in Sources */,
@@ -2787,6 +3017,8 @@
 				713129BB2A83280A00C6B31D /* Instance.swift in Sources */,
 				71DF107B28CC697600559DBC /* Double+Rounding.swift in Sources */,
 				71C9F90E2A60BCF50089D7EA /* PostCardView.swift in Sources */,
+				710540CF2A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift in Sources */,
+				710540E72A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift in Sources */,
 				71B7A1E02A68FDF5003E6D4D /* Keychain.swift in Sources */,
 				710283992A2A54C300010877 /* PointSliderStyle.swift in Sources */,
 				710283A52A2A54C300010877 /* EnvironmentValues+TrackRange.swift in Sources */,
@@ -2796,6 +3028,7 @@
 				71A28D96295231E600EAE8EE /* Double.swift in Sources */,
 				71C7EE2D2A2C82DE00B52090 /* PEXApp.AppDelegate.swift in Sources */,
 				71FCDD172A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */,
+				710540872A91DF1F00B9DC8A /* WrapLayout.swift in Sources */,
 				71622E8D2A6E0A26006233F3 /* Image.swift in Sources */,
 				71DF107128CC697600559DBC /* DictionaryCodingKey.swift in Sources */,
 				71C5FF672A64688B00F99A84 /* Drawer.swift in Sources */,
@@ -2807,6 +3040,7 @@
 				71A28D98295231E600EAE8EE /* Color.swift in Sources */,
 				711B3FDD2885D4F000F3080D /* Home.swift in Sources */,
 				717C129F293BEF730060A446 /* AppBlurBackground.swift in Sources */,
+				710540B92A91DF5F00B9DC8A /* PlacementLayout.swift in Sources */,
 				7197FB272964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71C8BE752A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
 				71B7A1D62A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */,
@@ -2815,6 +3049,7 @@
 				716157DF2A85D98700449EE4 /* PostDisplayView.SortMenuView.swift in Sources */,
 				71F0420C2A69D39600788CDC /* ContentService.Interact.swift in Sources */,
 				71C9F8D62A60B7C10089D7EA /* Feed+Center.swift in Sources */,
+				710540D52A91DF5F00B9DC8A /* LayoutSizeModifier.swift in Sources */,
 				7197FB1B2964B4C0005EBBA4 /* GraniteSheetManager.swift in Sources */,
 				71C69E262A70469900B54AD6 /* Search.swift in Sources */,
 				71622E9F2A6E5796006233F3 /* Reply.swift in Sources */,
@@ -2826,6 +3061,7 @@
 				716CCAFF2A8CDAC4009F9413 /* SheetProperties.swift in Sources */,
 				71622E9D2A6E5796006233F3 /* Reply+Center.swift in Sources */,
 				7166E9E22A74A2CE004F88D7 /* Comment.swift in Sources */,
+				710540D92A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift in Sources */,
 				71C9F91A2A60BFEA0089D7EA /* ContentService+Center.swift in Sources */,
 				710283A72A2A54C300010877 /* EnvironmentValues+RangeTrackConfiguration.swift in Sources */,
 				71899E3A2A8952E00073158F /* LoomManifest.swift in Sources */,
@@ -2837,6 +3073,7 @@
 				71F042392A6A682C00788CDC /* Write.Create.swift in Sources */,
 				7166E9DC2A74A2BC004F88D7 /* Post.swift in Sources */,
 				7145EF1928D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */,
+				710540BF2A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift in Sources */,
 				71C9F8EC2A60B7F40089D7EA /* Settings+Center.swift in Sources */,
 				71C9F8F02A60B7F40089D7EA /* Settings.swift in Sources */,
 				71899E572A89A0D80073158F /* Feed+Listeners.swift in Sources */,
@@ -2870,7 +3107,9 @@
 				71C69E442A70515F00B54AD6 /* SearchConductor.swift in Sources */,
 				716CCB012A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */,
 				71C9F9362A6116B20089D7EA /* ContentService.Boot.swift in Sources */,
+				710540BB2A91DF5F00B9DC8A /* AnyPlacementLayout.swift in Sources */,
 				71FCDD0D2A75EC69000A6309 /* Feed.Vertical.swift in Sources */,
+				710540BD2A91DF5F00B9DC8A /* PlacementLayoutNative.swift in Sources */,
 				717090A72A7ED7DC009F1FB7 /* Lock.swift in Sources */,
 				71899E412A895BA50073158F /* LoomService._.swift in Sources */,
 				7166E9CC2A744A06004F88D7 /* View+Background.swift in Sources */,
@@ -2882,6 +3121,7 @@
 				71899E342A89528C0073158F /* LoomService.swift in Sources */,
 				71C69E222A70469900B54AD6 /* Search+Center.swift in Sources */,
 				7197FB292964B4EC005EBBA4 /* ModalService+Center.swift in Sources */,
+				710540B52A91DF5F00B9DC8A /* PlacementLayoutProperties.swift in Sources */,
 				7166E9C92A74457A004F88D7 /* CommunitySidebarView.swift in Sources */,
 				710283872A2A54C300010877 /* RangeSliderStyleConfiguration.swift in Sources */,
 				71C8BE782A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */,
@@ -2898,10 +3138,13 @@
 				71A28D3229522F8300EAE8EE /* ContainerConfig.swift in Sources */,
 				7145EF0D28D43F1D00BFD19A /* Date.swift in Sources */,
 				71B21B602A6C5743005B3BFB /* Write.Generate.Passage.swift in Sources */,
+				710540DD2A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift in Sources */,
 				7197FB212964B4C0005EBBA4 /* GraniteModalWindow.swift in Sources */,
 				71C9F9292A60F6650089D7EA /* PostDisplayView.swift in Sources */,
 				7102838D2A2A54C300010877 /* HorizontalRangeSliderStyle.swift in Sources */,
+				710540C72A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift in Sources */,
 				71DF106D28CC697600559DBC /* DictionaryDecoder.swift in Sources */,
+				710540DB2A91DF5F00B9DC8A /* LayoutSizingView.swift in Sources */,
 				71F778C02A71A95300C9C5C4 /* Extension.swift in Sources */,
 				7158267F2A886752000E4B49 /* Marble.swift in Sources */,
 				71C9F9302A6107D20089D7EA /* HeaderView.swift in Sources */,
@@ -2913,10 +3156,13 @@
 				710283CD2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
 				716CCAD92A8C6DAD009F9413 /* Config.Restart.swift in Sources */,
+				710540CD2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift in Sources */,
 				710283A32A2A54C300010877 /* HorizontalRangeTrack.swift in Sources */,
+				710540C52A91DF5F00B9DC8A /* ProposedSize.swift in Sources */,
 				7197FB132964B4C0005EBBA4 /* GraniteToastViewEvent.swift in Sources */,
 				71C69E542A70747E00B54AD6 /* CommunityCardView.swift in Sources */,
 				712BEB6029074CFB00D257B7 /* CameraContentView.swift in Sources */,
+				710540D12A91DF5F00B9DC8A /* PlacementViewSpacing.swift in Sources */,
 				71622E932A6E4103006233F3 /* View+OnSwipe.swift in Sources */,
 				71FBA7F7296D16110090B630 /* GraniteScrollView+Reader.swift in Sources */,
 				71EAF4702A7D9A310034FCB9 /* Globe.MainView.swift in Sources */,
@@ -2926,6 +3172,8 @@
 				717090EB2A7EEF0B009F1FB7 /* LayoutService+Center.swift in Sources */,
 				7197FB052964B4C0005EBBA4 /* GraniteModal.swift in Sources */,
 				71DF107328CC697600559DBC /* DictionaryErrors.swift in Sources */,
+				710540CB2A91DF5F00B9DC8A /* PlacementThatFits.swift in Sources */,
+				710540C12A91DF5F00B9DC8A /* PlacementViewDimensions.swift in Sources */,
 				71A4A12F2A63326400689DF2 /* URL+Host.swift in Sources */,
 				710283C52A2A54C300010877 /* LinearValueMath.swift in Sources */,
 				71258D272A55F951007E52FC /* Device.swift in Sources */,
@@ -2933,10 +3181,12 @@
 				7161D2FB29540AD00070FE59 /* View+Overlay.swift in Sources */,
 				7102839B2A2A54C300010877 /* RectangularPointSliderStyle.swift in Sources */,
 				7197FB2B2964B4EC005EBBA4 /* ModalService.swift in Sources */,
+				710540E92A91DF5F00B9DC8A /* Coordinator.swift in Sources */,
 				71C5FF6A2A64688B00F99A84 /* Drawer+Drag.swift in Sources */,
 				710283812A2A54C300010877 /* EnvironmentValues+TrackPoint.swift in Sources */,
 				714B487E2A8188DA00AC6199 /* ResourceContext.swift in Sources */,
 				717C12A3293BF03C0060A446 /* Animations._.swift in Sources */,
+				710540DF2A91DF5F00B9DC8A /* FrameChangePlacer.swift in Sources */,
 				7102838F2A2A54C300010877 /* RangeSliderOptions.swift in Sources */,
 				71FCDD032A758D92000A6309 /* Profile.InlineView.swift in Sources */,
 				715151222A8F705300251978 /* Globe.AccountsView.swift in Sources */,
@@ -2966,10 +3216,14 @@
 				7166E9D62A748C7F004F88D7 /* PostActionsView.swift in Sources */,
 				715826792A881DD8000E4B49 /* ViewingContext.swift in Sources */,
 				71899E352A89528C0073158F /* LoomService.swift in Sources */,
+				710540842A91D9CA00B9DC8A /* Snapshot.swift in Sources */,
+				710540B62A91DF5F00B9DC8A /* PlacementLayoutProperties.swift in Sources */,
 				7102838E2A2A54C300010877 /* HorizontalRangeSliderStyle.swift in Sources */,
+				710540D22A91DF5F00B9DC8A /* PlacementViewSpacing.swift in Sources */,
 				71071F232A660D8E003AEC62 /* PostContentView.swift in Sources */,
 				7102837E2A2A54C300010877 /* PointTrackConfiguration.swift in Sources */,
 				71899E5D2A89D66E0073158F /* Loom.SymbolView.swift in Sources */,
+				710540DC2A91DF5F00B9DC8A /* LayoutSizingView.swift in Sources */,
 				716157DA2A85C29500449EE4 /* WebView.swift in Sources */,
 				71DF108028CC697600559DBC /* ProgressContent.swift in Sources */,
 				7158267C2A883EDA000E4B49 /* BookmarkService.Boot.swift in Sources */,
@@ -2985,6 +3239,7 @@
 				71B7A1E72A68FEA8003E6D4D /* AccountService.Boot.swift in Sources */,
 				71A28E24295237AE00EAE8EE /* TapAndLongPressModifier.swift in Sources */,
 				7102839C2A2A54C300010877 /* RectangularPointSliderStyle.swift in Sources */,
+				710540E02A91DF5F00B9DC8A /* FrameChangePlacer.swift in Sources */,
 				7197FB0E2964B4C0005EBBA4 /* GraniteAlertView.swift in Sources */,
 				714FA06329FF11E1002E4A7C /* InfoIconView.swift in Sources */,
 				7197FB0C2964B4C0005EBBA4 /* GraniteAlertViewStyle.swift in Sources */,
@@ -2998,6 +3253,7 @@
 				717C8FBC2A6FD1F800DF6037 /* Feed.HeaderView.swift in Sources */,
 				71E5F3C32A73244500299558 /* LazyScrollView.swift in Sources */,
 				71EAF4712A7D9A310034FCB9 /* Globe.MainView.swift in Sources */,
+				710540C02A91DF5F00B9DC8A /* PlacementLayout+DefaultImplementations.swift in Sources */,
 				71A4A1152A61C39600689DF2 /* Bookmark+View.swift in Sources */,
 				71FCDD152A75ECF9000A6309 /* LayoutEnvironment.swift in Sources */,
 				71F778C92A71AE0300C9C5C4 /* FeedStyle.swift in Sources */,
@@ -3027,6 +3283,7 @@
 				71B7A1EA2A690327003E6D4D /* AccountService.Details.swift in Sources */,
 				71A28E09295233B200EAE8EE /* MenloFont.swift in Sources */,
 				71FCDD012A758AEF000A6309 /* ProfilePickerView.swift in Sources */,
+				710540D42A91DF5F00B9DC8A /* LayoutPlacement.swift in Sources */,
 				71FBA7FC296D16110090B630 /* GraniteScrollViewPositionIndicator.swift in Sources */,
 				71C9F8D92A60B7C10089D7EA /* Feed.swift in Sources */,
 				7166E9E02A74A2C6004F88D7 /* Community.swift in Sources */,
@@ -3035,11 +3292,13 @@
 				71F778B32A719C6A00C9C5C4 /* HeaderCardView.swift in Sources */,
 				71EB91CA2A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
 				710283BC2A2A54C300010877 /* HorizontalValueTrack.swift in Sources */,
+				710540B42A91DF5F00B9DC8A /* PlacementLayoutValueKey.swift in Sources */,
 				71DF107828CC697600559DBC /* NumberFormatter.swift in Sources */,
 				71FBA7F8296D16110090B630 /* GraniteScrollView+Reader.swift in Sources */,
 				71A28D9D295231E600EAE8EE /* Dictionary.swift in Sources */,
 				710283842A2A54C300010877 /* RangeSlider.swift in Sources */,
 				710BEAA62A86E87B0075A141 /* SortType.swift in Sources */,
+				710540E42A91DF5F00B9DC8A /* ExplicitAlignmentModifier.swift in Sources */,
 				71C9F9082A60B9C10089D7EA /* Config.Boot.swift in Sources */,
 				712BEB5F29074CFB00D257B7 /* CameraView.swift in Sources */,
 				71FCDD0E2A75EC69000A6309 /* Feed.Vertical.swift in Sources */,
@@ -3049,9 +3308,12 @@
 				71F0420A2A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */,
 				716CCB042A8CDAC4009F9413 /* ModalPresentationStyle.swift in Sources */,
 				71CB6C392A6B823D00084ECC /* Write.Set.swift in Sources */,
+				710540802A91967200B9DC8A /* MarkdownFontGroup.swift in Sources */,
+				710540D82A91DF5F00B9DC8A /* LayoutChildSizingView.swift in Sources */,
 				71F778B62A719D4400C9C5C4 /* HeaderCardAvatarView.swift in Sources */,
 				71DF107628CC697600559DBC /* Style.swift in Sources */,
 				7166E9CA2A74457A004F88D7 /* CommunitySidebarView.swift in Sources */,
+				710540E82A91DF5F00B9DC8A /* PlacementShouldAdjustToKeyboard.swift in Sources */,
 				71F0421E2A6A3AD100788CDC /* Globe.swift in Sources */,
 				71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71CB6C342A6B742200084ECC /* Write.Import.swift in Sources */,
@@ -3067,6 +3329,7 @@
 				717090EC2A7EEF0B009F1FB7 /* LayoutService+Center.swift in Sources */,
 				716CCB002A8CDAC4009F9413 /* SheetProperties.swift in Sources */,
 				7166E9E32A74A2CE004F88D7 /* Comment.swift in Sources */,
+				710540D02A91DF5F00B9DC8A /* PlacementThatFitsCoordinator.swift in Sources */,
 				716CCADA2A8C6DAD009F9413 /* Config.Restart.swift in Sources */,
 				71A4A1332A6352CA00689DF2 /* CGFloat.swift in Sources */,
 				710283CC2A2A54C300010877 /* DefaultHorizontalValueView.swift in Sources */,
@@ -3077,6 +3340,7 @@
 				71C9F90F2A60BCF50089D7EA /* PostCardView.swift in Sources */,
 				71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
 				71DF107C28CC697600559DBC /* Double+Rounding.swift in Sources */,
+				710540BE2A91DF5F00B9DC8A /* PlacementLayoutNative.swift in Sources */,
 				711D39232A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */,
 				7102838C2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
@@ -3102,6 +3366,7 @@
 				712C0D7E2A7CA32500DBDCC9 /* CGPoint.swift in Sources */,
 				71A4A1172A61C39600689DF2 /* Bookmark.swift in Sources */,
 				71C9F8D72A60B7C10089D7EA /* Feed+Center.swift in Sources */,
+				710540EE2A91DF5F00B9DC8A /* PlacementLayoutSubview.swift in Sources */,
 				71F042252A6A3AD700788CDC /* Write.swift in Sources */,
 				711B3FDE2885D4F000F3080D /* Home.swift in Sources */,
 				717C12A0293BEF730060A446 /* AppBlurBackground.swift in Sources */,
@@ -3121,6 +3386,7 @@
 				714B487F2A8188DA00AC6199 /* ResourceContext.swift in Sources */,
 				71B7A1E42A68FE81003E6D4D /* AccountMeta.swift in Sources */,
 				7197FB082964B4C0005EBBA4 /* GraniteAlertAction.swift in Sources */,
+				710540BC2A91DF5F00B9DC8A /* AnyPlacementLayout.swift in Sources */,
 				7151512D2A8FB12F00251978 /* Profile+Listeners.swift in Sources */,
 				71FCDD182A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */,
 				71622EA02A6E5796006233F3 /* Reply.swift in Sources */,
@@ -3132,6 +3398,7 @@
 				71B7A1F42A691470003E6D4D /* MotionManager.swift in Sources */,
 				717C8FB92A6FCD8B00DF6037 /* Feed.CommunityInfoView.swift in Sources */,
 				716CCADD2A8CA28E009F9413 /* Loom+Center.swift in Sources */,
+				710540882A91DF1F00B9DC8A /* WrapLayout.swift in Sources */,
 				71F778D32A71CE7200C9C5C4 /* ProfileSettingsView.swift in Sources */,
 				71EAF47C2A7DA3320034FCB9 /* ExplorerService.swift in Sources */,
 				717C8FB62A6F9F4000DF6037 /* Pager.swift in Sources */,
@@ -3145,6 +3412,7 @@
 				711D39302A84A96200CF2DB2 /* DebugComponent.swift in Sources */,
 				71899E372A89528C0073158F /* LoomService+Center.swift in Sources */,
 				71A4A1222A61C41000689DF2 /* AccountService+Center.swift in Sources */,
+				710540D62A91DF5F00B9DC8A /* LayoutSizeModifier.swift in Sources */,
 				710283822A2A54C300010877 /* EnvironmentValues+TrackPoint.swift in Sources */,
 				710283862A2A54C300010877 /* RangeSliderStyle.swift in Sources */,
 				7197FB1A2964B4C0005EBBA4 /* GraniteSheetContainerView.swift in Sources */,
@@ -3161,10 +3429,13 @@
 				71C9F8E72A60B7E10089D7EA /* Profile+View.swift in Sources */,
 				710283CE2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				7197FB2C2964B4EC005EBBA4 /* ModalService.swift in Sources */,
+				710540CA2A91DF5F00B9DC8A /* PlacementThatFitsChildModifier.swift in Sources */,
 				717E613428A0D69B009A2B1A /* Home._.swift in Sources */,
 				710283B62A2A54C300010877 /* HorizontalValueSliderStyle.swift in Sources */,
 				71DF107A28CC697600559DBC /* Outcome.swift in Sources */,
+				710540CC2A91DF5F00B9DC8A /* PlacementThatFits.swift in Sources */,
 				710283C62A2A54C300010877 /* LinearValueMath.swift in Sources */,
+				710540B82A91DF5F00B9DC8A /* AnyAnimatableData.swift in Sources */,
 				7197FB102964B4C0005EBBA4 /* GraniteToastView.swift in Sources */,
 				71E5F3CC2A73A02500299558 /* Haptic.swift in Sources */,
 				711B3FDA2885D4F000F3080D /* Home+Center.swift in Sources */,
@@ -3179,10 +3450,12 @@
 				71C9F9372A6116B20089D7EA /* ContentService.Boot.swift in Sources */,
 				71C9F8EF2A60B7F40089D7EA /* Settings+View.swift in Sources */,
 				715826832A889506000E4B49 /* View+Readability.swift in Sources */,
+				710540C22A91DF5F00B9DC8A /* PlacementViewDimensions.swift in Sources */,
 				714B48822A81A5D600AC6199 /* Locateable.swift in Sources */,
 				71622E8E2A6E0A26006233F3 /* Image.swift in Sources */,
 				71C9F9192A60BFEA0089D7EA /* ContentService.swift in Sources */,
 				717D388C2887A44D00165D7D /* Home+View.swift in Sources */,
+				710540C82A91DF5F00B9DC8A /* PlacementThatFitsLayout.swift in Sources */,
 				71C69E2A2A70492100B54AD6 /* Brand.Color.swift in Sources */,
 				71899E602A89D68E0073158F /* Loom.CollectionsView.swift in Sources */,
 				71C8BE7C2A7F3F14008694C7 /* FeedMainView.swift in Sources */,
@@ -3192,6 +3465,8 @@
 				714B48792A816CF900AC6199 /* Logger.swift in Sources */,
 				710283902A2A54C300010877 /* RangeSliderOptions.swift in Sources */,
 				7166E9CD2A744A06004F88D7 /* View+Background.swift in Sources */,
+				710540BA2A91DF5F00B9DC8A /* PlacementLayout.swift in Sources */,
+				710540EA2A91DF5F00B9DC8A /* Coordinator.swift in Sources */,
 				71C9F8FF2A60B9460089D7EA /* ConfigService.swift in Sources */,
 				71C69E272A70469900B54AD6 /* Search.swift in Sources */,
 				71F778C12A71A95300C9C5C4 /* Extension.swift in Sources */,
@@ -3208,6 +3483,7 @@
 				71F778CD2A71C5EA00C9C5C4 /* Profile.HeaderView.swift in Sources */,
 				71C69E582A70DC1400B54AD6 /* SearchScrollView.swift in Sources */,
 				712427B92A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
+				710540B22A91DF5F00B9DC8A /* Placement.docc in Sources */,
 				71EB91D02A80A75B0091EE5B /* DebugSettingsView.swift in Sources */,
 				71F0423A2A6A682C00788CDC /* Write.Create.swift in Sources */,
 				71CB6C302A6B1F8D00084ECC /* WriteView.swift in Sources */,
@@ -3216,7 +3492,9 @@
 				71FCDD112A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
 				716CCB022A8CDAC4009F9413 /* UIViewControllerProxy.swift in Sources */,
 				716CCAFA2A8CDAC4009F9413 /* SheetModifier.swift in Sources */,
+				710540DE2A91DF5F00B9DC8A /* PlacementKeyboardAvoidingModifier.swift in Sources */,
 				7197FB1E2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
+				710540C62A91DF5F00B9DC8A /* ProposedSize.swift in Sources */,
 				71C8BE762A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
 				71C8BE732A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */,
 				71B7A1E12A68FDF5003E6D4D /* Keychain.swift in Sources */,
@@ -3225,12 +3503,14 @@
 				7166E9D32A747ED7004F88D7 /* ReportView.swift in Sources */,
 				71A28E0B295233B200EAE8EE /* Fonts.swift in Sources */,
 				71A28D3329522F8300EAE8EE /* ContainerConfig.swift in Sources */,
+				710540EC2A91DF5F00B9DC8A /* PlacementLayoutSubviews.swift in Sources */,
 				7145EF0E28D43F1D00BFD19A /* Date.swift in Sources */,
 				71DF106E28CC697600559DBC /* DictionaryDecoder.swift in Sources */,
 				715151302A8FBE0D00251978 /* GraniteScrollView+macOS.swift in Sources */,
 				710283AA2A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
 				712BEB6129074CFB00D257B7 /* CameraContentView.swift in Sources */,
 				7166E9DD2A74A2BC004F88D7 /* Post.swift in Sources */,
+				710540DA2A91DF5F00B9DC8A /* PlacementIntrinsicSizeReader.swift in Sources */,
 				71258D282A55F951007E52FC /* Device.swift in Sources */,
 				71A4A1302A63326400689DF2 /* URL+Host.swift in Sources */,
 				71FBA7FA296D16110090B630 /* GranitePagingView.swift in Sources */,
@@ -3241,14 +3521,18 @@
 				710283AE2A2A54C300010877 /* ValueSliderStyle.swift in Sources */,
 				7161D2FC29540AD00070FE59 /* View+Overlay.swift in Sources */,
 				71F778C62A71ABAC00C9C5C4 /* CensorView.swift in Sources */,
+				710540E62A91DF5F00B9DC8A /* PlacementModifier.swift in Sources */,
+				710540C42A91DF5F00B9DC8A /* PlacementProposedViewSize.swift in Sources */,
 				71622EA22A6E5796006233F3 /* Reply+View.swift in Sources */,
 				71B21B612A6C5743005B3BFB /* Write.Generate.Passage.swift in Sources */,
 				717090A82A7ED7DC009F1FB7 /* Lock.swift in Sources */,
 				710283C42A2A54C300010877 /* VerticalValueTrack.swift in Sources */,
+				710540E22A91DF5F00B9DC8A /* Layouter.swift in Sources */,
 				717C12A4293BF03C0060A446 /* Animations._.swift in Sources */,
 				7166E9EC2A751441004F88D7 /* UserInfo.swift in Sources */,
 				710283BE2A2A54C300010877 /* EnviromnentValues+ValueTrackConfiguration.swift in Sources */,
 				716157E32A85FD9D00449EE4 /* Keyboard.swift in Sources */,
+				710540CE2A91DF5F00B9DC8A /* PlacementThatFitsVariadicRoot.swift in Sources */,
 				71F778C32A71A95300C9C5C4 /* LinkPreviewDesign.swift in Sources */,
 				71F778BF2A71A95300C9C5C4 /* LinkPreview.swift in Sources */,
 				71622E9E2A6E5796006233F3 /* Reply+Center.swift in Sources */,

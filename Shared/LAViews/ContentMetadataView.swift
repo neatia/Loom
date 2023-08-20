@@ -172,31 +172,31 @@ extension ContentMetadataView {
             return
         }
         
-        var image: GraniteImage?
         if imageProvider.hasItemConformingToTypeIdentifier(type) {
             guard let item = try? await imageProvider.loadItem(forTypeIdentifier: type) else {
-                image = nil
+                self.image = nil
                 return
             }
             
             if item is GraniteImage {
-                image = item as? GraniteImage
+                self.image = item as? GraniteImage
+                return
             }
             
             if item is URL {
                 guard let url = item as? URL,
                       let data = try? Data(contentsOf: url) else { return }
                 
-                image = GraniteImage(data: data)
+                self.image = GraniteImage(data: data)
+                return
             }
             
             if item is Data {
                 guard let data = item as? Data else { return }
                 
-                image = GraniteImage(data: data)
+                self.image = GraniteImage(data: data)
+                return
             }
         }
-        
-        self.image = image
     }
 }

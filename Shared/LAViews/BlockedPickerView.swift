@@ -19,8 +19,8 @@ struct BlockedPickerView: View {
     var modal: Bool = true
     var verticalPadding: CGFloat = .layer5
     
-    var users: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true)
-    var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true)
+    var users: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true, isStatic: true)
+    var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true, isStatic: true)
     
     @State var page: SearchType = .users
     

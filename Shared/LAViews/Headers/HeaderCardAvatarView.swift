@@ -46,6 +46,10 @@ struct HeaderCardAvatarView: View {
         return commentView?.creator.equals(poster) == true
     }
     
+    var isBot: Bool {
+        context.person?.bot_account == true
+    }
+    
     var avatarBorderColor: Color {
         if isAdmin {
             return .red.opacity(0.8)
@@ -54,6 +58,10 @@ struct HeaderCardAvatarView: View {
         } else {
             return .clear
         }
+    }
+    
+    var isProminent: Bool {
+        isAdmin || isOP
     }
     
     init(crumbs: [CommentView] = [],
@@ -76,13 +84,25 @@ struct HeaderCardAvatarView: View {
             }
             
             GeometryReader { proxy in
-                HStack {
+                HStack(spacing: 0) {
                     Spacer()
-                    Rectangle()
-                        .frame(width: 1.5,
-                               height: proxy.size.height)
-                        .cornerRadius(8)
-                        .foregroundColor(.foreground.opacity(0.3))
+                    
+                    VStack(spacing: 0) {
+                        Rectangle()
+                            .frame(width: 1.5)
+                            .cornerRadius(8)
+                            .foregroundColor((isProminent ? avatarBorderColor.opacity(0.7) : .foreground.opacity(0.3)))
+                        
+                        if isBot {
+                            Text("🤖")
+                                .font(.title2)
+                                .padding(.top, .layer3)
+                        } else {
+                            Spacer().frame(height: 2)
+                        }
+                    }
+                    .frame(height: proxy.size.height)
+                    
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)

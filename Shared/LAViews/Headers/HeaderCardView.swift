@@ -22,6 +22,7 @@ struct HeaderCardView: View {
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
+    @GraniteAction<Void> var share
     
     @State var enableRoute: Bool = false
     @State var enablePostViewRoute: Bool = false
@@ -62,6 +63,7 @@ struct HeaderCardView: View {
                 if let subheadline = context.display.author.subheadline {
                     Text("@"+subheadline)
                         .font(.caption2)
+                        .foregroundColor(.foreground.opacity(0.5))
                 }
             }
             
@@ -96,6 +98,9 @@ struct HeaderCardView: View {
                     .attach({
                         edit.perform()
                     }, at: \.edit)
+                    .attach({
+                        share.perform()
+                    }, at: \.share)
                     .graniteEvent(interact)
             }
         }

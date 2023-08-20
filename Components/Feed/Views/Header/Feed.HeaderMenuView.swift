@@ -55,6 +55,7 @@ extension Feed {
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 80 : nil)
             .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+            .padding(.vertical, (Device.isExpandedLayout && !hasCommunityBanner) ? 6 : 0)
             .padding(.vertical, hasCommunityBanner ? 4 : 0)
             .addHaptic()
             .backgroundIf(hasCommunityBanner) {
