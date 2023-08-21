@@ -19,7 +19,7 @@ extension PostDisplayView {
                     Button {
                         GraniteHaptic.light.invoke()
                         selectedSorting = index
-                        comments.fetch(force: true)
+                        pager.fetch(force: true)
                     } label: {
                         Text(sortingType[index].displayString)
                         Image(systemName: "arrow.down.right.circle")
@@ -38,7 +38,7 @@ extension PostDisplayView {
             
             Menu {
                 ForEach(0..<viewableHosts.count) { index in
-                    let isSource: Bool = index == 1 && model.isBaseResource == false
+                    let isSource: Bool = index == 1 && model?.isBaseResource == false
                     let isPeer: Bool = !isSource && index > 0
                     let imageName: String = isSource ? "globe.americas" : (isPeer ? "person.wave.2" : "house")
                     Button {
@@ -47,17 +47,17 @@ extension PostDisplayView {
                         if isSource {
                             self.threadLocation = .source
                         } else if index > 0 {
-                            if model.isPeerResource {
+                            if model?.isPeerResource == true {
                                 self.threadLocation = .peer(viewableHosts[index])
-                            } else if viewingContext.isBookmark {
-                                self.threadLocation = viewingContext.bookmarkLocation
+                            } else if context.viewingContext.isBookmark {
+                                self.threadLocation = context.viewingContext.bookmarkLocation
                             }
                         } else {
                             self.threadLocation = .base
                         }
                         self.selectedHost = viewableHosts[index]
                         
-                        comments.fetch(force: true)
+                        pager.fetch(force: true)
                     } label: {
                         Text(viewableHosts[index])
                         Image(systemName: imageName)

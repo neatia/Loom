@@ -15,23 +15,24 @@ import Combine
 import MarkdownView
 
 struct PostDisplayView: View {
+    @Environment(\.contentContext) var context
     @GraniteAction<Community> var viewCommunity
     
     @Relay var config: ConfigService
     @Relay var modal: ModalService
     
-    @State var model: PostView
-    var style: FeedStyle = .style2
+    var model: PostView? {
+        updatedModel ?? context.postModel
+    }
+    @State var updatedModel: PostView?
     
     @State var showDrawer: Bool = false
     @State var commentModel: CommentView? = nil
-    @State var expandLinkPreview: Bool = false
     
+    @State var expandLinkPreview: Bool = false
     @State var enableCommunityRoute: Bool = false
     
     @State var threadLocation: FetchType = .base
-    
-    var viewingContext: ViewingContext = .base
     
     //TODO: Similar to feed's controls maybe it can be reused?
     @State var selectedSorting: Int = 0
@@ -41,6 +42,8 @@ struct PostDisplayView: View {
     var viewableHosts: [String] {
         var hosts: [String] = [LemmyKit.host]
         
+        guard let model else { return [] }
+        
         if model.isBaseResource == false {
             hosts += [model.community.actor_id.host]
         }
@@ -49,19 +52,19 @@ struct PostDisplayView: View {
             hosts += [model.creator.actor_id.host]
         }
         
-        if viewingContext.isBookmark,
-           case .peer(let host) = viewingContext.bookmarkLocation {
+        if context.viewingContext.isBookmark,
+           case .peer(let host) = context.viewingContext.bookmarkLocation {
             hosts += [host]
         }
         
         return hosts
     }
     
-    @StateObject var comments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    @StateObject var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HeaderView(model, shouldRoutePost: false, badge: .noBadge)
+            HeaderView(shouldRoutePost: false)
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
@@ -70,19 +73,20 @@ struct PostDisplayView: View {
                         Write(postView: model)
                             .attach({ updatedModel in
                                 DispatchQueue.main.async {
-                                    self.model = updatedModel
+                                    self.updatedModel = updatedModel
                                     self.modal.dismissSheet()
                                 }
                             }, at: \.updatedPost)
                             .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
                     }
                 }, at: \.edit)
+                .contentContext(context)
                 .padding(.horizontal, .layer3)
                 .padding(.bottom, .layer4)
 
             Divider()
             
-            switch style {
+            switch context.feedStyle {
             case .style1:
                 contentHeader
                     .background(Color.background)
@@ -91,13 +95,15 @@ struct PostDisplayView: View {
                     .background(Color.background)
             }
 
-            PagerScrollView(CommentView.self) {
+            PagerScrollView(CommentView.self,
+                            properties: .init(performant: Device.isMacOS == false,
+                                              cacheViews: true,
+                                              showFetchMore: false)) {
                 EmptyView()
             } inlineBody: {
                 contentView
-            } content: { comment in
-                CommentCardView(model: comment,
-                                postView: model)
+            } content: { commentView in
+                CommentCardView()
                     .attach({ model in
                         self.showDrawer = true
                         self.commentModel = model
@@ -105,36 +111,35 @@ struct PostDisplayView: View {
                     .attach({ community in
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
-                    //TODO: combine reply and edit
                     .attach({ (model, update) in
                         DispatchQueue.main.async {
                             modal.presentSheet {
-                                Reply(kind: .replyComment(model))
-                                    .attach({ replyModel in
-                                        update(replyModel)
-                                        
-                                        modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
-                                        
-                                        modal.dismissSheet()
-                                    }, at: \.updateComment)
-                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                                showReplyModal(isEditing: false,
+                                               model: model,
+                                               update: update)
                             }
                         }
                     }, at: \.reply)
                     .attach({ (model, update) in
                         DispatchQueue.main.async {
                             modal.presentSheet {
-                                Reply(kind: .editReplyComment(model))
-                                    .attach({ replyModel in
-                                        update(replyModel)
-                                        modal.dismissSheet()
-                                    }, at: \.updateCommentView)
-                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                                showReplyModal(isEditing: true,
+                                               model: model,
+                                               update: update)
                             }
                         }
                     }, at: \.edit)
+                    .attach({ model in
+                        DispatchQueue.main.async {
+                            modal.presentSheet {
+                                showShareModal(model)
+                            }
+                        }
+                    }, at: \.share)
+                    .contentContext(.addCommentModel(model: commentView, context))
+                    .background(Color.alternateBackground)
             }
-            .environmentObject(comments)
+            .environmentObject(pager)
         }
         .padding(.top, .layer4)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
@@ -142,12 +147,13 @@ struct PostDisplayView: View {
         .foregroundColor(.foreground)
         .showDrawer($showDrawer,
                     commentView: commentModel,
-                    postView: model)
+                    context: context)
         .task {
-            if viewingContext.isBookmark == false {
-                threadLocation = model.post.location ?? .base
-            }
-            comments.hook { page in
+            self.threadLocation = context.location
+            
+            guard let model else { return }
+            
+            pager.hook { page in
                 return await Lemmy.comments(model.post,
                                             community: model.community,
                                             page: page,
@@ -157,36 +163,65 @@ struct PostDisplayView: View {
             }.fetch()
         }
     }
+    
+    func showReplyModal(isEditing: Bool,
+                        model: CommentView,
+                        update: @escaping ((CommentView) -> Void)) -> some View {
+        Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
+            .attach({ replyModel in
+                update(replyModel)
+                
+                if isEditing {
+                    //TODO: edit success modal
+                } else {
+                    modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
+                }
+                
+                modal.dismissSheet()
+            }, at: \.updateComment)
+            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+    }
+    
+    func showShareModal(_ model: CommentView?) -> some View {
+        GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
+            ShareModal(urlString: model?.comment.ap_id) {
+                CommentCardView()
+                    .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+            }
+            .contentContext(.init(commentModel: model,
+                                  viewingContext: .screenshot))
+        }
+        .frame(width: Device.isMacOS ? 600 : nil)
+        .frame(minHeight: Device.isMacOS ? 500 : nil)
+    }
 }
 
 extension PostDisplayView {
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if model.hasContent {
-                if model.post.url != nil {
+            if model?.hasContent == true {
+                if model?.post.url != nil {
                     contentLinkPreview
                         .padding(.horizontal, .layer4)
                 }
                 
-                if model.post.body != nil {
+                if model?.post.body != nil {
                     contentBody
                         .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.3)
-                        .padding(.top, model.post.url == nil ? .layer2 : nil)
+                        .padding(.top, model?.post.url == nil ? .layer2 : nil)
                         .padding(.horizontal, .layer4)
                 }
             }
             
-            FooterView(postView: model,
-                       commentView: nil,
-                       isHeader: true,
+            FooterView(isHeader: true,
                        showScores: config.state.showScores,
                        isComposable: true)
                 .attach({ model in
                     modal.presentSheet {
                         Reply(kind: .replyPost(model))
                             .attach({ (model, modelView) in
-                                comments.insert(modelView)
+                                pager.insert(modelView)
                                 
                                 modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
                                 
@@ -195,8 +230,9 @@ extension PostDisplayView {
                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                     }
                 }, at: \.reply)
+                .contentContext(.withStyle(.style1, context))
                 .padding(.horizontal, .layer4)
-                .padding(.vertical, .layer4)
+                .padding(.vertical, .layer5)
             
             Divider()
             
@@ -211,7 +247,7 @@ extension PostDisplayView {
     var contentHeader: some View {
         HStack(spacing: CGFloat.layer2) {
             VStack(alignment: .leading, spacing: 0) {
-                Text(model.post.name)
+                Text(model?.post.name ?? "")
                     .font(.title3.bold())
                     .foregroundColor(.foreground.opacity(0.9))
                     .padding(.bottom, .layer1)
@@ -219,7 +255,7 @@ extension PostDisplayView {
             
             Spacer()
             
-            if let thumbUrl = model.post.thumbnail_url,
+            if let thumbUrl = model?.post.thumbnail_url,
                let url = URL(string: thumbUrl) {
                 
                 ZStack {
@@ -240,6 +276,7 @@ extension PostDisplayView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
+                    guard let model else { return }
                     GraniteHaptic.light.invoke()
                     modal.presentSheet {
                         PostContentView(postView: model)
@@ -257,8 +294,8 @@ extension PostDisplayView {
     var contentHeaderStacked: some View {
         VStack(spacing: .layer2) {
             HStack {
-                Text(model.post.name)
-                    .font(.title3)
+                Text(model?.post.name ?? "")
+                    .font(.title3.bold())
                     .foregroundColor(.foreground.opacity(0.9))
                     .padding(.bottom, .layer1)
                 
@@ -271,11 +308,11 @@ extension PostDisplayView {
     }
     var contentLinkPreview: some View {
         Group {
-            if let thumbUrl = model.post.url,
+            if let thumbUrl = model?.post.url,
                let url = URL(string: thumbUrl) {
                 HStack {
                     LinkPreview(url: url)
-                        .type(model.post.body == nil || expandLinkPreview ? .large : .small)
+                        .type(model?.post.body == nil || expandLinkPreview ? .large : .small)
                         .frame(maxWidth: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenWidth * 0.8)
                     
                     Spacer()
@@ -286,9 +323,10 @@ extension PostDisplayView {
     var contentBody: some View {
         VStack(spacing: 0) {
             ScrollView {
-                if let body = model.post.body {
+                if let body = model?.post.body {
                     MarkdownView(text: body)
                         .markdownViewRole(.editor)
+                        .fontGroup(PostDisplayFontGroup())
                         .padding(.bottom, .layer2)
                 }
             }
@@ -300,11 +338,11 @@ extension PostDisplayView {
 fileprivate extension View {
     func showDrawer(_ condition: Binding<Bool>,
                     commentView: CommentView?,
-                    postView: PostView?) -> some View {
+                    context: ContentContext) -> some View {
         self.overlayIf(condition.wrappedValue, alignment: .top) {
             Group {
-                #if os(iOS)
                 if let commentView {
+                    #if os(iOS)
                     Drawer(startingHeight: 480) {
                         ZStack(alignment: .top) {
                             RoundedRectangle(cornerRadius: 12)
@@ -316,10 +354,11 @@ fileprivate extension View {
                                     .frame(width: 50, height: 8)
                                     .foregroundColor(Color.gray)
                                     .padding(.top, .layer5)
-                                ThreadView(model: commentView, postView: postView)
+                                ThreadView()
                                     .attach({
                                         condition.wrappedValue = false
                                     }, at: \.closeDrawer)
+                                    .contentContext(.addCommentModel(model: commentView, context))
                                 Spacer()
                             }
                             .frame(height: UIScreen.main.bounds.height - 100)
@@ -330,8 +369,8 @@ fileprivate extension View {
                     .edgesIgnoringSafeArea(.vertical)
                     .transition(.move(edge: .bottom))
                     .id(commentView.comment.id)
+                    #endif
                 }
-                #endif
             }
         }
     }

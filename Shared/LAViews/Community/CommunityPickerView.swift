@@ -71,8 +71,7 @@ struct CommunityPickerView: View {
                         Bookmark(showHeader: false)
                     } else {
                         PagerScrollView(CommunityView.self,
-                                        hideDivider: true,
-                                        useSimple: true) { communityView in
+                                        properties: .init(hideDivider: true, performant: Device.isMacOS == false)) { communityView in
                             
                             if sidebar {
                                 CommunitySidebarCardView(model: communityView,

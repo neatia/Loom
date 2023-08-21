@@ -26,7 +26,7 @@ extension ContentService {
             case replyPost(PostView, String)
             case replyPostSubmit(Comment, PostView)
             case replyComment(CommentView, String)
-            case replyCommentSubmit(Comment, CommentView)
+            case replyCommentSubmit(CommentView, CommentView)
             case editComment(CommentView, PostView?)
             case editCommentSubmit(CommentView, String)
         }
@@ -147,7 +147,7 @@ extension ContentService {
 
                 guard let result else { return }
                 
-                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result, model)))
+                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result.asView(with: model), model)))
             case .savePost(let model):
                 _ = await Lemmy.savePost(model.post, save: true)
             case .unsavePost(let model):
@@ -171,6 +171,7 @@ extension ContentService {
                     //TODO: error  toast
                     return
                 }
+                
                 broadcast.send(Meta(kind: .editCommentSubmit(updatedModel.asView(with: model), content)))
             default:
                 break

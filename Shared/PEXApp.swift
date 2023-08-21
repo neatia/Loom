@@ -49,7 +49,8 @@ struct PEXApp: App {
                 GraniteNavigationWindow.shared.addWindow(id: "main",
                                                          title: "",
                                                          style: .init(size: .init(width: 900,
-                                                                                  height: 600), minSize: .init(width: 900, height: 600), styleMask: .resizable),
+                                                                                  height: 600), minSize: .init(width: 900, height: 600),
+                                                                      styleMask: .resizable),
                                                          isMain: true) {
                     Home()
                         .background(Color.background)

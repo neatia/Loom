@@ -11,7 +11,20 @@ import SwiftUI
 import Granite
 import GraniteUI
 
+
 struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content: View>: View {
+    
+    struct Properties {
+        var alternateContentPosition: Bool = false
+        var hideDivider: Bool = false
+        var performant: Bool = false
+        var lazy: Bool = true
+        var cacheViews: Bool = false
+        var showFetchMore: Bool = true
+        var verticalPadding: CGFloat = 0
+        var backgroundColor: Color = .clear
+    }
+    
     @EnvironmentObject private var pager: Pager<Model>
     
     var currentItems: [Model] {
@@ -24,54 +37,30 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     let addContent: () -> AddContent
     let content: (Model) -> Content
     
-    let hideDivider: Bool
-    let alternateAddPosition: Bool
-    
-    let contentBGColor: Color
-    
-    let verticalPadding: CGFloat
-    
-    let useList: Bool
-    
-    let useSimple: Bool
-    
-    let cacheEnabled: Bool
+    let properties: Properties
     
     //TODO: create style struct for these extra props
     init(_ model: Model.Type,
-         hideDivider: Bool = false,
-         alternateAddPosition: Bool = false,
-         contentBGColor: Color = .clear,
-         verticalPadding: CGFloat = 0,
-         useList: Bool = false,
-         useSimple: Bool = false,
-         cacheEnabled: Bool = true,
+         properties: Properties = .init(),
          @ViewBuilder header: @escaping (() -> Header) = { EmptyView() },
          @ViewBuilder inlineBody: @escaping (() -> AddContent) = { EmptyView() },
          @ViewBuilder content: @escaping (Model) -> Content) {
         self.header = header
         self.addContent = inlineBody
         self.content = content
-        self.hideDivider = hideDivider
-        self.alternateAddPosition = alternateAddPosition
-        self.contentBGColor = contentBGColor
-        self.verticalPadding = verticalPadding
-        self.useList = useList
-        self.useSimple = useSimple
-        self.cacheEnabled = cacheEnabled
+        self.properties = properties
     }
     
     var body: some View {
         VStack(spacing: 0) {
             if pager.isEmpty {
-                if alternateAddPosition {
+                if properties.alternateContentPosition {
                     addContent()
-                        .padding(.top, useList ? 20 : 0)
+                        .padding(.top, 0)
                 }
                 header()
-                    .padding(.top, useList && alternateAddPosition == false ? 20 : 0)
                 VStack(spacing: 0) {
-                    if !alternateAddPosition {
+                    if !properties.alternateContentPosition {
                         addContent()
                     }
                     PagerLoadingView<Model>(label: pager.emptyText)
@@ -79,49 +68,30 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         .frame(maxHeight: .infinity)
                 }
             } else {
-                if useSimple {
+                if properties.performant {
                     if Device.isExpandedLayout == false {
                         header()
                     }
                     simpleScrollView
                 } else {
-                    #if os(macOS)
                     normalScrollView
-                    #else
-                    if useList {
-                        listView
-                    } else {
-                        normalScrollView
-                    }
-                    #endif
                 }
             }
         }
-//        .onAppear {
-//            /*
-//             To avoid @published redraws
-//             */
-//            #if os(iOS)
-//            pager.getItems { items in
-//                self.currentItems = items
-//            }
-//            #endif
-//        }
     }
     
     var normalScrollView: some View {
         GraniteScrollView(onRefresh: pager.refresh(_:),
-                          bgColor: contentBGColor) {
+                          bgColor: properties.backgroundColor) {
 
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
 
-                if alternateAddPosition {
+                if properties.alternateContentPosition {
                     addContent()
                 }
 
                 Section(header: header()) {
-
-                    if !alternateAddPosition {
+                    if !properties.alternateContentPosition {
                         addContent()
                     }
 
@@ -131,82 +101,69 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     }
                 }
                 
-                PagerFooterLoadingView<Model>().environmentObject(pager)
+                if properties.showFetchMore {
+                    PagerFooterLoadingView<Model>()
+                        .environmentObject(pager)
+                }
             }.padding(.top, 1)
         }
     }
     
     var simpleScrollView: some View {
-        GraniteScrollView(showsIndicators: false,
-                          onRefresh: pager.refresh(_:),
-                          onReachedEdge: { edge in
-            
-            if edge == .bottom,
-               pager.hasMore,
-               pager.isFetching == false {
-                pager.fetch()
+        #if os(macOS)
+        VStack(spacing: 0) {
+            if !properties.alternateContentPosition {
+                addContent()
             }
-            
-        }) {
-            LazyVStack(spacing: 0) {
-                ForEach(currentItems) { item in
-                    mainContent(item)
-                        .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
-                }
-            }
-            .padding(.bottom, .layer4)
-            
-            PagerFooterLoadingView<Model>()
-                .environmentObject(pager)
-        }
-    }
-    
-    var listView: some View {
-        
-        GeometryReader { proxy in
-            GraniteScrollView(onRefresh: pager.refresh(_:)) {
-                List {
-                    if alternateAddPosition {
-                        addContent()
-                            .setupPlainListRow()
+            NSScrollViewWrapper($pager.shouldUpdate) {
+                LazyVStack(spacing: 0) {
+                    //Generates a section in a stackView
+                    ForEach(pager.currentLastItems) { item in
+                        mainContent(item)
+                            .environment(\.pagerMetadata,
+                                          pager.itemMetadatas[item.id])
                     }
-                    
-                    Section(header: header()
-                        .setupPlainListRow(),
-                            footer: PagerFooterLoadingView<Model>().environmentObject(pager)
-                        .setupPlainListRow()) {
-                            
-                            if !alternateAddPosition {
-                                addContent()
-                                    .setupPlainListRow()
-                            }
-                            
-                            ForEach(currentItems) { item in
-                                
-                                VStack(spacing: 0) {
-                                    cache(item)
-                                        .padding(.vertical, verticalPadding)
-                                        .setupPlainListRow()
-                                    
-                                    if !hideDivider,
-                                       item.id != pager.lastItem?.id {
-                                        Divider()
-                                            .setupPlainListRow()
-                                    }
-                                }
-                                .background(contentBGColor)
-                                
-                            }
-                            .setupPlainListRow()
-                        }
-                        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    
                 }
-                .listStyle(PlainListStyle())
-                .frame(height: proxy.size.height)
             }
-            .frame(height: proxy.size.height)
+            if properties.showFetchMore {
+                PagerFooterLoadingView<Model>()
+                    .environmentObject(pager)
+            }
         }
+        #else
+        GraniteScrollView(showsIndicators: false,
+                          onRefresh: pager.refresh(_:)) {
+            if !properties.alternateContentPosition {
+                addContent()
+            }
+
+            if properties.lazy {
+                LazyVStack(spacing: 0) {
+                    ForEach(currentItems) { item in
+                        if properties.cacheViews {
+                            cache(item)
+                                .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                        } else {
+                            mainContent(item)
+                                .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                        }
+                    }
+                }
+            } else {
+                VStack(spacing: 0) {
+                    ForEach(currentItems) { item in
+                        mainContent(item)
+                            .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                    }
+                }
+            }
+            
+            if properties.showFetchMore {
+                PagerFooterLoadingView<Model>()
+                    .environmentObject(pager)
+            }
+        }
+        #endif
     }
     
     func cache(_ item: Model, retrieveOnly: Bool = false, storeOnly: Bool = false) -> some View {
@@ -220,11 +177,9 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             return AnyView(EmptyView())
         }
         
-//        let view: Content = content(item)
-        
         let view: AnyView = AnyView(mainContent(item))
         
-        if cacheEnabled {
+        if properties.cacheViews {
             cache.viewCache[item.id] = view
             cache.flush()
         }
@@ -239,15 +194,14 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     func mainContent(_ item: Model) -> some View {
         VStack(spacing: 0) {
             content(item)
-                .padding(.vertical, verticalPadding)
-                //.setupPlainListRow()
+                .padding(.vertical, properties.verticalPadding)
             
-            if !hideDivider,
-               item.id != pager.lastItem?.id {
-                Divider()
-                    //.setupPlainListRow()
-            }
+//            if !properties.hideDivider,
+//               item.id != pager.lastItem?.id {
+//                Divider()
+//            }
+            Divider()
         }
-        .background(contentBGColor)
+        .background(properties.backgroundColor)
     }
 }

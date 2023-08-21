@@ -19,7 +19,7 @@ extension Profile {
                     .markdownViewRole(.editor)
                     .readability()
                     .outline()
-                    .padding(.layer3)
+                    .padding(.layer4)
             } else {
                 EmptyView()
             }

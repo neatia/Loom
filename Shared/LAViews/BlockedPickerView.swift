@@ -19,8 +19,8 @@ struct BlockedPickerView: View {
     var modal: Bool = true
     var verticalPadding: CGFloat = .layer5
     
-    var users: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true)
-    var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true)
+    var users: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true, isStatic: true)
+    var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true, isStatic: true)
     
     @State var page: SearchType = .users
     
@@ -76,8 +76,7 @@ struct BlockedPickerView: View {
                     }
                     .frame(height: 36)
                     .padding(.bottom, .layer4)
-                    .padding(.leading, .layer4)
-                    .padding(.trailing, .layer4)
+                    .padding(.horizontal, modal ? .layer4 : 0)
                     .foregroundColor(.foreground)
                     
                     Divider()
@@ -94,13 +93,12 @@ struct BlockedPickerView: View {
                                          fullWidth: true,
                                          showCounts: true)
                                 .graniteEvent(interact)
-                                .padding(.leading, .layer3)
-                                .padding(.trailing, .layer3)
+                                .padding(.horizontal, modal ? .layer3 : 0)
                                 .padding(.vertical, .layer3)
                             
                             if model.id != users.lastItem?.id {
                                 Divider()
-                                    .padding(.leading, .layer3)
+                                    .padding(.leading, modal ? .layer3 : 0)
                             }
                         }
                         .environmentObject(users)
@@ -118,13 +116,12 @@ struct BlockedPickerView: View {
                             CommunityCardView(model: model,
                                               showCounts: false,
                                               fullWidth: true)
-                            .padding(.leading, .layer3)
-                            .padding(.trailing, .layer3)
+                            .padding(.horizontal, modal ? .layer3 : 0)
                             .padding(.vertical, .layer3)
                             
                             if model.id != communities.lastItem?.id {
                                 Divider()
-                                    .padding(.leading, .layer3)
+                                    .padding(.leading, modal ? .layer3 : 0)
                             }
                         }
                         .environmentObject(communities)

@@ -62,3 +62,9 @@ extension NumberFormatter {
     }
     
 }
+
+extension Int {
+    var abbreviated: String {
+        NumberFormatter.formatAbbreviated(self)
+    }
+}

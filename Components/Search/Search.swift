@@ -10,8 +10,10 @@ struct Search: GraniteComponent {
     @StateObject var conductor: SearchConductor = .init()
     
     let community: Community?
+    let isModal: Bool
     
-    init(_ community: Community?) {
+    init(_ community: Community? = nil, isModal: Bool = false) {
         self.community = community
+        self.isModal = isModal
     }
 }

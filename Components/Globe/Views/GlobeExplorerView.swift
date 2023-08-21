@@ -34,11 +34,11 @@ struct GlobeExplorerView: View {
     
     var body: some View {
         VStack {
-            #if os(iOS)
-            searchView
-            #else
-            landscapeView
-            #endif
+            if Device.isExpandedLayout {
+                landscapeView
+            } else {
+                searchView
+            }
         }
         .onChange(of: explorer.isLoaded) { _ in
             guard instances.isEmpty else {

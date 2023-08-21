@@ -30,40 +30,34 @@ extension Feed: View {
             communityInfoView
         })
         .background(Color.background)
-        .onAppear {
-            if content.state.lastVersionUpdateNotice != Device.appVersion {
-                modal.presentSheet {
-                    Group {
-                        if let url = URL(string: "https://gateway.ipfs.io/ipfs/Qme8cLrjpATAixqtqkvJAvimyj1JVurAUSURayzFiiTYpf") {
-                            
-                            PostContentView(url,
-                                            fullPage: Device.isMacOS)
-                                .frame(width: Device.isMacOS ? 600 : nil,
-                                       height: Device.isMacOS ? 500 : nil)
-                                .onAppear {
-                                    
-                                    content._state.lastVersionUpdateNotice.wrappedValue = Device.appVersion ?? ""
-                                }
-                        } else {
-                            EmptyView()
-                        }
-                    }
-                }
-                
-                LoomLog("\(Device.appVersion ?? "unknown app version")", level: .debug)
-                
-            }
-        }
+//        .onAppear {
+//            if content.state.lastVersionUpdateNotice != Device.appVersion {
+//                modal.presentSheet {
+//                    Group {
+//                        if let url = URL(string: "https://gateway.ipfs.io/ipfs/Qme8cLrjpATAixqtqkvJAvimyj1JVurAUSURayzFiiTYpf") {
+//                            
+//                            PostContentView(url,
+//                                            fullPage: Device.isMacOS)
+//                                .frame(width: Device.isMacOS ? 600 : nil,
+//                                       height: Device.isMacOS ? 500 : nil)
+//                                .onAppear {
+//                                    
+//                                    content._state.lastVersionUpdateNotice.wrappedValue = Device.appVersion ?? ""
+//                                }
+//                        } else {
+//                            EmptyView()
+//                        }
+//                    }
+//                }
+//                
+//                LoomLog("\(Device.appVersion ?? "unknown app version")", level: .debug)
+//                
+//            }
+//        }
         .task {
             guard pager.isEmpty else { return }
             
             pager.hook { page in
-                
-                if loom.state.display == .expanded {
-                    DispatchQueue.main.async {
-                        loom._state.display.wrappedValue = .compact
-                    }
-                }
                 
                 if isLoom,
                    let manifest = state.currentLoomManifest {

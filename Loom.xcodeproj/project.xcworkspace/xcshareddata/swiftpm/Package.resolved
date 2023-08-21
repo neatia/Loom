@@ -15,7 +15,7 @@
       "location" : "https://github.com/pexavc/Granite.git",
       "state" : {
         "branch" : "main",
-        "revision" : "73259aae68a9efea2cda4e0b86358b1709495da2"
+        "revision" : "30a07a10f5fcb280b83a43fbb78761f7ab2eb782"
       }
     },
     {
@@ -60,7 +60,7 @@
       "location" : "https://github.com/pexavc/MarkdownView",
       "state" : {
         "branch" : "main",
-        "revision" : "9e3e7d96bda7676f3fd8f6fcfa3980fdb204606e"
+        "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
       }
     },
     {

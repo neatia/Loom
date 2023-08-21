@@ -34,7 +34,6 @@ struct WriteView: View {
             switch kind {
             case .compact:
                 verticalContent
-                    .adaptsToKeyboard()
             case .full:
                 horizontalContent
             case .replyPost,
@@ -123,7 +122,10 @@ extension WriteView {
     var verticalContent: some View {
         VStack(spacing: 0) {
             switch kind {
-            case .replyComment, .replyPost:
+            case .replyComment,
+                    .replyPost,
+                    .editReplyPost,
+                    .editReplyComment:
                 EmptyView()
             default:
                 TextField("MISC_TITLE", text: $title)
@@ -143,7 +145,7 @@ extension WriteView {
                             .markdownViewRole(.editor)
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: minimize ? 36 : nil)
+                .frame(maxWidth: .infinity, minHeight: minimize ? nil : ContainerConfig.iPhoneScreenHeight / 2.5, maxHeight: minimize ? 36 : nil)
                 .padding(.horizontal, .layer3)
                 
                 Divider()

@@ -52,8 +52,12 @@ struct LoomEditView: View {
                         invalidName = true
                         return
                     }
+                    
                     var mutable = manifest
-                    mutable.communities.removeAll(where: { model in  removeCommunities.contains(where: { model.id == $0.id } ) })
+                    
+                    for community in removeCommunities {
+                        mutable.remove(community)
+                    }
                     
                     edit.perform(mutable)
                     
@@ -77,11 +81,6 @@ struct LoomEditView: View {
                             .foregroundColor(Color.tertiaryBackground)
                     )
                     .padding(.bottom, invalidName ? .layer2 : .layer4)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            StandardToolbarView()
-                        }
-                    }
                 
                 //TODO: localize
                 if invalidName {

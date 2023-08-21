@@ -14,33 +14,11 @@ extension Globe {
     var mainView: some View {
         VStack(spacing: 0) {
             HStack(alignment: .bottom, spacing: .layer4) {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    guard state.tab != .accounts else { return }
-                    _state.tab.wrappedValue = .accounts
-                } label: {
-                    VStack {
-                        Spacer()
-                        Text("TITLE_ACCOUNTS")
-                            .font(state.tab == .accounts ? .title.bold() : .title2.bold())
-                            .opacity(state.tab == .accounts ? 1.0 : 0.6)
-                    }
+                VStack {
+                    Spacer()
+                    Text("MISC_EXPLORE")
+                        .font(.title.bold())
                 }
-                .buttonStyle(PlainButtonStyle())
-                
-                Button {
-                    GraniteHaptic.light.invoke()
-                    guard state.tab != .explorer else { return }
-                    _state.tab.wrappedValue = .explorer
-                } label: {
-                    VStack {
-                        Spacer()
-                        Text("MISC_EXPLORE")
-                            .font(state.tab == .explorer ? .title.bold() : .title2.bold())
-                            .opacity(state.tab == .explorer ? 1.0 : 0.6)
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
                 
                 Spacer()
             }
@@ -52,16 +30,11 @@ extension Globe {
             
             Divider()
             
-            switch state.tab {
-            case .accounts:
-                accountsView
-            case .explorer:
-                if isTabSelected == true {
-                    GlobeExplorerView()
-                        .graniteEvent(config.center.restart)
-                } else {
-                    EmptyView()
-                }
+            if isTabSelected == true {
+                GlobeExplorerView()
+                    .graniteEvent(config.center.restart)
+            } else {
+                EmptyView()
             }
         }
         .frame(maxWidth: .infinity)

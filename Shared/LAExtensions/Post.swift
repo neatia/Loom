@@ -69,7 +69,7 @@ extension PostView {
         postURL?.host
     }
     
-    var postURL: URL? {
+    public var postURL: URL? {
         if let urlString = post.url,
            let url = URL(string: urlString) {
             return url
@@ -77,7 +77,7 @@ extension PostView {
         return nil
     }
     
-    var thumbUrl: URL? {
+    public var thumbURL: URL? {
         guard let url = post.thumbnail_url else {
             return nil
         }

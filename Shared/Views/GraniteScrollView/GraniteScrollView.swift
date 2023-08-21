@@ -241,16 +241,16 @@ public struct GraniteScrollView<Content : View> : View {
     }
     
     public var body: some View {
-        VisibilityTrackingScrollView(action: handleVisibilityChanged) {
-//        ScrollView(showsIndicators: false) {
+//        VisibilityTrackingScrollView(action: handleVisibilityChanged) {
+        ScrollView(showsIndicators: false) {
             VStack(spacing: 0) {
 //                Color.clear
 //                    .trackVisibility(id: "graniteScrollView.reached.top")
 
                 content()
                 
-                bgColor
-                    .trackVisibility(id: "graniteScrollView.reached.bottom")
+//                bgColor
+//                    .trackVisibility(id: "graniteScrollView.reached.bottom")
             }
         }
     }

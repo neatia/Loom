@@ -14,12 +14,13 @@ import GraniteUI
 import LinkPresentation
 import UniformTypeIdentifiers
 
-protocol Pageable: Equatable, Identifiable, Hashable {
+public protocol Pageable: Equatable, Identifiable, Hashable {
     var id: String { get }
     var date: Date { get }
     var blocked: Bool { get }
     var person: Person { get }
-    var thumbUrl: URL? { get }
+    var thumbURL: URL? { get }
+    var postURL: URL? { get }
 }
 
 extension Pageable {
@@ -27,7 +28,11 @@ extension Pageable {
         false
     }
     
-    var thumbUrl: URL? {
+    public var thumbURL: URL? {
+        nil
+    }
+    
+    public var postURL: URL? {
         nil
     }
 }
@@ -37,10 +42,12 @@ struct PageableMetadata: Hashable {
     var imageThumb: GraniteImage?
 }
 
-class Pager<Model: Pageable>: ObservableObject {
+public class Pager<Model: Pageable>: ObservableObject {
     
     let insertionQueue: OperationQueue = .init()
     
+    //data source
+    var lastItemIds: [String] = []
     var itemIDs: [String]
     var itemMap: [String: Model] = [:]
     var blockedItemMap: [String: Bool] = [:]
@@ -54,18 +61,46 @@ class Pager<Model: Pageable>: ObservableObject {
             }
         }
     }
+    var lastItems: [Model] {
+        return lastItemIds.compactMap {
+            if showBlocked == false,
+               blockedItemMap[$0] == true {
+                return nil
+            } else {
+                return itemMap[$0]
+            }
+        }
+    }
     
     var itemMetadatas: [String: PageableMetadata] = [:]
     
     //main data source
-    @Published var currentItems: [Model] = []
+    #if os(macOS)
+    var currentItems: [Model] = []
     
+    var currentLastItems: [Model] = [] {
+        didSet {
+            guard currentItems.isNotEmpty else { return }
+            shouldUpdate = true
+        }
+    }
+    #else
+    @Published var currentItems: [Model] = []
+    #endif
+    
+    //Primarily used for macOS
+    var shouldUpdate: Bool = false {
+        didSet {
+            guard shouldUpdate else { return }
+            self.objectWillChange.send()
+        }
+    }
+    
+    //states
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
     
-    @Published var isFetching: Bool = false
-    
-    var pageSize: Int = ConfigService.Preferences.pageLimit
+    var isFetching: Bool = false
     
     var isEmpty: Bool {
         currentItems.isEmpty
@@ -74,33 +109,45 @@ class Pager<Model: Pageable>: ObservableObject {
     private(set) var firstItem: Model? = nil
     private(set) var lastItem: Model? = nil
     
-    var onRefreshHandler: GraniteScrollView.CompletionHandler?
-    
+    //data
     var pageIndex: Int = 1
+    var pageSize: Int = ConfigService.Preferences.pageLimit
     
+    //tasks
     private var timerCancellable: Cancellable?
     private var task: Task<Void, Error>? = nil
     private var rlProcessorTask: Task<Void, Error>? = nil
     
     //handlers
+    var onRefreshHandler: GraniteScrollView.CompletionHandler?
     private var handler: ((Int?) async -> [Model])?//fetch
     private var progressHandler: ((CGFloat) -> Void)?
     private var currentItemsHandler: (([Model]) -> Void)?
     private var resetHandler: (() -> Void)?
     
+    //preferences
     var enableAuxiliaryLoaders: Bool = false
     
     var emptyText: LocalizedStringKey
     
     var showBlocked: Bool
     
-    init(emptyText: LocalizedStringKey, showBlocked: Bool = false) {
+    var isStatic: Bool
+    
+    init(emptyText: LocalizedStringKey,
+         showBlocked: Bool = false,
+         isStatic: Bool = false) {
         self.emptyText = emptyText
         itemIDs = []
         self.handler = nil
         self.showBlocked = showBlocked
+        self.isStatic = isStatic
         insertionQueue.maxConcurrentOperationCount = 1
         insertionQueue.underlyingQueue = .main
+        
+        if isStatic {
+            hasMore = false
+        }
     }
     
     @discardableResult
@@ -175,7 +222,7 @@ class Pager<Model: Pageable>: ObservableObject {
             
             LoomLog("🟢 Fetch succeeded | \(models.count) items", level: .debug)
             
-            let thumbURLs: [(String, URL?)] = models.compactMap { ($0.id, $0.thumbUrl) }
+            let thumbURLs: [(String, URL?, Bool)] = models.compactMap { ($0.id, $0.thumbURL ?? $0.postURL, $0.thumbURL != nil) }
                 
             if thumbURLs.isEmpty {
                 insertModels(models, force: force)
@@ -199,12 +246,21 @@ class Pager<Model: Pageable>: ObservableObject {
                  */
                 self?.rlProcessorTask = Task(priority: .userInitiated) { [weak self] in
                     var completed: CGFloat = 0.0
-                    for (id, url) in thumbURLs {
+                    for (id, url, isThumb) in thumbURLs {
                         guard let url else { continue }
+                        
                         let time = CFAbsoluteTimeGetCurrent()
-                        this.itemMetadatas[id] = await this.getLPMetadata(url: url)
+                        
+                        if isThumb,
+                           let data = try? Data(contentsOf: url),
+                           let image = GraniteImage(data: data) {
+                            this.itemMetadatas[id] = .init(linkMeta: nil, imageThumb: image)
+                        } else {
+                            this.itemMetadatas[id] = await this.getLPMetadata(url: url)
+                        }
+                        
                         if this.itemMetadatas[id] != nil {
-                            LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time)", level: .info)
+                            LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time) - isThumb: \(isThumb)", level: .info)
                         }
                         
                         completed += 1
@@ -261,6 +317,10 @@ class Pager<Model: Pageable>: ObservableObject {
                     }
                     self?.itemIDs.append(contentsOf: items.map { $0.id })
                 }
+                
+                #if os(macOS)
+                self?.lastItemIds = models.map { $0.id }
+                #endif
                 
                 self?.update()
                 //self?.clean()
@@ -393,18 +453,28 @@ extension Pager{
     }
     
     func update() {
+        #if os(macOS)
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.currentItems = self.items
+            self.currentLastItems = self.lastItems
+            self.currentItemsHandler?(self.currentItems)
+            self.clean()
+        }
+        #else
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             self.currentItems = self.items
             self.currentItemsHandler?(self.currentItems)
             self.clean()
         }
+        #endif
     }
     
     func clear() {
         self.clean()
         self.pageIndex = 1
-        self.hasMore = true
+        self.hasMore = isStatic == false
         self.lastItem = nil
         self.itemIDs = []
         self.itemMap = [:]

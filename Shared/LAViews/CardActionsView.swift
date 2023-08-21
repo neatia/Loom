@@ -79,13 +79,13 @@ struct CardActionsView: View {
         } label: {
             Image(systemName: "ellipsis")
                 .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
-                .frame(width: 24, height: 24)
+                .frame(width: 24, height: 16)
                 .contentShape(Rectangle())
                 .foregroundColor(.foreground)
         }
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
-        .frame(width: 24, height: 24)
+        .frame(width: 24, height: 16)
         //.scaleEffect(x: -1, y: 1)
         .addHaptic()
     }

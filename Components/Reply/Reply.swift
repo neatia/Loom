@@ -6,8 +6,7 @@ struct Reply: GraniteComponent {
     @Relay var content: ContentService
     
     @GraniteAction<(Comment, CommentView)> var updatePost
-    @GraniteAction<Comment> var updateComment
-    @GraniteAction<CommentView> var updateCommentView
+    @GraniteAction<CommentView> var updateComment
     
     var listeners: Void {
         content
@@ -30,7 +29,7 @@ struct Reply: GraniteComponent {
                 } else if let response = value as? ContentService.Interact.Meta {
                     switch response.kind {
                     case .editCommentSubmit(let model, _):
-                        updateCommentView.perform(model)
+                        updateComment.perform(model)
                     default:
                         break
                     }

@@ -16,12 +16,32 @@ enum ViewingContext: Equatable {
     case bookmarkExpanded(String)
     case search
     case profile
+    case screenshot
 }
 
 extension ViewingContext {
     var isBookmark: Bool {
         switch self {
         case .bookmark, .bookmarkExpanded:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isBookmarkExpanded: Bool {
+        switch self {
+        case .bookmarkExpanded:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    //TODO: think of a better name?
+    var isBookmarkComponent: Bool {
+        switch self {
+        case .bookmark:
             return true
         default:
             return false

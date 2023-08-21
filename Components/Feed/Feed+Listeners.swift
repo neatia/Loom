@@ -51,7 +51,7 @@ extension Feed {
                             ReportView(kind: .comment(model))
                         }
                     case .editPost(let model):
-                        modal.presentSheet {
+                        modal.presentSheet(detents: [.large()]) {
                             Write(postView: model)
                                 .attach({ updatedModel in
                                     DispatchQueue.main.async {

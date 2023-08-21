@@ -19,6 +19,7 @@ class LazyScrollViewCache<Content: View> {
     
     var viewIds: [String] = []
     var viewCache: [String : Content] = [:]
+    var viewCacheSize: [String : CGSize] = [:]
     let limit: Int = 120
     let flushSize: Int = 12 //page size?
     var isFlushing: Bool = false
@@ -29,10 +30,11 @@ class LazyScrollViewCache<Content: View> {
         operationQueue.addOperation { [weak self] in
             guard let self else { return }
             if self.viewIds.count >= self.limit {
-                var keys: [String] = Array(self.viewIds.prefix(self.flushSize))
+                let keys: [String] = Array(self.viewIds.prefix(self.flushSize))
                 self.viewIds.removeFirst(self.flushSize)
                 for key in keys {
                     self.viewCache[key] = nil
+                    self.viewCacheSize[key] = nil
                 }
                 self.isFlushing = false
                 print("[LazyScrollViewCache] flushed: \(self.flushSize)")

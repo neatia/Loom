@@ -80,14 +80,14 @@ extension Feed {
             if pager.fetchMoreTimedOut || (pager.isEmpty && pager.isFetching == false) {
                 Button {
                     GraniteHaptic.light.invoke()
-                    pager.fetch(force: true)
+                    pager.reset()
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                         .font(.headline.bold())
                         .offset(y: (hasCommunityBanner == false) ? (Device.isExpandedLayout ? -3 : -1) : 0)
                 }
                 .buttonStyle(PlainButtonStyle())
-                .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                 .padding(.vertical, hasCommunityBanner ? 4 : 0)
                 .backgroundIf(hasCommunityBanner) {
                     Color.background.opacity(0.75)
@@ -107,7 +107,7 @@ extension Feed {
                         .offset(x: .layer1)
                 } else {
                     ProgressView()
-                        .padding(.horizontal, hasCommunityBanner ? 4 : 0)
+                        .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
                         .backgroundIf(hasCommunityBanner) {
                             Color.background.opacity(0.75)

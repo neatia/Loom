@@ -56,11 +56,6 @@ struct LoomCreateView: View {
                             .foregroundColor(Color.tertiaryBackground)
                     )
                     .padding(.bottom, invalidName ? .layer2 : .layer4)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            StandardToolbarView()
-                        }
-                    }
                 
                 //TODO: localize
                 if invalidName {

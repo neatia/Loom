@@ -6,45 +6,40 @@ import GraniteUI
 import MarkdownView
 
 struct CommentCardView: View {
-    @GraniteAction<Community> var viewCommunity
+    @Environment(\.contentContext) var context
     @Environment(\.graniteEvent) var interact
+    @GraniteAction<Community> var viewCommunity
     
-    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
+    @GraniteAction<CommentView?> var share
     @GraniteAction<CommentView> var showDrawer
-    @GraniteAction<(CommentView, ((Comment) -> Void))> var reply
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
+    @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     
     @Relay var config: ConfigService
     @Relay(.silence) var content: ContentService
     
-    @State var model: CommentView
+    @State var model: CommentView?
     @State var postView: PostView? = nil
-    
-    //TODO: env. props
-    var shouldRouteCommunity: Bool = true
-    var shouldLinkToPost: Bool = true
-    var parentModel: CommentView? = nil
-    var isInline: Bool = false
-    
-    let style: FeedStyle = .style2
-    var viewingContext: ViewingContext = .base
     
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
-    var censorBot: Bool {
-        model.creator.bot_account && config.state.showBotAccounts == false
-    }
+    //TODO: env. props?
+    var parentModel: CommentView? = nil
+    var shouldRouteCommunity: Bool = true
+    var shouldLinkToPost: Bool = true
+    var isInline: Bool = false
     
     var isBookmark: Bool {
-        viewingContext.isBookmark
+        context.viewingContext.isBookmark
     }
     
     var isPreview: Bool {
-        viewingContext == .search
+        context.viewingContext == .search
     }
     
     var showAvatar: Bool {
-        switch viewingContext {
+        switch context.viewingContext {
         case .bookmarkExpanded, .profile:
             return false
         default:
@@ -55,33 +50,34 @@ struct CommentCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            switch style {
+            switch context.feedStyle {
             case .style1:
-                HeaderView(model,
-                           shouldRouteCommunity: shouldRouteCommunity,
-                           shouldRoutePost: shouldLinkToPost,
-                           badge: shouldLinkToPost ? (postView == nil ? .noBadge : .post(postView!)) : nil)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                    .padding(.trailing, .layer3)
+                HeaderView(shouldRouteCommunity: shouldRouteCommunity,
+                           shouldRoutePost: shouldLinkToPost)
+                    .attach({ community in
+                        viewCommunity.perform(community)
+                    }, at: \.viewCommunity)
+                    .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
+                
                 contentView
                     .padding(.leading, .layer3 + AvatarView.containerPadding)
-                    .padding(.trailing, .layer3)
+                    .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
             case .style2:
                 HStack(spacing: .layer3) {
-                    HeaderCardAvatarView(model, postView: postView, showAvatar: showAvatar)
+                    HeaderCardAvatarView(showAvatar: showAvatar)
                     VStack(alignment: .leading, spacing: 2) {
-                        HeaderCardView(model,
-                                       shouldRoutePost: self.shouldLinkToPost)
+                        HeaderCardView(shouldRoutePost: self.shouldLinkToPost)
                             .attach({ community in
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                switch viewingContext {
-                                case .base:
+                                guard let model else { return }
+                                switch context.viewingContext {
+                                case .base,
+                                     .bookmark,
+                                     .bookmarkExpanded:
                                     edit.perform((model, { updatedModel in
                                         DispatchQueue.main.async {
                                             self.model = updatedModel
@@ -91,18 +87,21 @@ struct CommentCardView: View {
                                     content.center.interact.send(ContentService.Interact.Meta(kind: .editComment(model, postView)))
                                 }
                             }, at: \.edit)
+                            .attach({
+                                share.perform(context.commentModel)
+                            }, at: \.share)
                             .graniteEvent(interact)
                         contentView
                     }
                 }
-                .padding(.trailing, .layer3)
+                .padding(.trailing, padding.trailing)
             }
             
             if expandReplies {
                 Divider()
                     .padding(.top, .layer5)
                 
-                ThreadView(model: model, postView: postView, isModal: false, isInline: true)
+                ThreadView(isModal: false, isInline: true)
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
@@ -115,16 +114,19 @@ struct CommentCardView: View {
                     .id(refreshThread)
             }
         }
-        .padding(.top, .layer5)
-        .padding(.bottom, expandReplies ? 0 : .layer5)
-        .padding(.leading, .layer3)
+        .padding(.top, padding.top)
+        .padding(.bottom, padding.bottom)
+        .padding(.leading, padding.leading)
         .onSwipe(edge: .trailing,
                  icon: "arrowshape.turn.up.backward.fill",
                  iconColor: Brand.Colors.babyBlue,
                  backgroundColor: .alternateBackground,
-                 disabled: isPreview || isBookmark) {
+                 disabled: isPreview || context.isScreenshot) {
+            
+            guard let model else { return }
+            
             reply.perform((model, { model in
-                self.model = self.model.incrementReplyCount()
+                self.model = self.model?.incrementReplyCount()
                 if expandReplies == false {
                     expandReplies = true
                 } else {
@@ -135,6 +137,34 @@ struct CommentCardView: View {
         .transaction { tx in
             tx.animation = nil
         }
+        .task {
+            self.model = context.commentModel
+            self.postView = context.postModel
+        }
+    }
+    
+    var padding: EdgeInsets {
+        let top: CGFloat
+        let leading: CGFloat
+        let bottom: CGFloat
+        let trailing: CGFloat
+        
+        if context.isScreenshot {
+            top = .layer4
+            leading = .layer4
+            bottom = .layer4
+            trailing = .layer4
+        } else {
+            top = .layer5
+            leading = .layer4
+            bottom = expandReplies ? 0 : .layer5
+            trailing = .layer3
+        }
+         
+        return .init(top: top,
+                     leading: leading,
+                     bottom: bottom,
+                     trailing: trailing)
     }
 }
 
@@ -143,45 +173,43 @@ extension CommentCardView {
         VStack(alignment: .leading, spacing: .layer3) {
             #if os(macOS)
             contentBody
-                .censor(censorBot, kind: .bot)
-                .padding(.top, censorBot ? .layer2 : 0)
                 .onTapGesture {
-                    guard isPreview == false, model.replyCount > 0 else { return }
+                    guard isPreview == false, model?.replyCount ?? 0 > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()
                 }
             #else
             if isPreview {
                 contentBody
-                    .censor(censorBot, kind: .bot)
-                    .padding(.top, censorBot ? .layer2 : 0)
             } else {
                 contentBody
-                    .censor(censorBot, kind: .bot)
-                    .padding(.top, censorBot ? .layer2 : 0)
                     .contentShape(Rectangle())
                     .modifier(TapAndLongPressModifier(tapAction: {
-                    guard isPreview == false, model.replyCount > 0 else { return }
+                    guard let model,
+                          isPreview == false,
+                          model.replyCount > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()
                 }, longPressAction: {
-                    guard model.replyCount > 0 else { return }
+                    guard let model,
+                          model.replyCount > 0 else { return }
                     GraniteHaptic.light.invoke()
                     showDrawer.perform(model)
                 }))
             }
             #endif
-            FooterView(postView: postView,
-                       commentView: model,
-                       showScores: config.state.showScores,
-                       style: self.style)
+            FooterView(showScores: config.state.showScores)
                 .attach({ id in
-                    guard isPreview == false else { return }
+                    guard let model,
+                          isPreview == false else { return }
                     showDrawer.perform(model)
                 }, at: \.showComments)
+                .attach({
+                    share.perform(context.commentModel)
+                }, at: \.share)
         }
-        .padding(.leading, style == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-        .overlayIf(style == .style1) {
+        .padding(.leading, context.feedStyle == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
+        .overlayIf(context.feedStyle == .style1) {
             GeometryReader { proxy in
                 Rectangle()
                     .frame(width: 2,
@@ -190,21 +218,24 @@ extension CommentCardView {
                     .opacity(0.5)
             }
         }
-        .fixedSize(horizontal: false, vertical: true)
+//        .fixedSize(horizontal: false, vertical: true)
     }
     
     var contentBody: some View {
         Group {
             if isPreview {
                 ScrollView(showsIndicators: false) {
-                    MarkdownView(text: model.comment.content)
+                    MarkdownView(text: model?.comment.content ?? "")
+                        .fontGroup(CommentFontGroup())
                         .markdownViewRole(.editor)
                 }
                 .frame(height: 120)
-            } else {
-                
-                MarkdownView(text: model.comment.content)
+                .padding(.bottom, .layer3)
+            } else if let content = model?.comment.content {
+                MarkdownView(text: content)
+                    .fontGroup(CommentFontGroup())
                     .markdownViewRole(.editor)
+                    .padding(.bottom, .layer3)
             }
         }
     }

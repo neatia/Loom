@@ -14,43 +14,43 @@ import Nuke
 import NukeUI
 
 struct PostCardView: View {
+    @Environment(\.contentContext) var context
     @Environment(\.graniteEvent) var interact //account.center.interact
     @Environment(\.pagerMetadata) var contentMetadata
     
     @GraniteAction<PostView> var showContent
     @GraniteAction<PostView> var reply
     @GraniteAction<Community> var viewCommunity
+    @GraniteAction<(PostView?, PageableMetadata?)> var share
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
     
-    var model: PostView
-    var style: FeedStyle = .style1
-    var viewingContext: ViewingContext = .base
+    @State var routePostDisplay: Bool = false
     
-    var topPadding: CGFloat = .layer5
-    var bottomPadding: CGFloat = .layer5
+    var topPadding: CGFloat = .layer6
+    var bottomPadding: CGFloat = .layer6
     
     var linkPreviewType: LinkPreviewType = .large
     
     var censorNSFW: Bool {
-        model.post.nsfw && config.state.showNSFW == false
+        context.isNSFW && config.state.showNSFW == false
     }
     
     var censorBot: Bool {
-        model.creator.bot_account && config.state.showBotAccounts == false
+        context.isBot && config.state.showBotAccounts == false
     }
     
     var censorBlocked: Bool {
-        model.creator_blocked
+        context.isBlocked
     }
     
     var censorRemoved: Bool {
-        model.post.removed
+        context.isRemoved
     }
     
     var shouldCensor: Bool {
-        censorRemoved || censorBlocked || censorNSFW || censorBot
+        censorRemoved || censorBlocked || censorNSFW
     }
     
     var censorKind: CensorView.Kind {
@@ -67,30 +67,23 @@ struct PostCardView: View {
         }
     }
     
-    var viewingContextHost: String {
-        if viewingContext.isBookmark {
-            return viewingContext.bookmarkLocation.host ?? LemmyKit.host
-        } else {
-            return LemmyKit.host
-        }
-    }
-    
     //horizontal experience
     var isSelected: Bool {
         switch layout.state.feedContext {
         case .viewPost(let model):
-            return self.model.id == model.id
+            return context.postModel?.id == model.id
         default:
             return false
         }
     }
     
     var showAvatar: Bool {
-        isCompact == false || viewingContext == .profile
+        isCompact == false || context.viewingContext == .profile
     }
     
+    //Desktop/iPad
     var isCompact: Bool {
-        switch viewingContext {
+        switch context.viewingContext {
         case .bookmarkExpanded:
             return true
         default:
@@ -98,97 +91,105 @@ struct PostCardView: View {
         }
     }
     
+    //primarily in SearchAllView
     var isPreview: Bool {
-        viewingContext == .search
+        context.viewingContext == .search
     }
     
     var body: some View {
-        Group {
-            switch style {
+        VStack(spacing: 0) {
+            switch context.feedStyle {
             case .style1:
                 VStack(alignment: .leading, spacing: .layer3) {
-                    HeaderView(model, badge: .noBadge)
+                    HeaderView(badge: .noBadge)
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
                     content
-                        .padding(.leading, .layer3 + AvatarView.containerPadding)
                     
                 }
-                .padding(.vertical, isPreview ? 0 : .layer4)
-                .padding(.horizontal, .layer3)
+                .padding(.vertical, isPreview ? 0 : topPadding)
+                .padding(.horizontal, .layer4)
             case .style2:
                 HStack(spacing: .layer3) {
                     if isCompact == false {
-                        HeaderCardAvatarView(model, showAvatar: showAvatar)
+                        HeaderCardAvatarView(showAvatar: showAvatar)
                     }
                     VStack(alignment: .leading, spacing: 0) {
-                        HeaderCardView(model,
-                                       badge: .noBadge,
-                                       isCompact: isCompact)
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
-                        .attach({
-                            interact?.send(AccountService.Interact.Meta(intent: .editPost(self.model)))
-                        }, at: \.edit)
-                        .graniteEvent(interact)
+                        HeaderCardView(badge: .noBadge, isCompact: isCompact)
+                            .attach({ community in
+                                viewCommunity.perform(community)
+                            }, at: \.viewCommunity)
+                            .attach({
+                                guard let model = context.postModel else { return }
+                                interact?.send(AccountService.Interact.Meta(intent: .editPost(model)))
+                            }, at: \.edit)
+                            .attach({
+                                share.perform((context.postModel, contentMetadata))
+                            }, at: \.share)
+                            .graniteEvent(interact)
                         
                         content
                     }
                 }
-                .padding(.top, isPreview ? (isCompact ? .layer3 : 0) : topPadding)
-                .padding(.bottom, isPreview ? (isCompact ? .layer3 : 0) : bottomPadding)
-                .padding(.leading, .layer3)
-                .padding(.trailing, isCompact ? .layer3 : .layer4)
-                .backgroundIf(isSelected,
-                              overlay: Color.accentColor.opacity(0.5))
+                .padding(padding)
+                .overlayIf(isSelected,
+                           overlay: Color.alternateBackground.opacity(0.3))
             }
         }
+    }
+    
+    var padding: EdgeInsets {
+        let top: CGFloat
+        let leading: CGFloat
+        let bottom: CGFloat
+        let trailing: CGFloat
+        
+        if context.isScreenshot {
+            top = .layer4
+            leading = .layer4
+            bottom = .layer4
+            trailing = .layer4
+        } else {
+            top = isPreview ? (isCompact ? .layer3 : 0) : topPadding
+            leading = .layer4
+            bottom = isPreview ? (isCompact ? .layer3 : 0) : bottomPadding
+            trailing = isCompact ? .layer3 : .layer4
+        }
+         
+        return .init(top: top,
+                     leading: leading,
+                     bottom: bottom,
+                     trailing: trailing)
     }
 }
 
 extension PostCardView {
     var content: some View {
         Group {
-            switch style {
+            switch context.feedStyle {
             case .style1:
                 contentBody
                     .padding(.bottom, .layer3)
             case .style2:
                 contentBodyStacked
                     .censor(shouldCensor, kind: censorKind)
-                    .padding(.top, shouldCensor ? .layer2 : 0)
-                    .padding(.bottom, .layer3)
-            }
-
-            if isPreview && !isCompact {
-                Spacer()
+                    .padding(.bottom, shouldCensor ? .layer5 : 0)
             }
             
             switch censorKind {
             case .removed, .blocked:
                 EmptyView()
             default:
-                FooterView(postView: model,
-                           commentView: nil,
-                           showScores: config.state.showScores,
-                           style: self.style)
+                FooterView(showScores: config.state.showScores)
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
+                    .attach({
+                        share.perform((context.postModel, contentMetadata))
+                    }, at: \.share)
             }
         }
-        .padding(.leading, style == .style1 ? (CGFloat.layer4 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-//        .overlayIf(style == .style1) {
-//            GeometryReader { proxy in
-//                Rectangle()
-//                    .frame(width: 2,
-//                           height: proxy.size.height)
-//                    .cornerRadius(8)
-//                    .opacity(0.5)
-//            }
-//        }
         .fixedSize(horizontal: false, vertical: isPreview ? false : true)
     }
     
@@ -206,8 +207,7 @@ extension PostCardView {
             
             Spacer()
             
-            if let thumbUrl = model.post.thumbnail_url,
-               let url = URL(string: thumbUrl) {
+            if let url = context.postModel?.thumbURL {
                 
                 ZStack {
                     Rectangle()
@@ -227,10 +227,12 @@ extension PostCardView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
+                    guard let model = context.postModel else { return }
                     showContent.perform(model)
                 }
             }
         }
+        .padding(.bottom, .layer3)
     }
     
     var contentBodyStacked: some View {
@@ -239,27 +241,22 @@ extension PostCardView {
                 ScrollView {
                     contentMetaBody
                 }
-                .padding(.bottom, .layer2)
             } else {
                 contentMetaBody
-                    .padding(.bottom, .layer2)
+                    .padding(.top, shouldCensor ? .layer3 : 0)
             }
             
-            //TODO: reusable
-            if let contentMetadata {
-                ContentMetadataView(metadata: contentMetadata, urlToOpen: model.postURL)
+            if contentMetadata != nil || context.hasURL {
+                ContentMetadataView(metadata: contentMetadata,
+                                    urlToOpen: context.postModel?.postURL,
+                                    shouldLoad: context.hasURL)
                     .attach({
+                        guard let model = context.postModel else { return }
                         showContent.perform(model)
                     }, at: \.showContent)
-                    .frame(maxWidth: Device.isMacOS ? 350 : nil)
-                    .padding(.bottom, .layer2)
-            } else if case .bookmark(_) = viewingContext {
-                ContentMetadataView(metadata: nil, urlToOpen: model.postURL, shouldLoad: true)
-                    .attach({
-                        showContent.perform(model)
-                    }, at: \.showContent)
-                    .frame(maxWidth: Device.isMacOS ? 350 : nil)
-                    .padding(.bottom, .layer2)
+                    .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
+                    .padding(.top, .layer2)
+                    .padding(.bottom, .layer6)
             }
         }
     }
@@ -267,40 +264,50 @@ extension PostCardView {
     var contentMetaBody: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(model.post.name)
+                Text(context.postModel?.post.name ?? "")
                     .font(.body)
-                    .padding(.bottom, model.post.body != nil ? .layer1 : 0)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.foreground.opacity(0.9))
                 Spacer()
             }
+            .padding(.bottom, !context.hasBody && !context.hasURL ? .layer5 : 0)
             
-            if model.postURL == nil,
-               let body = model.post.body {
+            /*
+             contentMetadata can be nil if showing bookmarks
+             so checking posturl is better in this case
+            */
+            if context.postModel?.postURL == nil,
+               let body = context.postModel?.post.body {
                 let readMoreText: LocalizedStringKey = "MISC_READ_MORE"
                 HStack(spacing: .layer2) {
                     Text(String(body.previewBody) + "\(body.count < 120 ? " " : "... ")")
                         .font(Device.isExpandedLayout ? .callout : .footnote)
-                        .foregroundColor(.foreground) + Text(body.count < 120 ? "" : readMoreText)
+                        .foregroundColor(.foreground.opacity(0.9)) + Text(body.count < 120 ? "" : readMoreText)
                         .font(Device.isExpandedLayout ? .callout.italic() : .footnote.italic())
                         .foregroundColor(.secondaryForeground.opacity(0.9))
                     Spacer()
                 }
                 .multilineTextAlignment(.leading)
-                .padding(.top, 2)
+                .padding(.top, .layer2)
+                .padding(.bottom, .layer5)
             }
         }
         .frame(maxWidth: .infinity)
-        .contentShape(Rectangle())
-        .onTapIf(layout.state.style == .expanded) {
+        .onTapGesture {
+            
+            guard layout.state.style == .expanded,
+                  let model = context.postModel else {
+                GraniteHaptic.light.invoke()
+                routePostDisplay = true
+                return
+            }
+            
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .routeIf(layout.state.style == .compact || layout.state.style == .unknown,
-                 style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-            PostDisplayView(model: model,
-                            threadLocation: viewingContext.isBookmark ? viewingContext.bookmarkLocation : .base,
-                            viewingContext: viewingContext,
-                            selectedHost: viewingContextHost)
+        .routeTarget($routePostDisplay,
+                     window: .resizable(600, 500)) {
+           PostDisplayView()
+               .contentContext(context)
         }
     }
     

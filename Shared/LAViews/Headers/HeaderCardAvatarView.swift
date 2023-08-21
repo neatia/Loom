@@ -12,34 +12,27 @@ import GraniteUI
 import LemmyKit
 
 struct HeaderCardAvatarView: View {
+    @Environment(\.contentContext) var context
     
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     
-    let enableRoute: Bool
+    var postView: PostView? {
+        context.postModel
+    }
     
-    let headline: String
-    let subheadline: String?
-    let subtitle: String?
-    let avatarURL: URL?
-    let time: Date?
-    
-    let id: Int
-    let community: Community?
+    var commentView: CommentView? {
+        context.commentModel
+    }
     
     typealias Crumb = (Int, Person)
     let crumbs: [Crumb]
-    
-    let person: Person?
     
     let showAvatar: Bool
     
     let size: AvatarView.Size
     
     let showThreadLine: Bool
-    
-    let postView: PostView?
-    let commentView: CommentView?
     
     var isAdmin: Bool {
         postView?.creator.admin == true && commentView == nil
@@ -53,6 +46,10 @@ struct HeaderCardAvatarView: View {
         return commentView?.creator.equals(poster) == true
     }
     
+    var isBot: Bool {
+        context.person?.bot_account == true
+    }
+    
     var avatarBorderColor: Color {
         if isAdmin {
             return .red.opacity(0.8)
@@ -63,85 +60,49 @@ struct HeaderCardAvatarView: View {
         }
     }
     
-    init(_ model: PostView,
-         crumbs: [PostView] = [],
-         showAvatar: Bool = true,
-         size: AvatarView.Size = .small,
-         showThreadLine: Bool = true) {
-        self.headline = model.creator.name
-        self.subheadline = model.post.local ? nil : model.creator.domain
-        self.subtitle = nil
-        
-        self.avatarURL = model.avatarURL
-        self.id = model.post.id
-        self.community = model.community
-        self.crumbs = []
-        
-        self.time = model.counts.published.serverTimeAsDate
-        
-        self.enableRoute = true
-        
-        self.person = model.creator
-        
-        self.showAvatar = showAvatar
-        
-        self.size = size
-        
-        self.showThreadLine = showThreadLine
-        
-        self.postView = model
-        self.commentView = nil
-        
-        Colors.update(model.community.name)
+    var isProminent: Bool {
+        isAdmin || isOP
     }
     
-    init(_ model: CommentView,
-         postView: PostView? = nil,
-         crumbs: [CommentView] = [],
+    init(crumbs: [CommentView] = [],
          showAvatar: Bool = true,
          size: AvatarView.Size = .small,
          showThreadLine: Bool = true) {
-        self.headline = model.creator.name
-        self.subheadline = model.comment.local ? nil : model.creator.domain
-        self.subtitle = nil
-        
-        self.avatarURL = model.avatarURL
-        self.id = model.comment.id
-        self.community = model.community
         self.crumbs = crumbs.map { ($0.comment.id, $0.creator) }
-        
-        self.time = model.counts.published.serverTimeAsDate
-        
-        self.enableRoute = false
-        
-        self.person = model.creator
-        
         self.showAvatar = showAvatar
-        
         self.size = size
-        
         self.showThreadLine = showThreadLine
-        
-        self.postView = postView
-        self.commentView = model
     }
     
     var body: some View {
         VStack(spacing: .layer3) {
             if showAvatar {
-                AvatarView(person, size: size)
+                AvatarView(context.person?.lemmy,
+                           size: size)
                     .overlay(Circle()
                         .stroke(avatarBorderColor, lineWidth: 1.0))
             }
             
             GeometryReader { proxy in
-                HStack {
+                HStack(spacing: 0) {
                     Spacer()
-                    Rectangle()
-                        .frame(width: 1.5,
-                               height: proxy.size.height)
-                        .cornerRadius(8)
-                        .foregroundColor(.foreground.opacity(0.3))
+                    
+                    VStack(spacing: 0) {
+                        Rectangle()
+                            .frame(width: 1.5)
+                            .cornerRadius(8)
+                            .foregroundColor((isProminent ? avatarBorderColor.opacity(0.7) : .foreground.opacity(0.3)))
+                        
+                        if isBot {
+                            Text("🤖")
+                                .font(.title2)
+                                .padding(.top, .layer3)
+                        } else {
+                            Spacer().frame(height: 2)
+                        }
+                    }
+                    .frame(height: proxy.size.height)
+                    
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)

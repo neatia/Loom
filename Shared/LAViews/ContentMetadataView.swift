@@ -27,7 +27,7 @@ struct ContentMetadataView: View {
         self.meta = metadata?.linkMeta
         self._image = .init(initialValue: metadata?.imageThumb)
         self.urlToOpen = urlToOpen
-        self.shouldLoad = shouldLoad
+        self.shouldLoad = shouldLoad && metadata == nil
     }
     
     var body: some View {
@@ -122,6 +122,7 @@ struct ContentMetadataView: View {
                 return
             }
             
+            //TODO: crash, when metadata has no thumb, but url is found
             await loadImage()
         }
         .universalWebCover(isPresented: $isPresented, url: urlToOpen ?? meta?.url)
@@ -172,31 +173,31 @@ extension ContentMetadataView {
             return
         }
         
-        var image: GraniteImage?
         if imageProvider.hasItemConformingToTypeIdentifier(type) {
             guard let item = try? await imageProvider.loadItem(forTypeIdentifier: type) else {
-                image = nil
+                self.image = nil
                 return
             }
             
             if item is GraniteImage {
-                image = item as? GraniteImage
+                self.image = item as? GraniteImage
+                return
             }
             
             if item is URL {
                 guard let url = item as? URL,
                       let data = try? Data(contentsOf: url) else { return }
                 
-                image = GraniteImage(data: data)
+                self.image = GraniteImage(data: data)
+                return
             }
             
             if item is Data {
                 guard let data = item as? Data else { return }
                 
-                image = GraniteImage(data: data)
+                self.image = GraniteImage(data: data)
+                return
             }
         }
-        
-        self.image = image
     }
 }

@@ -21,23 +21,15 @@ public struct TapAndLongPressModifier: ViewModifier {
     
     public func body(content: Content) -> some View {
         content
-            .scaleEffect(isLongPressing ? 0.97 : 1.0)
+            //.scaleEffect(isLongPressing ? 0.97 : 1.0)
             .onTapGesture {
                 tapAction()
             }
-//            .simultaneousGesture(
-//                LongPressGesture(minimumDuration: 1.0)
-//                    .onChanged { isPressing in
-//                        isLongPressing = isPressing
-//                    }
-//                    .onEnded { item in
-//                        
-//                    }
-//            )
             .onLongPressGesture(minimumDuration: 1.0, pressing: { (isPressing) in
-                withAnimation {
-                    isLongPressing = isPressing
-                }
+//                withAnimation {
+//                    isLongPressing = isPressing
+//                }
+                isLongPressing = isPressing
             }, perform: {
                 longPressAction?()
             })

@@ -45,27 +45,29 @@ extension Feed {
                 
                 Spacer()
                 
-                Button {
-                    GraniteHaptic.light.invoke()
-                    modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
-                        Search(state.community)
-                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                if let community = state.community {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
+                            Search(community, isModal: true)
+                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                        }
+                    } label: {
+                        Image(systemName: "magnifyingglass")
+                            .font(.title2)
+                            .foregroundColor(.foreground)
+                            .padding(.horizontal, hasCommunityBanner ? 6 : 0)
+                            .padding(.vertical, hasCommunityBanner ? 6 : 0)
+                            .contentShape(Rectangle())
                     }
-                } label: {
-                    Image(systemName: "magnifyingglass")
-                        .font(.title2)
-                        .foregroundColor(.foreground)
-                        .padding(.horizontal, hasCommunityBanner ? 6 : 0)
-                        .padding(.vertical, hasCommunityBanner ? 6 : 0)
-                        .contentShape(Rectangle())
+                    .backgroundIf(hasCommunityBanner) {
+                        Color.background.opacity(0.75)
+                            .cornerRadius(4)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    //NITPICK: visual alignment
+                    .offset(y: -2)
                 }
-                .backgroundIf(hasCommunityBanner) {
-                    Color.background.opacity(0.75)
-                        .cornerRadius(4)
-                }
-                .buttonStyle(PlainButtonStyle())
-                //NITPICK: visual alignment
-                .offset(y: -2)
             }
         }
         .foregroundColor(.foreground)
