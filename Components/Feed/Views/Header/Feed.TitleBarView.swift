@@ -49,7 +49,7 @@ extension Feed {
                     Button {
                         GraniteHaptic.light.invoke()
                         modal.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
-                            Search(community)
+                            Search(community, isModal: true)
                                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                         }
                     } label: {

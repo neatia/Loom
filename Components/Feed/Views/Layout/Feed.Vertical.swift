@@ -59,13 +59,18 @@ extension Feed {
                     modal.present(modalView, target: .sheet)
                 }, at: \.present)
                 .attach( { meta in
-                    modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
-                        
-                        GraniteAlertAction(title: "MISC_NO")
-                        GraniteAlertAction(title: "MISC_YES") {
-                            config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
-                        }
-                    })
+//                    modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
+//
+//                        GraniteAlertAction(title: "MISC_NO")
+//                        GraniteAlertAction(title: "MISC_YES") {
+//                            config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
+//                        }
+//                    })
+                    config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
+                    
+                    DispatchQueue.main.async {
+                        modal.dismissAll()
+                    }
                 }, at: \.switchAccount)
                 .attach({
                     modal.presentSheet(detents: [.large()]) {
@@ -78,6 +83,12 @@ extension Feed {
                             }, at: \.add)
                     }
                 }, at: \.addProfile)
+                .attach({
+                    GraniteHaptic.light.invoke()
+                    modal.presentSheet {
+                        LoginView()
+                    }
+                }, at: \.login)
         }
     }
 }

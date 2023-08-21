@@ -4,11 +4,12 @@ import SwiftUI
 
 extension Loom: View {
     public var view: some View {
-        ZStack(alignment: .bottom) {
+        HStack(spacing: 0) {
             VStack(spacing: 0) {
                 HStack(alignment: .bottom, spacing: .layer4) {
                     Button {
-                        guard state.viewOption != .looms else { return }
+                        guard Device.isExpandedLayout == false,
+                              state.viewOption != .looms else { return }
                         GraniteHaptic.light.invoke()
                         _state.viewOption.wrappedValue = .looms
                     } label: {
@@ -22,19 +23,21 @@ extension Loom: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                     
-                    Button {
-                        guard state.viewOption != .communities else { return }
-                        GraniteHaptic.light.invoke()
-                        _state.viewOption.wrappedValue = .communities
-                    } label: {
-                        VStack {
-                            Spacer()
-                            Text("TITLE_COMMUNITIES")
-                                .font(state.viewOption == .communities ? .title.bold() : .title2.bold())
-                                .opacity(state.viewOption == .communities ? 1.0 : 0.6)
+                    if Device.isExpandedLayout == false {
+                        Button {
+                            guard state.viewOption != .communities else { return }
+                            GraniteHaptic.light.invoke()
+                            _state.viewOption.wrappedValue = .communities
+                        } label: {
+                            VStack {
+                                Spacer()
+                                Text("TITLE_COMMUNITIES")
+                                    .font(state.viewOption == .communities ? .title.bold() : .title2.bold())
+                                    .opacity(state.viewOption == .communities ? 1.0 : 0.6)
+                            }
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                     
                     Spacer()
                     
@@ -112,6 +115,11 @@ extension Loom: View {
                     CommunityPickerView(modal: false, verticalPadding: 0)
                 }
             }
+            
+            if Device.isExpandedLayout {
+                Divider()
+                communitiesView
+            }
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
         .addGraniteSheet(modal.sheetManager, background: Color.clear)
@@ -127,5 +135,29 @@ extension Loom: View {
             }
         }
         .background(Color.background)
+    }
+}
+
+extension Loom {
+    var communitiesView: some View {
+        VStack(spacing: 0) {
+            HStack(alignment: .bottom, spacing: .layer4) {
+                VStack {
+                    Spacer()
+                    Text("TITLE_COMMUNITIES")
+                        .font(.title.bold())
+                }
+                
+                Spacer()
+            }
+            .frame(height: 36)
+            .padding(.bottom, .layer4)
+            .padding(.leading, .layer4)
+            .padding(.trailing, .layer4)
+            
+            Divider()
+            
+            CommunityPickerView(modal: false, verticalPadding: 0)
+        }
     }
 }

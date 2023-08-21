@@ -25,6 +25,15 @@ extension View {
     func scrollOnOverflow() -> some View {
         modifier(OverflowContentViewModifier())
     }
+    func scrollOnOverflowIf(_ condition: Bool) -> some View {
+        Group {
+            if condition {
+                self.modifier(OverflowContentViewModifier())
+            } else {
+                self
+            }
+        }
+    }
 }
 
 struct OverflowContentViewModifier: ViewModifier {

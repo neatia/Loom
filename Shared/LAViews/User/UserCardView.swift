@@ -160,6 +160,7 @@ struct UserCardView: View {
                         
                         Spacer()
                     }
+                    .scrollOnOverflowIf(style == .style1)
                 }
                 
                 Spacer()

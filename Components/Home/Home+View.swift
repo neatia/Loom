@@ -86,7 +86,7 @@ extension Home: View {
             }
             
             GraniteTab {
-                Search(nil)
+                Search()
             } icon: {
                 GraniteTabIcon(name: "magnifyingglass", isBoldFill: true)
             }
@@ -97,12 +97,6 @@ extension Home: View {
                 } icon: {
                     GraniteTabIcon(name: "applescript")
                 }
-            }
-            
-            GraniteTab {
-                Globe()
-            } icon: {
-                GraniteTabIcon(name: "globe.americas", larger: true)
             }
 
             if Device.isExpandedLayout == false {
@@ -117,6 +111,12 @@ extension Home: View {
                 } icon: {
                     GraniteTabIcon(name: "applescript")
                 }
+            }
+            
+            GraniteTab {
+                Globe()
+            } icon: {
+                GraniteTabIcon(name: "globe.americas", larger: true)
             }
             
             if Device.isExpandedLayout {
@@ -158,7 +158,6 @@ struct GraniteTabIcon: View {
             .frame(width: 20,
                    height: 20,
                    alignment: .center)
-            .padding(.top, larger ? 2 : 0)
             .contentShape(Rectangle())
     }
 }

@@ -22,6 +22,7 @@ struct FeedHamburgerView: View {
     @GraniteAction<AnyGraniteModal> var present
     @GraniteAction<AccountMeta> var switchAccount
     @GraniteAction<Void> var addProfile
+    @GraniteAction<Void> var login
     
     @Relay var account: AccountService
     
@@ -73,19 +74,21 @@ struct FeedHamburgerView: View {
                             .perform(GraniteAlertView(mode: .sheet) {
                             
                             GraniteAlertAction {
-                                VStack(spacing: .layer2) {
-                                    ForEach(account.state.profiles) { profile in
-                                        UserCardView(model: profile.person.asView(),
-                                                     meta: profile,
-                                                     fullWidth: true, showCounts: true, style: .style2)
-                                        .onTapGesture {
-                                            GraniteHaptic.light.invoke()
-                                            switchAccount.perform(profile)
+                                ScrollView(showsIndicators: false) {
+                                    VStack(spacing: .layer2) {
+                                        ForEach(account.state.profiles) { profile in
+                                            UserCardView(model: profile.person.asView(),
+                                                         meta: profile,
+                                                         fullWidth: true, showCounts: true, style: .style2)
+                                            .onTapGesture {
+                                                GraniteHaptic.light.invoke()
+                                                switchAccount.perform(profile)
+                                            }
+                                            .padding(.horizontal, .layer4)
+                                            
                                         }
-                                        .padding(.horizontal, .layer4)
-                                        
                                     }
-                                }
+                                }.frame(maxHeight: 300)
                             }
                                 
                             //TODO: Localize
@@ -106,7 +109,7 @@ struct FeedHamburgerView: View {
                     if account.isLoggedIn {
                         Button(role: .destructive) {
                             GraniteHaptic.light.invoke()
-                            
+                            account.center.logout.send()
                         } label: {
                             Text("MISC_LOGOUT")
                         }
@@ -115,7 +118,7 @@ struct FeedHamburgerView: View {
                         
                         Button {
                             GraniteHaptic.light.invoke()
-                            
+                            login.perform()
                         } label: {
                             Text("AUTH_LOGIN")
                         }
