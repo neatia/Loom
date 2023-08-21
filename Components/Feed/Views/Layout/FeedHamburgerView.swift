@@ -21,6 +21,7 @@ struct FeedHamburgerView: View {
     
     @GraniteAction<AnyGraniteModal> var present
     @GraniteAction<AccountMeta> var switchAccount
+    @GraniteAction<Void> var addProfile
     
     @Relay var account: AccountService
     
@@ -86,8 +87,13 @@ struct FeedHamburgerView: View {
                                     }
                                 }
                             }
+                                
+                            //TODO: Localize
+                            GraniteAlertAction(title: "Add Account") {
+                                addProfile.perform()
+                            }
                             
-                            GraniteAlertAction(title: "Done")
+                            GraniteAlertAction(title: "MISC_CANCEL")
                         })
                     } label: {
                         //TODO: localize

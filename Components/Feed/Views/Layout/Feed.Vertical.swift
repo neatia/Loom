@@ -67,6 +67,17 @@ extension Feed {
                         }
                     })
                 }, at: \.switchAccount)
+                .attach({
+                    modal.presentSheet(detents: [.large()]) {
+                        LoginView(addToProfiles: true)
+                            .attach({
+                                modal.dismissSheet()
+                            }, at: \.cancel)
+                            .attach({
+                                modal.dismissSheet()
+                            }, at: \.add)
+                    }
+                }, at: \.addProfile)
         }
     }
 }

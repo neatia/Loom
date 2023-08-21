@@ -86,15 +86,23 @@ extension Home: View {
             }
             
             GraniteTab {
+                Search(nil)
+            } icon: {
+                GraniteTabIcon(name: "magnifyingglass", isBoldFill: true)
+            }
+            
+            if Device.isExpandedLayout == false {
+                GraniteTab {
+                    Loom()
+                } icon: {
+                    GraniteTabIcon(name: "applescript")
+                }
+            }
+            
+            GraniteTab {
                 Globe()
             } icon: {
                 GraniteTabIcon(name: "globe.americas", larger: true)
-            }
-
-            GraniteTab {
-                Loom()
-            } icon: {
-                GraniteTabIcon(name: "applescript")
             }
 
             if Device.isExpandedLayout == false {
@@ -102,6 +110,12 @@ extension Home: View {
                     Bookmark()
                 } icon: {
                     GraniteTabIcon(name: "bookmark")
+                }
+            } else {
+                GraniteTab {
+                    Loom()
+                } icon: {
+                    GraniteTabIcon(name: "applescript")
                 }
             }
             
@@ -131,11 +145,16 @@ struct GraniteTabIcon: View {
     
     var name: String
     var larger: Bool = false
+    var isBoldFill: Bool = false
+    
+    var font: Font {
+        larger ? Font.title : Font.title2
+    }
     
     var body: some View {
-        Image(systemName: "\(name)\(isTabSelected == true ? ".fill" : "")")
+        Image(systemName: "\(name)\(isTabSelected == true && !isBoldFill ? ".fill" : "")")
             .renderingMode(.template)
-            .font(larger ? Font.title : Font.title2)
+            .font(isBoldFill && isTabSelected == true ? font.bold() : font)
             .frame(width: 20,
                    height: 20,
                    alignment: .center)

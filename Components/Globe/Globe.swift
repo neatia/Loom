@@ -43,12 +43,6 @@ struct Globe: GraniteComponent {
     }
     
     init() {
-        #if os(iOS)
-        let width = (UIScreen.main.bounds.width / (Device.isiPad ? 2 : 1)) - (Device.isiPad ? 28 : 0)//28 = tab bar height / 2
-        //3 cells with layer4 padding in between
-        let moduleWidth = (width / 3) - (.layer4 * 1.75)
-        _center = .init(.init(accountModuleSize: moduleWidth))
-        #endif
         config.silence(viewUpdatesOnly: true)
     }
 }
