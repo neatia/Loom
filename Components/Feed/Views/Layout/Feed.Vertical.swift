@@ -56,7 +56,11 @@ extension Feed {
         .sideMenu(isShowing: _state.isShowing) {
             FeedHamburgerView()
                 .attach( { modalView in
+                    #if os(iOS)
                     modal.present(modalView, target: .sheet)
+                    #else
+                    modal.presentModal(modalView, target: .sheet)
+                    #endif
                 }, at: \.present)
                 .attach( { meta in
 //                    modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {

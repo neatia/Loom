@@ -12,9 +12,18 @@ import GraniteUI
 import LemmyKit
 import MarqueKit
 
+#if os(macOS)
+import AppKit
+#endif
+
 public struct ShareModal<Content: View>: View {
+    @Environment(\.contentContext) var context
     
     @State var isScreenshotting: Bool = false
+    
+    #if os(macOS)
+    @State var image: NSImage? = nil
+    #endif
     
     var urlString: String? = nil
     var content: () -> Content
@@ -38,7 +47,7 @@ public struct ShareModal<Content: View>: View {
             
             Spacer()
             
-            HStack(spacing: .layer3) {
+            HStack(spacing: .layer5) {
                 Spacer()
 
                 Button {
@@ -50,6 +59,7 @@ public struct ShareModal<Content: View>: View {
                 }
                 .buttonStyle(.plain)
 
+                #if os(iOS)
                 if let urlString {
                     Button {
                         GraniteHaptic.light.invoke()
@@ -61,6 +71,9 @@ public struct ShareModal<Content: View>: View {
                     }
                     .buttonStyle(.plain)
                 }
+                #else
+                sharingOptions
+                #endif
 
                 Spacer()
             }
@@ -68,4 +81,40 @@ public struct ShareModal<Content: View>: View {
             Spacer()
         }
     }
+    
+    #if os(macOS)
+    var sharingOptions: some View {
+        Group {
+            Menu {
+                ForEach(
+                    NSSharingService
+                        .sharingServices(forItems: [""]), id: \.title ) { item in
+                    Button {
+                        if let commentView = context.commentModel {
+                            var text: String = commentView.comment.content
+                            text += "\n\n\(commentView.comment.ap_id)"
+                            item.perform(withItems: [text])
+                        } else if let postView = context.postModel {
+                            var text: String = postView.post.name
+                            if let body = postView.post.body {
+                                text += "\n\n\(body)"
+                            }
+                            text += "\n\n\(postView.post.ap_id)"
+                            item.perform(withItems: [text])
+                        }
+                    } label: {
+                        Image(nsImage: item.image)
+                        Text(item.title)
+                    }
+                }
+            } label: {
+                Image(systemName: "link")
+                    .font(.title2)
+                    .contentShape(Rectangle())
+            }
+            .menuStyle(.borderlessButton)
+            .menuIndicator(.hidden)
+        }
+    }
+    #endif
 }

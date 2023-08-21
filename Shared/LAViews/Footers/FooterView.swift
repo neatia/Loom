@@ -236,7 +236,6 @@ extension FooterView {
                 .buttonStyle(PlainButtonStyle())
             }
             
-#if os(iOS)
             Button {
                 GraniteHaptic.light.invoke()
                 share.perform()
@@ -246,44 +245,6 @@ extension FooterView {
                     .contentShape(Rectangle())
             }
             .buttonStyle(PlainButtonStyle())
-#else
-//            Menu {
-//                ForEach(NSSharingService.sharingServices(forItems: [""]), id: \.title ) { item in
-//                    Button(action: {
-//                        if let commentView = context.commentModel {
-//                            var text: String = commentView.comment.content
-//                            text += "\n\n\(commentView.comment.ap_id)"
-//                            item.perform(withItems: [text])
-//                        } else if let postView = context.postModel {
-//                            var text: String = postView.post.name
-//                            if let body = postView.post.body {
-//                                text += "\n\n\(body)"
-//                            }
-//                            text += "\n\n\(postView.post.ap_id)"
-//                            item.perform(withItems: [text])
-//                        }
-//                    }) {
-//                        Image(nsImage: item.image)
-//                        Text(item.title)
-//                    }
-//                }
-//            } label: {
-//                Image(systemName: "paperplane")
-//                    .font(font)
-//                    .contentShape(Rectangle())
-//            }
-//            .menuStyle(BorderlessButtonMenuStyle())
-//            .menuIndicator(.hidden)
-            Button {
-                GraniteHaptic.light.invoke()
-                share.perform()
-            } label: {
-                Image(systemName: "paperplane")
-                    .font(font)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(PlainButtonStyle())
-#endif
             
             Spacer()
         }

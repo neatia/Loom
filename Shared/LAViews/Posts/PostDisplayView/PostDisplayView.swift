@@ -186,10 +186,10 @@ struct PostDisplayView: View {
         GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
             ShareModal(urlString: model?.comment.ap_id) {
                 CommentCardView()
-                    .contentContext(.init(commentModel: model,
-                                          viewingContext: .screenshot))
                     .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
             }
+            .contentContext(.init(commentModel: model,
+                                  viewingContext: .screenshot))
         }
         .frame(width: Device.isMacOS ? 600 : nil)
         .frame(minHeight: Device.isMacOS ? 500 : nil)

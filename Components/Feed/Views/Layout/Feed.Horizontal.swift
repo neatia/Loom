@@ -52,11 +52,11 @@ extension Feed {
                             GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
                                 ShareModal(urlString: model?.post.ap_id) {
                                     PostCardView()
-                                        .contentContext(.init(postModel: model,
-                                                              viewingContext: .screenshot))
                                         .environment(\.pagerMetadata, metadata)
                                         .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
                                 }
+                                .environment(\.contentContext, .init(postModel: model,
+                                                                     viewingContext: .screenshot))
                             }
                             .frame(width: Device.isMacOS ? 600 : nil)
                         }

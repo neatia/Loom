@@ -116,7 +116,7 @@ extension Home: View {
             GraniteTab {
                 Globe()
             } icon: {
-                GraniteTabIcon(name: "globe.americas", larger: true)
+                GraniteTabIcon(name: "globe.americas", larger: Device.isExpandedLayout == false)
             }
             
             if Device.isExpandedLayout {
