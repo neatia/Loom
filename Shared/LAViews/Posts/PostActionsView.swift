@@ -111,15 +111,7 @@ struct PostActionsView: View {
             #if os(iOS)
             Button {
                 GraniteHaptic.light.invoke()
-                switch bookmarkKind {
-                case .post(let postView):
-                    //share.perform()
-                    ModalService.share(urlString: postView.post.ap_id)
-                case .comment(let commentView, _):
-                    ModalService.share(urlString: commentView.comment.ap_id)
-                default:
-                    break
-                }
+                share.perform()
             } label: {
                 Text("MISC_SHARE")
                 Image(systemName: "paperplane")
@@ -224,18 +216,7 @@ struct PostActionsView: View {
         }
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
-        .frame(width: Device.isMacOS ? 20 : 24, height: isCompact ? 12 : 24)
-        //macOS bug, causes 100% CPU usage on scroll behavior
-        /*
-         Reproduction:
-         The main feed in feed horizontal won't lag until
-         post display view shows a post. the feed's scrolling
-         will cause high CPU usage, even though nothing changed
-         aside from an extended window, to have post display live.
-         
-         
-         */
-//        .scaleEffect(x: -1, y: 1)
+        .frame(width: Device.isMacOS ? 20 : 24, height: 12)
         .addHaptic()
     }
 }

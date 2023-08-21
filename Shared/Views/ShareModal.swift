@@ -10,7 +10,6 @@ import SwiftUI
 import Granite
 import GraniteUI
 import LemmyKit
-import UIKit
 import MarqueKit
 
 public struct ShareModal<Content: View>: View {
@@ -28,19 +27,20 @@ public struct ShareModal<Content: View>: View {
     public var body: some View {
         VStack(spacing: 0) {
             ScrollView {
-                ScreenshotView($isScreenshotting,
-                               encodeMessage: urlString) {
-                    content()
+                VStack(spacing: 0) {
+                    ScreenshotView($isScreenshotting,
+                                   encodeMessage: urlString) {
+                        content()
+                    }
                 }
-                .fixedSize(horizontal: false, vertical: true)
-                .cornerRadius(8)
             }
+            .frame(maxHeight: .infinity)
             
             Spacer()
             
             HStack(spacing: .layer3) {
                 Spacer()
-                
+
                 Button {
                     GraniteHaptic.light.invoke()
                     isScreenshotting = true
@@ -49,7 +49,7 @@ public struct ShareModal<Content: View>: View {
                         .font(.title2)
                 }
                 .buttonStyle(.plain)
-                
+
                 if let urlString {
                     Button {
                         GraniteHaptic.light.invoke()
@@ -61,7 +61,7 @@ public struct ShareModal<Content: View>: View {
                     }
                     .buttonStyle(.plain)
                 }
-                
+
                 Spacer()
             }
             

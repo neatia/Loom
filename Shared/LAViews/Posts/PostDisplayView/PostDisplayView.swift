@@ -122,7 +122,6 @@ struct PostDisplayView: View {
                     }, at: \.reply)
                     .attach({ (model, update) in
                         DispatchQueue.main.async {
-                            print("{TEST}")
                             modal.presentSheet {
                                 showReplyModal(isEditing: true,
                                                model: model,
@@ -130,6 +129,13 @@ struct PostDisplayView: View {
                             }
                         }
                     }, at: \.edit)
+                    .attach({ model in
+                        DispatchQueue.main.async {
+                            modal.presentSheet {
+                                showShareModal(model)
+                            }
+                        }
+                    }, at: \.share)
                     .contentContext(.addCommentModel(model: commentView, context))
                     .background(Color.alternateBackground)
             }
@@ -174,6 +180,19 @@ struct PostDisplayView: View {
                 modal.dismissSheet()
             }, at: \.updateComment)
             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+    }
+    
+    func showShareModal(_ model: CommentView?) -> some View {
+        GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
+            ShareModal(urlString: model?.comment.ap_id) {
+                CommentCardView()
+                    .contentContext(.init(commentModel: model,
+                                          viewingContext: .screenshot))
+                    .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+            }
+        }
+        .frame(width: Device.isMacOS ? 600 : nil)
+        .frame(minHeight: Device.isMacOS ? 500 : nil)
     }
 }
 

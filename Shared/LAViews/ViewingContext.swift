@@ -16,6 +16,7 @@ enum ViewingContext: Equatable {
     case bookmarkExpanded(String)
     case search
     case profile
+    case screenshot
 }
 
 extension ViewingContext {

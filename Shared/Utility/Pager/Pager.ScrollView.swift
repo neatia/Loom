@@ -195,13 +195,12 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         VStack(spacing: 0) {
             content(item)
                 .padding(.vertical, properties.verticalPadding)
-            //.setupPlainListRow()
             
-            if !properties.hideDivider,
-               item.id != pager.lastItem?.id {
-                Divider()
-                //.setupPlainListRow()
-            }
+//            if !properties.hideDivider,
+//               item.id != pager.lastItem?.id {
+//                Divider()
+//            }
+            Divider()
         }
         .background(properties.backgroundColor)
     }

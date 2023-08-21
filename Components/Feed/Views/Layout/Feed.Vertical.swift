@@ -28,14 +28,16 @@ extension Feed {
                  }
              }, at: \.showContent)
              .attach({ (model, metadata) in
-                 
-                 modal.presentSheet {
-                     GraniteStandardModalView(title: "MISC_SHARE",
-                                              maxHeight: nil) {
-                         ShareModal(urlString: model?.post.ap_id) {
-                             PostCardView()
-                                 .contentContext(.init(postModel: model))
-                                 .environment(\.pagerMetadata, metadata)
+                 DispatchQueue.main.async {
+                     modal.presentSheet {
+                         GraniteStandardModalView(title: "MISC_SHARE") {
+                             ShareModal(urlString: model?.post.ap_id) {
+                                 PostCardView()
+                                     .contentContext(.init(postModel: model,
+                                                           viewingContext: .screenshot))
+                                     .environment(\.pagerMetadata, metadata)
+                                     .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+                             }
                          }
                      }
                  }

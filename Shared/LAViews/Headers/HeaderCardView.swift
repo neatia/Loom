@@ -69,51 +69,60 @@ struct HeaderCardView: View {
             
             Spacer()
             
-            if let community = context.community?.lemmy {
-                GraniteRoute($enableRoute, window: .resizable(600, 500)) {
-                    Feed(community)
+            switch context.viewingContext {
+            case .screenshot:
+                Image("logo_small")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+            default:
+                if context.viewingContext != .screenshot {
+                    
+                    if let community = context.community?.lemmy {
+                        GraniteRoute($enableRoute, window: .resizable(600, 500)) {
+                            Feed(community)
+                        }
+                    }
+                    
+                    if context.isPostAvailable {
+                        GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
+                            PostDisplayView()
+                                .contentContext(context)
+                        }
+                    }
                 }
-            }
-            
-            if context.isPostAvailable {
-                GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                    PostDisplayView()
-                        .contentContext(context)
+                if let time = context.timeAbbreviated {
+                    Text(time)
+                        .font(.footnote)
+                        .foregroundColor(.foreground.opacity(0.5))
                 }
-            }
-            
-            if let time = context.timeAbbreviated {
-                Text(time)
-                    .font(.footnote)
-                    .foregroundColor(.foreground.opacity(0.5))
-            }
-            
-            VStack(alignment: .trailing, spacing: 0) {
-                PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                community: shouldRouteCommunity ? context.community?.lemmy : nil,
-                                postView: (shouldRoutePost || !isCompact) ? postView : nil,
-                                person: context.person?.lemmy,
-                                bookmarkKind: context.bookmarkKind,
-                                isCompact: isCompact)
-                    .attach({ community in
-                        viewCommunity.perform(community)
-                    }, at: \.viewCommunity)
-                    .attach({
-                        self.fetchPostView()
-                    }, at: \.goToPost)
-                    .attach({
-                        edit.perform()
-                    }, at: \.edit)
-                    .attach({
-                        share.perform()
-                    }, at: \.share)
-                    .graniteEvent(interact)
+                
+                VStack(alignment: .trailing, spacing: 0) {
+                    PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
+                                    community: shouldRouteCommunity ? context.community?.lemmy : nil,
+                                    postView: (shouldRoutePost || !isCompact) ? postView : nil,
+                                    person: context.person?.lemmy,
+                                    bookmarkKind: context.bookmarkKind,
+                                    isCompact: isCompact)
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
+                        .attach({
+                            self.fetchPostView()
+                        }, at: \.goToPost)
+                        .attach({
+                            edit.perform()
+                        }, at: \.edit)
+                        .attach({
+                            share.perform()
+                        }, at: \.share)
+                        .graniteEvent(interact)
+                }
             }
         }
         .task {
             postView = context.postModel
         }
-        .offset(y: -4)//based on badge's vertical padding + text container of header (.headline at the time)
+        .offset(y: -4)//offset
     }
     
     func fetchPostView() {

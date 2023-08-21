@@ -19,7 +19,8 @@ public protocol Pageable: Equatable, Identifiable, Hashable {
     var date: Date { get }
     var blocked: Bool { get }
     var person: Person { get }
-    var thumbUrl: URL? { get }
+    var thumbURL: URL? { get }
+    var postURL: URL? { get }
 }
 
 extension Pageable {
@@ -27,7 +28,11 @@ extension Pageable {
         false
     }
     
-    public var thumbUrl: URL? {
+    public var thumbURL: URL? {
+        nil
+    }
+    
+    public var postURL: URL? {
         nil
     }
 }
@@ -217,7 +222,7 @@ public class Pager<Model: Pageable>: ObservableObject {
             
             LoomLog("🟢 Fetch succeeded | \(models.count) items", level: .debug)
             
-            let thumbURLs: [(String, URL?)] = models.compactMap { ($0.id, $0.thumbUrl) }
+            let thumbURLs: [(String, URL?, Bool)] = models.compactMap { ($0.id, $0.thumbURL ?? $0.postURL, $0.thumbURL != nil) }
                 
             if thumbURLs.isEmpty {
                 insertModels(models, force: force)
@@ -241,12 +246,21 @@ public class Pager<Model: Pageable>: ObservableObject {
                  */
                 self?.rlProcessorTask = Task(priority: .userInitiated) { [weak self] in
                     var completed: CGFloat = 0.0
-                    for (id, url) in thumbURLs {
+                    for (id, url, isThumb) in thumbURLs {
                         guard let url else { continue }
+                        
                         let time = CFAbsoluteTimeGetCurrent()
-                        this.itemMetadatas[id] = await this.getLPMetadata(url: url)
+                        
+                        if isThumb,
+                           let data = try? Data(contentsOf: url),
+                           let image = GraniteImage(data: data) {
+                            this.itemMetadatas[id] = .init(linkMeta: nil, imageThumb: image)
+                        } else {
+                            this.itemMetadatas[id] = await this.getLPMetadata(url: url)
+                        }
+                        
                         if this.itemMetadatas[id] != nil {
-                            LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time)", level: .info)
+                            LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time) - isThumb: \(isThumb)", level: .info)
                         }
                         
                         completed += 1

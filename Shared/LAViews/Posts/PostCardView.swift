@@ -132,14 +132,35 @@ struct PostCardView: View {
                         content
                     }
                 }
-                .padding(.top, isPreview ? (isCompact ? .layer3 : 0) : topPadding)
-                .padding(.bottom, isPreview ? (isCompact ? .layer3 : 0) : bottomPadding)
-                .padding(.leading, .layer4)
-                .padding(.trailing, isCompact ? .layer3 : .layer4)
+                .padding(padding)
                 .overlayIf(isSelected,
                            overlay: Color.alternateBackground.opacity(0.3))
             }
         }
+    }
+    
+    var padding: EdgeInsets {
+        let top: CGFloat
+        let leading: CGFloat
+        let bottom: CGFloat
+        let trailing: CGFloat
+        
+        if context.isScreenshot {
+            top = .layer4
+            leading = .layer4
+            bottom = .layer4
+            trailing = .layer4
+        } else {
+            top = isPreview ? (isCompact ? .layer3 : 0) : topPadding
+            leading = .layer4
+            bottom = isPreview ? (isCompact ? .layer3 : 0) : bottomPadding
+            trailing = isCompact ? .layer3 : .layer4
+        }
+         
+        return .init(top: top,
+                     leading: leading,
+                     bottom: bottom,
+                     trailing: trailing)
     }
 }
 
@@ -164,6 +185,9 @@ extension PostCardView {
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
+                    .attach({
+                        share.perform((context.postModel, contentMetadata))
+                    }, at: \.share)
             }
         }
         .fixedSize(horizontal: false, vertical: isPreview ? false : true)
@@ -183,8 +207,7 @@ extension PostCardView {
             
             Spacer()
             
-            if let thumbUrl = context.postModel?.post.thumbnail_url,
-               let url = URL(string: thumbUrl) {
+            if let url = context.postModel?.thumbURL {
                 
                 ZStack {
                     Rectangle()

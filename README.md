@@ -59,6 +59,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 ## Swift Packages
 
 - [Granite](https://github.com/pexavc/Granite)
+- [MarqueKit](https://github.com/pexavc/marquekit)
 - [MarbleKit](https://github.com/pexavc/marblekit)
 - [LemmyKit](https://github.com/pexavc/lemmykit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)

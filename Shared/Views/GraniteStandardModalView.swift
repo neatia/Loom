@@ -107,7 +107,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                     }
                     
                     content()
-                        .padding(.horizontal, fullWidthContent ? nil : .layer5)
+                        .padding(.horizontal, fullWidthContent ? 0 : .layer5)
                         .padding(.top, Device.isMacOS ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                     

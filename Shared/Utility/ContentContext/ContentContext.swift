@@ -55,6 +55,10 @@ struct ContentContext {
         commentModel?.creator.admin == true
     }
     
+    var isScreenshot: Bool {
+        viewingContext == .screenshot
+    }
+    
     var isOP: Bool {
         guard let poster = postModel?.creator else {
             return false
@@ -72,7 +76,7 @@ struct ContentContext {
         return nil
     }
     
-    static func addCommentModel(model: CommentView, _ context: ContentContext) -> Self {
+    static func addCommentModel(model: CommentView?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: model,
                      feedStyle: context.feedStyle,

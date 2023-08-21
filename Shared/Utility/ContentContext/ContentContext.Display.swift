@@ -54,7 +54,11 @@ extension ContentContext {
     }
     
     var hasURL: Bool {
-        postModel?.post.url != nil
+        postModel?.postURL != nil
+    }
+    
+    var hasThumb: Bool {
+        postModel?.thumbURL != nil
     }
     
     struct Display {
@@ -83,9 +87,9 @@ extension ContentContext.Display {
             self.headline = context.person?.name ?? ""
             self.subheadline = {
                 if let model = context.commentModel {
-                    return model.comment.local ? nil : model.creator.domain
+                    return model.comment.local && context.isScreenshot == false ? nil : model.creator.domain
                 } else {
-                    return context.postModel?.post.local == true ? nil : context.postModel?.creator.domain
+                    return context.postModel?.post.local == true && context.isScreenshot == false ? nil : context.postModel?.creator.domain
                 }
             }()
             self.avatarURL = context.person?.avatarURL

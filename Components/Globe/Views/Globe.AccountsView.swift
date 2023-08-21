@@ -13,7 +13,7 @@ import SwiftUI
 extension Globe {
     var accountsView: some View {
         VStack(spacing: 0) {
-            WrapLayout(horizontalSpacing: .layer4, verticalSpacing: .layer4) {
+            LazyVGrid(columns: [GridItem.init()], spacing: .layer4) {
                 
                 addView
                 

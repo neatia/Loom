@@ -10,6 +10,7 @@ struct CommentCardView: View {
     @Environment(\.graniteEvent) var interact
     @GraniteAction<Community> var viewCommunity
     
+    @GraniteAction<CommentView?> var share
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
@@ -56,12 +57,12 @@ struct CommentCardView: View {
                     .attach({ community in
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
-                    .padding(.trailing, .layer3)
+                    .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
                 
                 contentView
                     .padding(.leading, .layer3 + AvatarView.containerPadding)
-                    .padding(.trailing, .layer3)
+                    .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
             case .style2:
                 HStack(spacing: .layer3) {
@@ -86,11 +87,14 @@ struct CommentCardView: View {
                                     content.center.interact.send(ContentService.Interact.Meta(kind: .editComment(model, postView)))
                                 }
                             }, at: \.edit)
+                            .attach({
+                                share.perform(context.commentModel)
+                            }, at: \.share)
                             .graniteEvent(interact)
                         contentView
                     }
                 }
-                .padding(.trailing, .layer3)
+                .padding(.trailing, padding.trailing)
             }
             
             if expandReplies {
@@ -110,14 +114,14 @@ struct CommentCardView: View {
                     .id(refreshThread)
             }
         }
-        .padding(.top, .layer5)
-        .padding(.bottom, expandReplies ? 0 : .layer5)
-        .padding(.leading, .layer4)
+        .padding(.top, padding.top)
+        .padding(.bottom, padding.bottom)
+        .padding(.leading, padding.leading)
         .onSwipe(edge: .trailing,
                  icon: "arrowshape.turn.up.backward.fill",
                  iconColor: Brand.Colors.babyBlue,
                  backgroundColor: .alternateBackground,
-                 disabled: isPreview) {
+                 disabled: isPreview || context.isScreenshot) {
             
             guard let model else { return }
             
@@ -137,6 +141,30 @@ struct CommentCardView: View {
             self.model = context.commentModel
             self.postView = context.postModel
         }
+    }
+    
+    var padding: EdgeInsets {
+        let top: CGFloat
+        let leading: CGFloat
+        let bottom: CGFloat
+        let trailing: CGFloat
+        
+        if context.isScreenshot {
+            top = .layer4
+            leading = .layer4
+            bottom = .layer4
+            trailing = .layer4
+        } else {
+            top = .layer5
+            leading = .layer4
+            bottom = expandReplies ? 0 : .layer5
+            trailing = .layer3
+        }
+         
+        return .init(top: top,
+                     leading: leading,
+                     bottom: bottom,
+                     trailing: trailing)
     }
 }
 
@@ -176,6 +204,9 @@ extension CommentCardView {
                           isPreview == false else { return }
                     showDrawer.perform(model)
                 }, at: \.showComments)
+                .attach({
+                    share.perform(context.commentModel)
+                }, at: \.share)
         }
         .padding(.leading, context.feedStyle == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
         .overlayIf(context.feedStyle == .style1) {
@@ -187,7 +218,7 @@ extension CommentCardView {
                     .opacity(0.5)
             }
         }
-        .fixedSize(horizontal: false, vertical: true)
+//        .fixedSize(horizontal: false, vertical: true)
     }
     
     var contentBody: some View {
@@ -202,8 +233,8 @@ extension CommentCardView {
                 .padding(.bottom, .layer3)
             } else if let content = model?.comment.content {
                 MarkdownView(text: content)
-                    .markdownViewRole(.editor)
                     .fontGroup(CommentFontGroup())
+                    .markdownViewRole(.editor)
                     .padding(.bottom, .layer3)
             }
         }

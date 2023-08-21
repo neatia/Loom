@@ -69,7 +69,7 @@ extension PostView {
         postURL?.host
     }
     
-    var postURL: URL? {
+    public var postURL: URL? {
         if let urlString = post.url,
            let url = URL(string: urlString) {
             return url
@@ -77,13 +77,12 @@ extension PostView {
         return nil
     }
     
-    public var thumbUrl: URL? {
-        //Using LinkPresentation, it can generate thumbs via other sources
-        /*guard let url = post.thumbnail_url else {
+    public var thumbURL: URL? {
+        guard let url = post.thumbnail_url else {
             return nil
-        }*/
+        }
         
-        return postURL
+        return URL(string: url)
     }
 }
 

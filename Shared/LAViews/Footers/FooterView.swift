@@ -16,6 +16,7 @@ struct FooterView: View {
     
     @GraniteAction<CommentId> var showComments
     @GraniteAction<PostView> var reply
+    @GraniteAction<Void> var share
     
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
@@ -111,117 +112,9 @@ extension FooterView {
 extension FooterView {
     var stacked: some View {
         VStack(spacing: .layer3) {
-            HStack(spacing: .layer4) {
-                Button {
-                    guard let bookmarkKind = context.bookmarkKind else { return }
-                    GraniteHaptic.light.invoke()
-                    switch bookmarkKind {
-                    case .post(let postView):
-                        content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
-                    case .comment(let commentView, _):
-                        content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
-                    }
-                } label : {
-                    HStack(spacing: .layer1) {
-                        Image(systemName: "arrow.up")
-                            .font(font.bold())
-                    }
-                    .foregroundColor(myVote == 1 ? .orange : .foreground)
-                    .contentShape(Rectangle())
-                }.buttonStyle(PlainButtonStyle())
-                
-                Button {
-                    guard let bookmarkKind = context.bookmarkKind else { return }
-                    GraniteHaptic.light.invoke()
-                    switch bookmarkKind {
-                    case .post(let postView):
-                        content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView)))
-                    case .comment(let commentView, _):
-                        content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView)))
-                    }
-                } label : {
-                    HStack(spacing: .layer1) {
-                        Image(systemName: "arrow.down")
-                            .font(font.bold())
-                    }
-                    .foregroundColor(myVote == -1 ? .blue : .foreground)
-                    .contentShape(Rectangle())
-                }.buttonStyle(PlainButtonStyle())
-                
-                if context.isPost,
-                   let postView = context.postModel {
-                    HStack(spacing: .layer1) {
-                        Image(systemName: "bubble.left")
-                            .font(font)
-                    }
-                    .foregroundColor(.foreground)
-                    .route(window: .resizable(600, 500)) {
-                        PostDisplayView()
-                            .contentContext(context)
-                    }
-                }
-                
-                if let bookmarkKind = context.bookmarkKind,
-                   isHeader == false || bookmarkKind.isComment == true || Device.isMacOS == false {
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        modifyBookmark()
-                    } label: {
-                        
-                        Image(systemName: "bookmark\(bookmark.contains(bookmarkKind) ? ".fill" : "")")
-                            .font(font)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-                
-#if os(iOS)
-                Button {
-                    GraniteHaptic.light.invoke()
-                    if let commentView = context.commentModel {
-                        ModalService.share(urlString: commentView.comment.ap_id)
-                    } else if let postView = context.postModel {
-                        ModalService.share(urlString: postView.post.ap_id)
-                    }
-                } label: {
-                    Image(systemName: "paperplane")
-                        .font(font)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(PlainButtonStyle())
-#else
-                Menu {
-                    ForEach(NSSharingService.sharingServices(forItems: [""]), id: \.title ) { item in
-                        Button(action: {
-                            if let commentView = context.commentModel {
-                                var text: String = commentView.comment.content
-                                text += "\n\n\(commentView.comment.ap_id)"
-                                item.perform(withItems: [text])
-                            } else if let postView = context.postModel {
-                                var text: String = postView.post.name
-                                if let body = postView.post.body {
-                                    text += "\n\n\(body)"
-                                }
-                                text += "\n\n\(postView.post.ap_id)"
-                                item.perform(withItems: [text])
-                            }
-                        }) {
-                            Image(nsImage: item.image)
-                            Text(item.title)
-                        }
-                    }
-                } label: {
-                    Image(systemName: "paperplane")
-                        .font(font)
-                        .contentShape(Rectangle())
-                }
-                .menuStyle(BorderlessButtonMenuStyle())
-                .menuIndicator(.hidden)
-#endif
-                
-                Spacer()
+            if context.viewingContext != .screenshot {
+                stackedActions
             }
-            .frame(height: 20)
             
             HStack(spacing: 0) {
                 HStack(spacing: 0) {
@@ -276,6 +169,125 @@ extension FooterView {
                 }
             }
         }
+    }
+    
+    var stackedActions: some View {
+        HStack(spacing: .layer4) {
+            Button {
+                guard let bookmarkKind = context.bookmarkKind else { return }
+                GraniteHaptic.light.invoke()
+                switch bookmarkKind {
+                case .post(let postView):
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
+                case .comment(let commentView, _):
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
+                }
+            } label : {
+                HStack(spacing: .layer1) {
+                    Image(systemName: "arrow.up")
+                        .font(font.bold())
+                }
+                .foregroundColor(myVote == 1 ? .orange : .foreground)
+                .contentShape(Rectangle())
+            }.buttonStyle(PlainButtonStyle())
+            
+            Button {
+                guard let bookmarkKind = context.bookmarkKind else { return }
+                GraniteHaptic.light.invoke()
+                switch bookmarkKind {
+                case .post(let postView):
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView)))
+                case .comment(let commentView, _):
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView)))
+                }
+            } label : {
+                HStack(spacing: .layer1) {
+                    Image(systemName: "arrow.down")
+                        .font(font.bold())
+                }
+                .foregroundColor(myVote == -1 ? .blue : .foreground)
+                .contentShape(Rectangle())
+            }.buttonStyle(PlainButtonStyle())
+            
+            if context.isPost,
+               let postView = context.postModel {
+                HStack(spacing: .layer1) {
+                    Image(systemName: "bubble.left")
+                        .font(font)
+                }
+                .foregroundColor(.foreground)
+                .route(window: .resizable(600, 500)) {
+                    PostDisplayView()
+                        .contentContext(context)
+                }
+            }
+            
+            if let bookmarkKind = context.bookmarkKind,
+               isHeader == false || bookmarkKind.isComment == true || Device.isMacOS == false {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    modifyBookmark()
+                } label: {
+                    
+                    Image(systemName: "bookmark\(bookmark.contains(bookmarkKind) ? ".fill" : "")")
+                        .font(font)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            
+#if os(iOS)
+            Button {
+                GraniteHaptic.light.invoke()
+                share.perform()
+            } label: {
+                Image(systemName: "paperplane")
+                    .font(font)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(PlainButtonStyle())
+#else
+//            Menu {
+//                ForEach(NSSharingService.sharingServices(forItems: [""]), id: \.title ) { item in
+//                    Button(action: {
+//                        if let commentView = context.commentModel {
+//                            var text: String = commentView.comment.content
+//                            text += "\n\n\(commentView.comment.ap_id)"
+//                            item.perform(withItems: [text])
+//                        } else if let postView = context.postModel {
+//                            var text: String = postView.post.name
+//                            if let body = postView.post.body {
+//                                text += "\n\n\(body)"
+//                            }
+//                            text += "\n\n\(postView.post.ap_id)"
+//                            item.perform(withItems: [text])
+//                        }
+//                    }) {
+//                        Image(nsImage: item.image)
+//                        Text(item.title)
+//                    }
+//                }
+//            } label: {
+//                Image(systemName: "paperplane")
+//                    .font(font)
+//                    .contentShape(Rectangle())
+//            }
+//            .menuStyle(BorderlessButtonMenuStyle())
+//            .menuIndicator(.hidden)
+            Button {
+                GraniteHaptic.light.invoke()
+                share.perform()
+            } label: {
+                Image(systemName: "paperplane")
+                    .font(font)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(PlainButtonStyle())
+#endif
+            
+            Spacer()
+        }
+        .frame(height: 20)
     }
 }
 

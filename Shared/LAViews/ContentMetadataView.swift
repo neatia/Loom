@@ -27,7 +27,7 @@ struct ContentMetadataView: View {
         self.meta = metadata?.linkMeta
         self._image = .init(initialValue: metadata?.imageThumb)
         self.urlToOpen = urlToOpen
-        self.shouldLoad = shouldLoad
+        self.shouldLoad = shouldLoad && metadata?.imageThumb == nil
     }
     
     var body: some View {
