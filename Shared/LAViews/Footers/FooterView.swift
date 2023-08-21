@@ -13,10 +13,10 @@ import GraniteUI
 
 struct FooterView: View {
     @Environment(\.contentContext) var context
+    @Environment(\.pagerMetadata) var metadata
     
     @GraniteAction<CommentId> var showComments
     @GraniteAction<PostView> var reply
-    @GraniteAction<Void> var share
     
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
@@ -238,7 +238,15 @@ extension FooterView {
             
             Button {
                 GraniteHaptic.light.invoke()
-                share.perform()
+                if context.isComment {
+                    ModalService
+                        .shared
+                        .showShareCommentModal(context.commentModel)
+                } else {
+                    ModalService
+                        .shared
+                        .showSharePostModal(context.postModel, metadata: metadata)
+                }
             } label: {
                 Image(systemName: "paperplane")
                     .font(font)

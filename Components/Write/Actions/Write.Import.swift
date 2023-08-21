@@ -15,7 +15,7 @@ extension Write {
     func importPicture() {
         if let data = state.imageData,
            let image = NSImage(data: data) {
-            modal.present(GraniteAlertView(title: "MISC_MODIFY") {
+            ModalService.shared.present(GraniteAlertView(title: "MISC_MODIFY") {
                 GraniteAlertAction {
                     PhotoView(image: image)
                         .frame(minWidth: Device.isMacOS ? 400 : nil, minHeight: Device.isMacOS ? 400 : nil)
@@ -55,10 +55,10 @@ extension Write {
 import PhotosUI
 extension Write {
     func importPicture() {
-        modal.presentSheet {
+        ModalService.shared.presentSheet {
             ImagePicker(imageData: _state.imageData)
                 .attach( {
-                    modal.dismissSheet()
+                    ModalService.shared.dismissSheet()
                 }, at: \.dismiss)
         }
     }

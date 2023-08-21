@@ -30,7 +30,7 @@ extension Feed {
                         if account.isLoggedIn {
                             account.center.interact.send(AccountService.Interact.Meta(intent: .subscribe(communityView)))
                         } else {
-                            modal.presentSheet {
+                            ModalService.shared.presentSheet {
                                 LoginView()
                             }
                         }
@@ -100,7 +100,7 @@ extension Feed {
             Button {
                 guard let communityView = state.communityView else { return }
                 GraniteHaptic.light.invoke()
-                modal.presentSheet {
+                ModalService.shared.presentSheet {
                     CommunitySidebarView(communityView: communityView)
                 }
             } label: {
@@ -116,12 +116,12 @@ extension Feed {
                 
                 guard loom.state.manifests.isEmpty == false else {
                     //TODO: localize
-                    modal.presentModal(GraniteToastView(StandardErrorMeta(title: "MISC_ERROR", message: "You do not have any Looms to add to", event: .error)))
+                    ModalService.shared.presentModal(GraniteToastView(StandardErrorMeta(title: "MISC_ERROR", message: "You do not have any Looms to add to", event: .error)))
                     
                     return
                 }
                 
-                modal.presentSheet {
+                ModalService.shared.presentSheet {
                     LoomCollectionsView(modalIntent: .adding(communityView))
                         .frame(width: Device.isMacOS ? 400 : nil)
                         .frame(maxHeight: Device.isMacOS ? 600 : nil)

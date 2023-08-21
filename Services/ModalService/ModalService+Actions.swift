@@ -9,12 +9,14 @@ extension ModalService {
     #if os(iOS)
     func present(_ modal : AnyGraniteModal, target: GraniteSheetPresentationStyle = .cover) {
         
-        switch target {
-        case .sheet:
-            modalSheetManager.present(modal)
-        default:
-            modalManager.present(modal)
-        }
+//        switch target {
+//        case .sheet:
+//            break
+//            //modalSheetManager.present(modal)
+//        default:
+//            modalManager.present(modal)
+//        }
+        modalManager.present(modal)
     }
     func presentModal(_ modal : AnyGraniteModal, target: GraniteSheetPresentationStyle = .cover) {
         present(modal, target: target)
@@ -22,15 +24,18 @@ extension ModalService {
     #else
     func presentModal(_ modal : AnyGraniteModal, target: GraniteSheetPresentationStyle = .cover) {
         
-        switch target {
-        case .sheet:
-            modalSheetManager.present(modal)
-        default:
-            modalManager.present(modal)
-        }
+//        switch target {
+//        case .sheet:
+//            break
+//            //modalSheetManager.present(modal)
+//        default:
+//            modalManager.present(modal)
+//        }
+        modalManager.present(modal)
     }
     func present(id: String = GraniteSheetManager.defaultId,
                  _ alert: GraniteAlertView) {
+        
         presentSheet(id: id) {
             alert
                 .attach( {
@@ -155,16 +160,16 @@ extension View {
     }
     
     public func addGraniteModal(_ manager: GraniteModalManager) -> some View {
-        #if os(macOS)
-        Group {
-            if let view = manager.view {
-                self.overlay(view)
-            } else {
-                self
-            }
-        }
-        #else
+//        #if os(macOS)
+//        Group {
+//            if let view = manager.view {
+//                self.overlay(view)
+//            } else {
+//                self
+//            }
+//        }
+//        #else
         self
-        #endif
+//        #endif
     }
 }

@@ -24,8 +24,8 @@ extension Feed: View {
                 verticalLayout
             }
         }
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-        .addGraniteModal(modal.modalManager)
+//        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+//        .addGraniteModal(modal.modalManager)
         .graniteNavigationDestinationIf(state.community != nil, trailingItems: {
             communityInfoView
         })

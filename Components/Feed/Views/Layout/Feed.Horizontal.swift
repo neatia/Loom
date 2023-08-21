@@ -46,26 +46,10 @@ extension Feed {
                 .attach({ community in
                     fetchCommunity(community, reset: true)
                 }, at: \.viewCommunity)
-                .attach({ (model, metadata) in
-                    DispatchQueue.main.async {
-                        modal.presentSheet {
-                            GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
-                                ShareModal(urlString: model?.post.ap_id) {
-                                    PostCardView()
-                                        .environment(\.pagerMetadata, metadata)
-                                        .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
-                                }
-                                .environment(\.contentContext, .init(postModel: model,
-                                                                     viewingContext: .screenshot))
-                            }
-                            .frame(width: Device.isMacOS ? 600 : nil)
-                        }
-                    }
-                }, at: \.share)
                 .graniteEvent(account.center.interact)
                 .overlay(LogoView()
                     .attach({
-                        modal.presentSheet {
+                        ModalService.shared.presentSheet {
                             Write(communityView: state.communityView)
                                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                         }

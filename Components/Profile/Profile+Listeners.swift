@@ -19,7 +19,7 @@ extension Profile {
                 if let response = value as? AccountService.Update.ResponseMeta {
                     DispatchQueue.main.async {
                         _state.person.wrappedValue = response.person
-                        modal.presentModal(GraniteToastView(response.notification))
+                        ModalService.shared.presentModal(GraniteToastView(response.notification))
                     }
                 }
             }
@@ -39,7 +39,7 @@ extension Profile {
                     default:
                         break
                     }
-                    modal.presentModal(GraniteToastView(response.notification))
+                    ModalService.shared.presentModal(GraniteToastView(response.notification))
                 }
             }
         
@@ -50,12 +50,12 @@ extension Profile {
                 if let meta = value as? AccountService.Interact.Meta {
                     switch meta.intent {
                     case .editPost(let model):
-                        modal.presentSheet {
+                        ModalService.shared.presentSheet {
                             Write(postView: model)
                                 .attach({ updatedModel in
                                     DispatchQueue.main.async {
                                         pager.update(item: .init(commentView: nil, postView: updatedModel, isMention: false, isReply: false))
-                                        self.modal.dismissSheet()
+                                        ModalService.shared.dismissSheet()
                                     }
                                 }, at: \.updatedPost)
                                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
@@ -76,7 +76,7 @@ extension Profile {
                     case .editCommentSubmit(let model, _):
                         DispatchQueue.main.async {
                             pager.update(item: .init(commentView: model, postView: nil, isMention: false, isReply: false))
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         }
                     case .editComment(let commentView, let postView):
                         let replyKind: Write.Kind
@@ -88,7 +88,7 @@ extension Profile {
                         }
                         
                         DispatchQueue.main.async {
-                            modal.presentSheet {
+                            ModalService.shared.presentSheet {
                                 Reply(kind: replyKind)
                                     .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
                             }

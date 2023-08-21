@@ -58,12 +58,12 @@ extension Loom: View {
                                 Button {
                                     GraniteHaptic.light.invoke()
                                     
-                                    modal.presentSheet {
+                                    ModalService.shared.presentSheet {
                                         LoomCreateView(communityView: communityView)
                                             .attach({ name in
                                                 service.center.modify.send(LoomService.Modify.Intent.create(name, nil))
                                                 DispatchQueue.main.async {
-                                                    modal.dismissSheet()
+                                                    ModalService.shared.dismissSheet()
                                                 }
                                             }, at: \.create)
                                     }
@@ -87,7 +87,7 @@ extension Loom: View {
                 case .looms:
                     LoomCollectionsView()
                         .attach({ manifest in
-                            modal.presentSheet {
+                            ModalService.shared.presentSheet {
                                 CommunityPickerView()
                                     .attach({ communityView in
                                         GraniteHaptic.light.invoke()
@@ -99,15 +99,15 @@ extension Loom: View {
                             }
                         }, at: \.add)
                         .attach({ model in
-                            modal.presentSheet {
+                            ModalService.shared.presentSheet {
                                 LoomEditView(manifest: model)
                                 .attach({ manifest in
                                     service.center.modify.send(LoomService.Modify.Intent.removeManifest(manifest))
-                                    modal.dismissSheet()
+                                    ModalService.shared.dismissSheet()
                                 }, at: \.remove)
                                 .attach({ manifest in
                                     service.center.modify.send(LoomService.Modify.Intent.update(manifest))
-                                    modal.dismissSheet()
+                                    ModalService.shared.dismissSheet()
                                 }, at: \.edit)
                             }
                         }, at: \.edit)
@@ -122,8 +122,8 @@ extension Loom: View {
             }
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-        .addGraniteModal(modal.modalManager)
+//        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+//        .addGraniteModal(modal.modalManager)
         .onChange(of: service.state.intent) { newIntent in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 switch newIntent {

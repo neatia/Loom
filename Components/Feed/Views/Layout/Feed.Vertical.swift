@@ -22,30 +22,15 @@ extension Feed {
                  fetchCommunity(community, reset: true)
              }, at: \.viewCommunity)
              .attach({ postView in
-                 modal.presentSheet {
+                 ModalService.shared.presentSheet {
                      PostContentView(postView: postView)
                          .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                  }
              }, at: \.showContent)
-             .attach({ (model, metadata) in
-                 DispatchQueue.main.async {
-                     modal.presentSheet {
-                         GraniteStandardModalView(title: "MISC_SHARE") {
-                             ShareModal(urlString: model?.post.ap_id) {
-                                 PostCardView()
-                                     .contentContext(.init(postModel: model,
-                                                           viewingContext: .screenshot))
-                                     .environment(\.pagerMetadata, metadata)
-                                     .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
-                             }
-                         }
-                     }
-                 }
-             }, at: \.share)
              .graniteEvent(account.center.interact)
              .overlay(LogoView()
                 .attach({
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         Write(communityView: state.communityView)
                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                     }
@@ -57,9 +42,9 @@ extension Feed {
             FeedHamburgerView()
                 .attach( { modalView in
                     #if os(iOS)
-                    modal.present(modalView, target: .sheet)
+                    ModalService.shared.present(modalView)
                     #else
-                    modal.presentModal(modalView, target: .sheet)
+                    ModalService.shared.presentModal(modalView)
                     #endif
                 }, at: \.present)
                 .attach( { meta in
@@ -73,23 +58,23 @@ extension Feed {
                     config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
                     
                     DispatchQueue.main.async {
-                        modal.dismissAll()
+                        ModalService.shared.dismissAll()
                     }
                 }, at: \.switchAccount)
                 .attach({
-                    modal.presentSheet(detents: [.large()]) {
+                    ModalService.shared.presentSheet(detents: [.large()]) {
                         LoginView(addToProfiles: true)
                             .attach({
-                                modal.dismissSheet()
+                                ModalService.shared.dismissSheet()
                             }, at: \.cancel)
                             .attach({
-                                modal.dismissSheet()
+                                ModalService.shared.dismissSheet()
                             }, at: \.add)
                     }
                 }, at: \.addProfile)
                 .attach({
                     GraniteHaptic.light.invoke()
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         LoginView()
                     }
                 }, at: \.login)

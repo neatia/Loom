@@ -19,7 +19,6 @@ struct PostDisplayView: View {
     @GraniteAction<Community> var viewCommunity
     
     @Relay var config: ConfigService
-    @Relay var modal: ModalService
     
     var model: PostView? {
         updatedModel ?? context.postModel
@@ -69,12 +68,12 @@ struct PostDisplayView: View {
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
                 .attach({
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         Write(postView: model)
                             .attach({ updatedModel in
                                 DispatchQueue.main.async {
                                     self.updatedModel = updatedModel
-                                    self.modal.dismissSheet()
+                                    ModalService.shared.dismissSheet()
                                 }
                             }, at: \.updatedPost)
                             .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
@@ -111,38 +110,13 @@ struct PostDisplayView: View {
                     .attach({ community in
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
-                    .attach({ (model, update) in
-                        DispatchQueue.main.async {
-                            modal.presentSheet {
-                                showReplyModal(isEditing: false,
-                                               model: model,
-                                               update: update)
-                            }
-                        }
-                    }, at: \.reply)
-                    .attach({ (model, update) in
-                        DispatchQueue.main.async {
-                            modal.presentSheet {
-                                showReplyModal(isEditing: true,
-                                               model: model,
-                                               update: update)
-                            }
-                        }
-                    }, at: \.edit)
-                    .attach({ model in
-                        DispatchQueue.main.async {
-                            modal.presentSheet {
-                                showShareModal(model)
-                            }
-                        }
-                    }, at: \.share)
                     .contentContext(.addCommentModel(model: commentView, context))
                     .background(Color.alternateBackground)
             }
             .environmentObject(pager)
         }
         .padding(.top, .layer4)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+        //.addGraniteSheet(modal.sheetManager, background: Color.clear)
         .background(Color.background)
         .foregroundColor(.foreground)
         .showDrawer($showDrawer,
@@ -162,37 +136,6 @@ struct PostDisplayView: View {
                                             location: threadLocation)
             }.fetch()
         }
-    }
-    
-    func showReplyModal(isEditing: Bool,
-                        model: CommentView,
-                        update: @escaping ((CommentView) -> Void)) -> some View {
-        Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
-            .attach({ replyModel in
-                update(replyModel)
-                
-                if isEditing {
-                    //TODO: edit success modal
-                } else {
-                    modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
-                }
-                
-                modal.dismissSheet()
-            }, at: \.updateComment)
-            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-    }
-    
-    func showShareModal(_ model: CommentView?) -> some View {
-        GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
-            ShareModal(urlString: model?.comment.ap_id) {
-                CommentCardView()
-                    .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
-            }
-            .contentContext(.init(commentModel: model,
-                                  viewingContext: .screenshot))
-        }
-        .frame(width: Device.isMacOS ? 600 : nil)
-        .frame(minHeight: Device.isMacOS ? 500 : nil)
     }
 }
 
@@ -218,14 +161,14 @@ extension PostDisplayView {
                        showScores: config.state.showScores,
                        isComposable: true)
                 .attach({ model in
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         Reply(kind: .replyPost(model))
                             .attach({ (model, modelView) in
                                 pager.insert(modelView)
                                 
-                                modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
+                                ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
                                 
-                                modal.dismissSheet()
+                                ModalService.shared.dismissSheet()
                             }, at: \.updatePost)
                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                     }
@@ -278,7 +221,7 @@ extension PostDisplayView {
                 .onTapGesture {
                     guard let model else { return }
                     GraniteHaptic.light.invoke()
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         PostContentView(postView: model)
                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                     }

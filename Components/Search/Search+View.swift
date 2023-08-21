@@ -78,8 +78,8 @@ extension Search: View {
                 Spacer()
             }
         }
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
+        //.addGraniteSheet(modal.sheetManager, background: Color.clear)
+        .graniteNavigation(backgroundColor: Color.background, disable: community == nil || Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
                 .font(.title2)
@@ -102,6 +102,12 @@ extension Search: View {
                                    page: 1,
                                    limit: ConfigService.Preferences.pageLimit)
             }
+            
+            guard community != nil else { return }
+            conductor.startTimer("")
+        }
+        .onAppear {
+            guard community == nil else { return }
             conductor.startTimer("")
         }
     }

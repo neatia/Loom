@@ -32,9 +32,9 @@ class LayoutEnvironment: ObservableObject {
         didSet {
             #if os(macOS)
             if closeDisplayView {
-                GraniteNavigationWindow.shared.updateWidth(720, id: "main")
+                GraniteNavigationWindow.shared.updateWidth(720, id: GraniteNavigationWindow.defaultMainWindowId)
             } else {
-                GraniteNavigationWindow.shared.updateWidth(1200, id: "main")
+                GraniteNavigationWindow.shared.updateWidth(1200, id: GraniteNavigationWindow.defaultMainWindowId)
             }
             #endif
         }

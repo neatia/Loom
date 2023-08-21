@@ -19,7 +19,7 @@ extension Write {
         }, set: { newValue in
             value = newValue
         })
-        modal.presentSheet {
+        ModalService.shared.presentSheet {
             GraniteStandardModalView(title: "TITLE_SET_URL", maxHeight: 210) {
                 VStack(spacing: 0) {
                     TextField("MISC_URL", text: bindingString)
@@ -40,7 +40,7 @@ extension Write {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.postURL.wrappedValue = lastState
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_CANCEL")
                                 .font(.headline)
@@ -51,7 +51,7 @@ extension Write {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.postURL.wrappedValue = ""
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_REMOVE")
                                 .font(.headline)
@@ -62,7 +62,7 @@ extension Write {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.postURL.wrappedValue = value
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_DONE")
                                 .font(.headline)
@@ -80,7 +80,7 @@ extension Write {
 
 extension Write {
     func setCommunity() {
-        modal.presentSheet {
+        ModalService.shared.presentSheet {
             CommunityPickerView()
                 .attach({ communityView in
                     GraniteHaptic.light.invoke()

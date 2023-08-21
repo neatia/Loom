@@ -17,7 +17,7 @@ extension Feed {
             AccountView()
                 .attach({
                     GraniteHaptic.light.invoke()
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         LoginView()
                     }
                 }, at: \.login)

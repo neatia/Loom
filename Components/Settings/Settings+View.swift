@@ -29,8 +29,7 @@ extension Settings: View {
             
             ScrollView(showsIndicators: false) {
                 ProfileSettingsView(showProfileSettings: false,
-                                    offline: true,
-                                    modal: modal)
+                                    offline: true)
                     .padding(.top, .layer4)
                 
                 VStack(alignment: .leading, spacing: 0) {
@@ -42,7 +41,7 @@ extension Settings: View {
                                 .font(.title2.bold())
                         }
                         //TODO: Localize
-                        .addInfoIcon(text: "Adds an interactive experience to various types of content.", modal)
+                        .addInfoIcon(text: "Adds an interactive experience to various types of content.")
                         
                         Spacer()
                     }
@@ -118,7 +117,7 @@ extension Settings: View {
                                 .font(.title2.bold())+Text(" (Infura)")
                                 .font(.title2.bold())
                         }
-                            .addInfoIcon(text: "IPFS_INFO_TEMP", modal)
+                            .addInfoIcon(text: "IPFS_INFO_TEMP")
                         
                         Spacer()
                     }
@@ -292,10 +291,10 @@ extension Settings: View {
             }
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
-        .addGraniteSheet(modal.sheetManager,
-                         modalManager: modal.modalSheetManager,
-                         background: Color.clear)
-        .addGraniteModal(modal.modalManager)
+//        .addGraniteSheet(modal.sheetManager,
+//                         modalManager: modal.modalSheetManager,
+//                         background: Color.clear)
+//        .addGraniteModal(modal.modalManager)
         .background(Color.background)
     }
     

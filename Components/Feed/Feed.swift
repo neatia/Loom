@@ -8,7 +8,6 @@ struct Feed: GraniteComponent {
     
     @Relay var config: ConfigService
     @Relay var content: ContentService
-    @Relay var modal: ModalService
     @Relay var account: AccountService
     @Relay var loom: LoomService
     

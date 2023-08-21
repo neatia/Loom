@@ -17,7 +17,7 @@ extension Feed {
             .interact
             .listen(.broadcast) { value in
                 if let response = value as? StandardErrorMeta {
-                    modal.presentModal(GraniteToastView(response))
+                    ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let response = value as? AccountService.Interact.ResponseMeta {
                     switch response.intent {
                     case .blockPersonFromPost(let model):
@@ -32,7 +32,7 @@ extension Feed {
                     default:
                         break
                     }
-                    modal.presentModal(GraniteToastView(response.notification))
+                    ModalService.shared.presentModal(GraniteToastView(response.notification))
                 }
             }
         
@@ -43,20 +43,20 @@ extension Feed {
                 if let meta = value as? AccountService.Interact.Meta {
                     switch meta.intent {
                     case .reportPost(let model):
-                        modal.presentSheet {
+                        ModalService.shared.presentSheet {
                             ReportView(kind: .post(model))
                         }
                     case .reportComment(let model):
-                        modal.presentSheet {
+                        ModalService.shared.presentSheet {
                             ReportView(kind: .comment(model))
                         }
                     case .editPost(let model):
-                        modal.presentSheet(detents: [.large()]) {
+                        ModalService.shared.presentSheet(detents: [.large()]) {
                             Write(postView: model)
                                 .attach({ updatedModel in
                                     DispatchQueue.main.async {
                                         pager.update(item: updatedModel)
-                                        self.modal.dismissSheet()
+                                        ModalService.shared.dismissSheet()
                                     }
                                 }, at: \.updatedPost)
                                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
@@ -80,7 +80,7 @@ extension Feed {
             .interact
             .listen(.broadcast) { value in
                 if let meta = value as? StandardErrorMeta {
-                    modal.presentModal(GraniteToastView(meta))
+                    ModalService.shared.presentModal(GraniteToastView(meta))
                 }
             }
         

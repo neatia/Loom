@@ -11,7 +11,6 @@ import GraniteUI
 
 struct InfoIconView: View {
     var text: LocalizedStringKey
-    var modal: ModalService
     var body: some View {
         //TODO: modal bug with macOS (maxHeight)
         VStack {
@@ -22,7 +21,7 @@ struct InfoIconView: View {
         }
         .onTapGesture {
             GraniteHaptic.light.invoke()
-            modal.presentModal(GraniteAlertView(message: text) {
+            ModalService.shared.presentModal(GraniteAlertView(message: text) {
                 
                 GraniteAlertAction(title: "MISC_DONE")
             })
@@ -31,21 +30,21 @@ struct InfoIconView: View {
 }
 
 extension View {
-    func addInfoIcon(text: LocalizedStringKey, spacing: CGFloat = .layer4, _ modalService: ModalService, direction: HorizontalAlignment = .trailing ) -> some View {
+    func addInfoIcon(text: LocalizedStringKey, spacing: CGFloat = .layer4, direction: HorizontalAlignment = .trailing ) -> some View {
         HStack(spacing: spacing) {
             if direction == .leading {
-                InfoIconView(text: text, modal: modalService)
+                InfoIconView(text: text)
             }
             self
             if direction == .trailing {
-                InfoIconView(text: text, modal: modalService)
+                InfoIconView(text: text)
             }
         }
     }
-    func addInfoIconIf(_ condition: Bool, text: LocalizedStringKey, spacing: CGFloat = .layer4, _ modalService: ModalService, direction: HorizontalAlignment = .trailing ) -> some View {
+    func addInfoIconIf(_ condition: Bool, text: LocalizedStringKey, spacing: CGFloat = .layer4, direction: HorizontalAlignment = .trailing ) -> some View {
         Group {
             if condition {
-                self.addInfoIcon(text: text, spacing: spacing, modalService, direction: direction)
+                self.addInfoIcon(text: text, spacing: spacing, direction: direction)
             } else {
                 self
             }

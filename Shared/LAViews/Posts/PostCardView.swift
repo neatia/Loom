@@ -21,7 +21,6 @@ struct PostCardView: View {
     @GraniteAction<PostView> var showContent
     @GraniteAction<PostView> var reply
     @GraniteAction<Community> var viewCommunity
-    @GraniteAction<(PostView?, PageableMetadata?)> var share
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
@@ -124,9 +123,6 @@ struct PostCardView: View {
                                 guard let model = context.postModel else { return }
                                 interact?.send(AccountService.Interact.Meta(intent: .editPost(model)))
                             }, at: \.edit)
-                            .attach({
-                                share.perform((context.postModel, contentMetadata))
-                            }, at: \.share)
                             .graniteEvent(interact)
                         
                         content
@@ -185,9 +181,6 @@ extension PostCardView {
                     .attach({ model in
                         reply.perform(model)
                     }, at: \.reply)
-                    .attach({
-                        share.perform((context.postModel, contentMetadata))
-                    }, at: \.share)
             }
         }
         .fixedSize(horizontal: false, vertical: isPreview ? false : true)

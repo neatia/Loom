@@ -6,7 +6,6 @@ struct Settings: GraniteComponent {
     
     @Environment(\.openURL) var openURL
     
-    @Relay var modal: ModalService
     @Relay var account: AccountService
     @Relay var config: ConfigService
     
@@ -18,8 +17,8 @@ struct Settings: GraniteComponent {
             .update
             .listen(.broadcast) { value in
                 if let meta = value as? AccountService.Update.ResponseMeta {
-                    modal.dismissSheet()
-                    modal.presentModal(GraniteToastView(meta.notification))
+                    ModalService.shared.dismissSheet()
+                    ModalService.shared.presentModal(GraniteToastView(meta.notification))
                 }
             }
     }

@@ -6,7 +6,6 @@ struct Loom: GraniteComponent {
     @Command var center: Center
     
     @Relay var service: LoomService
-    @Relay var modal: ModalService
     
     let communityView: CommunityView?
     
@@ -16,7 +15,7 @@ struct Loom: GraniteComponent {
             .modify
             .listen(.beam) { value in
                 if let response = value as? StandardErrorMeta {
-                    modal.presentModal(GraniteToastView(response))
+                    ModalService.shared.presentModal(GraniteToastView(response))
                 }
             }
     }

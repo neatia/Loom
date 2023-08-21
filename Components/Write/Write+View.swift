@@ -212,8 +212,8 @@ extension Write: View {
                       content: _state.content)
         }
         .padding(.top, .layer4)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-        .addGraniteModal(modal.modalManager)
+//        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+//        .addGraniteModal(modal.modalManager)
         .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)

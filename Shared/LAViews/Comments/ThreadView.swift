@@ -11,7 +11,6 @@ struct ThreadView: View {
     @Environment(\.colorScheme) var colorScheme
     
     @GraniteAction<CommentView> var showDrawer
-    @GraniteAction<CommentView?> var share
     @GraniteAction<Void> var closeDrawer
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
@@ -22,7 +21,6 @@ struct ThreadView: View {
     var isInline: Bool = false
     
     @Relay var config: ConfigService
-    @Relay var modalService: ModalService
     
     @State var breadCrumbs: [CommentView] = []
     
@@ -55,12 +53,6 @@ struct ThreadView: View {
                 CommentCardView(parentModel: currentModel,
                                 isInline: isInline)
                     .attach({ model in
-                        reply.perform(model)
-                    }, at: \.reply)
-                    .attach({ model in
-                        edit.perform(model)
-                    }, at: \.edit)
-                    .attach({ model in
                         if isModal {
                             breadCrumbs.append(model)
                             pager.fetch()
@@ -68,9 +60,6 @@ struct ThreadView: View {
                             showDrawer.perform(model)
                         }
                     }, at: \.showDrawer)
-                    .attach({ model in
-                        share.perform(model)
-                    }, at: \.share)
                     .contentContext(.addCommentModel(model: commentView, context))
             }
             .environmentObject(pager)

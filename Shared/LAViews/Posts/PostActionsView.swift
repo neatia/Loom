@@ -15,8 +15,9 @@ struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Void> var goToPost
     @GraniteAction<Void> var edit
-    @GraniteAction<Void> var share
     @Environment(\.graniteEvent) var interact
+    @Environment(\.contentContext) var context
+    @Environment(\.pagerMetadata) var metadata
     
     @Binding var enableCommunityRoute: Bool
     
@@ -111,7 +112,15 @@ struct PostActionsView: View {
             #if os(iOS)
             Button {
                 GraniteHaptic.light.invoke()
-                share.perform()
+                if context.isComment {
+                    ModalService
+                        .shared
+                        .showShareCommentModal(context.commentModel)
+                } else {
+                    ModalService
+                        .shared
+                        .showSharePostModal(context.postModel, metadata: metadata)
+                }
             } label: {
                 Text("MISC_SHARE")
                 Image(systemName: "paperplane")

@@ -5,7 +5,6 @@ import SwiftUI
 struct Profile: GraniteComponent {
     @Command var center: Center
     
-    @Relay var modal: ModalService
     @Relay var account: AccountService
     @Relay var content: ContentService
     

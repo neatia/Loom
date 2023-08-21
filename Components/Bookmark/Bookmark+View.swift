@@ -125,7 +125,7 @@ extension Bookmark: View {
             _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
             _state.selectedBookmarkCommentKey.wrappedValue = service.state.comments.keys.first ?? .local
         }
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+        //.addGraniteSheet(modal.sheetManager, background: Color.clear)
     }
     
     func headerView(for host: BookmarkKey) -> some View {
@@ -152,7 +152,7 @@ extension Bookmark: View {
                              linkPreviewType: .largeNoMetadata)
                     .attach({ postView in
                         GraniteHaptic.light.invoke()
-                        modal.presentSheet {
+                        ModalService.shared.presentSheet {
                             PostContentView(postView: postView)
                                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                         }

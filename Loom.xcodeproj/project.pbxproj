@@ -670,6 +670,8 @@
 		71FCDD152A75ECF9000A6309 /* LayoutEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FCDD132A75ECF9000A6309 /* LayoutEnvironment.swift */; };
 		71FCDD172A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */; };
 		71FCDD182A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */; };
+		71FF4D632A93F394005BF579 /* Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF4D622A93F394005BF579 /* Modals.swift */; };
+		71FF4D642A93F394005BF579 /* Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF4D622A93F394005BF579 /* Modals.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1052,6 +1054,7 @@
 		71FCDD132A75ECF9000A6309 /* LayoutEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEnvironment.swift; sourceTree = "<group>"; };
 		71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySidebarCardView.swift; sourceTree = "<group>"; };
 		71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--macOS--Info.plist"; sourceTree = "<group>"; };
+		71FF4D622A93F394005BF579 /* Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modals.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1813,7 +1816,6 @@
 				714B48842A8238A400AC6199 /* Globe */,
 				71B7A1EB2A691460003E6D4D /* Shiny */,
 				71C5FF612A64688A00F99A84 /* Drawer */,
-				7197FAEF2964B4BF005EBBA4 /* Modal */,
 				710283312A2A54C300010877 /* Sliders */,
 				712BEB5829074CFB00D257B7 /* Camera */,
 				717C129E293BEF730060A446 /* AppBlurBackground.swift */,
@@ -1830,19 +1832,18 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		7197FAEF2964B4BF005EBBA4 /* Modal */ = {
+		7197FAEF2964B4BF005EBBA4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				716CCAEE2A8CDAC4009F9413 /* SheeKit */,
 				7197FAFC2964B4BF005EBBA4 /* Sheet */,
 				7197FAF72964B4BF005EBBA4 /* Toast */,
 				7197FAF22964B4BF005EBBA4 /* Alert */,
-				7197FAF02964B4BF005EBBA4 /* GraniteModalManager.swift */,
 				7197FAF12964B4BF005EBBA4 /* GraniteModal.swift */,
 				7197FAFB2964B4BF005EBBA4 /* GraniteModalContainerView.swift */,
 				7197FB022964B4BF005EBBA4 /* GraniteModalWindow.swift */,
 			);
-			path = Modal;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7197FAF22964B4BF005EBBA4 /* Alert */ = {
@@ -1880,6 +1881,8 @@
 		7197FB232964B4EC005EBBA4 /* ModalService */ = {
 			isa = PBXGroup;
 			children = (
+				7197FAEF2964B4BF005EBBA4 /* Views */,
+				7197FAF02964B4BF005EBBA4 /* GraniteModalManager.swift */,
 				7197FB242964B4EC005EBBA4 /* ModalService+Actions.swift */,
 				7197FB252964B4EC005EBBA4 /* ModalService+Center.swift */,
 				7197FB262964B4EC005EBBA4 /* ModalService.swift */,
@@ -2142,6 +2145,7 @@
 		71C9F9102A60BCFF0089D7EA /* LAViews */ = {
 			isa = PBXGroup;
 			children = (
+				71FF4D612A93F380005BF579 /* Modals */,
 				715826772A881DD8000E4B49 /* ViewingContext.swift */,
 				71E5209F2A9357820057EA83 /* CardStyle.swift */,
 				71F778C42A71ABAC00C9C5C4 /* CensorView.swift */,
@@ -2432,6 +2436,14 @@
 				71FCDD132A75ECF9000A6309 /* LayoutEnvironment.swift */,
 			);
 			path = Environment;
+			sourceTree = "<group>";
+		};
+		71FF4D612A93F380005BF579 /* Modals */ = {
+			isa = PBXGroup;
+			children = (
+				71FF4D622A93F394005BF579 /* Modals.swift */,
+			);
+			path = Modals;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2927,6 +2939,7 @@
 				717090AD2A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift in Sources */,
 				71B21B812A6C791E005B3BFB /* GraniteStandardModalView.swift in Sources */,
 				71EAF47B2A7DA3320034FCB9 /* ExplorerService.swift in Sources */,
+				71FF4D632A93F394005BF579 /* Modals.swift in Sources */,
 				716157E22A85FD9D00449EE4 /* Keyboard.swift in Sources */,
 				71C8BE722A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */,
 				71A28D3229522F8300EAE8EE /* ContainerConfig.swift in Sources */,
@@ -3286,6 +3299,7 @@
 				7166E9EC2A751441004F88D7 /* UserInfo.swift in Sources */,
 				710283BE2A2A54C300010877 /* EnviromnentValues+ValueTrackConfiguration.swift in Sources */,
 				716157E32A85FD9D00449EE4 /* Keyboard.swift in Sources */,
+				71FF4D642A93F394005BF579 /* Modals.swift in Sources */,
 				71F778C32A71A95300C9C5C4 /* LinkPreviewDesign.swift in Sources */,
 				71F778BF2A71A95300C9C5C4 /* LinkPreview.swift in Sources */,
 				71622E9E2A6E5796006233F3 /* Reply+Center.swift in Sources */,
@@ -3561,7 +3575,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3591,7 +3605,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

@@ -4,7 +4,6 @@ import LemmyKit
 
 struct Search: GraniteComponent {
     @Command var center: Center
-    @Relay var modal: ModalService
     
     @Environment(\.presentationMode) var presentationMode
     @StateObject var conductor: SearchConductor = .init()

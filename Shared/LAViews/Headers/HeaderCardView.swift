@@ -22,7 +22,6 @@ struct HeaderCardView: View {
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
-    @GraniteAction<Void> var share
     
     @State var enableRoute: Bool = false
     @State var enablePostViewRoute: Bool = false
@@ -112,9 +111,6 @@ struct HeaderCardView: View {
                         .attach({
                             edit.perform()
                         }, at: \.edit)
-                        .attach({
-                            share.perform()
-                        }, at: \.share)
                         .graniteEvent(interact)
                 }
             }
