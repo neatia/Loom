@@ -15,28 +15,46 @@ struct UserCardView: View {
     @Environment(\.graniteEvent) var interact
     
     var model: PersonView
+    var meta: AccountMeta?
+    
     var isBlocked: Bool = false
     var fullWidth: Bool = false
     var showCounts: Bool = false
+    var style: CardStyle = .style1
     
     var totalScore: String {
-        NumberFormatter.formatAbbreviated(model.counts.totalScore)
+        if let totalScore = meta?.info.local_user_view.counts.totalScore {
+            return totalScore.abbreviated
+        }
+        return model.counts.totalScore.abbreviated
     }
     
     var posts: String {
-        NumberFormatter.formatAbbreviated(model.counts.post_count)
+        if let posts = meta?.info.local_user_view.counts.post_count {
+            return posts.abbreviated
+        }
+        return model.counts.post_count.abbreviated
     }
     
     var comments: String {
-        NumberFormatter.formatAbbreviated(model.counts.comment_count)
+        if let comments = meta?.info.local_user_view.counts.comment_count {
+            return comments.abbreviated
+        }
+        return model.counts.comment_count.abbreviated
     }
     
     var postScore: String {
-        NumberFormatter.formatAbbreviated(model.counts.post_score)
+        if let post_score = meta?.info.local_user_view.counts.post_score {
+            return post_score.abbreviated
+        }
+        return model.counts.post_score.abbreviated
     }
     
     var commentScore: String {
-        NumberFormatter.formatAbbreviated(model.counts.comment_score)
+        if let comment_score = meta?.info.local_user_view.counts.comment_score {
+            return comment_score.abbreviated
+        }
+        return model.counts.comment_score.abbreviated
     }
     
     var body: some View {
@@ -47,9 +65,38 @@ struct UserCardView: View {
         }
     }
     
+    var size: AvatarView.Size {
+        switch style {
+        case .style1:
+            return .large
+        case .style2:
+            return .small
+        }
+    }
+    
+    var primaryFont: Font {
+        switch style {
+        case .style1:
+            return .headline
+        case .style2:
+            return .subheadline
+            
+        }
+    }
+    
+    var secondaryFont: Font {
+        switch style {
+        case .style1:
+            return .caption
+        case .style2:
+            return .caption2
+            
+        }
+    }
+    
     var compactView: some View {
         VStack(spacing: 0) {
-            AvatarView(model.person, size: .large)
+            AvatarView(model.person, size: size)
                 .padding(.bottom, .layer2)
             
             HStack {
@@ -73,20 +120,20 @@ struct UserCardView: View {
         }
         .padding(.vertical, .layer3)
         .background(Color.secondaryBackground.opacity(0.8))
-        .cornerRadius(8)
+        .cornerRadius(style == .style1 ? 8 : size.frame / 2)
     }
     
     
     var fullWidthView: some View {
         VStack(spacing: 0) {
             HStack(spacing: .layer3) {
-                AvatarView(model.person.avatarURL, size: .large)
+                AvatarView(model.person.avatarURL, size: size)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     if showCounts {
                         HStack {
                             Text("LABEL_SCORE \(totalScore)")
-                                .font(.headline.bold())
+                                .font(primaryFont)
                             
                             Spacer()
                         }
@@ -102,10 +149,10 @@ struct UserCardView: View {
                     }
                     HStack(spacing: .layer2) {
                         Text("@" + model.person.name)
-                            .font(.headline)
+                            .font(primaryFont)
                             .cornerRadius(4)
                         Text("@" + model.person.actor_id.host)
-                            .font(.caption)
+                            .font(secondaryFont)
                             .padding(.vertical, .layer1)
                             .padding(.horizontal, .layer1)
                             .background(Color.tertiaryBackground)
@@ -126,11 +173,11 @@ struct UserCardView: View {
             .padding(.layer3)
             .foregroundColor(.foreground)
             .background(Color.secondaryBackground.opacity(0.8))
-            .cornerRadius(8)
+            .cornerRadius(style == .style1 ? 8 : size.frame)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9)
             .padding(.bottom, .layer2)
             
-            if showCounts {
+            if showCounts && style == .style1 {
                 HStack(spacing: .layer2) {
                     
                     VStack(alignment: .leading, spacing: .layer2) {

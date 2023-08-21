@@ -21,12 +21,17 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
     @Binding var isShowing: Bool
     
     var startThreshold: CGFloat = 0.05
-    var activeThreshold: CGFloat = 0.7
-    var viewingThreshold: CGFloat = 0.9
+    var activeThreshold: CGFloat = 0.6
+    var viewingThreshold: CGFloat = 0.8
     
     var startWidth: CGFloat
     var width: CGFloat
+    
     @State var offsetX: CGFloat = 0
+    
+    var opacity: CGFloat {
+        (offsetX / width) * 0.8
+    }
     
     private let menuContent: () -> MenuContent
     
@@ -75,11 +80,37 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
             content
                 .disabled(isShowing)
                 .offset(x: self.offsetX)
+                .overlayIf(offsetX > 0,
+                           overlay: Color.alternateBackground.opacity(opacity).ignoresSafeArea())
             
             menuContent()
                 .frame(width: width)
                 .offset(x: self.offsetX - width)
                 .opacity(self.offsetX > 0 ? 1.0 : 0)
+                .environment(\.sideMenuVisible, isShowing)
+                .environment(\.sideMenuMoving, offsetX != 0 || offsetX != width)
         }.gesture(drag)
+    }
+}
+
+struct SideMenuVisibilityContextKey: EnvironmentKey {
+    static var defaultValue: Bool = false
+}
+
+extension EnvironmentValues {
+    var sideMenuVisible: Bool {
+        get { self[SideMenuVisibilityContextKey.self] }
+        set { self[SideMenuVisibilityContextKey.self] = newValue }
+    }
+}
+
+struct SideMenuMovingContextKey: EnvironmentKey {
+    static var defaultValue: Bool = false
+}
+
+extension EnvironmentValues {
+    var sideMenuMoving: Bool {
+        get { self[SideMenuMovingContextKey.self] }
+        set { self[SideMenuMovingContextKey.self] = newValue }
     }
 }

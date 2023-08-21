@@ -573,6 +573,10 @@
 		71DF108028CC697600559DBC /* ProgressContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106C28CC697600559DBC /* ProgressContent.swift */; };
 		71E520932A929D190057EA83 /* MarqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71E520922A929D190057EA83 /* MarqueKit */; };
 		71E5209B2A932EE10057EA83 /* MarqueKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71E5209A2A932EE10057EA83 /* MarqueKit */; };
+		71E5209D2A9345490057EA83 /* FeedHamburgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5209C2A9345490057EA83 /* FeedHamburgerView.swift */; };
+		71E5209E2A9345490057EA83 /* FeedHamburgerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5209C2A9345490057EA83 /* FeedHamburgerView.swift */; };
+		71E520A02A9357820057EA83 /* CardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5209F2A9357820057EA83 /* CardStyle.swift */; };
+		71E520A12A9357820057EA83 /* CardStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5209F2A9357820057EA83 /* CardStyle.swift */; };
 		71E5F3BF2A7320EE00299558 /* ScrollView+Overflow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5F3BE2A7320EE00299558 /* ScrollView+Overflow.swift */; };
 		71E5F3C02A7320EE00299558 /* ScrollView+Overflow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5F3BE2A7320EE00299558 /* ScrollView+Overflow.swift */; };
 		71E5F3C22A73244500299558 /* LazyScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71E5F3C12A73244500299558 /* LazyScrollView.swift */; };
@@ -975,6 +979,8 @@
 		71DF106A28CC697600559DBC /* Double+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Rounding.swift"; sourceTree = "<group>"; };
 		71DF106C28CC697600559DBC /* ProgressContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressContent.swift; sourceTree = "<group>"; };
 		71E520942A92BB2B0057EA83 /* MarqueKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MarqueKit; path = ../../../pexavc/repositories/MarqueKit; sourceTree = "<group>"; };
+		71E5209C2A9345490057EA83 /* FeedHamburgerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHamburgerView.swift; sourceTree = "<group>"; };
+		71E5209F2A9357820057EA83 /* CardStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardStyle.swift; sourceTree = "<group>"; };
 		71E5F3BE2A7320EE00299558 /* ScrollView+Overflow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScrollView+Overflow.swift"; sourceTree = "<group>"; };
 		71E5F3C12A73244500299558 /* LazyScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyScrollView.swift; sourceTree = "<group>"; };
 		71E5F3CA2A73A02500299558 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
@@ -2140,6 +2146,7 @@
 			isa = PBXGroup;
 			children = (
 				715826772A881DD8000E4B49 /* ViewingContext.swift */,
+				71E5209F2A9357820057EA83 /* CardStyle.swift */,
 				71F778C42A71ABAC00C9C5C4 /* CensorView.swift */,
 				7166E9D12A747ED7004F88D7 /* ReportView.swift */,
 				71F778C72A71AE0300C9C5C4 /* FeedStyle.swift */,
@@ -2418,6 +2425,7 @@
 				71C8BE7A2A7F3F14008694C7 /* FeedMainView.swift */,
 				71FCDD0F2A75EC9B000A6309 /* Feed.Horizontal.swift */,
 				71FCDD0C2A75EC69000A6309 /* Feed.Vertical.swift */,
+				71E5209C2A9345490057EA83 /* FeedHamburgerView.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -2745,6 +2753,7 @@
 				712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
 				71F0421D2A6A3AD100788CDC /* Globe.swift in Sources */,
 				7197FB032964B4C0005EBBA4 /* GraniteModalManager.swift in Sources */,
+				71E520A02A9357820057EA83 /* CardStyle.swift in Sources */,
 				71AF14672A2E807300EEBD4B /* Disclaimer.swift in Sources */,
 				71D028002A6F1AD400EA781A /* AccountService.Profile.swift in Sources */,
 				71C9F8E42A60B7E10089D7EA /* Profile.swift in Sources */,
@@ -2876,6 +2885,7 @@
 				7197FB092964B4C0005EBBA4 /* GraniteAlertViewPresentationMode.swift in Sources */,
 				71B7A1F32A691470003E6D4D /* MotionManager.swift in Sources */,
 				714B487B2A81847800AC6199 /* ResourceType.swift in Sources */,
+				71E5209D2A9345490057EA83 /* FeedHamburgerView.swift in Sources */,
 				7102839F2A2A54C300010877 /* PointSlider.swift in Sources */,
 				71C9F9002A60B9460089D7EA /* ConfigService+Center.swift in Sources */,
 				71899E622A89D6A30073158F /* Loom.CreateView.swift in Sources */,
@@ -3187,6 +3197,7 @@
 				71F778D72A72187000C9C5C4 /* Config.Update.swift in Sources */,
 				71C9F9012A60B9460089D7EA /* ConfigService+Center.swift in Sources */,
 				71622E912A6E3DED006233F3 /* AdaptsToKeyboard.swift in Sources */,
+				71E5209E2A9345490057EA83 /* FeedHamburgerView.swift in Sources */,
 				7197FB162964B4C0005EBBA4 /* GraniteModalContainerView.swift in Sources */,
 				71C9F8E72A60B7E10089D7EA /* Profile+View.swift in Sources */,
 				710283CE2A2A54C300010877 /* DefaultThumb.swift in Sources */,
@@ -3258,6 +3269,7 @@
 				71A28D3329522F8300EAE8EE /* ContainerConfig.swift in Sources */,
 				7145EF0E28D43F1D00BFD19A /* Date.swift in Sources */,
 				71DF106E28CC697600559DBC /* DictionaryDecoder.swift in Sources */,
+				71E520A12A9357820057EA83 /* CardStyle.swift in Sources */,
 				715151302A8FBE0D00251978 /* GraniteScrollView+macOS.swift in Sources */,
 				710283AA2A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
 				712BEB6129074CFB00D257B7 /* CameraContentView.swift in Sources */,

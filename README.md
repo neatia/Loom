@@ -63,8 +63,6 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 - [MarbleKit](https://github.com/pexavc/marblekit)
 - [LemmyKit](https://github.com/pexavc/lemmykit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)
-- [WrapLayout](https://github.com/FluidGroup/swiftui-WrapLayout) Thanks to [@FluidGroup](https://github.com/FluidGroup)
-  - [Placement](https://github.com/sampettersson/Placement) Thanks to [@sampettersson](https://github.com/sampettersson)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean/nuke)
 - [MarkdownView](https://github.com/pexavc/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004)
 

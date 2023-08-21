@@ -54,60 +54,20 @@ extension Feed {
         }
         .edgesIgnoringSafeArea(state.community != nil ? [.bottom] : [])
         .sideMenu(isShowing: _state.isShowing) {
-            VStack(spacing: 0) {
-                accountsPickerView
-                if state.socialViewOptions == 0 {
-                    CommunityPickerView(modal: false, verticalPadding: 0)
-                        .id(config.center.state.config)
-                } else {
-                    BlockedPickerView(meta: account.state.meta,
-                                      modal: false,
-                                      verticalPadding: 0)
-                    .graniteEvent(account.center.interact)
-                }
-            }
+            FeedHamburgerView()
+                .attach( { modalView in
+                    modal.present(modalView, target: .sheet)
+                }, at: \.present)
+                .attach( { meta in
+                    modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
+                        
+                        GraniteAlertAction(title: "MISC_NO")
+                        GraniteAlertAction(title: "MISC_YES") {
+                            config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
+                        }
+                    })
+                }, at: \.switchAccount)
         }
     }
-    
-    var accountsPickerView: some View {
-        HStack(spacing: .layer4) {
-            Button {
-                guard state.socialViewOptions != 0 else { return }
-                GraniteHaptic.light.invoke()
-                _state.socialViewOptions.wrappedValue = 0
-            } label: {
-                VStack {
-                    Spacer()
-                    Text("TITLE_COMMUNITIES")
-                        .font(state.socialViewOptions == 0 ? .title.bold() : .title2.bold())
-                        .opacity(state.socialViewOptions == 0 ? 1.0 : 0.6)
-                }
-            }
-            .buttonStyle(PlainButtonStyle())
-            
-            if account.isLoggedIn {
-                Button {
-                    guard state.socialViewOptions != 1 else { return }
-                    GraniteHaptic.light.invoke()
-                    _state.socialViewOptions.wrappedValue = 1
-                } label: {
-                    VStack {
-                        Spacer()
-                        Text("TITLE_BLOCKED")
-                            .font(state.socialViewOptions == 1 ? .title.bold() : .title2.bold())
-                            .opacity(state.socialViewOptions == 1 ? 1.0 : 0.6)
-                    }
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            
-            Spacer()
-        }
-        .frame(height: 36)
-        .padding(.top, ContainerConfig.generalViewTopPadding)
-        .padding(.leading, .layer4)
-        .padding(.trailing, .layer4)
-    }
-    
 }
 

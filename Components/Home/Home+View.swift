@@ -104,14 +104,15 @@ extension Home: View {
                     GraniteTabIcon(name: "bookmark")
                 }
             }
-
-            GraniteTab(split: Device.isExpandedLayout,
-                       last: true) {
-                Settings()
-            } icon: {
-                GraniteTabIcon(name: "gearshape")
-            }
             
+            if Device.isExpandedLayout {
+                GraniteTab(split: Device.isExpandedLayout,
+                           last: true) {
+                    Settings()
+                } icon: {
+                    GraniteTabIcon(name: "gearshape")
+                }
+            }
         }
         .edgesIgnoringSafeArea([.top, .bottom])
         .padding(.top, safeAreaTop)

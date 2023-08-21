@@ -5,6 +5,7 @@ import LemmyKit
 extension Loom {
     struct Center: GraniteCenter {
         struct State: GraniteState {
+            var viewOption: ViewOption = .looms
         }
         
         @Store public var state: State
@@ -29,5 +30,10 @@ extension Loom {
                 return false
             }
         }
+    }
+    
+    enum ViewOption: GraniteModel {
+        case looms
+        case communities
     }
 }

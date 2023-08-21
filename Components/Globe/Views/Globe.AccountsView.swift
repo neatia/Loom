@@ -37,7 +37,8 @@ extension Globe {
                         .id(account.state.meta)
                     }
                     .buttonStyle(PlainButtonStyle())
-                    .frame(width: state.accountModuleSize, height: state.accountModuleSize)
+                    .frame(width: state.accountModuleSize,
+                           height: state.accountModuleSize)
                 }
             }
             .padding(.vertical, .layer4)
