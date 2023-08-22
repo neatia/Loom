@@ -77,9 +77,16 @@ struct ContentContext {
         return nil
     }
     
+    static func addPostModel(model: PostView?, _ context: ContentContext) -> Self {
+        return .init(postModel: model ?? context.postModel,
+                     commentModel: context.commentModel,
+                     feedStyle: context.feedStyle,
+                     viewingContext: context.viewingContext)
+    }
+    
     static func addCommentModel(model: CommentView?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
-                     commentModel: model,
+                     commentModel: model ?? context.commentModel,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext)
     }

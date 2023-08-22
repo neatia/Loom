@@ -25,6 +25,7 @@ struct PostCardView: View {
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
     
+    @State var model: PostView?
     @State var routePostDisplay: Bool = false
     
     var topPadding: CGFloat = .layer6
@@ -104,6 +105,15 @@ struct PostCardView: View {
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
+                        .attach({
+                            ModalService
+                                .shared
+                                .showEditPostModal(context.postModel) { updatedModel in
+                                    DispatchQueue.main.async {
+                                        model = updatedModel
+                                    }
+                                }
+                        }, at: \.edit)
                     content
                     
                 }
@@ -120,8 +130,13 @@ struct PostCardView: View {
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                guard let model = context.postModel else { return }
-                                interact?.send(AccountService.Interact.Meta(intent: .editPost(model)))
+                                ModalService
+                                    .shared
+                                    .showEditPostModal(context.postModel) { updatedModel in
+                                        DispatchQueue.main.async {
+                                            model = updatedModel
+                                        }
+                                    }
                             }, at: \.edit)
                             .graniteEvent(interact)
                         
@@ -220,7 +235,7 @@ extension PostCardView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
-                    guard let model = context.postModel else { return }
+                    guard let model else { return }
                     showContent.perform(model)
                 }
             }
@@ -244,7 +259,7 @@ extension PostCardView {
                                     urlToOpen: context.postModel?.postURL,
                                     shouldLoad: context.hasURL)
                     .attach({
-                        guard let model = context.postModel else { return }
+                        guard let model else { return }
                         showContent.perform(model)
                     }, at: \.showContent)
                     .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
@@ -255,9 +270,10 @@ extension PostCardView {
     }
     
     var contentMetaBody: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        let model: PostView? = self.model ?? context.postModel
+        return VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(context.postModel?.post.name ?? "")
+                Text(model?.post.name ?? "")
                     .font(.body)
                     .multilineTextAlignment(.leading)
                     .foregroundColor(.foreground.opacity(0.9))
@@ -269,8 +285,8 @@ extension PostCardView {
              contentMetadata can be nil if showing bookmarks
              so checking posturl is better in this case
             */
-            if context.postModel?.postURL == nil,
-               let body = context.postModel?.post.body {
+            if model?.postURL == nil,
+               let body = model?.post.body {
                 let readMoreText: LocalizedStringKey = "MISC_READ_MORE"
                 HStack(spacing: .layer2) {
                     Text(String(body.previewBody) + "\(body.count < 120 ? " " : "... ")")
@@ -299,7 +315,7 @@ extension PostCardView {
         }
         .route(window: .resizable(600, 500)) {
             //prevent type erasure
-            PostDisplayView(context: _context)
+            PostDisplayView(context: _context, updatedModel: model)
         }
     }
     

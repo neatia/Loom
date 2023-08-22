@@ -8,6 +8,7 @@ import MarkdownView
 
 struct ThreadView: View {
     @Environment(\.contentContext) var context
+    
     @Environment(\.colorScheme) var colorScheme
     
     @GraniteAction<CommentView> var showDrawer
@@ -49,7 +50,8 @@ struct ThreadView: View {
             }
             
             PagerScrollView(CommentView.self,
-                            properties: .init(showFetchMore: false)) { commentView in
+                            properties: .init(hideLastDivider: true,
+                                              showFetchMore: false)) { commentView in
                 CommentCardView(parentModel: currentModel,
                                 isInline: isInline)
                     .attach({ model in

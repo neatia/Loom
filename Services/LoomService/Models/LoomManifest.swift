@@ -21,7 +21,8 @@ struct LoomManifest: AnyLoomManifest, Identifiable, Hashable {
     static func == (lhs: LoomManifest, rhs: LoomManifest) -> Bool {
         lhs.id == rhs.id &&
         lhs.communityIds == rhs.communityIds &&
-        lhs.instanceIds == rhs.instanceIds
+        lhs.instanceIds == rhs.instanceIds &&
+        lhs.meta == rhs.meta
     }
     
     var id: UUID = .init()

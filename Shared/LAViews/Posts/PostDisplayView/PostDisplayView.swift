@@ -16,6 +16,7 @@ import MarkdownView
 
 struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
+    
     @GraniteAction<Community> var viewCommunity
     
     @Relay var config: ConfigService
@@ -113,6 +114,20 @@ struct PostDisplayView: GraniteNavigationDestination {
             self.threadLocation = context.location
             
             guard let model else { return }
+            
+            /*
+             Let's update the model incase
+             won't fire if triggered from postCard after editing
+             most likely if the model is yours, it could have changed
+             prior to entry
+             
+             can save on calls, otherwise
+             */
+            if model.creator.isMe,
+               updatedModel == nil {
+                let postView = await Lemmy.post(context.postModel?.post.id)
+                self.updatedModel = postView
+            }
             
             pager.hook { page in
                 return await Lemmy.comments(model.post,

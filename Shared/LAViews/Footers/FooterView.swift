@@ -13,6 +13,7 @@ import GraniteUI
 
 struct FooterView: View {
     @Environment(\.contentContext) var context
+    
     @Environment(\.pagerMetadata) var metadata
     
     @GraniteAction<CommentId> var showComments
@@ -209,16 +210,14 @@ extension FooterView {
                 .contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
             
-            if context.isPost,
-               let postView = context.postModel {
+            if context.isPost {
                 HStack(spacing: .layer1) {
                     Image(systemName: "bubble.left")
                         .font(font)
                 }
                 .foregroundColor(.foreground)
                 .route(window: .resizable(600, 500)) {
-                    PostDisplayView()
-                        .contentContext(context)
+                    PostDisplayView(context: _context)
                 }
             }
             
@@ -342,8 +341,9 @@ extension FooterView {
                 .routeIf(context.isPostAvailable,
                          title: routeTitle ?? "",
                          window: .resizable(600, 500)) {
-                    PostDisplayView()
-                        .contentContext(context)
+                    //This won't be able to pull in an edited model from the card view
+                    //it should possibly forward the call instead
+                    PostDisplayView(context: _context)
                 }
             }
             

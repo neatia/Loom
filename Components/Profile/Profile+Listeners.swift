@@ -24,7 +24,6 @@ extension Profile {
                 }
             }
         
-        
         account
             .center
             .interact
@@ -40,29 +39,6 @@ extension Profile {
                         break
                     }
                     ModalService.shared.presentModal(GraniteToastView(response.notification))
-                }
-            }
-        
-        content
-            .center
-            .interact
-            .listen(.broadcast) { value in
-                if let response = value as? ContentService.Interact.Meta {
-                    
-                    switch response.kind {
-                    case .editCommentSubmit(let model, _):
-                        DispatchQueue.main.async {
-                            pager.update(item: .init(commentView: model, postView: nil, isMention: false, isReply: false))
-                            ModalService.shared.dismissSheet()
-                        }
-                    case .editComment(let commentView, let postView):
-                        ModalService
-                            .shared
-                            .showEditCommentModal(commentView,
-                                                  postView: postView)
-                    default:
-                        break
-                    }
                 }
             }
     }

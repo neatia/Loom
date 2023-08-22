@@ -11,7 +11,7 @@ extension Settings: View {
     
     public var view: some View {
         VStack(spacing: 0) {
-            HStack(spacing: .layer4) {
+            HStack(alignment: .bottom, spacing: .layer4) {
                 VStack {
                     Spacer()
                     Text("TITLE_SETTINGS")
@@ -20,8 +20,8 @@ extension Settings: View {
                 
                 Spacer()
             }
-            .frame(height: 36)
-            .padding(.bottom, .layer4)
+            .frame(height: 24)
+            .padding(.bottom, .layer5)
             .padding(.leading, .layer4)
             .padding(.trailing, .layer4)
             
@@ -290,7 +290,6 @@ extension Settings: View {
 //                .foregroundColor(.foreground)
             }
         }
-        .padding(.top, ContainerConfig.generalViewTopPadding)
         .background(Color.background)
     }
     

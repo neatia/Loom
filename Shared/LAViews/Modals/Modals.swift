@@ -56,7 +56,7 @@ extension ModalService {
     @MainActor
     func showEditCommentModal(_ commentView: CommentView?,
                               postView: PostView? = nil,
-                              _ update: ((PostView) -> Void)? = nil) {
+                              _ update: ((CommentView) -> Void)? = nil) {
         
         guard let commentView else {
             return
@@ -72,6 +72,11 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: replyKind)
+                .attach({ model in
+                    DispatchQueue.main.async {
+                        update?(model)
+                    }
+                }, at: \.updateComment)
                 .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
         }
     }
@@ -156,8 +161,8 @@ extension ModalService {
                         .environment(\.pagerMetadata, metadata)
                         .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
                 }
-                .environment(\.contentContext, .init(postModel: model,
-                                                     viewingContext: .screenshot))
+                .contentContext(.init(postModel: model,
+                                      viewingContext: .screenshot))
             }
             .frame(width: Device.isMacOS ? 600 : nil)
             .frame(minHeight: Device.isMacOS ? 500 : nil)

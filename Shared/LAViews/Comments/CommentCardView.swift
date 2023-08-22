@@ -7,6 +7,7 @@ import MarkdownView
 
 struct CommentCardView: View {
     @Environment(\.contentContext) var context
+    
     @Environment(\.graniteEvent) var interact
     @GraniteAction<Community> var viewCommunity
     
@@ -86,7 +87,12 @@ struct CommentCardView: View {
                                         }
                                     }
                                 default:
-                                    content.center.interact.send(ContentService.Interact.Meta(kind: .editComment(model, postView)))
+                                    ModalService
+                                        .shared
+                                        .showEditCommentModal(model,
+                                                              postView: postView) { updatedModel in
+                                            self.model = updatedModel
+                                        }
                                 }
                             }, at: \.edit)
                             .graniteEvent(interact)
@@ -120,7 +126,7 @@ struct CommentCardView: View {
             
             ModalService
                 .shared
-                .showReplyCommentModal(isEditing: true,
+                .showReplyCommentModal(isEditing: false,
                                        model: model) { updatedModel in
                 
                 DispatchQueue.main.async {
@@ -132,9 +138,6 @@ struct CommentCardView: View {
                     }
                 }
             }
-        }
-        .transaction { tx in
-            tx.animation = nil
         }
         .task {
             self.model = context.commentModel

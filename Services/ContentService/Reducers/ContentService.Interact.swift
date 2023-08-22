@@ -29,6 +29,7 @@ extension ContentService {
             case replyCommentSubmit(CommentView, CommentView)
             case editComment(CommentView, PostView?)
             case editCommentSubmit(CommentView, String)
+            case editPostSubmit(PostView)
         }
         
         struct Meta: GranitePayload {
@@ -173,6 +174,9 @@ extension ContentService {
                 }
                 
                 broadcast.send(Meta(kind: .editCommentSubmit(updatedModel.asView(with: model), content)))
+                
+            case .editPostSubmit:
+                broadcast.send(meta)
             default:
                 break
             }

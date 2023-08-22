@@ -17,6 +17,7 @@ struct PostActionsView: View {
     @GraniteAction<Void> var edit
     @Environment(\.graniteEvent) var interact
     @Environment(\.contentContext) var context
+    
     @Environment(\.pagerMetadata) var metadata
     
     var enableCommunityRoute: Bool

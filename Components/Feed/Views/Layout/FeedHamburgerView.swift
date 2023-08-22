@@ -74,21 +74,21 @@ struct FeedHamburgerView: View {
                             .perform(GraniteAlertView(mode: .sheet) {
                             
                             GraniteAlertAction {
-                                ScrollView(showsIndicators: false) {
-                                    VStack(spacing: .layer2) {
-                                        ForEach(account.state.profiles) { profile in
-                                            UserCardView(model: profile.person.asView(),
-                                                         meta: profile,
-                                                         fullWidth: true, showCounts: true, style: .style2)
-                                            .onTapGesture {
-                                                GraniteHaptic.light.invoke()
-                                                switchAccount.perform(profile)
-                                            }
-                                            .padding(.horizontal, .layer4)
-                                            
+                                VStack(spacing: .layer2) {
+                                    ForEach(account.state.profiles) { profile in
+                                        UserCardView(model: profile.person.asView(),
+                                                     meta: profile,
+                                                     fullWidth: true, showCounts: true, style: .style2)
+                                        .onTapGesture {
+                                            GraniteHaptic.light.invoke()
+                                            switchAccount.perform(profile)
                                         }
+                                        .padding(.horizontal, .layer4)
+                                        
                                     }
-                                }.frame(maxHeight: 300)
+                                }
+                                .wrappedInScrollView(when: account.state.profiles.count > 3,
+                                                     axis: .vertical)
                             }
                                 
                             //TODO: Localize

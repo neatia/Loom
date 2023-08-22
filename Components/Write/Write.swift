@@ -5,6 +5,7 @@ import SwiftUI
 struct Write: GraniteComponent {
     @Command var center: Center
     @Relay var config: ConfigService
+    @Relay(.silence) var content: ContentService
     
     @GraniteAction<PostView> var updatedPost
     
@@ -34,6 +35,10 @@ struct Write: GraniteComponent {
                     ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let meta = value as? Write.Create.ResponseMeta {
                     updatedPost.perform(meta.postView)
+                    content
+                        .center
+                        .interact
+                        .send(ContentService.Interact.Meta(kind: .editPostSubmit(meta.postView)))
                 }
             }
     }

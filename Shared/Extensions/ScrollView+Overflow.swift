@@ -10,9 +10,10 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func wrappedInScrollView(when condition: Bool) -> some View {
+    func wrappedInScrollView(when condition: Bool,
+                             axis: Axis.Set = .horizontal) -> some View {
         if condition {
-            ScrollView(.horizontal, showsIndicators: false) {
+            ScrollView([axis], showsIndicators: false) {
                 self
             }
         } else {

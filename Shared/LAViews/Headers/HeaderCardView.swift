@@ -14,6 +14,7 @@ import Combine
 
 struct HeaderCardView: View {
     @Environment(\.contentContext) var context
+    
     @Environment(\.graniteEvent) var interact
     
     @Relay var layout: LayoutService
@@ -131,8 +132,7 @@ struct HeaderCardView: View {
             self.postView = postView
             
             GraniteNavigation.push {
-                PostDisplayView()
-                    .contentContext(context)
+                PostDisplayView(context: _context)
             }
         }
     }
