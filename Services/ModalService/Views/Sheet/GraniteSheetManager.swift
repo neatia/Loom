@@ -41,13 +41,23 @@ final public class GraniteSheetManager : ObservableObject {
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents
-        self.models[id] = .init(id: id, content: AnyView(content()))
+        self.models[id] = .init(id: id,
+                                content: AnyView(content()
+            .graniteNavigation(backgroundColor: Color.background)))
     }
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {
         DispatchQueue.main.async { [weak self] in
             self?.detentsMap[id] = nil
             self?.models[id] = nil
+            self?.shouldPreventDismissal = false
+        }
+    }
+    
+    public func destroy() {
+        DispatchQueue.main.async { [weak self] in
+            self?.detentsMap = [:]
+            self?.models = [:]
             self?.shouldPreventDismissal = false
         }
     }

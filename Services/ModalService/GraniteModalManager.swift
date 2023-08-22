@@ -73,6 +73,11 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     public func didCloseWindow(_ id: String) {
         
     }
+    
+    public func destroy() {
+        self.window = nil
+        sheetManager.destroy()
+    }
 }
 
 extension GraniteModalManager {
@@ -83,9 +88,6 @@ extension GraniteModalManager {
             .environmentObject(self)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(GraniteModalWindow.PassthroughView())
-            .transformEnvironment(\.graniteAlertViewStyle) { value in
-                value = .init()
-            }
         
 #if os(iOS)
         guard window == nil else {
@@ -103,7 +105,10 @@ extension GraniteModalManager {
         window.windowLevel = .alert
         
         let alertController = UIHostingController(rootView: rootView
-            .addGraniteSheet(ModalService.shared.sheetManager,
+            .transformEnvironment(\.graniteAlertViewStyle) { value in
+                value = .init()
+            }
+            .addGraniteSheet(sheetManager,
                              background: Color.clear))
         window.rootViewController = alertController
         window.isUserInteractionEnabled = true
@@ -116,7 +121,7 @@ extension GraniteModalManager {
 #else
         
         let sheetView = GraniteModalWindow.PassthroughView()
-            .addGraniteSheet(ModalService.shared.sheetManager,
+            .addGraniteSheet(sheetManager,
                              background: Color.clear)
         
         guard let keyWindow = GraniteNavigationWindow.shared.mainWindow?.retrieve() else {
@@ -127,10 +132,7 @@ extension GraniteModalManager {
         let frame = keyWindow.frame
         let window = AppWindow(frame.size, isClosabe: false, isChildWindow: true)
         window.contentViewController = NSHostingController(rootView: rootView
-            .frame(width: 600)
-            .transformEnvironment(\.graniteAlertViewStyle) { value in
-                value = .init()
-            })
+            .frame(width: 600))
         
         window.backgroundColor = .clear
         window.contentViewController?.view.layer?.backgroundColor = .clear

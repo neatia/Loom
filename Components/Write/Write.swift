@@ -7,7 +7,11 @@ struct Write: GraniteComponent {
     @Relay var config: ConfigService
     @Relay(.silence) var content: ContentService
     
+    @Relay var modal: ModalService
+    
     @GraniteAction<PostView> var updatedPost
+    
+    static var modalId: String = "loom.write.view.sheets"
     
     enum Kind {
         case compact

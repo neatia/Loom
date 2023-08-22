@@ -19,7 +19,7 @@ extension Write {
         }, set: { newValue in
             value = newValue
         })
-        ModalService.shared.presentSheet {
+        modal.presentSheet(id: Write.modalId) {
             GraniteStandardModalView(title: "TITLE_SET_URL", maxHeight: 210) {
                 VStack(spacing: 0) {
                     TextField("MISC_URL", text: bindingString)
@@ -80,7 +80,7 @@ extension Write {
 
 extension Write {
     func setCommunity() {
-        ModalService.shared.presentSheet {
+        modal.presentSheet(id: Write.modalId) {
             CommunityPickerView()
                 .attach({ communityView in
                     GraniteHaptic.light.invoke()

@@ -42,9 +42,10 @@ extension Write {
         panel.allowedContentTypes = [.image]
         if panel.runModal() == .OK {
             if let url = panel.url {
-                
-                if let data = try? Data(contentsOf: url) {
-                    _state.imageData.wrappedValue = data
+                if let data = try? Data(contentsOf: url),
+                   //TODO: customize compression level
+                   let image = NSImage(data: data)?.compress() {
+                    _state.imageData.wrappedValue = image.png
                 }
             }
         }
@@ -55,10 +56,11 @@ extension Write {
 import PhotosUI
 extension Write {
     func importPicture() {
-        ModalService.shared.presentSheet {
+        modal.presentSheet(id: Write.modalId,
+                                  detents: [.large()]) {
             ImagePicker(imageData: _state.imageData)
                 .attach( {
-                    ModalService.shared.dismissSheet()
+                    modal.dismissSheet(id: Write.modalId)
                 }, at: \.dismiss)
         }
     }
@@ -91,28 +93,61 @@ struct ImagePicker: UIViewControllerRepresentable, GraniteActionable {
             self.parent = parent
         }
         
-        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        func picker(_ picker: PHPickerViewController,
+                    didFinishPicking results: [PHPickerResult]) {
             
             guard let provider = results.first?.itemProvider else {
-                self.parent.dismiss.perform()
-                picker.dismiss(animated: false)
+                picker.dismiss(animated: true)
                 return
             }
-            
             
             if provider.canLoadObject(ofClass: UIImage.self) {
                 provider.loadObject(ofClass: UIImage.self) { image, _ in
                     DispatchQueue.main.async { [weak self] in
-                        self?.parent.imageData = (image as? UIImage)?.pngData()
-                        self?.parent.dismiss.perform()
-                        //picker.dismiss(animated: false)
+                        self?.parent.imageData = (image as? UIImage)?.compress().pngData()
+                        picker.dismiss(animated: true)
                     }
                 }
             } else {
-                
-                self.parent.dismiss.perform()
-                picker.dismiss(animated: false)
+                picker.dismiss(animated: true)
             }
+        }
+    }
+}
+
+import UIKit
+import ImageIO
+
+struct ImageHeaderData{
+    static var PNG: [UInt8] = [0x89]
+    static var JPEG: [UInt8] = [0xFF]
+    static var GIF: [UInt8] = [0x47]
+    static var TIFF_01: [UInt8] = [0x49]
+    static var TIFF_02: [UInt8] = [0x4D]
+}
+
+enum ImageFormat{
+    case Unknown, PNG, JPEG, GIF, TIFF
+}
+
+
+extension NSData {
+    var imageFormat: ImageFormat {
+        var buffer = [UInt8](repeating: 0, count: 1)
+        self.getBytes(&buffer, range: NSRange(location: 0,length: 1))
+        if buffer == ImageHeaderData.PNG
+        {
+            return .PNG
+        } else if buffer == ImageHeaderData.JPEG
+        {
+            return .JPEG
+        } else if buffer == ImageHeaderData.GIF
+        {
+            return .GIF
+        } else if buffer == ImageHeaderData.TIFF_01 || buffer == ImageHeaderData.TIFF_02{
+            return .TIFF
+        } else{
+            return .Unknown
         }
     }
 }

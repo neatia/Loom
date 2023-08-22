@@ -43,6 +43,8 @@ extension Write: View {
                         let response = await Lemmy.uploadImage(data)
                         
                         guard let file = response?.files.first else {
+                            //Most likely file too big
+                            //TODO: error toast
                             return
                         }
                         
@@ -204,14 +206,10 @@ extension Write: View {
                       title: _state.title,
                       content: _state.content)
         }
+        .addGraniteSheet(id: Write.modalId,
+                         modal.sheetManager,
+                         background: Color.clear)
         .padding(.top, .layer4)
-        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
-            Image(systemName: "chevron.backward")
-                .renderingMode(.template)
-                .font(.title3)
-                .contentShape(Rectangle())
-                .offset(x: -.layer1)
-        }
         .background(Color.background)
         .onAppear {
             #if os(iOS)

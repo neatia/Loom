@@ -52,12 +52,12 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
         if #available(iOS 14.5, *),
            Device.isiPad == false {
             content
-                .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
+                .fullScreenCover(isPresented: manager.hasContent(id: self.id, with: .cover)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .shee(isPresented: manager.hasContent(with: .sheet),
+                .shee(isPresented: manager.hasContent(id: self.id, with: .sheet),
                       presentationStyle:
                         .formSheet(properties:
                                 .init(detents: manager.detents(),
@@ -69,12 +69,12 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                 }
         } else {
             content
-                .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
+                .fullScreenCover(isPresented: manager.hasContent(id: self.id, with: .cover)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .sheet(isPresented: manager.hasContent(with: .sheet)) {
+                .sheet(isPresented: manager.hasContent(id: self.id, with: .sheet)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
                 }
@@ -92,7 +92,6 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                     sheetContent(for: manager.style)
                 }
             }
-            .graniteNavigation(disable: Device.isExpandedLayout)
 #endif
     }
     

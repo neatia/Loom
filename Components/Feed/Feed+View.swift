@@ -86,7 +86,7 @@ extension Feed: GraniteNavigationDestination {
     var destinationStyle: GraniteNavigationDestinationStyle {
         if isCommunity {
             return .init {
-                communityInfoView
+                communityInfoMenuView
             }
         } else {
             return .init()

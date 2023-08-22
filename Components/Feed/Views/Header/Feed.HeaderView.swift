@@ -15,7 +15,7 @@ extension Feed {
     var headerView: some View {
         VStack(alignment: .leading, spacing: 0) {
             if Device.isExpandedLayout {
-                accountInfoExpandedView
+                accountExpandedMenuView
                     .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             }
             

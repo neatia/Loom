@@ -37,6 +37,8 @@ extension Feed {
                         Color.background.opacity(0.75)
                             .cornerRadius(4)
                     }
+            } else {
+                
             }
         }
         .frame(maxWidth: .infinity)

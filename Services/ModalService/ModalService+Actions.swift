@@ -6,31 +6,31 @@ import SafariServices
 
 extension ModalService {
     
-    #if os(iOS)
+#if os(iOS)
     func present(_ modal : AnyGraniteModal, target: GraniteSheetPresentationStyle = .cover) {
         
-//        switch target {
-//        case .sheet:
-//            break
-//            //modalSheetManager.present(modal)
-//        default:
-//            modalManager.present(modal)
-//        }
+        //        switch target {
+        //        case .sheet:
+        //            break
+        //            //modalSheetManager.present(modal)
+        //        default:
+        //            modalManager.present(modal)
+        //        }
         modalManager.present(modal)
     }
     func presentModal(_ modal : AnyGraniteModal, target: GraniteSheetPresentationStyle = .cover) {
         present(modal, target: target)
     }
-    #else
+#else
     func presentModal(_ modal : AnyGraniteModal, target: GraniteSheetPresentationStyle = .cover) {
         
-//        switch target {
-//        case .sheet:
-//            break
-//            //modalSheetManager.present(modal)
-//        default:
-//            modalManager.present(modal)
-//        }
+        //        switch target {
+        //        case .sheet:
+        //            break
+        //            //modalSheetManager.present(modal)
+        //        default:
+        //            modalManager.present(modal)
+        //        }
         modalManager.present(modal)
     }
     func present(id: String = GraniteSheetManager.defaultId,
@@ -45,14 +45,14 @@ extension ModalService {
                 .environmentObject(modalManager)
         }
     }
-    #endif
+#endif
     
     func presentErrorToast(title: LocalizedStringKey = "Error", error: Error?) {
-        #if os(iOS)
+#if os(iOS)
         modalManager.present(GraniteToastView(title: title,
                                               message: .init(error?.localizedDescription ?? "Something went wrong"),
                                               event: .error))
-        #endif
+#endif
     }
     
     func dismiss() {
@@ -74,24 +74,38 @@ extension ModalService {
     
     func presentSheet<Content : View>(id: String = GraniteSheetManager.defaultId,
                                       detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
-                                      style : GraniteSheetPresentationStyle = .sheet, @ViewBuilder content : () -> Content) {
+                                      style : GraniteSheetPresentationStyle = .sheet,
+                                      @ViewBuilder content : () -> Content) {
         
         sheetManager.present(id: id, detents: detents, content: content, style: style)
     }
     
-    func dismissSheet() {
-        sheetManager.dismiss()
+    static func presentSheet<Content : View>(id: String = GraniteSheetManager.defaultId,
+                                             detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
+                                             style : GraniteSheetPresentationStyle = .sheet,
+                                             @ViewBuilder content : () -> Content) {
+        
+        ModalService
+            .shared
+            .presentSheet(id: id,
+                          detents: detents,
+                          style: style,
+                          content: content)
+    }
+    
+    func dismissSheet(id: String = GraniteSheetManager.defaultId) {
+        sheetManager.dismiss(id: id)
     }
     
 }
 
 extension ModalService {
     static func share(urlString: String) {
-        #if os(iOS)
+#if os(iOS)
         let url: URL? = URL(string: urlString)
         guard let url else { return }
         ModalService.presentActivitySheet(items: [url])
-        #endif
+#endif
     }
     
     static func share(image: GraniteImage) {
@@ -99,7 +113,7 @@ extension ModalService {
     }
     
     static func presentActivitySheet(items : [Any]) {
-        #if os(iOS)
+#if os(iOS)
         let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
         controller.overrideUserInterfaceStyle = .dark
         
@@ -112,11 +126,11 @@ extension ModalService {
         }
         
         parentController?.present(controller, animated: true, completion: nil)
-        #endif
+#endif
     }
     
     static func presentBrowser(url : URL) {
-        #if os(iOS)
+#if os(iOS)
         var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         
         if components?.scheme == nil {
@@ -133,7 +147,7 @@ extension ModalService {
         
         let parentController = UIApplication.shared.topViewController ?? UIApplication.shared.windows.first?.rootViewController
         parentController?.present(controller, animated: true, completion: nil)
-        #endif
+#endif
     }
     
 }
@@ -153,24 +167,24 @@ extension View {
     }
     
     public func addGraniteSheet<Background : View>(id: String = GraniteSheetManager.defaultId,
-                                _ manager : GraniteSheetManager,
-                                modalManager : GraniteModalManager,
-                                background : Background) -> some View {
+                                                   _ manager : GraniteSheetManager,
+                                                   modalManager : GraniteModalManager,
+                                                   background : Background) -> some View {
         GraniteSheetContainerView(id: id, modalManager: modalManager, content: self, background: background)
             .environmentObject(manager)
     }
     
     public func addGraniteModal(_ manager: GraniteModalManager) -> some View {
-//        #if os(macOS)
-//        Group {
-//            if let view = manager.view {
-//                self.overlay(view)
-//            } else {
-//                self
-//            }
-//        }
-//        #else
+        //        #if os(macOS)
+        //        Group {
+        //            if let view = manager.view {
+        //                self.overlay(view)
+        //            } else {
+        //                self
+        //            }
+        //        }
+        //        #else
         self
-//        #endif
+        //        #endif
     }
 }

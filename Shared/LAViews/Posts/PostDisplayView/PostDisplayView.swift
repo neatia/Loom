@@ -16,6 +16,8 @@ import MarkdownView
 
 struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
+    @Environment(\.graniteNavigationShowingKey) var hasShown
+    @Environment(\.graniteNavigationAnimationKey) var isAnimating
     
     @GraniteAction<Community> var viewCommunity
     
@@ -81,27 +83,31 @@ struct PostDisplayView: GraniteNavigationDestination {
                 contentHeaderStacked
                     .background(Color.background)
             }
-
-            PagerScrollView(CommentView.self,
-                            properties: .init(performant: Device.isMacOS == false,
-                                              cacheViews: true,
-                                              showFetchMore: false)) {
-                EmptyView()
-            } inlineBody: {
-                contentView
-            } content: { commentView in
-                CommentCardView()
-                    .attach({ model in
-                        self.showDrawer = true
-                        self.commentModel = model
-                    }, at: \.showDrawer)
-                    .attach({ community in
-                        viewCommunity.perform(community)
-                    }, at: \.viewCommunity)
-                    .contentContext(.addCommentModel(model: commentView, context))
-                    .background(Color.alternateBackground)
+            
+            if hasShown {
+                PagerScrollView(CommentView.self,
+                                properties: .init(performant: Device.isMacOS == false,
+                                                  cacheViews: true,
+                                                  showFetchMore: false)) {
+                    EmptyView()
+                } inlineBody: {
+                    contentView
+                } content: { commentView in
+                    CommentCardView()
+                        .attach({ model in
+                            self.showDrawer = true
+                            self.commentModel = model
+                        }, at: \.showDrawer)
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
+                        .contentContext(.addCommentModel(model: commentView, context))
+                        .background(Color.alternateBackground)
+                }
+                .environmentObject(pager)
+            } else {
+                Text("hello")
             }
-            .environmentObject(pager)
         }
         .padding(.top, Device.isExpandedLayout ? .layer4 : .layer2)
         //.addGraniteSheet(modal.sheetManager, background: Color.clear)
@@ -110,6 +116,7 @@ struct PostDisplayView: GraniteNavigationDestination {
         .showDrawer($showDrawer,
                     commentView: commentModel,
                     context: context)
+        .allowsHitTesting(isAnimating == false)
         .task {
             self.threadLocation = context.location
             

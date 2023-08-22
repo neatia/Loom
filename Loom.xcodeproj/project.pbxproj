@@ -437,6 +437,8 @@
 		71B7A1F22A691470003E6D4D /* ShinyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7A1ED2A691470003E6D4D /* ShinyView.swift */; };
 		71B7A1F32A691470003E6D4D /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7A1EE2A691470003E6D4D /* MotionManager.swift */; };
 		71B7A1F42A691470003E6D4D /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B7A1EE2A691470003E6D4D /* MotionManager.swift */; };
+		71BE94DE2A954DCE004A3AC3 /* Compressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BE94DD2A954DCE004A3AC3 /* Compressor.swift */; };
+		71BE94DF2A954DCE004A3AC3 /* Compressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BE94DD2A954DCE004A3AC3 /* Compressor.swift */; };
 		71BEA9C728E3D95B00B58933 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEA9C628E3D95B00B58933 /* String.swift */; };
 		71BEA9C828E3D95B00B58933 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BEA9C628E3D95B00B58933 /* String.swift */; };
 		71C177692A64A0C800A11B03 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 71C177682A64A0C800A11B03 /* Nuke */; };
@@ -913,6 +915,8 @@
 		71B7A1EC2A691470003E6D4D /* Gradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		71B7A1ED2A691470003E6D4D /* ShinyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShinyView.swift; sourceTree = "<group>"; };
 		71B7A1EE2A691470003E6D4D /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		71BE94DC2A954732004A3AC3 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
+		71BE94DD2A954DCE004A3AC3 /* Compressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compressor.swift; sourceTree = "<group>"; };
 		71BEA9C628E3D95B00B58933 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		71C5FF622A64688A00F99A84 /* Drawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Drawer.swift; sourceTree = "<group>"; };
 		71C5FF632A64688A00F99A84 /* Drawer+Modifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Drawer+Modifiers.swift"; sourceTree = "<group>"; };
@@ -1365,6 +1369,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71BE94DC2A954732004A3AC3 /* LemmyKit */,
 				71FF4D652A940FEA005BF579 /* Granite */,
 				71E520942A92BB2B0057EA83 /* MarqueKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
@@ -1735,6 +1740,7 @@
 				71AF14662A2E807300EEBD4B /* Disclaimer.swift */,
 				714B48772A816CF900AC6199 /* Logger.swift */,
 				71E5F3CA2A73A02500299558 /* Haptic.swift */,
+				71BE94DD2A954DCE004A3AC3 /* Compressor.swift */,
 				71A28E1E295237AE00EAE8EE /* Run.swift */,
 			);
 			path = Utility;
@@ -2762,6 +2768,7 @@
 				714B48812A81A5D600AC6199 /* Locateable.swift in Sources */,
 				712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
 				71F0421D2A6A3AD100788CDC /* Globe.swift in Sources */,
+				71BE94DE2A954DCE004A3AC3 /* Compressor.swift in Sources */,
 				7197FB032964B4C0005EBBA4 /* GraniteModalManager.swift in Sources */,
 				71E520A02A9357820057EA83 /* CardStyle.swift in Sources */,
 				71AF14672A2E807300EEBD4B /* Disclaimer.swift in Sources */,
@@ -3233,6 +3240,7 @@
 				71622E8E2A6E0A26006233F3 /* Image.swift in Sources */,
 				71C9F9192A60BFEA0089D7EA /* ContentService.swift in Sources */,
 				717D388C2887A44D00165D7D /* Home+View.swift in Sources */,
+				71BE94DF2A954DCE004A3AC3 /* Compressor.swift in Sources */,
 				71C69E2A2A70492100B54AD6 /* Brand.Color.swift in Sources */,
 				71899E602A89D68E0073158F /* Loom.CollectionsView.swift in Sources */,
 				71C8BE7C2A7F3F14008694C7 /* FeedMainView.swift in Sources */,
