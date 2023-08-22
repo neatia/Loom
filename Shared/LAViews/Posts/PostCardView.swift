@@ -298,8 +298,8 @@ extension PostCardView {
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
         .route(window: .resizable(600, 500)) {
-           PostDisplayView()
-               .contentContext(context)
+            //prevent type erasure
+            PostDisplayView(context: _context)
         }
     }
     

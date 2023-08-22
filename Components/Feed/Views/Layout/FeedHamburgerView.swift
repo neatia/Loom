@@ -245,24 +245,20 @@ extension FeedHamburgerView {
     var profileView: some View {
         Group {
             HStack {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    profileIsActive.toggle()
-                } label : {
-                    HStack(spacing: .layer4) {
-                        Image(systemName: "person")
-                            .font(.title3)
-                            .foregroundColor(.foreground)
-                        //TODO: localize
-                        Text("Profile")
-                            .font(.title3.bold())
-                            .foregroundColor(.foreground)
-                            .padding(.leading, 2)//nitpick alignment
-                    }
+                HStack(spacing: .layer4) {
+                    Image(systemName: "person")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                    //TODO: localize
+                    Text("Profile")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
+                        .padding(.leading, 2)//nitpick alignment
                 }
-                .routeTarget($profileIsActive, window: .resizable(600, 500)) {
+                .routeButton(window: .resizable(600, 500)) {
                     Profile(account.state.meta?.person)
                 }
+                .buttonStyle(.plain)
                 
                 Spacer()
             }
@@ -304,23 +300,19 @@ extension FeedHamburgerView {
     var settingsView: some View {
         Group {
             HStack {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    settingsIsActive.toggle()
-                } label : {
-                    HStack(spacing: .layer4) {
-                        Image(systemName: "gearshape")
-                            .font(.title3)
-                            .foregroundColor(.foreground)
-                        
-                        Text("TITLE_SETTINGS")
-                            .font(.title3.bold())
-                            .foregroundColor(.foreground)
-                    }
+                HStack(spacing: .layer4) {
+                    Image(systemName: "gearshape")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                    
+                    Text("TITLE_SETTINGS")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
                 }
-                .routeTarget($settingsIsActive, window: .resizable(600, 500)) {
+                .routeButton(window: .resizable(600, 500)) {
                     Settings()
                 }
+                .buttonStyle(.plain)
                 
                 Spacer()
             }

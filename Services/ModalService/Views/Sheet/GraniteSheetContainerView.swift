@@ -92,6 +92,7 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                     sheetContent(for: manager.style)
                 }
             }
+            .graniteNavigation(disable: Device.isExpandedLayout)
 #endif
     }
     

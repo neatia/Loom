@@ -21,7 +21,11 @@ struct Feed: GraniteComponent {
     
     @StateObject var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
     
+    let isCommunity: Bool
+    
     init(_ community: Community? = nil) {
+        self.isCommunity = community != nil
+        
         _center = .init(.init(community: community, location: community?.location ?? .base, peerLocation: community?.location?.isPeer == true ? community?.location : nil))
         
         content.preload()

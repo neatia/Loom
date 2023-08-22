@@ -14,7 +14,7 @@ import NukeUI
 import Combine
 import MarkdownView
 
-struct PostDisplayView: View {
+struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
     @GraniteAction<Community> var viewCommunity
     
@@ -63,23 +63,14 @@ struct PostDisplayView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HeaderView(shouldRoutePost: false)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                .attach({
-                    ModalService.shared.showEditPostModal(model) { updatedModel in
-                        DispatchQueue.main.async {
-                            self.updatedModel = updatedModel
-                            ModalService.shared.dismissSheet()
-                        }
-                    }
-                }, at: \.edit)
-                .contentContext(context)
-                .padding(.horizontal, .layer3)
-                .padding(.bottom, .layer4)
+            if Device.isExpandedLayout {
+                headerView
+                    .padding(.horizontal, .layer3)
+                    .padding(.bottom, .layer4)
+            }
 
             Divider()
+                
             
             switch context.feedStyle {
             case .style1:
@@ -111,7 +102,7 @@ struct PostDisplayView: View {
             }
             .environmentObject(pager)
         }
-        .padding(.top, .layer4)
+        .padding(.top, Device.isExpandedLayout ? .layer4 : .layer2)
         //.addGraniteSheet(modal.sheetManager, background: Color.clear)
         .background(Color.background)
         .foregroundColor(.foreground)
@@ -133,9 +124,35 @@ struct PostDisplayView: View {
             }.fetch()
         }
     }
+    
+    var destinationStyle: GraniteNavigationDestinationStyle {
+        if Device.isExpandedLayout {
+            return .init()
+        } else {
+            return .init(fullWidth: true) {
+                headerView
+                    .padding(.horizontal, .layer3)
+            }
+        }
+    }
 }
 
 extension PostDisplayView {
+    var headerView: some View {
+        HeaderView(shouldRoutePost: false)
+            .attach({ community in
+                viewCommunity.perform(community)
+            }, at: \.viewCommunity)
+            .attach({
+                ModalService.shared.showEditPostModal(model) { updatedModel in
+                    DispatchQueue.main.async {
+                        self.updatedModel = updatedModel
+                        ModalService.shared.dismissSheet()
+                    }
+                }
+            }, at: \.edit)
+            .contentContext(context)
+    }
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 0) {

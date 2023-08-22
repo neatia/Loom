@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Granite
 
 final public class GraniteSheetManager : ObservableObject {
     public static var defaultId: String = "granite.sheet.manager.content.main"

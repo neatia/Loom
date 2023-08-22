@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import LemmyKit
+import Granite
 
 struct ContentContextKey: EnvironmentKey {
     static var defaultValue: ContentContext = .init()
@@ -114,6 +115,7 @@ extension View {
         self.environment(\.contentContext, context)
     }
 }
+
 
 /* FederationKit */
 

@@ -4,7 +4,7 @@ import SwiftUI
 import LemmyKit
 import Nuke
 
-extension Feed: View {
+extension Feed: GraniteNavigationDestination {
     var safeAreaTop: CGFloat {
 #if os(iOS)
         if #available(iOS 11.0, *),
@@ -24,9 +24,6 @@ extension Feed: View {
                 verticalLayout
             }
         }
-        .graniteNavigationDestinationIf(state.community != nil, trailingItems: {
-            communityInfoView
-        })
         .background(Color.background)
 //        .onAppear {
 //            if content.state.lastVersionUpdateNotice != Device.appVersion {
@@ -83,6 +80,16 @@ extension Feed: View {
             } else {
                 pager.fetch()
             }
+        }
+    }
+    
+    var destinationStyle: GraniteNavigationDestinationStyle {
+        if isCommunity {
+            return .init {
+                communityInfoView
+            }
+        } else {
+            return .init()
         }
     }
 }
