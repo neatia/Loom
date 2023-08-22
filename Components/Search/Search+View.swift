@@ -103,11 +103,7 @@ extension Search: View {
                                    limit: ConfigService.Preferences.pageLimit)
             }
             
-            guard community != nil else { return }
-            conductor.startTimer("")
-        }
-        .onAppear {
-            guard community == nil else { return }
+            guard conductor.response == nil else { return }
             conductor.startTimer("")
         }
     }

@@ -1055,6 +1055,7 @@
 		71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySidebarCardView.swift; sourceTree = "<group>"; };
 		71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--macOS--Info.plist"; sourceTree = "<group>"; };
 		71FF4D622A93F394005BF579 /* Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modals.swift; sourceTree = "<group>"; };
+		71FF4D652A940FEA005BF579 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1364,6 +1365,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71FF4D652A940FEA005BF579 /* Granite */,
 				71E520942A92BB2B0057EA83 /* MarqueKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,

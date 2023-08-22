@@ -9,10 +9,6 @@ extension Globe: View {
             mainView
             
         }
-//        .addGraniteSheet(modal.sheetManager,
-//                         modalManager: modal.modalSheetManager,
-//                         background: Color.clear)
-//        .addGraniteModal(modal.modalManager)
         .background(Color.background)
     }
 }

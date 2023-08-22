@@ -68,15 +68,11 @@ struct PostDisplayView: View {
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
                 .attach({
-                    ModalService.shared.presentSheet {
-                        Write(postView: model)
-                            .attach({ updatedModel in
-                                DispatchQueue.main.async {
-                                    self.updatedModel = updatedModel
-                                    ModalService.shared.dismissSheet()
-                                }
-                            }, at: \.updatedPost)
-                            .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
+                    ModalService.shared.showEditPostModal(model) { updatedModel in
+                        DispatchQueue.main.async {
+                            self.updatedModel = updatedModel
+                            ModalService.shared.dismissSheet()
+                        }
                     }
                 }, at: \.edit)
                 .contentContext(context)
@@ -161,16 +157,10 @@ extension PostDisplayView {
                        showScores: config.state.showScores,
                        isComposable: true)
                 .attach({ model in
-                    ModalService.shared.presentSheet {
-                        Reply(kind: .replyPost(model))
-                            .attach({ (model, modelView) in
-                                pager.insert(modelView)
-                                
-                                ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
-                                
-                                ModalService.shared.dismissSheet()
-                            }, at: \.updatePost)
-                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                    ModalService
+                        .shared
+                        .showReplyPostModal(model: model) { postView in
+                        pager.insert(postView)
                     }
                 }, at: \.reply)
                 .contentContext(.withStyle(.style1, context))

@@ -6,6 +6,7 @@ struct Search: GraniteComponent {
     @Command var center: Center
     
     @Environment(\.presentationMode) var presentationMode
+    
     @StateObject var conductor: SearchConductor = .init()
     
     let community: Community?

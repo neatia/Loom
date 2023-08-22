@@ -341,7 +341,7 @@ extension FooterView {
                 .foregroundColor(.foreground)
                 .routeIf(context.isPostAvailable,
                          title: routeTitle ?? "",
-                         style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
+                         window: .resizable(600, 500)) {
                     PostDisplayView()
                         .contentContext(context)
                 }

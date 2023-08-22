@@ -25,7 +25,7 @@ struct AccountView: View {
                     .overlay {
                         Rectangle()
                             .foregroundColor(Color.black.opacity(0.0001))
-                            .routeIf(account.isLoggedIn, style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
+                            .routeIf(account.isLoggedIn, window: .resizable(600, 500)) {
                                 Profile(account.state.meta?.person)
                             }
                     }

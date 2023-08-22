@@ -43,29 +43,6 @@ extension Profile {
                 }
             }
         
-        account
-            .center
-            .interact
-            .listen(.beam) { value in
-                if let meta = value as? AccountService.Interact.Meta {
-                    switch meta.intent {
-                    case .editPost(let model):
-                        ModalService.shared.presentSheet {
-                            Write(postView: model)
-                                .attach({ updatedModel in
-                                    DispatchQueue.main.async {
-                                        pager.update(item: .init(commentView: nil, postView: updatedModel, isMention: false, isReply: false))
-                                        ModalService.shared.dismissSheet()
-                                    }
-                                }, at: \.updatedPost)
-                                .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
-                        }
-                    default:
-                        break
-                    }
-                }
-            }
-        
         content
             .center
             .interact
@@ -79,20 +56,10 @@ extension Profile {
                             ModalService.shared.dismissSheet()
                         }
                     case .editComment(let commentView, let postView):
-                        let replyKind: Write.Kind
-                        
-                        if let postView {
-                            replyKind = .editReplyPost(commentView, postView)
-                        } else {
-                            replyKind = .editReplyComment(commentView)
-                        }
-                        
-                        DispatchQueue.main.async {
-                            ModalService.shared.presentSheet {
-                                Reply(kind: replyKind)
-                                    .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
-                            }
-                        }
+                        ModalService
+                            .shared
+                            .showEditCommentModal(commentView,
+                                                  postView: postView)
                     default:
                         break
                     }

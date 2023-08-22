@@ -23,9 +23,6 @@ struct HeaderCardView: View {
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
     
-    @State var enableRoute: Bool = false
-    @State var enablePostViewRoute: Bool = false
-    
     @State var postView: PostView? = nil
     
     var shouldRouteCommunity: Bool
@@ -74,21 +71,6 @@ struct HeaderCardView: View {
                     .resizable()
                     .frame(width: 24, height: 24)
             default:
-                if context.viewingContext != .screenshot {
-                    
-                    if let community = context.community?.lemmy {
-                        GraniteRoute($enableRoute, window: .resizable(600, 500)) {
-                            Feed(community)
-                        }
-                    }
-                    
-                    if context.isPostAvailable {
-                        GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                            PostDisplayView()
-                                .contentContext(context)
-                        }
-                    }
-                }
                 if let time = context.timeAbbreviated {
                     Text(time)
                         .font(.footnote)
@@ -96,7 +78,7 @@ struct HeaderCardView: View {
                 }
                 
                 VStack(alignment: .trailing, spacing: 0) {
-                    PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
+                    PostActionsView(enableCommunityRoute: shouldRouteCommunity,
                                     community: shouldRouteCommunity ? context.community?.lemmy : nil,
                                     postView: (shouldRoutePost || !isCompact) ? postView : nil,
                                     person: context.person?.lemmy,
@@ -147,7 +129,11 @@ struct HeaderCardView: View {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {
             self.postView = postView
-            self.enablePostViewRoute = true
+            
+            GraniteNavigation.push {
+                PostDisplayView()
+                    .contentContext(context)
+            }
         }
     }
 }

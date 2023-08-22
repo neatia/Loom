@@ -6,13 +6,6 @@ import LemmyKit
 extension Write: View {
     public var view: some View {
         VStack(spacing: 0) {
-            if state.isEditing == false {
-                GraniteRoute(_state.showPost) {
-                    PostDisplayView()
-                        .contentContext(.init(postModel: state.createdPostView ?? .mock))
-                }
-            }
-            
             HStack(spacing: .layer3) {
 //                #if os(macOS)
 //                Image(systemName: "arrow.up.left.and.arrow.down.right")
@@ -212,8 +205,6 @@ extension Write: View {
                       content: _state.content)
         }
         .padding(.top, .layer4)
-//        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-//        .addGraniteModal(modal.modalManager)
         .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)

@@ -36,37 +36,6 @@ extension Feed {
                 }
             }
         
-        account
-            .center
-            .interact
-            .listen(.beam) { value in
-                if let meta = value as? AccountService.Interact.Meta {
-                    switch meta.intent {
-                    case .reportPost(let model):
-                        ModalService.shared.presentSheet {
-                            ReportView(kind: .post(model))
-                        }
-                    case .reportComment(let model):
-                        ModalService.shared.presentSheet {
-                            ReportView(kind: .comment(model))
-                        }
-                    case .editPost(let model):
-                        ModalService.shared.presentSheet(detents: [.large()]) {
-                            Write(postView: model)
-                                .attach({ updatedModel in
-                                    DispatchQueue.main.async {
-                                        pager.update(item: updatedModel)
-                                        ModalService.shared.dismissSheet()
-                                    }
-                                }, at: \.updatedPost)
-                                .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
-                        }
-                    default:
-                        break
-                    }
-                }
-            }
-        
         config
             .center
             .restart

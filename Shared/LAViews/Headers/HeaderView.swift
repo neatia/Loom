@@ -40,9 +40,6 @@ struct HeaderView: View {
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
     
-    @State var enableRoute: Bool = false
-    @State var enablePostViewRoute: Bool = false
-    
     var shouldRouteCommunity: Bool = false
     var shouldRoutePost: Bool = false
     
@@ -138,19 +135,6 @@ struct HeaderView: View {
             
             Spacer()
             
-            if let community = context.community?.lemmy {
-                GraniteRoute($enableRoute, window: .resizable(600, 500)) {
-                    Feed(community)
-                }
-            }
-            
-            if context.isPostAvailable {
-                GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                    PostDisplayView()
-                        .contentContext(context)
-                }
-            }
-            
             if let time = context.display.author.time {
                 Text(time.timeAgoDisplay())
                     .font(.subheadline)
@@ -158,7 +142,7 @@ struct HeaderView: View {
             }
             
             if showPostActions {
-                PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
+                PostActionsView(enableCommunityRoute: shouldRouteCommunity,
                                 shouldRouteToPost: false,
                                 community: shouldRouteCommunity ? context.community?.lemmy : nil,
                                 postView: shouldRoutePost ? context.postModel : nil,

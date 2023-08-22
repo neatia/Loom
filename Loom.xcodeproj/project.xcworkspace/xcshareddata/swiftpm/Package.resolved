@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "granite",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/Granite.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "518fcaf8ef4994533a19d20d9834a623384c441b"
-      }
-    },
-    {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raspu/Highlightr.git",

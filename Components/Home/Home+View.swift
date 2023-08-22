@@ -137,10 +137,6 @@ extension Home: View {
                 .contentShape(Rectangle())
                 .offset(x: -.layer1)
         }
-//        .addGraniteSheet(ModalService.shared.sheetManager,
-//                         modalManager: ModalService.shared.modalSheetManager,
-//                         background: Color.clear)
-//        .addGraniteModal(ModalService.shared.modalManager)
     }
 }
 

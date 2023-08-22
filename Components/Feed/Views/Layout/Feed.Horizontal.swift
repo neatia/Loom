@@ -49,10 +49,9 @@ extension Feed {
                 .graniteEvent(account.center.interact)
                 .overlay(LogoView()
                     .attach({
-                        ModalService.shared.presentSheet {
-                            Write(communityView: state.communityView)
-                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-                        }
+                        ModalService
+                            .shared
+                            .showWriteModal(state.communityView)
                     }, at: \.write))
                 .environmentObject(pager)
                 .frame(minWidth: minFrameWidth, maxWidth: nil)

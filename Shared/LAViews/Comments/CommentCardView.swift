@@ -78,8 +78,8 @@ struct CommentCardView: View {
                                     
                                     ModalService
                                         .shared
-                                        .showReplyModal(isEditing: true,
-                                                        model: model) { updatedModel in
+                                        .showReplyCommentModal(isEditing: true,
+                                                               model: model) { updatedModel in
                                         
                                         DispatchQueue.main.async {
                                             self.model = updatedModel
@@ -120,8 +120,8 @@ struct CommentCardView: View {
             
             ModalService
                 .shared
-                .showReplyModal(isEditing: true,
-                                model: model) { updatedModel in
+                .showReplyCommentModal(isEditing: true,
+                                       model: model) { updatedModel in
                 
                 DispatchQueue.main.async {
                     self.model = self.model?.incrementReplyCount()

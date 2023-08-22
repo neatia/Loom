@@ -122,8 +122,6 @@ extension Loom: View {
             }
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
-//        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-//        .addGraniteModal(modal.modalManager)
         .onChange(of: service.state.intent) { newIntent in
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 switch newIntent {

@@ -10,18 +10,108 @@ import SwiftUI
 import Granite
 import LemmyKit
 
+//MARK: Report
+extension ModalService {
+    
+    @MainActor
+    func showReportModal(_ kind: ReportView.Kind) {
+        presentSheet {
+            ReportView(kind: kind)
+        }
+    }
+}
+
+//MARK: Write {
+extension ModalService {
+    
+    @MainActor
+    func showWriteModal(_ model: CommunityView?) {
+        presentSheet {
+            Write(communityView: model)
+                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+        }
+    }
+}
+
+//MARK: Edit {
+extension ModalService {
+    
+    @MainActor
+    func showEditPostModal(_ model: PostView?,
+                           _ update: ((PostView) -> Void)? = nil) {
+        guard let model else {
+            //TODO: error toast
+            return
+        }
+        
+        presentSheet {
+            Write(postView: model)
+                .attach({ updatedModel in
+                    update?(updatedModel)
+                }, at: \.updatedPost)
+                .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
+        }
+    }
+    
+    @MainActor
+    func showEditCommentModal(_ commentView: CommentView?,
+                              postView: PostView? = nil,
+                              _ update: ((PostView) -> Void)? = nil) {
+        
+        guard let commentView else {
+            return
+        }
+        
+        let replyKind: Write.Kind
+        
+        if let postView {
+            replyKind = .editReplyPost(commentView, postView)
+        } else {
+            replyKind = .editReplyComment(commentView)
+        }
+        
+        presentSheet {
+            Reply(kind: replyKind)
+                .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
+        }
+    }
+}
 
 //MARK: Reply
 extension ModalService {
     
-    func showReplyModal(isEditing: Bool,
-                        model: CommentView,
-                        _ update: @escaping ((CommentView) -> Void)) {
+    @MainActor
+    func showReplyPostModal(model: PostView?,
+                            _ update: ((CommentView) -> Void)? = nil) {
+        guard let model else {
+            return
+        }
+        
+        presentSheet {
+            Reply(kind: .replyPost(model))
+                .attach({ (model, modelView) in
+                    update?(modelView)
+                    
+                    ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
+                    
+                    ModalService.shared.dismissSheet()
+                }, at: \.updatePost)
+                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+        }
+    }
+    
+    @MainActor
+    func showReplyCommentModal(isEditing: Bool,
+                               model: CommentView?,
+                               _ update: ((CommentView) -> Void)? = nil) {
+        guard let model else {
+            return
+        }
         
         presentSheet {
             Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
                 .attach({ replyModel in
-                    update(replyModel)
+                    update?(replyModel)
                     
                     if isEditing {
                         //TODO: edit success modal
@@ -40,6 +130,7 @@ extension ModalService {
 //MARK: Share
 extension ModalService {
     
+    @MainActor
     func showShareCommentModal(_ model: CommentView?) {
         presentSheet {
             GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
@@ -55,6 +146,7 @@ extension ModalService {
         }
     }
     
+    @MainActor
     func showSharePostModal(_ model: PostView?,
                             metadata: PageableMetadata?) {
         presentSheet {

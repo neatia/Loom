@@ -286,7 +286,7 @@ extension PostCardView {
             }
         }
         .frame(maxWidth: .infinity)
-        .onTapGesture {
+        .onTapIf(layout.state.style == .expanded) {
             
             guard layout.state.style == .expanded,
                   let model = context.postModel else {
@@ -297,8 +297,7 @@ extension PostCardView {
             
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .routeTarget($routePostDisplay,
-                     window: .resizable(600, 500)) {
+        .route(window: .resizable(600, 500)) {
            PostDisplayView()
                .contentContext(context)
         }

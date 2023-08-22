@@ -291,10 +291,6 @@ extension Settings: View {
             }
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
-//        .addGraniteSheet(modal.sheetManager,
-//                         modalManager: modal.modalSheetManager,
-//                         background: Color.clear)
-//        .addGraniteModal(modal.modalManager)
         .background(Color.background)
     }
     

@@ -19,8 +19,7 @@ struct PostActionsView: View {
     @Environment(\.contentContext) var context
     @Environment(\.pagerMetadata) var metadata
     
-    @Binding var enableCommunityRoute: Bool
-    
+    var enableCommunityRoute: Bool
     var shouldRouteToPost: Bool = true
     
     var community: Community?
@@ -52,14 +51,18 @@ struct PostActionsView: View {
             if let name = community?.name {
                 Button {
                     GraniteHaptic.light.invoke()
+                    
+                    let community: Community? = community ?? postView?.community
+                    
+                    guard let community else { return }
+                    
                     if Device.isExpandedLayout {
-                        let community: Community? = community ?? postView?.community
-                        
-                        guard let community else { return }
                         
                         viewCommunity.perform(community)
                     } else {
-                        enableCommunityRoute = true
+                        GraniteNavigation.push {
+                            Feed(community)
+                        }
                     }
                 } label: {
                     Text("!\(name)")

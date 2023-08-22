@@ -76,6 +76,11 @@ extension Write {
                 
                 state.createdPostView = value
                 state.showPost = true
+                
+                GraniteNavigation.push {
+                    PostDisplayView()
+                        .contentContext(.init(postModel: value))
+                }
             } else {
                 value = nil
             }
