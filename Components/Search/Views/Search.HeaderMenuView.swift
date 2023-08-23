@@ -117,5 +117,6 @@ extension Search {
             Spacer()
         }
         .offset(x: Device.isMacOS ? -2 : 0, y: 0)
+        .cancelAnimations()
     }
 }

@@ -15,6 +15,7 @@ struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Void> var goToPost
     @GraniteAction<Void> var edit
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
     @Environment(\.contentContext) var context
     
@@ -61,7 +62,7 @@ struct PostActionsView: View {
                         
                         viewCommunity.perform(community)
                     } else {
-                        GraniteNavigation.push {
+                        router.push {
                             Feed(community)
                         }
                     }
@@ -230,6 +231,5 @@ struct PostActionsView: View {
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
         .frame(width: Device.isMacOS ? 20 : 24, height: 12)
-        .addHaptic()
     }
 }

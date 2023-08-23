@@ -37,7 +37,8 @@ extension Feed {
              .environmentObject(pager)
         }
         .edgesIgnoringSafeArea(state.community != nil ? [.bottom] : [])
-        .sideMenu(isShowing: _state.isShowing) {
+        .sideMenuIf(state.community == nil && Device.isExpandedLayout == false,
+                    isShowing: _state.isShowing) {
             accountExpandedMenuView
         }
     }

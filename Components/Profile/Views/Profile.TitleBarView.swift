@@ -45,7 +45,7 @@ extension Profile {
                             .foregroundColor(.foreground)
                             .route(window: .resizable(400, 500)) {
                                 ProfileSettingsView(isModal: true)
-                            }
+                            } with : { router }
                         
                         Spacer()
                     }

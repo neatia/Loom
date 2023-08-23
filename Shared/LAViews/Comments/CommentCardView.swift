@@ -7,7 +7,7 @@ import MarkdownView
 
 struct CommentCardView: View {
     @Environment(\.contentContext) var context
-    
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
     @GraniteAction<Community> var viewCommunity
     
@@ -55,11 +55,13 @@ struct CommentCardView: View {
                     .attach({ community in
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
+                    .attach({
+                        editModel()
+                    }, at: \.edit)
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
                 
                 contentView
-                    .padding(.leading, .layer3 + AvatarView.containerPadding)
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
             case .style2:
@@ -71,29 +73,7 @@ struct CommentCardView: View {
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                guard let model else { return }
-                                switch context.viewingContext {
-                                case .base,
-                                     .bookmark,
-                                     .bookmarkExpanded:
-                                    
-                                    ModalService
-                                        .shared
-                                        .showReplyCommentModal(isEditing: true,
-                                                               model: model) { updatedModel in
-                                        
-                                        DispatchQueue.main.async {
-                                            self.model = updatedModel
-                                        }
-                                    }
-                                default:
-                                    ModalService
-                                        .shared
-                                        .showEditCommentModal(model,
-                                                              postView: postView) { updatedModel in
-                                            self.model = updatedModel
-                                        }
-                                }
+                                editModel()
                             }, at: \.edit)
                             .graniteEvent(interact)
                         contentView
@@ -106,7 +86,9 @@ struct CommentCardView: View {
                 Divider()
                     .padding(.top, .layer5)
                 
-                ThreadView(isModal: false, isInline: true)
+                ThreadView(updatedParentModel: model,
+                           isModal: false,
+                           isInline: true)
                     .attach({ model in
                         showDrawer.perform(model)
                     }, at: \.showDrawer)
@@ -130,7 +112,7 @@ struct CommentCardView: View {
                                        model: model) { updatedModel in
                 
                 DispatchQueue.main.async {
-                    self.model = self.model?.incrementReplyCount()
+                    self.model = updatedModel //self.model?.incrementReplyCount()
                     if expandReplies == false {
                         expandReplies = true
                     } else {
@@ -168,6 +150,32 @@ struct CommentCardView: View {
                      bottom: bottom,
                      trailing: trailing)
     }
+    
+    func editModel() {
+        switch context.viewingContext {
+        case .base,
+             .bookmark,
+             .bookmarkExpanded:
+            
+            //The function name doesn't seem to make sense
+            ModalService
+                .shared
+                .showReplyCommentModal(isEditing: true,
+                                       model: model) { updatedModel in
+                
+                DispatchQueue.main.async {
+                    self.model = updatedModel
+                }
+            }
+        default:
+            ModalService
+                .shared
+                .showEditCommentModal(model,
+                                      postView: postView) { updatedModel in
+                    self.model = updatedModel
+                }
+        }
+    }
 }
 
 extension CommentCardView {
@@ -183,6 +191,9 @@ extension CommentCardView {
             #else
             if isPreview {
                 contentBody
+                    .route(window: .resizable(600, 500)) {
+                        PostDisplayView(context: _context)
+                    } with: { router }
             } else {
                 contentBody
                     .contentShape(Rectangle())
@@ -207,17 +218,15 @@ extension CommentCardView {
                     showDrawer.perform(model)
                 }, at: \.showComments)
         }
-        .padding(.leading, context.feedStyle == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-        .overlayIf(context.feedStyle == .style1) {
-            GeometryReader { proxy in
-                Rectangle()
-                    .frame(width: 2,
-                           height: proxy.size.height)
-                    .cornerRadius(8)
-                    .opacity(0.5)
-            }
-        }
-//        .fixedSize(horizontal: false, vertical: true)
+//        .overlayIf(context.feedStyle == .style1) {
+//            GeometryReader { proxy in
+//                Rectangle()
+//                    .frame(width: 2,
+//                           height: proxy.size.height)
+//                    .cornerRadius(8)
+//                    .opacity(0.5)
+//            }
+//        }
     }
     
     var contentBody: some View {

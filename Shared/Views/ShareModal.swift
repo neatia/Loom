@@ -10,7 +10,6 @@ import SwiftUI
 import Granite
 import GraniteUI
 import LemmyKit
-import MarqueKit
 
 #if os(macOS)
 import AppKit
@@ -47,7 +46,7 @@ public struct ShareModal<Content: View>: View {
             
             Spacer()
             
-            HStack(spacing: .layer5) {
+            HStack(spacing: .layer6) {
                 Spacer()
 
                 Button {

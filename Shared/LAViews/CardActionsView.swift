@@ -87,6 +87,5 @@ struct CardActionsView: View {
         .menuIndicator(.hidden)
         .frame(width: 24, height: 16)
         //.scaleEffect(x: -1, y: 1)
-        .addHaptic()
     }
 }

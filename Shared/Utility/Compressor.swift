@@ -68,8 +68,6 @@ extension NSImage {
             return self
         }
         
-        let image = self
-        
         let ratio = targetBytes / totalBytes
         
         let new_size = self.size.newSize(ratio: ratio)
@@ -91,15 +89,15 @@ extension UIImage {
             return self
         }
         
-        let image = self
+        LoomLog("Compressing: \(totalBytes) -> \(targetBytes)", level: .debug)
         
         let ratio = targetBytes / totalBytes
         
         let new_size = self.size.newSize(ratio: ratio)
         
-        let resized = self.resize(withSize: new_size)
+        let resized = self.resize(targetSize: new_size)
         
-        return resized ?? self
+        return resized
     }
 }
 

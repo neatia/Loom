@@ -39,26 +39,48 @@ struct SearchBar: View {
                             .padding(.leading, .layer4)
                             .foregroundColor(Brand.Colors.grey)
                         
+
+                        
+                        #if os(iOS)
+                        TextToolView(text: $textDebouncer.text,
+                                     kind: .search)
+                            .attach({
+                                #if os(iOS)
+                                query.perform(textDebouncer.text)
+                                #endif
+                            }, at: \.onSubmit)
+                            .frame(height: 48)
+                            .padding(.top, .layer1)
+                        #else
                         TextField("MISC_SEARCH",
                                   text: $textDebouncer.text)
                         .textFieldStyle(PlainTextFieldStyle())
                         .font(.headline.bold())
                         .autocorrectionDisabled(true)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                StandardSearchToolbarView()
-                                    .attach({
-                                        DispatchQueue.main.async {
-                                            if offline == false {
-                                                self.isSearching = true
-                                            }
-                                            LoomLog("🔎 performing search query: \(textDebouncer.text) 🔎", level: .debug)
-                                            query.perform(textDebouncer.text)
-                                        }
-                                    }, at: \.search)
-                            }
+                        .submitLabel(.search)
+                        .onSubmit {
+                            #if os(iOS)
+                            hideKeyboard()
+                            query.perform(textDebouncer.text)
+                            #endif
                         }
-                        .frame(height: 48)
+                        #endif
+                        
+//                        .toolbar {
+//                            ToolbarItemGroup(placement: .keyboard) {
+//                                StandardSearchToolbarView()
+//                                    .attach({
+//                                        DispatchQueue.main.async {
+//                                            if offline == false {
+//                                                self.isSearching = true
+//                                            }
+//                                            LoomLog("🔎 performing search query: \(textDebouncer.text) 🔎", level: .debug)
+//                                            query.perform(textDebouncer.text)
+//                                        }
+//                                    }, at: \.search)
+//
+//                            }
+//                        }
                     }
                     .cornerRadius(6.0)
                 }
@@ -170,7 +192,6 @@ struct StandardSearchToolbarView: View {
                 }
             }
             .buttonStyle(PlainButtonStyle())
-            .offset(x: -.layer2)
             
             Spacer()
             
@@ -188,7 +209,6 @@ struct StandardSearchToolbarView: View {
                     )
             }
             .buttonStyle(PlainButtonStyle())
-            .offset(x: .layer1)
         }
     }
 }

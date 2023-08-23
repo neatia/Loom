@@ -15,6 +15,7 @@ import NukeUI
 
 struct PostCardView: View {
     @Environment(\.contentContext) var context
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact //account.center.interact
     @Environment(\.pagerMetadata) var contentMetadata
     
@@ -106,13 +107,7 @@ struct PostCardView: View {
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
                         .attach({
-                            ModalService
-                                .shared
-                                .showEditPostModal(context.postModel) { updatedModel in
-                                    DispatchQueue.main.async {
-                                        model = updatedModel
-                                    }
-                                }
+                            editModel()
                         }, at: \.edit)
                     content
                     
@@ -130,13 +125,7 @@ struct PostCardView: View {
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                ModalService
-                                    .shared
-                                    .showEditPostModal(context.postModel) { updatedModel in
-                                        DispatchQueue.main.async {
-                                            model = updatedModel
-                                        }
-                                    }
+                                editModel()
                             }, at: \.edit)
                             .graniteEvent(interact)
                         
@@ -172,6 +161,16 @@ struct PostCardView: View {
                      leading: leading,
                      bottom: bottom,
                      trailing: trailing)
+    }
+    
+    func editModel() {
+        ModalService
+            .shared
+            .showEditPostModal(context.postModel) { updatedModel in
+                DispatchQueue.main.async {
+                    model = updatedModel
+                }
+            }
     }
 }
 
@@ -235,6 +234,7 @@ extension PostCardView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
+                    let model = model ?? context.postModel
                     guard let model else { return }
                     showContent.perform(model)
                 }
@@ -259,6 +259,7 @@ extension PostCardView {
                                     urlToOpen: context.postModel?.postURL,
                                     shouldLoad: context.hasURL)
                     .attach({
+                        let model = model ?? context.postModel
                         guard let model else { return }
                         showContent.perform(model)
                     }, at: \.showContent)
@@ -316,7 +317,7 @@ extension PostCardView {
         .route(window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context, updatedModel: model)
-        }
+        } with : { router }
     }
     
     var deletedPost: some View {

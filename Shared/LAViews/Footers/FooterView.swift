@@ -13,7 +13,7 @@ import GraniteUI
 
 struct FooterView: View {
     @Environment(\.contentContext) var context
-    
+    @Environment(\.graniteRouter) var router
     @Environment(\.pagerMetadata) var metadata
     
     @GraniteAction<CommentId> var showComments
@@ -218,7 +218,7 @@ extension FooterView {
                 .foregroundColor(.foreground)
                 .route(window: .resizable(600, 500)) {
                     PostDisplayView(context: _context)
-                }
+                } with : { router }
             }
             
             if let bookmarkKind = context.bookmarkKind,
@@ -344,10 +344,23 @@ extension FooterView {
                     //This won't be able to pull in an edited model from the card view
                     //it should possibly forward the call instead
                     PostDisplayView(context: _context)
-                }
+                } with : { router }
             }
             
             Spacer()
+            
+            if context.isPost {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    ModalService.shared.expand(context.postModel)
+                } label: {
+                    Image(systemName: "rectangle.expand.vertical")
+                        .font(font)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.trailing, .layer3)
+            }
             
             if let bookmarkKind = context.bookmarkKind,
                isHeader == false || context.isComment {

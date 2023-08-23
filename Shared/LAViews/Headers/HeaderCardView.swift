@@ -14,7 +14,7 @@ import Combine
 
 struct HeaderCardView: View {
     @Environment(\.contentContext) var context
-    
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
     
     @Relay var layout: LayoutService
@@ -112,12 +112,10 @@ struct HeaderCardView: View {
         
         guard let commentView = context.commentModel else { return }
         
-        Task.detached { @MainActor in
+        Task { @MainActor in
             guard let postView = await Lemmy.post(commentView.post.id, comment: commentView.comment) else {
                 return
             }
-            
-            self.postView = postView
             
             DispatchQueue.main.async {
                 self.route(postView)
@@ -129,11 +127,12 @@ struct HeaderCardView: View {
         if Device.isExpandedLayout {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {
-            self.postView = postView
             
-            GraniteNavigation.push {
+            router.push {
                 PostDisplayView(context: _context)
             }
+            
+            self.postView = postView
         }
     }
 }

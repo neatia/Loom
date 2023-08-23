@@ -196,6 +196,7 @@ extension Write: View {
                     }
                 }
                 .padding(.layer3)
+                .padding(.horizontal, .layer2)
                 .frame(maxHeight: state.enableImagePreview ? 200 : 48)
                 
                 Divider()

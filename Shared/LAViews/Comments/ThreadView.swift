@@ -8,13 +8,14 @@ import MarkdownView
 
 struct ThreadView: View {
     @Environment(\.contentContext) var context
-    
     @Environment(\.colorScheme) var colorScheme
     
     @GraniteAction<CommentView> var showDrawer
     @GraniteAction<Void> var closeDrawer
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
+    
+    @State var updatedParentModel: CommentView?
     
     //drawer
     var isModal: Bool = true

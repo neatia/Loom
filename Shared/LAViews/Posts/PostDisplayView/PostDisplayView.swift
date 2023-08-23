@@ -106,7 +106,7 @@ struct PostDisplayView: GraniteNavigationDestination {
                 }
                 .environmentObject(pager)
             } else {
-                Text("hello")
+                Spacer()
             }
         }
         .padding(.top, Device.isExpandedLayout ? .layer4 : .layer2)
@@ -145,13 +145,14 @@ struct PostDisplayView: GraniteNavigationDestination {
                                             location: threadLocation)
             }.fetch()
         }
+        .ignoresSafeArea(.keyboard)
     }
     
     var destinationStyle: GraniteNavigationDestinationStyle {
         if Device.isExpandedLayout {
-            return .init()
+            return .init(navBarBGColor: Color.background)
         } else {
-            return .init(fullWidth: true) {
+            return .init(fullWidth: true, navBarBGColor: Color.background) {
                 headerView
                     .padding(.horizontal, .layer3)
             }
@@ -210,7 +211,6 @@ extension PostDisplayView {
             
             sortMenuView
                 .padding(.layer4)
-                .addHaptic()
         }
         .fixedSize(horizontal: false, vertical: true)
     }

@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "keyboardtoolbar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/KeyboardToolbar",
+      "state" : {
+        "branch" : "main",
+        "revision" : "77292529fc436541c5d31664d263460778060210"
+      }
+    },
+    {
       "identity" : "marblekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MarbleKit",

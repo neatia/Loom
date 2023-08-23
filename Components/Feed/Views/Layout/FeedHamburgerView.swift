@@ -67,6 +67,8 @@ extension Feed {
  to it being added on the Window level, versus the current view (macOS)
  */
 struct FeedHamburgerView: View {
+    @Environment(\.graniteRouter) var router
+    
     @Environment(\.sideMenuVisible) var isVisible
     @Environment(\.sideMenuMoving) var isMoving
     
@@ -281,7 +283,6 @@ extension FeedHamburgerView {
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
         .frame(width: 24, height: 24)
-        .addHaptic()
     }
 }
 
@@ -372,7 +373,7 @@ extension FeedHamburgerView {
                 }
                 .routeButton(window: .resizable(600, 500)) {
                     Profile(account.state.meta?.person)
-                }
+                } with : { router }
                 .buttonStyle(.plain)
                 
                 Spacer()
@@ -426,7 +427,7 @@ extension FeedHamburgerView {
                 }
                 .routeButton(window: .resizable(600, 500)) {
                     Settings()
-                }
+                } with : { router }
                 .buttonStyle(.plain)
                 
                 Spacer()

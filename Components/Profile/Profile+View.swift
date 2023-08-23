@@ -4,7 +4,6 @@ import SwiftUI
 import LemmyKit
 
 extension Profile: View {
-    
     public var view: some View {
         VStack(spacing: 0) {
             PagerScrollView(PersonDetailsPageable.self,
@@ -32,8 +31,6 @@ extension Profile: View {
         .padding(.top, Device.isMacOS ? .layer5 : 0)
         //TODO: Negative space from transparent titlebar. (Need to investigate why I needed to resolve this again vs. PostDisplayView and other cases with the same layout/enviornment)
         .overlayIf(Device.isMacOS, alignment: .top) { Color.background.frame(maxWidth: .infinity).frame(height: 28) }
-        //.addGraniteSheet(modal.sheetManager, background: Color.clear)
-        //.graniteNavigationDestination()
         .background(Color.background)
         .task {
             pager.hook { page in

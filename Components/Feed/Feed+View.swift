@@ -85,11 +85,11 @@ extension Feed: GraniteNavigationDestination {
     
     var destinationStyle: GraniteNavigationDestinationStyle {
         if isCommunity {
-            return .init {
+            return .init(navBarBGColor: Color.background) {
                 communityInfoMenuView
             }
         } else {
-            return .init()
+            return .init(navBarBGColor: Color.background)
         }
     }
 }

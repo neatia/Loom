@@ -12,6 +12,8 @@ import NukeUI
 import Granite
 
 struct AvatarView: View {
+    @Environment(\.graniteRouter) var router
+    
     static var containerPadding: CGFloat = 5
     
     enum Size {
@@ -123,6 +125,6 @@ struct AvatarView: View {
         .clipped()
         .routeIf(person != nil, window: .resizable(600, 500)) {
             Profile(person)
-        }
+        } with : { router }
     }
 }

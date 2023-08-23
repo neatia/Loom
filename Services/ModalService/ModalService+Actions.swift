@@ -109,10 +109,13 @@ extension ModalService {
     }
     
     static func share(image: GraniteImage) {
-        ModalService.presentActivitySheet(items: [image])
+        DispatchQueue.main.async {
+            ModalService.presentActivitySheet(items: [image])
+        }
     }
     
     static func presentActivitySheet(items : [Any]) {
+        print("{TEST} showing sheet")
 #if os(iOS)
         let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
         controller.overrideUserInterfaceStyle = .dark

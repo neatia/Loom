@@ -14,3 +14,12 @@ extension Animation {
                              initialVelocity: 10.0)
     }
 }
+
+extension View {
+    func cancelAnimations() -> some View {
+        self.animation(nil, value: true)
+        .transaction { tx in
+            tx.animation = nil
+        }
+    }
+}

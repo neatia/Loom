@@ -104,8 +104,9 @@ struct ImagePicker: UIViewControllerRepresentable, GraniteActionable {
             if provider.canLoadObject(ofClass: UIImage.self) {
                 provider.loadObject(ofClass: UIImage.self) { image, _ in
                     DispatchQueue.main.async { [weak self] in
-                        self?.parent.imageData = (image as? UIImage)?.compress().pngData()
-                        picker.dismiss(animated: true)
+                        self?.parent.imageData = (image as? UIImage)?.compress().png
+                        
+                        self?.parent.dismiss.perform()
                     }
                 }
             } else {

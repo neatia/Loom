@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Granite
+import Combine
 
 final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate, GraniteActionable {
     @GraniteAction<Void> var dismissPerfmored
@@ -13,7 +14,18 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     
     let sheetManager = GraniteSheetManager()
     
+    internal var cancellables: Set<AnyCancellable> = .init()
+    
     public init(_ wrapper : @escaping ((GraniteModalContainerView) -> AnyView) = { view in AnyView(view) }) {
+        
+        sheetManager
+            .$models
+            .throttle(for: .seconds(0.2),
+                      scheduler: RunLoop.main,
+                      latest: true)
+            .sink { value in
+                self.window?.isUserInteractionEnabled = value.keys.isEmpty == false
+            }.store(in: &cancellables)
         
 #if os(iOS)
         DispatchQueue.main.async {
@@ -61,7 +73,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             
             if presenters.count == 0 {
                 
-                //window?.isUserInteractionEnabled = false
+                window?.isUserInteractionEnabled = false
             }
         }
 #else
@@ -111,7 +123,7 @@ extension GraniteModalManager {
             .addGraniteSheet(sheetManager,
                              background: Color.clear))
         window.rootViewController = alertController
-        window.isUserInteractionEnabled = true
+        window.isUserInteractionEnabled = false
         window.backgroundColor = UIColor.clear
         window.rootViewController?.view.backgroundColor = .clear
         

@@ -161,7 +161,5 @@ struct FeedCommunityInfoMenuView: View {
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
         .frame(width: 20)
-//            .scaleEffect(x: -1, y: 1)
-        .addHaptic()
     }
 }

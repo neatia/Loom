@@ -16,7 +16,6 @@ final public class GraniteSheetManager : ObservableObject {
         let content: AnyView
     }
     
-    
     public init() {
         
     }
@@ -43,7 +42,7 @@ final public class GraniteSheetManager : ObservableObject {
         self.detentsMap[id] = detents
         self.models[id] = .init(id: id,
                                 content: AnyView(content()
-            .graniteNavigation(backgroundColor: Color.background)))
+            .graniteNavigation(backgroundColor: Color.clear)))
     }
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {

@@ -65,6 +65,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 - [IPFSKit](https://github.com/pexavc/ipfskit)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean/nuke)
 - [MarkdownView](https://github.com/pexavc/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004)
+- [KeyboardToolbar](https://github.com/simonbs/KeyboardToolbar) Thanks to [@simonbs](https://github.com/simonbs)
 
 ## Discussion
 

@@ -10,6 +10,17 @@ import SwiftUI
 import Granite
 import LemmyKit
 
+//MARK: Expand
+extension ModalService {
+    @MainActor
+    func expand(_ postView: PostView?) {
+        guard let content = postView?.post.body else { return }
+        presentSheet(detents: [.large()]) {
+            GenericPreview(content: content)
+        }
+    }
+}
+
 //MARK: Report
 extension ModalService {
     
@@ -21,12 +32,13 @@ extension ModalService {
     }
 }
 
+//TODO: most of these write based modals could be combined
 //MARK: Write {
 extension ModalService {
     
     @MainActor
     func showWriteModal(_ model: CommunityView?) {
-        presentSheet {
+        presentSheet(detents: [.large()]) {
             Write(communityView: model)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -44,10 +56,12 @@ extension ModalService {
             return
         }
         
-        presentSheet {
+        presentSheet(detents: [.large()]) {
             Write(postView: model)
                 .attach({ updatedModel in
                     update?(updatedModel)
+                    
+                    self.dismissSheet()
                 }, at: \.updatedPost)
                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -75,6 +89,8 @@ extension ModalService {
                 .attach({ model in
                     DispatchQueue.main.async {
                         update?(model)
+                        
+                        self.dismissSheet()
                     }
                 }, at: \.updateComment)
                 .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
