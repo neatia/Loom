@@ -161,7 +161,7 @@ extension WriteView {
                         .padding(.horizontal, .layer3 + additionalPadding)
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
-                                KeyboardToolbarSView(minimize: $isVisible)
+                                KeyboardToolbarSView(isVisible: $isVisible)
                             }
                         }
                         .overlayIf(content.isEmpty && isFocused == false) {
@@ -184,7 +184,7 @@ extension WriteView {
                                 .toolbar {
                                     
                                     ToolbarItemGroup(placement: .keyboard) {
-                                        KeyboardToolbarSView(minimize: $isVisible)
+                                        KeyboardToolbarSView(isVisible: $isVisible)
                                     }
                                 }
                                 .frame(maxHeight: .infinity)

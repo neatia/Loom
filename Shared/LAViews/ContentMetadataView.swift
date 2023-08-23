@@ -160,6 +160,7 @@ struct LinkButton: ButtonStyle {
 }
 
 extension ContentMetadataView {
+    @MainActor
     func loadImage() async {
         guard let urlToOpen else {
             return

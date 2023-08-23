@@ -59,7 +59,7 @@ extension CGSize {
 #if os(macOS)
 extension NSImage {
     func compress(_ quality: Compressor.ImageQuality = .small) -> NSImage {
-        guard let data = self.png else { return self }
+        guard let data = self.pngData() else { return self }
         
         let totalBytes = CGFloat(data.count)
         let targetBytes = quality.bytes

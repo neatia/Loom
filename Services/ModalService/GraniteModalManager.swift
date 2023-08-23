@@ -18,6 +18,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     
     public init(_ wrapper : @escaping ((GraniteModalContainerView) -> AnyView) = { view in AnyView(view) }) {
         
+        #if os(iOS)
         sheetManager
             .$models
             .throttle(for: .seconds(0.2),
@@ -26,6 +27,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             .sink { value in
                 self.window?.isUserInteractionEnabled = value.keys.isEmpty == false
             }.store(in: &cancellables)
+        #endif
         
 #if os(iOS)
         DispatchQueue.main.async {
