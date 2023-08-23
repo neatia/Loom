@@ -34,8 +34,8 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
     @Binding var isShowing: Bool
     
     var startThreshold: CGFloat = 0.05
-    var activeThreshold: CGFloat = 0.6
-    var viewingThreshold: CGFloat = 0.8
+    var activeThreshold: CGFloat = 0.5
+    var viewingThreshold: CGFloat = 0.7
     
     var startWidth: CGFloat
     var width: CGFloat

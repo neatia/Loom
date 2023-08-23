@@ -138,6 +138,7 @@ struct InstanceCardView: View {
             
             HStack(spacing: .layer3) {
                 Button {
+                    guard isConnected == false else { return }
                     GraniteHaptic.light.invoke()
                     connect.perform(instance)
                     restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))

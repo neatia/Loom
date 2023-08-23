@@ -18,7 +18,6 @@ struct CommentCardView: View {
     @Relay(.silence) var content: ContentService
     
     @State var model: CommentView?
-    @State var routePostDisplay: Bool = false
     @State var postView: PostView? = nil
     
     @State var expandReplies: Bool = false
@@ -221,7 +220,6 @@ extension CommentCardView {
             
             guard layout.state.style == .expanded else {
                 GraniteHaptic.light.invoke()
-                routePostDisplay = true
                 return
             }
             
@@ -233,7 +231,7 @@ extension CommentCardView {
                 layout._state.wrappedValue.feedContext = .viewPost(postView)
             }
         }
-        .routeIf(routePostDisplay,
+        .routeIf(Device.isExpandedLayout == false,
                  window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context)

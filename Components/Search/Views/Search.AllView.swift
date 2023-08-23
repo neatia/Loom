@@ -40,7 +40,8 @@ struct SearchAllView: View {
                             Text("EMPTY_STATE_NO_COMMUNITIES_FOUND")
                                 .font(.subheadline)
                         }
-                        .padding(.horizontal, .layer4)
+                        .padding(.layer4)
+                        .padding(.bottom, .layer2)
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: .layer4) {
@@ -80,7 +81,8 @@ struct SearchAllView: View {
                             Text("EMPTY_STATE_NO_USERS_FOUND")
                                 .font(.subheadline)
                         }
-                        .padding(.horizontal, .layer4)
+                        .padding(.layer4)
+                        .padding(.bottom, .layer2)
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: .layer4) {
@@ -117,7 +119,9 @@ struct SearchAllView: View {
                                 .font(.subheadline)
                         }
                         .padding(.horizontal, .layer4)
-                        .padding(.bottom, .layer4)
+                        .padding(.layer4)
+                        //layer6 because last divider has no padding
+                        .padding(.bottom, .layer6)
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {
@@ -162,8 +166,8 @@ struct SearchAllView: View {
                             Text("EMPTY_STATE_NO_COMMENTS_FOUND")
                                 .font(.subheadline)
                         }
-                        .padding(.horizontal, .layer4)
                         .padding(.top, .layer4)
+                        .padding(.bottom, .layer2)
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 0) {

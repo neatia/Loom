@@ -41,6 +41,7 @@ struct TextToolView : GenericControllerRepresentable {
         controller.textView.insertText(text)
         controller.textView.delegate = context.coordinator
         controller.delegate = context.coordinator
+        context.coordinator.delegate = controller
         return controller
     }
     
@@ -57,6 +58,7 @@ struct TextToolView : GenericControllerRepresentable {
     
     class Coordinator: NSObject, UITextViewDelegate, KeyboardTextToolDelegate {
         var parent: TextToolView
+        weak var delegate: KeyboardTextToolControllerDelegate?
         
         @Binding var text: String
         init(parent: TextToolView, text: Binding<String>) {
@@ -89,7 +91,7 @@ struct TextToolView : GenericControllerRepresentable {
         }
         
         func textViewDidEndEditing(_ textView: UITextView) {
-            
+            delegate?.setPlaceholderVisibility(text.isEmpty)
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
@@ -112,7 +114,11 @@ protocol KeyboardTextToolDelegate: AnyObject {
     func toggleVisibility()
 }
 
-final class KeyboardViewController: UIViewController {
+protocol KeyboardTextToolControllerDelegate: AnyObject {
+    func setPlaceholderVisibility(_ isVisible: Bool)
+}
+
+final class KeyboardViewController: UIViewController, KeyboardTextToolControllerDelegate {
     private let contentView = KeyboardView()
     private let keyboardToolbarView = KeyboardToolbarView()
     var textView: UITextView {
@@ -198,6 +204,10 @@ final class KeyboardViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    func setPlaceholderVisibility(_ isVisible: Bool) {
+        self.placeholderLabel.isHidden = isVisible == false
     }
 }
 

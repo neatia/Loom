@@ -46,6 +46,7 @@ struct SearchBar: View {
                                      kind: .search)
                             .attach({
                                 #if os(iOS)
+                                guard textDebouncer.text != lastQuery else { return }
                                 query.perform(textDebouncer.text)
                                 #endif
                             }, at: \.onSubmit)
@@ -61,6 +62,7 @@ struct SearchBar: View {
                         .onSubmit {
                             #if os(iOS)
                             hideKeyboard()
+                            guard textDebouncer.text != lastQuery else { return }
                             query.perform(textDebouncer.text)
                             #endif
                         }

@@ -39,9 +39,13 @@ extension Feed {
         config
             .center
             .restart
-            .listen(.broadcast) { _ in
-                LoomLog("🟡 Restarting")
-                pager.reset()
+            .listen(.broadcast) { value in
+                if let error = value as? StandardErrorMeta {
+                    ModalService.shared.presentModal(GraniteToastView(error))
+                } else {
+                    LoomLog("🟡 Restarting")
+                    pager.reset()
+                }
             }
         
         content

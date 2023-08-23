@@ -61,6 +61,8 @@ extension Search: View {
                 Divider()
             }
             
+            //GraniteTab could supply a feature that removes views from the hierarchy like this
+            //performance seems to get hurt when switching between tabs from search
             if selectedSearch.isFocusedContent {
                 SearchScrollView(selectedSearch,
                                  community: community,
@@ -68,7 +70,7 @@ extension Search: View {
                                  listingType: selectedListing,
                                  response: $conductor.response,
                                  query: conductor.lastQuery)
-                    .background(Color.alternateBackground)
+                .background(Color.alternateBackground)
             } else if conductor.isSearching && conductor.isEmpty {
                 StandardLoadingView()
             } else if let response = conductor.response {
@@ -103,7 +105,13 @@ extension Search: View {
             }
             
             guard conductor.response == nil else { return }
-            conductor.startTimer("")
+            
+            //Prevent too many calls on startup
+            //maybe boot logic can host a "call loop" for initial
+            //network models
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                conductor.startTimer("")
+            }
         }
     }
 }

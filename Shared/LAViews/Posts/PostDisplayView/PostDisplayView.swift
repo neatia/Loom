@@ -148,7 +148,7 @@ struct PostDisplayView: GraniteNavigationDestination {
         } else {
             return .init(fullWidth: true, navBarBGColor: Color.background) {
                 headerView
-                    .padding(.horizontal, .layer3)
+                    .padding(.leading, .layer3)
             }
         }
     }

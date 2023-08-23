@@ -27,7 +27,6 @@ struct PostCardView: View {
     @Relay var layout: LayoutService
     
     @State var model: PostView?
-    @State var routePostDisplay: Bool = false
     
     var topPadding: CGFloat = .layer6
     var bottomPadding: CGFloat = .layer6
@@ -51,7 +50,7 @@ struct PostCardView: View {
     }
     
     var shouldCensor: Bool {
-        censorRemoved || censorBlocked || censorNSFW
+        censorRemoved || censorBlocked || censorNSFW || censorBot
     }
     
     var censorKind: CensorView.Kind {
@@ -308,13 +307,12 @@ extension PostCardView {
             guard Device.isExpandedLayout,
                   let model = context.postModel else {
                 GraniteHaptic.light.invoke()
-                routePostDisplay = true
                 return
             }
             
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .routeIf(routePostDisplay,
+        .routeIf(Device.isExpandedLayout == false,
                  window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context, updatedModel: model)
