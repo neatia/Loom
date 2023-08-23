@@ -90,17 +90,13 @@ extension Bookmark: View {
 #endif
                     }
                     .menuStyle(BorderlessButtonMenuStyle())
-                    .addHaptic()
                     
                     Spacer()
                 }
                 .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
                 .padding(.vertical, .layer4)
                 .padding(.horizontal, showHeader == false ? .layer3 : .layer4)
-                .animation(nil, value: true)
-                .transaction { tx in
-                    tx.animation = nil
-                }
+                .cancelAnimations()
                 //solves weird sizing issue
                 .id(state.selectedBookmarkPostKey.description + state.selectedBookmarkCommentKey.description + state.kind.rawValue)
                 
@@ -125,7 +121,6 @@ extension Bookmark: View {
             _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
             _state.selectedBookmarkCommentKey.wrappedValue = service.state.comments.keys.first ?? .local
         }
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
     }
     
     func headerView(for host: BookmarkKey) -> some View {
@@ -152,7 +147,7 @@ extension Bookmark: View {
                              linkPreviewType: .largeNoMetadata)
                     .attach({ postView in
                         GraniteHaptic.light.invoke()
-                        modal.presentSheet {
+                        ModalService.shared.presentSheet {
                             PostContentView(postView: postView)
                                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                         }

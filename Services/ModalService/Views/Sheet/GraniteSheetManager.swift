@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Granite
 
 final public class GraniteSheetManager : ObservableObject {
     public static var defaultId: String = "granite.sheet.manager.content.main"
@@ -14,7 +15,6 @@ final public class GraniteSheetManager : ObservableObject {
         let id: String
         let content: AnyView
     }
-    
     
     public init() {
         
@@ -40,13 +40,23 @@ final public class GraniteSheetManager : ObservableObject {
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents
-        self.models[id] = .init(id: id, content: AnyView(content()))
+        self.models[id] = .init(id: id,
+                                content: AnyView(content()
+            .graniteNavigation(backgroundColor: Color.clear)))
     }
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {
         DispatchQueue.main.async { [weak self] in
             self?.detentsMap[id] = nil
             self?.models[id] = nil
+            self?.shouldPreventDismissal = false
+        }
+    }
+    
+    public func destroy() {
+        DispatchQueue.main.async { [weak self] in
+            self?.detentsMap = [:]
+            self?.models = [:]
             self?.shouldPreventDismissal = false
         }
     }

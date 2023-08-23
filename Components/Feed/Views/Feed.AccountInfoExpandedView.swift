@@ -17,7 +17,7 @@ extension Feed {
             AccountView()
                 .attach({
                     GraniteHaptic.light.invoke()
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         LoginView()
                     }
                 }, at: \.login)
@@ -37,6 +37,8 @@ extension Feed {
                         Color.background.opacity(0.75)
                             .cornerRadius(4)
                     }
+            } else {
+                
             }
         }
         .frame(maxWidth: .infinity)

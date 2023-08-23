@@ -76,6 +76,12 @@ extension Write {
                 
                 state.createdPostView = value
                 state.showPost = true
+                
+                GraniteNavigation.push {
+                    //TODO: fix type erasure
+                    PostDisplayView()
+                        .contentContext(.init(postModel: value))
+                }
             } else {
                 value = nil
             }

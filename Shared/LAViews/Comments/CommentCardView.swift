@@ -7,13 +7,11 @@ import MarkdownView
 
 struct CommentCardView: View {
     @Environment(\.contentContext) var context
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
     @GraniteAction<Community> var viewCommunity
     
-    @GraniteAction<CommentView?> var share
     @GraniteAction<CommentView> var showDrawer
-    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
-    @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     
     @Relay var config: ConfigService
     @Relay(.silence) var content: ContentService
@@ -57,11 +55,13 @@ struct CommentCardView: View {
                     .attach({ community in
                         viewCommunity.perform(community)
                     }, at: \.viewCommunity)
+                    .attach({
+                        editModel()
+                    }, at: \.edit)
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
                 
                 contentView
-                    .padding(.leading, .layer3 + AvatarView.containerPadding)
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
             case .style2:
@@ -73,23 +73,8 @@ struct CommentCardView: View {
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
-                                guard let model else { return }
-                                switch context.viewingContext {
-                                case .base,
-                                     .bookmark,
-                                     .bookmarkExpanded:
-                                    edit.perform((model, { updatedModel in
-                                        DispatchQueue.main.async {
-                                            self.model = updatedModel
-                                        }
-                                    }))
-                                default:
-                                    content.center.interact.send(ContentService.Interact.Meta(kind: .editComment(model, postView)))
-                                }
+                                editModel()
                             }, at: \.edit)
-                            .attach({
-                                share.perform(context.commentModel)
-                            }, at: \.share)
                             .graniteEvent(interact)
                         contentView
                     }
@@ -101,13 +86,9 @@ struct CommentCardView: View {
                 Divider()
                     .padding(.top, .layer5)
                 
-                ThreadView(isModal: false, isInline: true)
-                    .attach({ model in
-                        reply.perform(model)
-                    }, at: \.reply)
-                    .attach({ model in
-                        edit.perform(model)
-                    }, at: \.edit)
+                ThreadView(updatedParentModel: model,
+                           isModal: false,
+                           isInline: true)
                     .attach({ model in
                         showDrawer.perform(model)
                     }, at: \.showDrawer)
@@ -125,17 +106,20 @@ struct CommentCardView: View {
             
             guard let model else { return }
             
-            reply.perform((model, { model in
-                self.model = self.model?.incrementReplyCount()
-                if expandReplies == false {
-                    expandReplies = true
-                } else {
-                    refreshThread.toggle()
+            ModalService
+                .shared
+                .showReplyCommentModal(isEditing: false,
+                                       model: model) { updatedModel in
+                
+                DispatchQueue.main.async {
+                    self.model = updatedModel //self.model?.incrementReplyCount()
+                    if expandReplies == false {
+                        expandReplies = true
+                    } else {
+                        refreshThread.toggle()
+                    }
                 }
-            }))
-        }
-        .transaction { tx in
-            tx.animation = nil
+            }
         }
         .task {
             self.model = context.commentModel
@@ -166,6 +150,32 @@ struct CommentCardView: View {
                      bottom: bottom,
                      trailing: trailing)
     }
+    
+    func editModel() {
+        switch context.viewingContext {
+        case .base,
+             .bookmark,
+             .bookmarkExpanded:
+            
+            //The function name doesn't seem to make sense
+            ModalService
+                .shared
+                .showReplyCommentModal(isEditing: true,
+                                       model: model) { updatedModel in
+                
+                DispatchQueue.main.async {
+                    self.model = updatedModel
+                }
+            }
+        default:
+            ModalService
+                .shared
+                .showEditCommentModal(model,
+                                      postView: postView) { updatedModel in
+                    self.model = updatedModel
+                }
+        }
+    }
 }
 
 extension CommentCardView {
@@ -181,6 +191,9 @@ extension CommentCardView {
             #else
             if isPreview {
                 contentBody
+                    .route(window: .resizable(600, 500)) {
+                        PostDisplayView(context: _context)
+                    } with: { router }
             } else {
                 contentBody
                     .contentShape(Rectangle())
@@ -204,21 +217,16 @@ extension CommentCardView {
                           isPreview == false else { return }
                     showDrawer.perform(model)
                 }, at: \.showComments)
-                .attach({
-                    share.perform(context.commentModel)
-                }, at: \.share)
         }
-        .padding(.leading, context.feedStyle == .style1 ? (CGFloat.layer3 + CGFloat.layer2 + AvatarView.containerPadding) : 0)
-        .overlayIf(context.feedStyle == .style1) {
-            GeometryReader { proxy in
-                Rectangle()
-                    .frame(width: 2,
-                           height: proxy.size.height)
-                    .cornerRadius(8)
-                    .opacity(0.5)
-            }
-        }
-//        .fixedSize(horizontal: false, vertical: true)
+//        .overlayIf(context.feedStyle == .style1) {
+//            GeometryReader { proxy in
+//                Rectangle()
+//                    .frame(width: 2,
+//                           height: proxy.size.height)
+//                    .cornerRadius(8)
+//                    .opacity(0.5)
+//            }
+//        }
     }
     
     var contentBody: some View {

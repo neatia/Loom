@@ -4,10 +4,14 @@ import SwiftUI
 
 struct Write: GraniteComponent {
     @Command var center: Center
-    @Relay var modal: ModalService
     @Relay var config: ConfigService
+    @Relay(.silence) var content: ContentService
+    
+    @Relay var modal: ModalService
     
     @GraniteAction<PostView> var updatedPost
+    
+    static var modalId: String = "loom.write.view.sheets"
     
     enum Kind {
         case compact
@@ -32,9 +36,13 @@ struct Write: GraniteComponent {
             .create
             .listen { value in
                 if let response = value as? StandardNotificationMeta {
-                    modal.presentModal(GraniteToastView(response))
+                    ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let meta = value as? Write.Create.ResponseMeta {
                     updatedPost.perform(meta.postView)
+                    content
+                        .center
+                        .interact
+                        .send(ContentService.Interact.Meta(kind: .editPostSubmit(meta.postView)))
                 }
             }
     }

@@ -19,7 +19,7 @@ extension Feed {
             value = newValue
         })
         
-        modal.presentSheet {
+        ModalService.shared.presentSheet {
             //TODO: localize
             GraniteStandardModalView(title: "Set Instance URL", maxHeight: 210) {
                 VStack(spacing: 0) {
@@ -39,7 +39,7 @@ extension Feed {
                         
                         Button {
                             GraniteHaptic.light.invoke()
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_CANCEL")
                                 .font(.headline)
@@ -52,7 +52,7 @@ extension Feed {
                             
                             config.center.restart.send(ConfigService.Restart.Meta(host: value))
                             
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_DONE")
                                 .font(.headline)

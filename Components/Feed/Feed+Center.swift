@@ -94,9 +94,6 @@ extension Feed {
         state.currentLoomManifest != nil
     }
     
-    var isCommunity: Bool {
-        state.community != nil
-    }
     var hasCommunityBanner: Bool {
         isCommunity && state.community?.banner != nil
     }

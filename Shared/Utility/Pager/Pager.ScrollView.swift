@@ -17,6 +17,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     struct Properties {
         var alternateContentPosition: Bool = false
         var hideDivider: Bool = false
+        var hideLastDivider: Bool = false
         var performant: Bool = false
         var lazy: Bool = true
         var cacheViews: Bool = false
@@ -196,11 +197,11 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
             content(item)
                 .padding(.vertical, properties.verticalPadding)
             
-//            if !properties.hideDivider,
-//               item.id != pager.lastItem?.id {
-//                Divider()
-//            }
-            Divider()
+            if !properties.hideDivider {
+                if !properties.hideLastDivider || item.id != pager.lastItem?.id {
+                    Divider()
+                }
+            }
         }
         .background(properties.backgroundColor)
     }

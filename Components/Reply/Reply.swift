@@ -40,12 +40,12 @@ struct Reply: GraniteComponent {
     
     let kind: Write.Kind
     init(kind: Write.Kind) {
+        self.kind = kind
         switch kind {
         case .editReplyPost(let model, _), .editReplyComment(let model):
             _center = .init(.init(content: model.comment.content))
         default:
             break
         }
-        self.kind = kind
     }
 }

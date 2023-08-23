@@ -4,7 +4,6 @@ import SwiftUI
 struct Globe: GraniteComponent {
     @Command var center: Center
     
-    @Relay var modal: ModalService
     @Relay var account: AccountService
     @Relay var config: ConfigService
     
@@ -16,10 +15,10 @@ struct Globe: GraniteComponent {
             .addProfile
             .listen(.broadcast) { value in
                 if let meta = value as? StandardErrorMeta {
-                    modal.presentModal(GraniteToastView(meta), target: .sheet)
+                    ModalService.shared.presentModal(GraniteToastView(meta), target: .sheet)
                 } else if let meta = value as? StandardNotificationMeta {
-                    modal.dismissSheet()
-                    modal.presentModal(GraniteToastView(meta))
+                    ModalService.shared.dismissSheet()
+                    ModalService.shared.presentModal(GraniteToastView(meta))
                 }
             }
         
@@ -28,7 +27,7 @@ struct Globe: GraniteComponent {
             .boot
             .listen(.broadcast) { value in
                 if let meta = value as? StandardNotificationMeta {
-                    modal.presentModal(GraniteToastView(meta))
+                    ModalService.shared.presentModal(GraniteToastView(meta))
                 }
             }
         
@@ -37,7 +36,7 @@ struct Globe: GraniteComponent {
             .restart
             .listen(.broadcast) { value in
                 if let meta = value as? StandardNotificationMeta {
-                    modal.presentModal(GraniteToastView(meta))
+                    ModalService.shared.presentModal(GraniteToastView(meta))
                 }
             }
     }

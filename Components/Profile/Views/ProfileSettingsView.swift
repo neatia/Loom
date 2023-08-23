@@ -146,17 +146,15 @@ struct ProfileSettingsView: View {
     
     let showProfileSettings: Bool
     let isModal: Bool
-    let modal: ModalService
     let forceOffline: Bool
     
     init(showProfileSettings: Bool = true,
          offline: Bool = false,
-         isModal: Bool = false,
-         modal: ModalService) {
+         isModal: Bool = false) {
         self.showProfileSettings = showProfileSettings
         self.forceOffline = offline
         self.isModal = isModal
-        self.modal = modal
+        
         self.localModel = .init(showNSFW: config.state.showNSFW,
                                 showScores: config.state.showScores,
                                 showBotAccounts: config.state.showBotAccounts,
@@ -616,10 +614,10 @@ import PhotosUI
 extension ProfileSettingsView {
     
     func importPicture(setAvatar: Bool, setBanner: Bool) {
-        modal.presentSheet {
+        ModalService.shared.presentSheet {
             ImagePicker(imageData: setAvatar ? $imageDataAvatar : $imageDataBanner)
                 .attach( {
-                    modal.dismissSheet()
+                    ModalService.shared.dismissSheet()
                 }, at: \.dismiss)
         }
     }

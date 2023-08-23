@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import Granite
 
 //Compatibility
 #if os(macOS)
@@ -44,20 +45,19 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
         self.background = background()
     }
     
-    let pubDidClickInside = NotificationCenter.default
-            .publisher(for: NSNotification.Name("granite.window.ClickedInside"))
+    let pubDidClickInside = Granite.App.Interaction.windowClickedInside.publisher
     
     var body: some View {
 #if os(iOS)
         if #available(iOS 14.5, *),
            Device.isiPad == false {
             content
-                .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
+                .fullScreenCover(isPresented: manager.hasContent(id: self.id, with: .cover)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .shee(isPresented: manager.hasContent(with: .sheet),
+                .shee(isPresented: manager.hasContent(id: self.id, with: .sheet),
                       presentationStyle:
                         .formSheet(properties:
                                 .init(detents: manager.detents(),
@@ -69,12 +69,12 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                 }
         } else {
             content
-                .fullScreenCover(isPresented: manager.hasContent(with: .cover)) {
+                .fullScreenCover(isPresented: manager.hasContent(id: self.id, with: .cover)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .sheet(isPresented: manager.hasContent(with: .sheet)) {
+                .sheet(isPresented: manager.hasContent(id: self.id, with: .sheet)) {
                     sheetContent(for: manager.style)
                         .background(FullScreenCoverBackgroundRemovalView())
                 }
@@ -89,7 +89,6 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                     sheetContent(for: manager.style)
                         .addGraniteModal(modalManager)
                 } else {
-                    
                     sheetContent(for: manager.style)
                 }
             }
@@ -194,8 +193,8 @@ private struct FullScreenCoverBackgroundRemovalView: NSViewRepresentable {
     private class BackgroundRemovalView: NSView {
         
         override func viewDidMoveToWindow() {
+            window?.backgroundColor = .clear
             super.viewDidMoveToWindow()
-            superview?.superview?.layer?.backgroundColor = .black
         }
         
     }

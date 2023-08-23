@@ -34,22 +34,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             window.close()
         }
         
-        let nc = NotificationCenter.default
-        nc.post(name: Notification.Name("nyc.stoic.Loom.DidFinishLaunching"), object: nil)
+        Granite.App.Lifecycle.didFinishLaunching.post()
         
         NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) {
            [weak self] event in
-           let nc = NotificationCenter.default
-           nc.post(name: Notification.Name("granite.window.ClickedOutside"), object: nil)
-           
+            Granite.App.Interaction.windowClickedOutside.post()
        }
         
         NSEvent.addLocalMonitorForEvents(matching: [.leftMouseUp, .rightMouseDown]) {
             [weak self] event in
             
             if GraniteNavigationWindow.shared.containsWindow(event.windowNumber) {
-                let nc = NotificationCenter.default
-                nc.post(name: Notification.Name("granite.window.ClickedInside"), object: nil)
+                Granite.App.Interaction.windowClickedInside.post()
             }
             
             return event

@@ -36,7 +36,7 @@ extension CommentView {
 
 extension CommentView: Identifiable {
     public var id: String {
-        "\(comment.id)"
+        "\(creator.actor_id)\(creator.name)\(comment.ap_id)"
     }
     
     var avatarURL: URL? {

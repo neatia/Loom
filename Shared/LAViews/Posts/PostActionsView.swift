@@ -15,11 +15,13 @@ struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Void> var goToPost
     @GraniteAction<Void> var edit
-    @GraniteAction<Void> var share
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
+    @Environment(\.contentContext) var context
     
-    @Binding var enableCommunityRoute: Bool
+    @Environment(\.pagerMetadata) var metadata
     
+    var enableCommunityRoute: Bool
     var shouldRouteToPost: Bool = true
     
     var community: Community?
@@ -51,14 +53,18 @@ struct PostActionsView: View {
             if let name = community?.name {
                 Button {
                     GraniteHaptic.light.invoke()
+                    
+                    let community: Community? = community ?? postView?.community
+                    
+                    guard let community else { return }
+                    
                     if Device.isExpandedLayout {
-                        let community: Community? = community ?? postView?.community
-                        
-                        guard let community else { return }
                         
                         viewCommunity.perform(community)
                     } else {
-                        enableCommunityRoute = true
+                        router.push {
+                            Feed(community)
+                        }
                     }
                 } label: {
                     Text("!\(name)")
@@ -111,7 +117,15 @@ struct PostActionsView: View {
             #if os(iOS)
             Button {
                 GraniteHaptic.light.invoke()
-                share.perform()
+                if context.isComment {
+                    ModalService
+                        .shared
+                        .showShareCommentModal(context.commentModel)
+                } else {
+                    ModalService
+                        .shared
+                        .showSharePostModal(context.postModel, metadata: metadata)
+                }
             } label: {
                 Text("MISC_SHARE")
                 Image(systemName: "paperplane")
@@ -217,6 +231,5 @@ struct PostActionsView: View {
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
         .frame(width: Device.isMacOS ? 20 : 24, height: 12)
-        .addHaptic()
     }
 }

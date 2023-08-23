@@ -30,8 +30,12 @@ public struct GraniteAlertView : GraniteModal {
     }
     
     public var backgroundBody: some View {
+        #if os(iOS)
         style.overlayColor
             .transition(.opacity.animation(.easeOut(duration: 0.2)))
+        #else
+        Color.clear
+        #endif
     }
     
     public var body: some View {
@@ -103,7 +107,7 @@ public struct GraniteAlertView : GraniteModal {
             .foregroundColor(style.foregroundColor)
             .background(
                 Group {
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 16)
                         .fill(style.backgroundColor)
                         .shadow(color: Color.black.opacity(0.05), radius: 10)
                 }
@@ -193,14 +197,8 @@ public struct GraniteAlertView : GraniteModal {
             }
             .frame(maxWidth: .infinity)
             .background(
-                Group {
-                    #if os(iOS)
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(style.backgroundColor)
-                    #else
-                    EmptyView()
-                    #endif
-                }
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(style.backgroundColor)
             )
             .padding(.horizontal, style.sheetHorizontalPadding)
             .padding(.vertical, style.sheetVerticalPadding)

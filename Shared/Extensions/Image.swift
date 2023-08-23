@@ -144,16 +144,6 @@ extension UIImage{
         return flattened.pngData()
     }
     
-    var png40: Data? {
-        guard let resized = resize(0.4), let flattened = resized.flattened else { return nil }
-        return flattened.pngData()
-    }
-    
-    var png70: Data? {
-        guard let resized = resize(0.7), let flattened = resized.flattened else { return nil }
-        return flattened.pngData()
-    }
-    
     var jpg: Data? {
         guard let flattened = flattened else { return nil }
         return flattened.jpegData(compressionQuality: 10)
@@ -162,19 +152,6 @@ extension UIImage{
     var jpg60: Data? {
         guard let flattened = flattened else { return nil }
         return flattened.jpegData(compressionQuality: 6)
-    }
-    
-    func resize(_ percentage: CGFloat) -> UIImage?{
-//        let canvasSize = CGSize(width: size.width * percentage, height: size.height * percentage)
-//        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
-//        defer { UIGraphicsEndImageContext() }
-//        draw(in: CGRect(origin: .zero, size: canvasSize))
-        
-        if let imageData = self.jpegData(compressionQuality: percentage) {
-            return UIImage(data: imageData)
-        } else {
-            return self
-        }
     }
     
     var flattened: UIImage? {

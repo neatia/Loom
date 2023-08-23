@@ -15,7 +15,7 @@ extension Feed {
     var headerView: some View {
         VStack(alignment: .leading, spacing: 0) {
             if Device.isExpandedLayout {
-                accountInfoExpandedView
+                accountExpandedMenuView
                     .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             }
             
@@ -35,7 +35,7 @@ extension Feed {
                     AccountView()
                         .attach({
                             GraniteHaptic.light.invoke()
-                            modal.presentSheet {
+                            ModalService.shared.presentSheet {
                                 LoginView()
                             }
                         }, at: \.login)

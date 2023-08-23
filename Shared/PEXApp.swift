@@ -18,8 +18,6 @@ struct PEXApp: App {
     
     var config: ConfigService = .init()
     
-    let pubDidFinishLaunching = NotificationCenter.default
-            .publisher(for: NSNotification.Name("nyc.stoic.Loom.DidFinishLaunching"))
     
     init() {
         config.preload()
@@ -41,46 +39,14 @@ struct PEXApp: App {
             Home()
             
             #elseif os(macOS)
-            
-            EmptyComponent()
-            .onReceive(pubDidFinishLaunching) { _ in
-                GraniteNavigationWindow.backgroundColor = NSColor(Color.background)
-                
-                GraniteNavigationWindow.shared.addWindow(id: "main",
-                                                         title: "",
-                                                         style: .init(size: .init(width: 900,
-                                                                                  height: 600), minSize: .init(width: 900, height: 600),
-                                                                      styleMask: .resizable),
-                                                         isMain: true) {
-                    Home()
-                        .background(Color.background)
-                        .task {
-                            config.center.boot.send()
-                        }
-                }
+            WindowComponent(backgroundColor: .background) {
+                Home()
+                    .background(Color.background)
+                    .task {
+                        config.center.boot.send()
+                    }
             }
             #endif
-        }
-    }
-}
-
-struct EmptyComponent: GraniteComponent {
-    struct Center: GraniteCenter {
-        
-        struct State: GraniteState {
-            
-        }
-        
-        @Store var state: State
-    }
-    
-    @Command var center: Center
-}
-
-extension EmptyComponent: View {
-    var view: some View {
-        ZStack {
-            Text("Loom")
         }
     }
 }

@@ -12,6 +12,8 @@ import Granite
 import GraniteUI
 
 struct CommunityPickerView: View {
+    @Environment(\.graniteRouter) var router
+    
     @GraniteAction<CommunityView> var pickedCommunity
     
     var modal: Bool = true
@@ -85,9 +87,9 @@ struct CommunityPickerView: View {
                             } else {
                                 CommunityCardView(model: communityView,
                                                   fullWidth: true)
-                                .routeIf(modal == false, style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
+                                .routeIf(modal == false, window: .resizable(600, 500)) {
                                     Feed(communityView.community)
-                                }
+                                } with : { router }
                                 .onTapGesture {
                                     pickedCommunity.perform(communityView)
                                 }

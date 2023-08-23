@@ -10,7 +10,6 @@ import SwiftUI
 import Granite
 import GraniteUI
 import LemmyKit
-import MarqueKit
 
 #if os(iOS)
 import UIKit
@@ -69,31 +68,6 @@ public struct ScreenshotView<Content: View> : GenericViewRepresentable {
             //uiView.layer.render(in: rendererContext.cgContext)
         }
         
-        
-//        if let encodeMessage {
-//            let result = MarqueKit.shared.encode(encodeMessage, withImage: MarqueImage(named: "logo")!)
-//
-//            guard let image = result.data else {
-//                guard let url = result.url else {
-//
-//
-//                    return
-//                }
-//
-//
-//                ModalService.share(urlString: url.absoluteString)
-//                return
-//            }
-//
-//            ModalService
-//                .share(image: image)
-//
-////            let payload = MarqueKit.shared.decode(image: result.data).payload
-////            print("{TEST} \(payload)")
-//        } else {
-////            ModalService
-////                .share(image: image)
-//        }
         ModalService
             .share(image: image)
         

@@ -14,12 +14,14 @@ import NukeUI
 import Combine
 import MarkdownView
 
-struct PostDisplayView: View {
+struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
+    @Environment(\.graniteNavigationShowingKey) var hasShown
+    @Environment(\.graniteNavigationAnimationKey) var isAnimating
+    
     @GraniteAction<Community> var viewCommunity
     
     @Relay var config: ConfigService
-    @Relay var modal: ModalService
     
     var model: PostView? {
         updatedModel ?? context.postModel
@@ -64,27 +66,14 @@ struct PostDisplayView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HeaderView(shouldRoutePost: false)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
-                .attach({
-                    modal.presentSheet {
-                        Write(postView: model)
-                            .attach({ updatedModel in
-                                DispatchQueue.main.async {
-                                    self.updatedModel = updatedModel
-                                    self.modal.dismissSheet()
-                                }
-                            }, at: \.updatedPost)
-                            .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
-                    }
-                }, at: \.edit)
-                .contentContext(context)
-                .padding(.horizontal, .layer3)
-                .padding(.bottom, .layer4)
+            if Device.isExpandedLayout {
+                headerView
+                    .padding(.horizontal, .layer3)
+                    .padding(.bottom, .layer4)
+            }
 
             Divider()
+                
             
             switch context.feedStyle {
             case .style1:
@@ -94,64 +83,58 @@ struct PostDisplayView: View {
                 contentHeaderStacked
                     .background(Color.background)
             }
-
-            PagerScrollView(CommentView.self,
-                            properties: .init(performant: Device.isMacOS == false,
-                                              cacheViews: true,
-                                              showFetchMore: false)) {
-                EmptyView()
-            } inlineBody: {
-                contentView
-            } content: { commentView in
-                CommentCardView()
-                    .attach({ model in
-                        self.showDrawer = true
-                        self.commentModel = model
-                    }, at: \.showDrawer)
-                    .attach({ community in
-                        viewCommunity.perform(community)
-                    }, at: \.viewCommunity)
-                    .attach({ (model, update) in
-                        DispatchQueue.main.async {
-                            modal.presentSheet {
-                                showReplyModal(isEditing: false,
-                                               model: model,
-                                               update: update)
-                            }
-                        }
-                    }, at: \.reply)
-                    .attach({ (model, update) in
-                        DispatchQueue.main.async {
-                            modal.presentSheet {
-                                showReplyModal(isEditing: true,
-                                               model: model,
-                                               update: update)
-                            }
-                        }
-                    }, at: \.edit)
-                    .attach({ model in
-                        DispatchQueue.main.async {
-                            modal.presentSheet {
-                                showShareModal(model)
-                            }
-                        }
-                    }, at: \.share)
-                    .contentContext(.addCommentModel(model: commentView, context))
-                    .background(Color.alternateBackground)
+            
+            if hasShown || Device.isExpandedLayout {
+                PagerScrollView(CommentView.self,
+                                properties: .init(performant: Device.isMacOS == false,
+                                                  cacheViews: true,
+                                                  showFetchMore: false)) {
+                    EmptyView()
+                } inlineBody: {
+                    contentView
+                } content: { commentView in
+                    CommentCardView()
+                        .attach({ model in
+                            self.showDrawer = true
+                            self.commentModel = model
+                        }, at: \.showDrawer)
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
+                        .contentContext(.addCommentModel(model: commentView, context))
+                        .background(Color.alternateBackground)
+                }
+                .environmentObject(pager)
+            } else {
+                Spacer()
             }
-            .environmentObject(pager)
         }
-        .padding(.top, .layer4)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
+        .padding(.top, Device.isExpandedLayout ? .layer4 : .layer2)
+        //.addGraniteSheet(modal.sheetManager, background: Color.clear)
         .background(Color.background)
         .foregroundColor(.foreground)
         .showDrawer($showDrawer,
                     commentView: commentModel,
                     context: context)
+        .allowsHitTesting(isAnimating == false)
         .task {
             self.threadLocation = context.location
             
             guard let model else { return }
+            
+            /*
+             Let's update the model incase
+             won't fire if triggered from postCard after editing
+             most likely if the model is yours, it could have changed
+             prior to entry
+             
+             can save on calls, otherwise
+             */
+            if model.creator.isMe,
+               updatedModel == nil {
+                let postView = await Lemmy.post(context.postModel?.post.id)
+                self.updatedModel = postView
+            }
             
             pager.hook { page in
                 return await Lemmy.comments(model.post,
@@ -162,41 +145,37 @@ struct PostDisplayView: View {
                                             location: threadLocation)
             }.fetch()
         }
+        .ignoresSafeArea(.keyboard)
     }
     
-    func showReplyModal(isEditing: Bool,
-                        model: CommentView,
-                        update: @escaping ((CommentView) -> Void)) -> some View {
-        Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
-            .attach({ replyModel in
-                update(replyModel)
-                
-                if isEditing {
-                    //TODO: edit success modal
-                } else {
-                    modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
-                }
-                
-                modal.dismissSheet()
-            }, at: \.updateComment)
-            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-    }
-    
-    func showShareModal(_ model: CommentView?) -> some View {
-        GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
-            ShareModal(urlString: model?.comment.ap_id) {
-                CommentCardView()
-                    .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+    var destinationStyle: GraniteNavigationDestinationStyle {
+        if Device.isExpandedLayout {
+            return .init(navBarBGColor: Color.background)
+        } else {
+            return .init(fullWidth: true, navBarBGColor: Color.background) {
+                headerView
+                    .padding(.horizontal, .layer3)
             }
-            .contentContext(.init(commentModel: model,
-                                  viewingContext: .screenshot))
         }
-        .frame(width: Device.isMacOS ? 600 : nil)
-        .frame(minHeight: Device.isMacOS ? 500 : nil)
     }
 }
 
 extension PostDisplayView {
+    var headerView: some View {
+        HeaderView(shouldRoutePost: false)
+            .attach({ community in
+                viewCommunity.perform(community)
+            }, at: \.viewCommunity)
+            .attach({
+                ModalService.shared.showEditPostModal(model) { updatedModel in
+                    DispatchQueue.main.async {
+                        self.updatedModel = updatedModel
+                        ModalService.shared.dismissSheet()
+                    }
+                }
+            }, at: \.edit)
+            .contentContext(context)
+    }
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -218,16 +197,10 @@ extension PostDisplayView {
                        showScores: config.state.showScores,
                        isComposable: true)
                 .attach({ model in
-                    modal.presentSheet {
-                        Reply(kind: .replyPost(model))
-                            .attach({ (model, modelView) in
-                                pager.insert(modelView)
-                                
-                                modal.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
-                                
-                                modal.dismissSheet()
-                            }, at: \.updatePost)
-                            .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                    ModalService
+                        .shared
+                        .showReplyPostModal(model: model) { postView in
+                        pager.insert(postView)
                     }
                 }, at: \.reply)
                 .contentContext(.withStyle(.style1, context))
@@ -238,7 +211,6 @@ extension PostDisplayView {
             
             sortMenuView
                 .padding(.layer4)
-                .addHaptic()
         }
         .fixedSize(horizontal: false, vertical: true)
     }
@@ -278,7 +250,7 @@ extension PostDisplayView {
                 .onTapGesture {
                     guard let model else { return }
                     GraniteHaptic.light.invoke()
-                    modal.presentSheet {
+                    ModalService.shared.presentSheet {
                         PostContentView(postView: model)
                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                     }

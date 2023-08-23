@@ -34,14 +34,16 @@ struct HeaderView: View {
     }
     
     @Environment(\.contentContext) var context
+    @Environment(\.graniteRouter) var router
+    
+    @Relay var layout: LayoutService
     
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
     
-    @State var enableRoute: Bool = false
-    @State var enablePostViewRoute: Bool = false
+    @State var postView: PostView? = nil
     
     var shouldRouteCommunity: Bool = false
     var shouldRoutePost: Bool = false
@@ -138,19 +140,6 @@ struct HeaderView: View {
             
             Spacer()
             
-            if let community = context.community?.lemmy {
-                GraniteRoute($enableRoute, window: .resizable(600, 500)) {
-                    Feed(community)
-                }
-            }
-            
-            if context.isPostAvailable {
-                GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                    PostDisplayView()
-                        .contentContext(context)
-                }
-            }
-            
             if let time = context.display.author.time {
                 Text(time.timeAgoDisplay())
                     .font(.subheadline)
@@ -158,8 +147,8 @@ struct HeaderView: View {
             }
             
             if showPostActions {
-                PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
-                                shouldRouteToPost: false,
+                PostActionsView(enableCommunityRoute: shouldRouteCommunity,
+                                shouldRouteToPost: shouldRoutePost,
                                 community: shouldRouteCommunity ? context.community?.lemmy : nil,
                                 postView: shouldRoutePost ? context.postModel : nil,
                                 person: context.person?.lemmy,
@@ -167,6 +156,9 @@ struct HeaderView: View {
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
+                .attach({
+                    self.fetchPostView()
+                }, at: \.goToPost)
                 .attach({
                     edit.perform()
                 }, at: \.edit)
@@ -181,6 +173,43 @@ struct HeaderView: View {
             return .red.opacity(0.8)
         } else {
             return .clear
+        }
+    }
+    
+    //TODO: duplicate with HeaderCardView, make reusable
+    func fetchPostView() {
+        if let postView {
+            self.route(postView)
+            return
+        }
+        
+        let postId = context.commentModel?.post.id ?? context.postModel?.post.id
+        guard let postId else { return }
+        
+        Task.detached { @MainActor in
+            guard let postView = await Lemmy.post(postId,
+                                                  comment: context.commentModel?.comment) else {
+                return
+            }
+            
+            self.postView = postView
+            
+            DispatchQueue.main.async {
+                self.route(postView)
+            }
+        }
+    }
+    
+    @MainActor
+    func route(_ postView: PostView) {
+        if Device.isExpandedLayout {
+            self.layout._state.feedContext.wrappedValue = .viewPost(postView)
+        } else {
+            self.postView = postView
+            
+            router.push {
+                PostDisplayView(context: _context)
+            }
         }
     }
 }

@@ -78,15 +78,14 @@ extension Search: View {
                 Spacer()
             }
         }
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
-            Image(systemName: "chevron.backward")
-                .renderingMode(.template)
-                .font(.title2)
-                .frame(width: 24, height: 24)
-                .contentShape(Rectangle())
-                .offset(x: -2)
-        }
+//        .graniteNavigation(backgroundColor: Color.background, disable: community == nil || Device.isExpandedLayout) {
+//            Image(systemName: "chevron.backward")
+//                .renderingMode(.template)
+//                .font(.title2)
+//                .frame(width: 24, height: 24)
+//                .contentShape(Rectangle())
+//                .offset(x: -2)
+//        }
         .padding(.top, isModal ? (Device.isExpandedLayout ? .layer3 : .layer2) : ContainerConfig.generalViewTopPadding)
         .foregroundColor(.foreground)
         .background(Color.background)
@@ -102,6 +101,8 @@ extension Search: View {
                                    page: 1,
                                    limit: ConfigService.Preferences.pageLimit)
             }
+            
+            guard conductor.response == nil else { return }
             conductor.startTimer("")
         }
     }

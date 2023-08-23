@@ -17,13 +17,10 @@ public struct GraniteModalContainerView : View {
                         manager.dismiss()
                     }
                 
-
                 manager.presenters[index].modalView
                     .zIndex(100.0 + Double(index))
                     .environmentObject(manager)
             }
         }
-        
     }
-    
 }

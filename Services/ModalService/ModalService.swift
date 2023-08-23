@@ -24,6 +24,8 @@ public struct StandardNotificationMeta: ModalMeta {
 struct ModalService : GraniteService {
     @Service var center: Center
     
+    static var shared: ModalService = .init()
+    
     static var alertViewStyle: GraniteAlertViewStyle {
         GraniteAlertViewStyle(backgroundColor: Color.background,
                               foregroundColor: Color.white,
@@ -45,16 +47,17 @@ struct ModalService : GraniteService {
         )
     }
     
-    let modalSheetManager = GraniteModalManager { view in
-        AnyView(
-            view
-                .graniteAlertViewStyle(ModalService.alertViewStyle)
-                .graniteToastViewStyle(ModalService.toastStyle)
-        )
+//    let modalSheetManager = GraniteModalManager { view in
+//        AnyView(
+//            view
+//                .graniteAlertViewStyle(ModalService.alertViewStyle)
+//                .graniteToastViewStyle(ModalService.toastStyle)
+//        )
+//    }
+    
+    var sheetManager: GraniteSheetManager {
+        modalManager.sheetManager
     }
-    
-    let sheetManager = GraniteSheetManager()
-    
 }
 
 #if os(iOS)
@@ -103,7 +106,6 @@ extension ModalService {
     
     func dismissAll() {
         modalManager.dismiss()
-        sheetManager.dismiss()
     }
     
 }

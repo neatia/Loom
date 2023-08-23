@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import LemmyKit
+import Granite
 
 struct ContentContextKey: EnvironmentKey {
     static var defaultValue: ContentContext = .init()
@@ -76,9 +77,16 @@ struct ContentContext {
         return nil
     }
     
+    static func addPostModel(model: PostView?, _ context: ContentContext) -> Self {
+        return .init(postModel: model ?? context.postModel,
+                     commentModel: context.commentModel,
+                     feedStyle: context.feedStyle,
+                     viewingContext: context.viewingContext)
+    }
+    
     static func addCommentModel(model: CommentView?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
-                     commentModel: model,
+                     commentModel: model ?? context.commentModel,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext)
     }
@@ -114,6 +122,7 @@ extension View {
         self.environment(\.contentContext, context)
     }
 }
+
 
 /* FederationKit */
 

@@ -35,7 +35,7 @@ extension Settings {
             secret = newValue
         })
         
-        modal.presentSheet {
+        ModalService.shared.presentSheet {
             GraniteStandardModalView(title: "Set IPFS Properties", maxHeight: 360) {
                 VStack(spacing: 0) {
                     TextField("MISC_GATEWAY", text: bindingGateway)
@@ -88,7 +88,7 @@ extension Settings {
                         
                         Button {
                             GraniteHaptic.light.invoke()
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_CANCEL")
                                 .font(.headline)
@@ -117,7 +117,7 @@ extension Settings {
                             }
                             
                             config._state.isIPFSAvailable.wrappedValue = false
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_REMOVE")
                                 .font(.headline)
@@ -149,7 +149,7 @@ extension Settings {
                             }
                             
                             
-                            modal.dismissSheet()
+                            ModalService.shared.dismissSheet()
                         } label: {
                             Text("MISC_DONE")
                                 .font(.headline)

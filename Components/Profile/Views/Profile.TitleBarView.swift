@@ -44,8 +44,8 @@ extension Profile {
                             .contentShape(Rectangle())
                             .foregroundColor(.foreground)
                             .route(window: .resizable(400, 500)) {
-                                ProfileSettingsView(isModal: true, modal: modal)
-                            }
+                                ProfileSettingsView(isModal: true)
+                            } with : { router }
                         
                         Spacer()
                     }
@@ -57,9 +57,9 @@ extension Profile {
                 
             }
             .frame(height: hasBanner ? 72 : 48)
-            .padding(.vertical, .layer2)
+            .padding(.bottom, .layer3)
             .padding(.horizontal, .layer4)
-            .padding(.top, hasBanner ? .layer1 : nil)
+            .padding(.top, hasBanner ? .layer1 : 0)
             
             Divider()
         }

@@ -34,7 +34,6 @@ extension PostDisplayView {
             }
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 80 : nil)
-            .addHaptic()
             
             Menu {
                 ForEach(0..<viewableHosts.count) { index in
@@ -71,7 +70,6 @@ extension PostDisplayView {
             }
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 100 : nil)
-            .addHaptic()
             
             Spacer()
         }

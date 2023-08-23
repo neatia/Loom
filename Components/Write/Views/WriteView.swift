@@ -20,9 +20,9 @@ struct WriteView: View {
     var additionalPadding: CGFloat = 0
     
     #if os(macOS)
-    @State var minimize: Bool = false
+    @State var isVisible: Bool = true
     #else
-    @State var minimize: Bool = true
+    @State var isVisible: Bool = false
     #endif
     
     @State var id: UUID = .init()
@@ -47,7 +47,6 @@ struct WriteView: View {
                     //the keyboard toolbar requires another NavigationView
                     //to propagate changes.
                     verticalContent
-                        //.graniteNavigation(backgroundColor: Color.background)
                 }
             }
         }
@@ -132,73 +131,87 @@ extension WriteView {
                     .textFieldStyle(.plain)
                     .frame(height: 30)
                     .font(.title3.bold())
-                    .padding(.horizontal, .layer3 + additionalPadding)
+                    .padding(.horizontal, .layer4 + additionalPadding)
                 
                 Divider()
                     .padding(.vertical, .layer2)
             }
             
-            if minimize == false {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        MarkdownView(text: $content)
-                            .markdownViewRole(.editor)
-                    }
-                }
-                .frame(maxWidth: .infinity, minHeight: minimize ? nil : ContainerConfig.iPhoneScreenHeight / 2.5, maxHeight: minimize ? 36 : nil)
+            ZStack {
+                
+#if os(iOS)
+                TextToolView(text: $content,
+                             visibility: $isVisible)
+                .focused($isFocused)
                 .padding(.horizontal, .layer3)
+                .overlayIf(content.isEmpty && isFocused == false) {
+                    placeholderView
+                }
+                .id(id)
+#else
                 
-                Divider()
-                    .padding(.vertical, .layer2)
-            }
-            
-            
-            if #available(macOS 13.0, iOS 16.0, *) {
-                TextEditor(text: $content)
-                    .textFieldStyle(.plain)
-                    .focused($isFocused)
-                    .foregroundColor(.foreground)
-                    .background(.clear)
-                    .font(.title3.bold())
-                    .scrollContentBackground(Visibility.hidden)
-                    .padding(.horizontal, .layer3 + additionalPadding)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            KeyboardToolbarView(minimize: $minimize)
+                if #available(macOS 13.0, iOS 16.0, *) {
+                    TextEditor(text: $content)
+                        .textFieldStyle(.plain)
+                        .focused($isFocused)
+                        .foregroundColor(.foreground)
+                        .background(.clear)
+                        .font(.title3.bold())
+                        .scrollContentBackground(Visibility.hidden)
+                        .padding(.horizontal, .layer3 + additionalPadding)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                KeyboardToolbarSView(minimize: $isVisible)
+                            }
+                        }
+                        .overlayIf(content.isEmpty && isFocused == false) {
+                            placeholderView
+                        }
+                        .id(id)
+                } else {
+                    NavigationView {
+                        ZStack {
+                            Color.background
+                            
+                            TextEditor(text: $content)
+                                .textFieldStyle(.plain)
+                                .focused($isFocused)
+                                .foregroundColor(.foreground)
+                                .background(.clear)
+                                .font(.title3.bold())
+                                .padding(.horizontal, .layer3 + additionalPadding)
+                                .id(id)
+                                .toolbar {
+                                    
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        KeyboardToolbarSView(minimize: $isVisible)
+                                    }
+                                }
+                                .frame(maxHeight: .infinity)
+                                .hideNavBar()
+                            
+                        }
+                        .overlayIf(content.isEmpty && isFocused == false && !isVisible) {
+                            placeholderView
                         }
                     }
-                    .overlayIf(content.isEmpty && isFocused == false) {
-                        placeholderView
-                    }
-                    .id(id)
-            } else {
-                NavigationView {
-                    ZStack {
-                        Color.background
-                        
-                        TextEditor(text: $content)
-                            .textFieldStyle(.plain)
-                            .focused($isFocused)
-                            .foregroundColor(.foreground)
-                            .background(.clear)
-                            .font(.title3.bold())
-                            .padding(.horizontal, .layer3 + additionalPadding)
-                            .id(id)
-                            .toolbar {
-                                
-                                ToolbarItemGroup(placement: .keyboard) {
-                                    KeyboardToolbarView(minimize: $minimize)
-                                }
-                            }
-                            .frame(maxHeight: .infinity)
-                            .hideNavBar()
-                        
-                    }
-                    .overlayIf(content.isEmpty && isFocused == false) {
-                        placeholderView
-                    }
+                    .inlineNavTitle()
                 }
-                .inlineNavTitle()
+#endif
+                
+                if isVisible {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            MarkdownView(text: $content)
+                                .markdownViewRole(.editor)
+                                .id(isVisible)
+                                .padding(.horizontal, .layer2)
+                        }
+                    }
+                    .padding(.horizontal, .layer3)
+                    .padding(.vertical, .layer3)
+                    .background(Color.background.opacity(0.9))
+                }
             }
         }
     }
@@ -212,7 +225,7 @@ extension WriteView {
                     .foregroundColor(.foreground.opacity(0.3))
                 Spacer()
             }
-            .padding(.horizontal, .layer3)
+            .padding(.horizontal, .layer4)
             .padding(.vertical, Device.isExpandedLayout ? .layer3 : .layer2)
             Spacer()
         }.allowsHitTesting(false)
@@ -237,8 +250,9 @@ extension View {
     }
 }
 
-struct KeyboardToolbarView: View {
-    @Binding var minimize: Bool
+//TODO: Decide on necessity
+struct KeyboardToolbarSView: View {
+    @Binding var isVisible: Bool
     
     var body: some View {
         Group {
@@ -263,9 +277,9 @@ struct KeyboardToolbarView: View {
             
             Button {
                 GraniteHaptic.light.invoke()
-                minimize.toggle()
+                isVisible.toggle()
             } label : {
-                if minimize {
+                if !isVisible {
 //                    Image(systemName: "arrow.up.and.down.square.fill")
 //                        .font(.headline)
                     Image(systemName: "eye")

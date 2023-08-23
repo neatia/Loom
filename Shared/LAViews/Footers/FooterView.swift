@@ -13,10 +13,11 @@ import GraniteUI
 
 struct FooterView: View {
     @Environment(\.contentContext) var context
+    @Environment(\.graniteRouter) var router
+    @Environment(\.pagerMetadata) var metadata
     
     @GraniteAction<CommentId> var showComments
     @GraniteAction<PostView> var reply
-    @GraniteAction<Void> var share
     
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
@@ -209,17 +210,15 @@ extension FooterView {
                 .contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
             
-            if context.isPost,
-               let postView = context.postModel {
+            if context.isPost {
                 HStack(spacing: .layer1) {
                     Image(systemName: "bubble.left")
                         .font(font)
                 }
                 .foregroundColor(.foreground)
                 .route(window: .resizable(600, 500)) {
-                    PostDisplayView()
-                        .contentContext(context)
-                }
+                    PostDisplayView(context: _context)
+                } with : { router }
             }
             
             if let bookmarkKind = context.bookmarkKind,
@@ -238,7 +237,15 @@ extension FooterView {
             
             Button {
                 GraniteHaptic.light.invoke()
-                share.perform()
+                if context.isComment {
+                    ModalService
+                        .shared
+                        .showShareCommentModal(context.commentModel)
+                } else {
+                    ModalService
+                        .shared
+                        .showSharePostModal(context.postModel, metadata: metadata)
+                }
             } label: {
                 Image(systemName: "paperplane")
                     .font(font)
@@ -333,13 +340,27 @@ extension FooterView {
                 .foregroundColor(.foreground)
                 .routeIf(context.isPostAvailable,
                          title: routeTitle ?? "",
-                         style: .init(size: .init(width: 600, height: 500), styleMask: .resizable)) {
-                    PostDisplayView()
-                        .contentContext(context)
-                }
+                         window: .resizable(600, 500)) {
+                    //This won't be able to pull in an edited model from the card view
+                    //it should possibly forward the call instead
+                    PostDisplayView(context: _context)
+                } with : { router }
             }
             
             Spacer()
+            
+            if context.isPost {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    ModalService.shared.expand(context.postModel)
+                } label: {
+                    Image(systemName: "rectangle.expand.vertical")
+                        .font(font)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.trailing, .layer3)
+            }
             
             if let bookmarkKind = context.bookmarkKind,
                isHeader == false || context.isComment {

@@ -17,7 +17,7 @@ extension Feed {
             .interact
             .listen(.broadcast) { value in
                 if let response = value as? StandardErrorMeta {
-                    modal.presentModal(GraniteToastView(response))
+                    ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let response = value as? AccountService.Interact.ResponseMeta {
                     switch response.intent {
                     case .blockPersonFromPost(let model):
@@ -32,38 +32,7 @@ extension Feed {
                     default:
                         break
                     }
-                    modal.presentModal(GraniteToastView(response.notification))
-                }
-            }
-        
-        account
-            .center
-            .interact
-            .listen(.beam) { value in
-                if let meta = value as? AccountService.Interact.Meta {
-                    switch meta.intent {
-                    case .reportPost(let model):
-                        modal.presentSheet {
-                            ReportView(kind: .post(model))
-                        }
-                    case .reportComment(let model):
-                        modal.presentSheet {
-                            ReportView(kind: .comment(model))
-                        }
-                    case .editPost(let model):
-                        modal.presentSheet(detents: [.large()]) {
-                            Write(postView: model)
-                                .attach({ updatedModel in
-                                    DispatchQueue.main.async {
-                                        pager.update(item: updatedModel)
-                                        self.modal.dismissSheet()
-                                    }
-                                }, at: \.updatedPost)
-                                .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
-                        }
-                    default:
-                        break
-                    }
+                    ModalService.shared.presentModal(GraniteToastView(response.notification))
                 }
             }
         
@@ -80,7 +49,23 @@ extension Feed {
             .interact
             .listen(.broadcast) { value in
                 if let meta = value as? StandardErrorMeta {
-                    modal.presentModal(GraniteToastView(meta))
+                    ModalService.shared.presentModal(GraniteToastView(meta))
+                } else if let meta = value as? ContentService.Interact.Meta {
+                    switch meta.kind {
+                    case .editPostSubmit:
+                        //TODO: localize
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "Post edited", event: .success)))
+                        }
+                    case .editComment:
+                        //Delay for toast modals activating the keyborad prematurely
+                        //TODO: localize
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "Comment edited", event: .success)))
+                        }
+                    default:
+                        break
+                    }
                 }
             }
         

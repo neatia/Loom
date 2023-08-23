@@ -6,13 +6,6 @@ import LemmyKit
 extension Write: View {
     public var view: some View {
         VStack(spacing: 0) {
-            if state.isEditing == false {
-                GraniteRoute(_state.showPost) {
-                    PostDisplayView()
-                        .contentContext(.init(postModel: state.createdPostView ?? .mock))
-                }
-            }
-            
             HStack(spacing: .layer3) {
 //                #if os(macOS)
 //                Image(systemName: "arrow.up.left.and.arrow.down.right")
@@ -50,6 +43,8 @@ extension Write: View {
                         let response = await Lemmy.uploadImage(data)
                         
                         guard let file = response?.files.first else {
+                            //Most likely file too big
+                            //TODO: error toast
                             return
                         }
                         
@@ -201,6 +196,7 @@ extension Write: View {
                     }
                 }
                 .padding(.layer3)
+                .padding(.horizontal, .layer2)
                 .frame(maxHeight: state.enableImagePreview ? 200 : 48)
                 
                 Divider()
@@ -211,16 +207,10 @@ extension Write: View {
                       title: _state.title,
                       content: _state.content)
         }
+        .addGraniteSheet(id: Write.modalId,
+                         modal.sheetManager,
+                         background: Color.clear)
         .padding(.top, .layer4)
-        .addGraniteSheet(modal.sheetManager, background: Color.clear)
-        .addGraniteModal(modal.modalManager)
-        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
-            Image(systemName: "chevron.backward")
-                .renderingMode(.template)
-                .font(.title3)
-                .contentShape(Rectangle())
-                .offset(x: -.layer1)
-        }
         .background(Color.background)
         .onAppear {
             #if os(iOS)

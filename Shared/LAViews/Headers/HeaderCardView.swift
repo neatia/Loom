@@ -14,6 +14,7 @@ import Combine
 
 struct HeaderCardView: View {
     @Environment(\.contentContext) var context
+    @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
     
     @Relay var layout: LayoutService
@@ -22,10 +23,6 @@ struct HeaderCardView: View {
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
-    @GraniteAction<Void> var share
-    
-    @State var enableRoute: Bool = false
-    @State var enablePostViewRoute: Bool = false
     
     @State var postView: PostView? = nil
     
@@ -75,21 +72,6 @@ struct HeaderCardView: View {
                     .resizable()
                     .frame(width: 24, height: 24)
             default:
-                if context.viewingContext != .screenshot {
-                    
-                    if let community = context.community?.lemmy {
-                        GraniteRoute($enableRoute, window: .resizable(600, 500)) {
-                            Feed(community)
-                        }
-                    }
-                    
-                    if context.isPostAvailable {
-                        GraniteRoute($enablePostViewRoute, window: .resizable(600, 500)) {
-                            PostDisplayView()
-                                .contentContext(context)
-                        }
-                    }
-                }
                 if let time = context.timeAbbreviated {
                     Text(time)
                         .font(.footnote)
@@ -97,7 +79,7 @@ struct HeaderCardView: View {
                 }
                 
                 VStack(alignment: .trailing, spacing: 0) {
-                    PostActionsView(enableCommunityRoute: shouldRouteCommunity ? $enableRoute : .constant(false),
+                    PostActionsView(enableCommunityRoute: shouldRouteCommunity,
                                     community: shouldRouteCommunity ? context.community?.lemmy : nil,
                                     postView: (shouldRoutePost || !isCompact) ? postView : nil,
                                     person: context.person?.lemmy,
@@ -112,9 +94,6 @@ struct HeaderCardView: View {
                         .attach({
                             edit.perform()
                         }, at: \.edit)
-                        .attach({
-                            share.perform()
-                        }, at: \.share)
                         .graniteEvent(interact)
                 }
             }
@@ -133,12 +112,10 @@ struct HeaderCardView: View {
         
         guard let commentView = context.commentModel else { return }
         
-        Task.detached { @MainActor in
+        Task { @MainActor in
             guard let postView = await Lemmy.post(commentView.post.id, comment: commentView.comment) else {
                 return
             }
-            
-            self.postView = postView
             
             DispatchQueue.main.async {
                 self.route(postView)
@@ -150,8 +127,12 @@ struct HeaderCardView: View {
         if Device.isExpandedLayout {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {
+            
+            router.push {
+                PostDisplayView(context: _context)
+            }
+            
             self.postView = postView
-            self.enablePostViewRoute = true
         }
     }
 }

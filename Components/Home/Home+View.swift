@@ -133,9 +133,8 @@ extension Home: View {
         .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
-                .font(.title3)
+                .font(.title2)
                 .contentShape(Rectangle())
-                .offset(x: -.layer1)
         }
     }
 }

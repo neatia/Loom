@@ -15,6 +15,19 @@ public extension View {
     ) -> some View {
         self.modifier(SideMenu(isShowing: isShowing, menuContent: menuContent))
     }
+    func sideMenuIf<MenuContent: View>(
+        _ condition: Bool,
+        isShowing: Binding<Bool>,
+        @ViewBuilder menuContent: @escaping () -> MenuContent
+    ) -> some View {
+        Group {
+            if condition {
+                self.modifier(SideMenu(isShowing: isShowing, menuContent: menuContent))
+            } else {
+                self
+            }
+        }
+    }
 }
 
 public struct SideMenu<MenuContent: View>: ViewModifier {

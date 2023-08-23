@@ -13,7 +13,6 @@ import LemmyKit
 struct FeedMainView<Content: View>: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<PostView> var showContent
-    @GraniteAction<(PostView?, PageableMetadata?)> var share
     
     @EnvironmentObject var pager: Pager<PostView>
     @Environment(\.graniteEvent) var interact
@@ -46,9 +45,6 @@ struct FeedMainView<Content: View>: View {
                 .attach({ postView in
                     showContent.perform(postView)
                 }, at: \.showContent)
-                .attach({ data in
-                    share.perform(data)
-                }, at: \.share)
                 .graniteEvent(interact)
                 .contentContext(.init(postModel: postView))
         }
