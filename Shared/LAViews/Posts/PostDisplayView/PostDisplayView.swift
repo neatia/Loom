@@ -84,7 +84,7 @@ struct PostDisplayView: GraniteNavigationDestination {
                     .background(Color.background)
             }
             
-            if hasShown {
+            if hasShown || Device.isExpandedLayout {
                 PagerScrollView(CommentView.self,
                                 properties: .init(performant: Device.isMacOS == false,
                                                   cacheViews: true,

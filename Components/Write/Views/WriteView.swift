@@ -137,83 +137,82 @@ extension WriteView {
                     .padding(.vertical, .layer2)
             }
             
-            if isVisible {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
-                        MarkdownView(text: $content)
-                            .markdownViewRole(.editor)
-                            .id(isVisible)
-                            .padding(.horizontal, .layer2)
-                    }
-                }
-                .frame(maxWidth: .infinity,
-                       minHeight: !isVisible ? nil : ContainerConfig.iPhoneScreenHeight / 3,
-                       maxHeight: !isVisible ? 36 : nil)
-                .padding(.horizontal, .layer3)
+            ZStack {
                 
-                Divider()
-                    .padding(.vertical, .layer2)
-            }
-            
-            #if os(iOS)
-            TextToolView(text: $content,
-                         visibility: $isVisible)
+#if os(iOS)
+                TextToolView(text: $content,
+                             visibility: $isVisible)
                 .focused($isFocused)
                 .padding(.horizontal, .layer3)
                 .overlayIf(content.isEmpty && isFocused == false) {
                     placeholderView
                 }
                 .id(id)
-            #else
-            
-            if #available(macOS 13.0, iOS 16.0, *) {
-                TextEditor(text: $content)
-                    .textFieldStyle(.plain)
-                    .focused($isFocused)
-                    .foregroundColor(.foreground)
-                    .background(.clear)
-                    .font(.title3.bold())
-                    .scrollContentBackground(Visibility.hidden)
-                    .padding(.horizontal, .layer3 + additionalPadding)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            KeyboardToolbarSView(minimize: $isVisible)
+#else
+                
+                if #available(macOS 13.0, iOS 16.0, *) {
+                    TextEditor(text: $content)
+                        .textFieldStyle(.plain)
+                        .focused($isFocused)
+                        .foregroundColor(.foreground)
+                        .background(.clear)
+                        .font(.title3.bold())
+                        .scrollContentBackground(Visibility.hidden)
+                        .padding(.horizontal, .layer3 + additionalPadding)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                KeyboardToolbarSView(minimize: $isVisible)
+                            }
+                        }
+                        .overlayIf(content.isEmpty && isFocused == false) {
+                            placeholderView
+                        }
+                        .id(id)
+                } else {
+                    NavigationView {
+                        ZStack {
+                            Color.background
+                            
+                            TextEditor(text: $content)
+                                .textFieldStyle(.plain)
+                                .focused($isFocused)
+                                .foregroundColor(.foreground)
+                                .background(.clear)
+                                .font(.title3.bold())
+                                .padding(.horizontal, .layer3 + additionalPadding)
+                                .id(id)
+                                .toolbar {
+                                    
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        KeyboardToolbarSView(minimize: $isVisible)
+                                    }
+                                }
+                                .frame(maxHeight: .infinity)
+                                .hideNavBar()
+                            
+                        }
+                        .overlayIf(content.isEmpty && isFocused == false && !isVisible) {
+                            placeholderView
                         }
                     }
-                    .overlayIf(content.isEmpty && isFocused == false) {
-                        placeholderView
-                    }
-                    .id(id)
-            } else {
-                NavigationView {
-                    ZStack {
-                        Color.background
-
-                        TextEditor(text: $content)
-                            .textFieldStyle(.plain)
-                            .focused($isFocused)
-                            .foregroundColor(.foreground)
-                            .background(.clear)
-                            .font(.title3.bold())
-                            .padding(.horizontal, .layer3 + additionalPadding)
-                            .id(id)
-                            .toolbar {
-
-                                ToolbarItemGroup(placement: .keyboard) {
-                                    KeyboardToolbarSView(minimize: $isVisible)
-                                }
-                            }
-                            .frame(maxHeight: .infinity)
-                            .hideNavBar()
-
-                    }
-                    .overlayIf(content.isEmpty && isFocused == false && !isVisible) {
-                        placeholderView
-                    }
+                    .inlineNavTitle()
                 }
-                .inlineNavTitle()
+#endif
+                
+                if isVisible {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            MarkdownView(text: $content)
+                                .markdownViewRole(.editor)
+                                .id(isVisible)
+                                .padding(.horizontal, .layer2)
+                        }
+                    }
+                    .padding(.horizontal, .layer3)
+                    .padding(.vertical, .layer3)
+                    .background(Color.background.opacity(0.9))
+                }
             }
-            #endif
         }
     }
     
