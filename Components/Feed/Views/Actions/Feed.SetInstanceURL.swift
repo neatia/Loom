@@ -26,7 +26,7 @@ extension Feed {
                     TextField("MISC_URL", text: bindingString)
                         .textFieldStyle(.plain)
                         .correctionDisabled()
-                        .frame(height: 40)
+                        .frame(height: 60)
                         .padding(.horizontal, .layer4)
                         .font(.title3.bold())
                         .background(

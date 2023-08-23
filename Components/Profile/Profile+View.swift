@@ -3,7 +3,7 @@ import GraniteUI
 import SwiftUI
 import LemmyKit
 
-extension Profile: View {
+extension Profile: GraniteNavigationDestination {
     public var view: some View {
         VStack(spacing: 0) {
             PagerScrollView(PersonDetailsPageable.self,
@@ -71,5 +71,9 @@ extension Profile: View {
                 }
             }.fetch()
         }
+    }
+    
+    var destinationStyle: GraniteNavigationDestinationStyle {
+        return .init(navBarBGColor: Color.background)
     }
 }

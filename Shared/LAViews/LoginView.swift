@@ -59,7 +59,8 @@ struct LoginView: View {
                     switch kind {
                     case .login:
                         Text("AUTH_LOGIN")
-                            .font(.title.bold())
+                            .font(.title.bold()) + Text("   @") + Text(LemmyKit.host)
+                            .font(.subheadline)
                     case .signup:
                         Text("AUTH_SIGNUP")
                             .font(.title.bold())
@@ -107,7 +108,7 @@ extension LoginView {
                 )
                 .padding(.bottom, .layer2)
             
-            TextField("https://lemmy.world", text: $host)
+            TextField("MISC_URL", text: $host)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
                 .frame(height: 60)

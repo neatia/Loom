@@ -126,7 +126,6 @@ struct SearchAllView: View {
                                         .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.85, maxWidth: Device.isExpandedLayout ? 450 : ContainerConfig.iPhoneScreenWidth * 0.9)
                                         .frame(height: 200)
                                         .contentContext(.init(postModel: postView,
-                                                              feedStyle: .style1,
                                                               viewingContext: .search))
                                         .padding(.bottom, .layer4)
                                     
@@ -171,7 +170,6 @@ struct SearchAllView: View {
                                 ForEach(model.comments) { commentView in
                                     CommentCardView()
                                         .contentContext(.init(commentModel: commentView,
-                                                              feedStyle: .style1,
                                                               viewingContext: .search))
                                         .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.8, maxWidth: Device.isExpandedLayout ? 450 : ContainerConfig.iPhoneScreenWidth * 0.9)
                                         .frame(height: 240)

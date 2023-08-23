@@ -183,16 +183,13 @@ struct HeaderView: View {
             return
         }
         
-        let postId = context.commentModel?.post.id ?? context.postModel?.post.id
-        guard let postId else { return }
+        let post = context.commentModel?.post ?? context.postModel?.post
+        guard let post else { return }
         
         Task.detached { @MainActor in
-            guard let postView = await Lemmy.post(postId,
-                                                  comment: context.commentModel?.comment) else {
+            guard let postView = await ContentUpdater.fetchPostView(post) else {
                 return
             }
-            
-            self.postView = postView
             
             DispatchQueue.main.async {
                 self.route(postView)

@@ -79,7 +79,7 @@ struct FooterView: View {
     
     var body: some View {
         Group {
-            switch context.feedStyle {
+            switch context.preferredStyle {
             case .style1:
                 fullInline
             case .style2:

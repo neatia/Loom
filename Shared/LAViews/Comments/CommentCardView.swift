@@ -14,9 +14,11 @@ struct CommentCardView: View {
     @GraniteAction<CommentView> var showDrawer
     
     @Relay var config: ConfigService
+    @Relay var layout: LayoutService
     @Relay(.silence) var content: ContentService
     
     @State var model: CommentView?
+    @State var routePostDisplay: Bool = false
     @State var postView: PostView? = nil
     
     @State var expandReplies: Bool = false
@@ -48,7 +50,7 @@ struct CommentCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            switch context.feedStyle {
+            switch context.preferredStyle {
             case .style1:
                 HeaderView(shouldRouteCommunity: shouldRouteCommunity,
                            shouldRoutePost: shouldLinkToPost)
@@ -191,9 +193,6 @@ extension CommentCardView {
             #else
             if isPreview {
                 contentBody
-                    .route(window: .resizable(600, 500)) {
-                        PostDisplayView(context: _context)
-                    } with: { router }
             } else {
                 contentBody
                     .contentShape(Rectangle())
@@ -218,6 +217,27 @@ extension CommentCardView {
                     showDrawer.perform(model)
                 }, at: \.showComments)
         }
+        .onTapIf(Device.isExpandedLayout) {
+            
+            guard layout.state.style == .expanded else {
+                GraniteHaptic.light.invoke()
+                routePostDisplay = true
+                return
+            }
+            
+            Task.detached { @MainActor in
+                guard let postView = await ContentUpdater.fetchPostView(context.commentModel?.post) else {
+                    return
+                }
+                
+                layout._state.wrappedValue.feedContext = .viewPost(postView)
+            }
+        }
+        .routeIf(routePostDisplay,
+                 window: .resizable(600, 500)) {
+            //prevent type erasure
+            PostDisplayView(context: _context)
+        } with : { router }
 //        .overlayIf(context.feedStyle == .style1) {
 //            GeometryReader { proxy in
 //                Rectangle()

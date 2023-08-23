@@ -44,15 +44,15 @@ extension Feed {
                         .attach({
                             ModalService.shared.dismissSheet()
                         }, at: \.cancel)
-                        .attach({
-                            ModalService.shared.dismissSheet()
-                        }, at: \.add)
                 }
             }, at: \.addProfile)
             .attach({
                 GraniteHaptic.light.invoke()
                 ModalService.shared.presentSheet {
                     LoginView()
+                        .attach({
+                            ModalService.shared.dismissSheet()
+                        }, at: \.cancel)
                 }
             }, at: \.login)
             .attach({ location in
@@ -184,6 +184,8 @@ struct FeedHamburgerView: View {
                     if account.isLoggedIn {
                         profileView
                         blockedListView
+                    } else {
+                        loginView
                     }
                     
                     Spacer()
@@ -222,30 +224,32 @@ extension FeedHamburgerView {
                 present
                     .perform(GraniteAlertView(mode: .sheet) {
                     
-                    GraniteAlertAction {
-                        VStack(spacing: .layer2) {
-                            ForEach(account.state.profiles) { profile in
-                                UserCardView(model: profile.person.asView(),
-                                             meta: profile,
-                                             fullWidth: true, showCounts: true, style: .style2)
-                                .onTapGesture {
-                                    GraniteHaptic.light.invoke()
-                                    switchAccount.perform(profile)
+                        if account.state.profiles.isNotEmpty {
+                            GraniteAlertAction {
+                                VStack(spacing: .layer2) {
+                                    ForEach(account.state.profiles) { profile in
+                                        UserCardView(model: profile.person.asView(),
+                                                     meta: profile,
+                                                     fullWidth: true, showCounts: true, style: .style2)
+                                        .onTapGesture {
+                                            GraniteHaptic.light.invoke()
+                                            switchAccount.perform(profile)
+                                        }
+                                        .padding(.horizontal, .layer4)
+                                        
+                                    }
                                 }
-                                .padding(.horizontal, .layer4)
-                                
+                                .wrappedInScrollView(when: account.state.profiles.count > 3,
+                                                     axis: .vertical)
                             }
                         }
-                        .wrappedInScrollView(when: account.state.profiles.count > 3,
-                                             axis: .vertical)
-                    }
                         
-                    //TODO: Localize
-                    GraniteAlertAction(title: "Add Account") {
-                        addProfile.perform()
-                    }
-                    
-                    GraniteAlertAction(title: "MISC_CANCEL")
+                        //TODO: Localize
+                        GraniteAlertAction(title: "Add Account") {
+                            addProfile.perform()
+                        }
+                        
+                        GraniteAlertAction(title: "MISC_CANCEL")
                 })
             } label: {
                 //TODO: localize
@@ -358,6 +362,25 @@ extension FeedHamburgerView {
 }
 
 extension FeedHamburgerView {
+    var loginView: some View {
+        Group {
+            HStack {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    login.perform()
+                } label: {
+                    Text("AUTH_LOGIN")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
+                        .padding(.leading, 2)//nitpick alignment
+                }
+                .buttonStyle(.plain)
+                
+                Spacer()
+            }
+        }
+    }
+    
     var profileView: some View {
         Group {
             HStack {

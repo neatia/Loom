@@ -113,7 +113,7 @@ struct HeaderCardView: View {
         guard let commentView = context.commentModel else { return }
         
         Task { @MainActor in
-            guard let postView = await Lemmy.post(commentView.post.id, comment: commentView.comment) else {
+            guard let postView = await ContentUpdater.fetchPostView(commentView.post, commentModel: commentView.comment) else {
                 return
             }
             

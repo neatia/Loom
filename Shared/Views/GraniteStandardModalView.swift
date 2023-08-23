@@ -53,9 +53,11 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if Device.isExpandedLayout == false && !drawerMode {
+            #if os(iOS)
+            if !drawerMode {
                 Spacer()
             }
+            #endif
             
             ZStack {
                 if Device.isMacOS == false || showBG {

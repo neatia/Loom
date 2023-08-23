@@ -32,6 +32,8 @@ struct TextToolView : GenericControllerRepresentable {
     enum Kind {
         case writing
         case search
+        case link
+        case standard(String)//placeholder
     }
     
     func makeUIViewController(context: Context) -> KeyboardViewController {
@@ -87,8 +89,11 @@ struct TextToolView : GenericControllerRepresentable {
         }
         
         func textViewDidEndEditing(_ textView: UITextView) {
+            
         }
+        
         func textViewDidBeginEditing(_ textView: UITextView) {
+            
         }
         
         //KeyboardTextToolDelegate
@@ -140,8 +145,20 @@ final class KeyboardViewController: UIViewController {
         super.viewDidLoad()
         textView.inputAccessoryView = keyboardToolbarView
         
+        switch kind {
+        case .link:
+            textView.font = .preferredFont(forTextStyle: .title3)
+        default:
+            break
+        }
+        
         placeholderLabel = UILabel()
         switch kind {
+        case .standard(let placeholder):
+            placeholderLabel.text = placeholder.localized()
+        case .link:
+            //TODO: placeholder
+            placeholderLabel.text = "Instance URL"
         case .writing:
             break
         case .search:
@@ -155,10 +172,19 @@ final class KeyboardViewController: UIViewController {
         placeholderLabel.textColor = UIColor(Color.foreground.opacity(0.3))
         placeholderLabel.isHidden = !textView.text.isEmpty
         
-        textView.contentInset = .init(top: 2,
-                                      left: 0,
-                                      bottom: 0,
-                                      right: 0)
+        if Device.isiPad {
+            
+            textView.contentInset = .init(top: .layer1,
+                                          left: 0,
+                                          bottom: 0,
+                                          right: 0)
+        } else {
+            
+            textView.contentInset = .init(top: 2,
+                                          left: 0,
+                                          bottom: 0,
+                                          right: 0)
+        }
         
         switch kind {
         case .search:
@@ -183,7 +209,9 @@ private extension KeyboardViewController {
         ]
         
         switch kind {
-        case .search:
+        case .link:
+            keyboardToolbarView.groups.append(linkToolgroup)
+        case .search, .standard:
             keyboardToolbarView.groups.append(actionToolgroup)
         case .writing:
             keyboardToolbarView.groups.append(editingToolgroup)
@@ -420,6 +448,19 @@ extension KeyboardViewController {
                 InsertTextKeyboardTool(text: "@", textView: textView),
                 InsertTextKeyboardTool(text: "%", textView: textView),
                 InsertTextKeyboardTool(text: "~", textView: textView)
+            ])
+        ])
+    }
+    
+    var linkToolgroup: KeyboardToolGroup {
+        KeyboardToolGroup(items: [
+            KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "https://", textView: textView)),
+            KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: ".com", textView: textView), tools: [
+                InsertTextKeyboardTool(text: ".com", textView: textView),
+                InsertTextKeyboardTool(text: ".ee", textView: textView),
+                InsertTextKeyboardTool(text: ".ml", textView: textView),
+                InsertTextKeyboardTool(text: ".net", textView: textView),
+                InsertTextKeyboardTool(text: ".world", textView: textView)
             ])
         ])
     }

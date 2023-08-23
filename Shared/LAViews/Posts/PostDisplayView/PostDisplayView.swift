@@ -101,7 +101,7 @@ struct PostDisplayView: GraniteNavigationDestination {
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
-                        .contentContext(.addCommentModel(model: commentView, context))
+                        .contentContext(.addCommentModel(model: commentView, context).viewedIn(.postDisplay))
                         .background(Color.alternateBackground)
                 }
                 .environmentObject(pager)
@@ -120,25 +120,19 @@ struct PostDisplayView: GraniteNavigationDestination {
         .task {
             self.threadLocation = context.location
             
-            guard let model else { return }
-            
-            /*
-             Let's update the model incase
-             won't fire if triggered from postCard after editing
-             most likely if the model is yours, it could have changed
-             prior to entry
-             
-             can save on calls, otherwise
-             */
-            if model.creator.isMe,
-               updatedModel == nil {
-                let postView = await Lemmy.post(context.postModel?.post.id)
+            if updatedModel == nil {
+                /*
+                 - Comment cards from search won't have postViews
+                 - Updating your own post from a post card will update right away
+                 */
+                let postId = context.postModel?.post.id ?? context.commentModel?.post.id
+                let postView = await Lemmy.post(postId)
                 self.updatedModel = postView
             }
             
             pager.hook { page in
-                return await Lemmy.comments(model.post,
-                                            community: model.community,
+                return await Lemmy.comments(model?.post,
+                                            community: model?.community,
                                             page: page,
                                             type: .all,
                                             sort: sortingType[selectedSorting],

@@ -99,7 +99,7 @@ struct PostCardView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            switch context.feedStyle {
+            switch context.preferredStyle {
             case .style1:
                 VStack(alignment: .leading, spacing: .layer3) {
                     HeaderView(badge: .noBadge)
@@ -177,7 +177,7 @@ struct PostCardView: View {
 extension PostCardView {
     var content: some View {
         Group {
-            switch context.feedStyle {
+            switch context.preferredStyle {
             case .style1:
                 contentBody
                     .padding(.bottom, .layer3)
@@ -303,9 +303,9 @@ extension PostCardView {
             }
         }
         .frame(maxWidth: .infinity)
-        .onTapIf(layout.state.style == .expanded) {
+        .onTapIf(Device.isExpandedLayout) {
             
-            guard layout.state.style == .expanded,
+            guard Device.isExpandedLayout,
                   let model = context.postModel else {
                 GraniteHaptic.light.invoke()
                 routePostDisplay = true
@@ -314,7 +314,8 @@ extension PostCardView {
             
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .route(window: .resizable(600, 500)) {
+        .routeIf(routePostDisplay,
+                 window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context, updatedModel: model)
         } with : { router }

@@ -64,7 +64,6 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     }
     
     public func dismiss() {
-        sheetManager.dismiss()
         guard presenters.count > 0 else {
             return
         }
@@ -125,7 +124,7 @@ extension GraniteModalManager {
             .addGraniteSheet(sheetManager,
                              background: Color.clear))
         window.rootViewController = alertController
-        window.isUserInteractionEnabled = false
+        //window.isUserInteractionEnabled = false
         window.backgroundColor = UIColor.clear
         window.rootViewController?.view.backgroundColor = .clear
         

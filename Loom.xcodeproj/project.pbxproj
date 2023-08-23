@@ -560,6 +560,8 @@
 		71D027FE2A6F15FE00EA781A /* AccountModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D027FC2A6F15FE00EA781A /* AccountModuleView.swift */; };
 		71D028002A6F1AD400EA781A /* AccountService.Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D027FF2A6F1AD400EA781A /* AccountService.Profile.swift */; };
 		71D028012A6F1AD400EA781A /* AccountService.Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D027FF2A6F1AD400EA781A /* AccountService.Profile.swift */; };
+		71DA49812A9684E1006FB90C /* ContentUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49802A9684E1006FB90C /* ContentUpdater.swift */; };
+		71DA49822A9684E1006FB90C /* ContentUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49802A9684E1006FB90C /* ContentUpdater.swift */; };
 		71DF106D28CC697600559DBC /* DictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106228CC697600559DBC /* DictionaryDecoder.swift */; };
 		71DF106E28CC697600559DBC /* DictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106228CC697600559DBC /* DictionaryDecoder.swift */; };
 		71DF106F28CC697600559DBC /* DictionaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106328CC697600559DBC /* DictionaryEncoder.swift */; };
@@ -980,6 +982,7 @@
 		71CB6C372A6B81E500084ECC /* Write.Set.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Set.swift; sourceTree = "<group>"; };
 		71D027FC2A6F15FE00EA781A /* AccountModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountModuleView.swift; sourceTree = "<group>"; };
 		71D027FF2A6F1AD400EA781A /* AccountService.Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Profile.swift; sourceTree = "<group>"; };
+		71DA49802A9684E1006FB90C /* ContentUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentUpdater.swift; sourceTree = "<group>"; };
 		71DF106228CC697600559DBC /* DictionaryDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryDecoder.swift; sourceTree = "<group>"; };
 		71DF106328CC697600559DBC /* DictionaryEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryEncoder.swift; sourceTree = "<group>"; };
 		71DF106428CC697600559DBC /* DictionaryCodingKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryCodingKey.swift; sourceTree = "<group>"; };
@@ -1615,6 +1618,7 @@
 			children = (
 				715151252A8F720300251978 /* ContentContext.swift */,
 				715151282A8F79A200251978 /* ContentContext.Display.swift */,
+				71DA49802A9684E1006FB90C /* ContentUpdater.swift */,
 			);
 			path = ContentContext;
 			sourceTree = "<group>";
@@ -2772,6 +2776,7 @@
 				71F778B52A719D4400C9C5C4 /* HeaderCardAvatarView.swift in Sources */,
 				710540852A91D9EB00B9DC8A /* Snapshot.swift in Sources */,
 				71E5F3CB2A73A02500299558 /* Haptic.swift in Sources */,
+				71DA49812A9684E1006FB90C /* ContentUpdater.swift in Sources */,
 				714B48982A8238A400AC6199 /* GlobeView.swift in Sources */,
 				714B48812A81A5D600AC6199 /* Locateable.swift in Sources */,
 				712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
@@ -3245,6 +3250,7 @@
 				711B3F9B2885D43B00F3080D /* PEXApp.swift in Sources */,
 				714B48992A8238A400AC6199 /* GlobeView.swift in Sources */,
 				717090EA2A7EEF0B009F1FB7 /* LayoutService.swift in Sources */,
+				71DA49822A9684E1006FB90C /* ContentUpdater.swift in Sources */,
 				71C9F9372A6116B20089D7EA /* ContentService.Boot.swift in Sources */,
 				71C9F8EF2A60B7F40089D7EA /* Settings+View.swift in Sources */,
 				715826832A889506000E4B49 /* View+Readability.swift in Sources */,
@@ -3530,9 +3536,7 @@
 				INFOPLIST_FILE = "Loom--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Loom;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures for encoding";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
@@ -3566,9 +3570,7 @@
 				INFOPLIST_FILE = "Loom--iOS--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Loom;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				INFOPLIST_KEY_NSCameraUsageDescription = "Take pictures for encoding";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;

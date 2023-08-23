@@ -44,6 +44,15 @@ struct ContentContext {
         }
     }
     
+    var preferredStyle: FeedStyle {
+        switch viewingContext {
+        case .search:
+            return .style1
+        default:
+            return feedStyle
+        }
+    }
+    
     var person: FederatedPerson? {
         commentModel?.creator ?? postModel?.creator
     }
@@ -96,6 +105,17 @@ struct ContentContext {
                      commentModel: context.commentModel,
                      feedStyle: style,
                      viewingContext: context.viewingContext)
+    }
+    
+    static func viewedIn(_ viewingContext: ViewingContext, _ context: ContentContext) -> Self {
+        return .init(postModel: context.postModel,
+                     commentModel: context.commentModel,
+                     feedStyle: context.feedStyle,
+                     viewingContext: viewingContext)
+    }
+    
+    func viewedIn(_ viewingContext: ViewingContext) -> ContentContext {
+        return ContentContext.viewedIn(viewingContext, self)
     }
 }
 
