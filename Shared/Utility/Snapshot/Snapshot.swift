@@ -55,7 +55,7 @@ public struct ScreenshotView<Content: View> : GenericViewRepresentable {
             guard let view = context.coordinator.controller?.view else {
                 return
             }
-            view.layer.cornerRadius = 16
+            view.layer.cornerRadius = 12
             return
         }
         

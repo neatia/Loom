@@ -27,13 +27,16 @@ extension ConfigService {
         func reduce(state: inout Center.State) async {
             guard let meta else { return }
             
-            //Causes local acceess prompt
-            //TODO: revise location of this check, maybe on the kit level?
-            guard let lowercasedHost = meta.host?.lowercased(),
-                  lowercasedHost.contains("local") == false,
-                  lowercasedHost.contains("127.0") == false else {
-                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "MISC_ERROR_2", event: .error))
-                return
+            //TODO: Someone could still sign in with an account using these checks
+            if meta.accountMeta == nil {
+                //Causes local acceess prompt
+                //TODO: revise location of this check, maybe on the kit level?
+                guard let lowercasedHost = meta.host?.lowercased(),
+                      lowercasedHost.contains("local") == false,
+                      lowercasedHost.contains("127.0") == false else {
+                    broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "MISC_ERROR_2", event: .error))
+                    return
+                }
             }
             
             if let host = meta.host {
