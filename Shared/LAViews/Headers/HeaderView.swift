@@ -116,8 +116,12 @@ struct HeaderView: View {
                                 .font(.headline)
                         }
                         .onTapGesture {
+                            
+                            guard let id = context.commentModel?.comment.id else {
+                                return
+                            }
                             GraniteHaptic.light.invoke()
-                            tappedCrumb.perform(context.id)
+                            tappedCrumb.perform(id)
                         }
                     }
                 }
@@ -140,10 +144,19 @@ struct HeaderView: View {
             
             Spacer()
             
-            if let time = context.display.author.time {
-                Text(time.timeAgoDisplay())
-                    .font(.subheadline)
-                    .foregroundColor(.foreground.opacity(0.5))
+            HStack(alignment: .bottom, spacing: .layer1) {
+                if context.isEdited {
+                    //TODO: localize
+                    Text("edited")
+                        .font(.caption2.italic())
+                        .foregroundColor(.foreground.opacity(0.5))
+                }
+                
+                if let time = context.display.author.time {
+                    Text(time.timeAgoDisplay())
+                        .font(.subheadline)
+                        .foregroundColor(.foreground.opacity(0.5))
+                }
             }
             
             if showPostActions {

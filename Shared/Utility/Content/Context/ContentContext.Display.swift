@@ -33,8 +33,24 @@ extension ContentContext {
         commentModel?.replyCount
     }
     
+    var isEdited: Bool {
+        updatedTime != nil
+    }
+    
     var time: Date? {
+        updatedTime ?? publishedTime
+    }
+    
+    var publishedTime: Date? {
         commentModel?.counts.published.serverTimeAsDate ?? postModel?.counts.published.serverTimeAsDate
+    }
+    
+    var updatedTime: Date? {
+        if isComment {
+            return commentModel?.comment.updated?.serverTimeAsDate
+        } else {
+            return postModel?.post.updated?.serverTimeAsDate
+        }
     }
     
     var timeAbbreviated: String? {

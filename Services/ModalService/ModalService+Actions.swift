@@ -73,7 +73,7 @@ extension ModalService {
     }
     
     func presentSheet<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                      detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
+                                      detents: [Detent] = [.medium, .large],
                                       style : GraniteSheetPresentationStyle = .sheet,
                                       @ViewBuilder content : () -> Content) {
         
@@ -81,7 +81,7 @@ extension ModalService {
     }
     
     static func presentSheet<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                             detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
+                                             detents: [Detent] = [.medium, .large],
                                              style : GraniteSheetPresentationStyle = .sheet,
                                              @ViewBuilder content : () -> Content) {
         

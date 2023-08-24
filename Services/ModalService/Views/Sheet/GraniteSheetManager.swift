@@ -8,12 +8,16 @@ final public class GraniteSheetManager : ObservableObject {
     var style : GraniteSheetPresentationStyle = .sheet
     
     @Published var models : [String: ContentModel] = [:]
-    var detentsMap : [String: [UISheetPresentationController.Detent]] = [:]
+    var detentsMap : [String: [Detent]] = [:]
     @Published public var shouldPreventDismissal : Bool = false
     
     struct ContentModel {
         let id: String
         let content: AnyView
+    }
+    
+    var hasContent: Bool {
+        models.isEmpty == false
     }
     
     public init() {
@@ -31,12 +35,12 @@ final public class GraniteSheetManager : ObservableObject {
         })
     }
     
-    func detents(id: String = GraniteSheetManager.defaultId) -> [UISheetPresentationController.Detent] {
-        return self.detentsMap[id] ?? [.medium(), .large()]
+    func detents(id: String = GraniteSheetManager.defaultId) -> [Detent] {
+        return self.detentsMap[id] ?? [.medium, .large]
     }
     
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                        detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
+                                        detents: [Detent] = [.medium, .large],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents

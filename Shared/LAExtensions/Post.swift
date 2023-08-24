@@ -42,6 +42,24 @@ extension PostView {
     func updateBlock(_ blocked: Bool, personView: PersonView) -> PostView {
         .init(post: self.post, creator: personView.person, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: blocked, unread_comments: self.unread_comments)
     }
+    
+    func updateRemoved() -> PostView {
+        .init(post: self.post.updateRemoved(), creator: self.creator, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: self.creator_blocked, unread_comments: self.unread_comments)
+    }
+    
+    func updateDeleted() -> PostView {
+        .init(post: self.post.updateDeleted(), creator: self.creator, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: self.creator_blocked, unread_comments: self.unread_comments)
+    }
+}
+
+extension Post {
+    func updateRemoved() -> Post {
+        .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: !self.removed, locked: self.locked, published: self.published, deleted: self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local)
+    }
+    
+    func updateDeleted() -> Post {
+        .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: self.removed, locked: self.locked, published: self.published, deleted: !self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local)
+    }
 }
 
 extension PostView {

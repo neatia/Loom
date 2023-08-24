@@ -30,7 +30,7 @@ struct GraniteScrollViewPositionIndicator: View {
     var body: some View {
         GeometryReader { proxy in
             Color.clear
-                .preference(key: PositionPreferenceKey.self, value: [Position(type: type, frame: proxy.frame(in: .named("GraniteScrollView")))])
+                .preference(key: PositionPreferenceKey.self, value: [Position(type: type, frame: proxy.frame(in: .global))])
         }
     }
 }

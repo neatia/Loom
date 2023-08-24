@@ -42,7 +42,7 @@ extension Profile: GraniteNavigationDestination {
                                                       limit: ConfigService.Preferences.pageLimit,
                                                       community: nil,
                                                       saved_only: nil,
-                                                      location: state.person?.isMe == true ? .base : .source)
+                                                      location: state.person?.isMe == true ? .source : .base)
                     
                     var models: [any Pageable] = (details?.comments ?? []) + (details?.posts ?? [])
                     models = models.sorted(by: { $0.date.compare($1.date) == .orderedDescending })

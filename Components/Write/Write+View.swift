@@ -211,7 +211,7 @@ extension Write: View {
                          modal.sheetManager,
                          background: Color.clear)
         .padding(.top, .layer4)
-        .background(Color.background)
+        .background(Device.isIPhone ? .clear : Color.background)
         .onAppear {
             #if os(iOS)
             UITextView.appearance().backgroundColor = .clear

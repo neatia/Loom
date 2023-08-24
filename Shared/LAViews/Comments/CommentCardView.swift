@@ -20,6 +20,10 @@ struct CommentCardView: View {
     @State var model: CommentView?
     @State var postView: PostView? = nil
     
+    var currentModel: CommentView? {
+        model ?? context.commentModel
+    }
+    
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
@@ -35,6 +39,32 @@ struct CommentCardView: View {
     
     var isPreview: Bool {
         context.viewingContext == .search
+    }
+    
+    var isRemoved: Bool {
+        currentModel?.comment.removed == true
+    }
+    
+    var isDeleted: Bool {
+        currentModel?.comment.deleted == true
+    }
+    
+    var isBot: Bool {
+        currentModel?.creator.bot_account == true
+    }
+    
+    var shouldCensor: Bool {
+        isRemoved || isDeleted || isBot
+    }
+    
+    var censorKind: CensorView.Kind {
+        if isRemoved || isDeleted {
+            return .removed
+        } else if isBot {
+            return .bot
+        } else {
+            return .unknown
+        }
     }
     
     var showAvatar: Bool {
@@ -59,6 +89,7 @@ struct CommentCardView: View {
                     .attach({
                         editModel()
                     }, at: \.edit)
+                    .contentContext(.addCommentModel(model: currentModel, context))
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
                 
@@ -77,6 +108,8 @@ struct CommentCardView: View {
                                 editModel()
                             }, at: \.edit)
                             .graniteEvent(interact)
+                            //Since the model could get updated (removal/deletion)
+                            .contentContext(.addCommentModel(model: currentModel, context))
                         contentView
                     }
                 }
@@ -87,7 +120,7 @@ struct CommentCardView: View {
                 Divider()
                     .padding(.top, .layer5)
                 
-                ThreadView(updatedParentModel: model,
+                ThreadView(updatedParentModel: currentModel,
                            isModal: false,
                            isInline: true)
                     .attach({ model in
@@ -113,11 +146,11 @@ struct CommentCardView: View {
                                        model: model) { updatedModel in
                 
                 DispatchQueue.main.async {
-                    self.model = updatedModel //self.model?.incrementReplyCount()
+                    self.model = self.model?.incrementReplyCount()
                     if expandReplies == false {
                         expandReplies = true
                     } else {
-                        refreshThread.toggle()
+                        self.refreshThread.toggle()
                     }
                 }
             }
@@ -125,6 +158,20 @@ struct CommentCardView: View {
         .task {
             self.model = context.commentModel
             self.postView = context.postModel
+            
+            //Experiment
+            interact?
+                .listen(.bubble(context.id)) { value in
+                    if let interact = value as? AccountService.Interact.Meta {
+                        switch interact.intent {
+                        case .removeComment(let model):
+                            guard model.id == context.commentModel?.id else { return }
+                            self.model = model.updateRemoved()
+                        default:
+                            break
+                        }
+                    }
+                }
         }
     }
     
@@ -216,7 +263,15 @@ extension CommentCardView {
                     showDrawer.perform(model)
                 }, at: \.showComments)
         }
-        .onTapIf(Device.isExpandedLayout) {
+        .censor(shouldCensor, kind: censorKind, isComment: true)
+        .onTapIf(Device.isExpandedLayout || shouldCensor) {
+            
+            guard isPreview else {
+                if shouldCensor {
+                    expandReplies.toggle()
+                }
+                return
+            }
             
             guard layout.state.style == .expanded else {
                 GraniteHaptic.light.invoke()
@@ -231,7 +286,7 @@ extension CommentCardView {
                 layout._state.wrappedValue.feedContext = .viewPost(postView)
             }
         }
-        .routeIf(Device.isExpandedLayout == false,
+        .routeIf(Device.isExpandedLayout == false && isPreview,
                  window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context)

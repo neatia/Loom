@@ -111,7 +111,6 @@ public struct GraniteScrollView<Content : View> : View {
             }
         }
         .background(GraniteScrollViewPositionIndicator(type: .fixed))
-        .coordinateSpace(name: "GraniteScrollView")
         .onPreferenceChange(GraniteScrollViewPositionIndicator.PositionPreferenceKey.self) { values in
             guard status != .loading, onRefresh != nil else {
                 return

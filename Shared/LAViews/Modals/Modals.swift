@@ -15,7 +15,7 @@ extension ModalService {
     @MainActor
     func expand(_ postView: PostView?) {
         guard let content = postView?.post.body else { return }
-        presentSheet(detents: [.large()]) {
+        presentSheet(detents: [.large]) {
             GenericPreview(content: content)
         }
     }
@@ -38,7 +38,7 @@ extension ModalService {
     
     @MainActor
     func showWriteModal(_ model: CommunityView?) {
-        presentSheet(detents: [.large()]) {
+        presentSheet(detents: [.large]) {
             Write(communityView: model)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -56,7 +56,7 @@ extension ModalService {
             return
         }
         
-        presentSheet(detents: [.large()]) {
+        presentSheet(detents: [.large]) {
             Write(postView: model)
                 .attach({ updatedModel in
                     update?(updatedModel)

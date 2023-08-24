@@ -119,7 +119,7 @@ struct UserCardView: View {
             }
         }
         .padding(.vertical, .layer3)
-        .background(Color.secondaryBackground.opacity(0.8))
+        .background(Color.secondaryBackground)
         .cornerRadius(style == .style1 ? 8 : size.frame / 2)
     }
     
@@ -173,7 +173,7 @@ struct UserCardView: View {
             }
             .padding(.layer3)
             .foregroundColor(.foreground)
-            .background(Color.secondaryBackground.opacity(0.8))
+            .background(Color.secondaryBackground)
             .cornerRadius(style == .style1 ? 8 : size.frame)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9)
             .padding(.bottom, .layer2)

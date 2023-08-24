@@ -46,15 +46,19 @@ struct PostCardView: View {
     }
     
     var censorRemoved: Bool {
-        context.isRemoved
+        model?.post.removed ?? context.isRemoved
+    }
+    //TODO: differentiate between removed
+    var censorDeleted: Bool {
+        model?.post.deleted ?? context.isRemoved
     }
     
     var shouldCensor: Bool {
-        censorRemoved || censorBlocked || censorNSFW || censorBot
+        censorRemoved || censorDeleted || censorBlocked || censorNSFW || censorBot
     }
     
     var censorKind: CensorView.Kind {
-        if censorRemoved {
+        if censorRemoved || censorDeleted {
             return .removed
         } else if censorNSFW {
             return .nsfw
@@ -135,6 +139,21 @@ struct PostCardView: View {
                 .overlayIf(isSelected,
                            overlay: Color.alternateBackground.opacity(0.3))
             }
+        }
+        .task {
+            //Experiment
+            interact?
+                .listen(.bubble(context.id)) { value in
+                    if let interact = value as? AccountService.Interact.Meta {
+                        switch interact.intent {
+                        case .removePost(let model):
+                            guard model.id == context.postModel?.id else { return }
+                            self.model = model.updateRemoved()
+                        default:
+                            break
+                        }
+                    }
+                }
         }
     }
     

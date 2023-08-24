@@ -120,7 +120,7 @@ struct CommunityCardView: View {
             }
             .padding(.layer3)
             .foregroundColor(.foreground)
-            .background(Color.secondaryBackground.opacity(0.8))
+            .background(Color.secondaryBackground)
             .cornerRadius(8)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
             .padding(.bottom, .layer2)

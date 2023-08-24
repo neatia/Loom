@@ -39,7 +39,7 @@ extension Feed {
                 }
             }, at: \.switchAccount)
             .attach({
-                ModalService.shared.presentSheet(detents: [.large()]) {
+                ModalService.shared.presentSheet(detents: [.large]) {
                     LoginView(addToProfiles: true)
                         .attach({
                             ModalService.shared.dismissSheet()
@@ -59,6 +59,7 @@ extension Feed {
                 _state.location.wrappedValue = location
                 pager.reset()
             }, at: \.changeLocation)
+            .id(account.state.meta)
     }
 }
 
@@ -70,7 +71,6 @@ struct FeedHamburgerView: View {
     @Environment(\.graniteRouter) var router
     
     @Environment(\.sideMenuVisible) var isVisible
-    @Environment(\.sideMenuMoving) var isMoving
     
     @GraniteAction<AnyGraniteModal> var present
     @GraniteAction<AccountMeta> var switchAccount
@@ -128,7 +128,8 @@ struct FeedHamburgerView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                AvatarView(accountMeta?.avatarURL, size: Device.isExpandedLayout ? .mini : .medium)
+                AvatarView(accountMeta?.avatarURL,
+                           size: Device.isExpandedLayout ? .mini : .medium)
                 
                 if Device.isExpandedLayout {
                     AccountView()
@@ -201,17 +202,8 @@ struct FeedHamburgerView: View {
         .padding(.leading, Device.isExpandedLayout ? 0 : .layer5)
         .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
         .background(Device.isExpandedLayout ? Color.clear : Color.background)
-        .onChange(of: isMoving) { state in
-            if state {
-                account.silence()
-            } else if isVisible {
-                account.awake()
-            }
-        }
     }
 }
-
-//MARK: Community info menu
 
 
 //MARK: Switch account menu

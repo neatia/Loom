@@ -9,7 +9,12 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     @Published var presenters = [AnyGraniteModal]()
     @Published var sheet : AnyView? = nil
     
+    #if os(iOS)
     fileprivate var window : GraniteModalWindow? = nil
+    #else
+    fileprivate var window : AppWindow? = nil
+    #endif
+    
     public var view: AnyView? = nil
     
     let sheetManager = GraniteSheetManager()
@@ -18,16 +23,20 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     
     public init(_ wrapper : @escaping ((GraniteModalContainerView) -> AnyView) = { view in AnyView(view) }) {
         
-        #if os(iOS)
         sheetManager
             .$models
             .throttle(for: .seconds(0.2),
                       scheduler: RunLoop.main,
                       latest: true)
             .sink { value in
+                #if os(iOS)
                 self.window?.isUserInteractionEnabled = value.keys.isEmpty == false
+                #else
+                DispatchQueue.main.async { [weak self] in
+                    self?.centerWindow()
+                }
+                #endif
             }.store(in: &cancellables)
-        #endif
         
 #if os(iOS)
         DispatchQueue.main.async {
@@ -56,6 +65,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             }
             self?.window?.isUserInteractionEnabled = true
 #else
+            self?.centerWindow()
             withAnimation {
                 self?.presenters = [modal]
             }
@@ -72,8 +82,8 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
         withAnimation {
             _ = presenters.removeLast()
             
-            if presenters.count == 0 {
-                
+            if presenters.count == 0,
+               !sheetManager.hasContent {
                 window?.isUserInteractionEnabled = false
             }
         }
@@ -167,9 +177,25 @@ extension GraniteModalManager {
         guard let contentView = keyWindow.contentView else {
             return
         }
+        self.window = window
         
         contentView.addSubview(controller.view)
 #endif
     }
     
+    func centerWindow() {
+        #if os(macOS)
+        guard let keyWindow = GraniteNavigationWindow.shared.mainWindow?.retrieve() else {
+            return
+        }
+//        let frame = keyWindow.frame
+//        let centerTop: CGPoint = .init(frame.origin.x + frame.size.width / 2, frame.size.height + keyWindow.titlebarHeight)
+//        let windowWidth = window?.frame.size.width ?? 0
+//        self.window?.setFrame(.init(origin: .init(centerTop.x - (windowWidth / 2),
+//                                            centerTop.y),
+//                              size: frame.size),
+//                        display: true)
+        self.window?.setCenter(.init(keyWindow.frame.midX, keyWindow.frame.midY))
+        #endif
+    }
 }
