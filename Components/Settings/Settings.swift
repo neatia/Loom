@@ -15,7 +15,7 @@ struct Settings: GraniteComponent {
         account
             .center
             .update
-            .listen(.broadcast) { value in
+            .listen(.broadcast("settings")) { value in
                 if let meta = value as? AccountService.Update.ResponseMeta {
                     ModalService.shared.dismissSheet()
                     ModalService.shared.presentModal(GraniteToastView(meta.notification))

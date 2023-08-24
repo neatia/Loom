@@ -362,6 +362,7 @@ struct ProfileSettingsView: View {
                 TextToolView(text: $bio)
                     .padding(.horizontal, .layer3)
                     .frame(height: 160)
+                    .padding(.bottom, .layer4)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
                             .foregroundColor(Color.tertiaryBackground)

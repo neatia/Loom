@@ -32,7 +32,12 @@ extension Feed {
 //                            config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
 //                        }
 //                    })
-                config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
+                config
+                    .center
+                    .restart
+                    .send(ConfigService
+                        .Restart
+                        .Meta(accountMeta: meta))
                 
                 DispatchQueue.main.async {
                     ModalService.shared.dismissAll()

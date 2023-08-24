@@ -12,7 +12,7 @@ struct Reply: GraniteComponent {
         content
             .center
             .interact
-            .listen(.broadcast) { value in
+            .listen(.broadcast("reply")) { value in
                 if let response = value as? ContentService.Interact.ResponseMeta {
                     
                     switch response.kind {

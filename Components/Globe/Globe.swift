@@ -13,7 +13,7 @@ struct Globe: GraniteComponent {
         account
             .center
             .addProfile
-            .listen(.broadcast) { value in
+            .listen(.broadcast("globe")) { value in
                 if let meta = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(meta), target: .sheet)
                 } else if let meta = value as? StandardNotificationMeta {
@@ -25,7 +25,7 @@ struct Globe: GraniteComponent {
         account
             .center
             .boot
-            .listen(.broadcast) { value in
+            .listen(.broadcast("globe")) { value in
                 if let meta = value as? StandardNotificationMeta {
                     ModalService.shared.presentModal(GraniteToastView(meta))
                 }
@@ -34,7 +34,7 @@ struct Globe: GraniteComponent {
         config
             .center
             .restart
-            .listen(.broadcast) { value in
+            .listen(.broadcast("globe")) { value in
                 if let meta = value as? StandardNotificationMeta {
                     ModalService.shared.presentModal(GraniteToastView(meta))
                 }

@@ -15,7 +15,7 @@ extension Feed {
         account
             .center
             .interact
-            .listen(.broadcast) { value in
+            .listen(.broadcast("feed")) { value in
                 if let response = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let response = value as? AccountService.Interact.ResponseMeta {
@@ -39,7 +39,7 @@ extension Feed {
         config
             .center
             .restart
-            .listen(.broadcast) { value in
+            .listen(.broadcast("feed")) { value in
                 if let error = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(error))
                 } else {
@@ -51,7 +51,7 @@ extension Feed {
         content
             .center
             .interact
-            .listen(.broadcast) { value in
+            .listen(.broadcast("feed")) { value in
                 if let meta = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(meta))
                 } else if let meta = value as? ContentService.Interact.Meta {
@@ -76,7 +76,7 @@ extension Feed {
         loom
             .center
             .modify
-            .listen(.broadcast) { value in
+            .listen(.broadcast("feed")) { value in
                 if let intent = value as? LoomService.Control {
                     switch intent {
                     case .activate(let manifest):

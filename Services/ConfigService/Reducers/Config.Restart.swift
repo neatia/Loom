@@ -26,7 +26,6 @@ extension ConfigService {
         
         func reduce(state: inout Center.State) async {
             guard let meta else { return }
-            
             //TODO: Someone could still sign in with an account using these checks
             if meta.accountMeta == nil {
                 //Causes local acceess prompt

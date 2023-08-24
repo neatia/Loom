@@ -153,7 +153,7 @@ extension GraniteModalManager {
         
         //Add normal alert modal
         let frame = keyWindow.frame
-        let window = AppWindow(frame.size, isClosabe: false, isChildWindow: true)
+        let window = AppWindow(.child(size: frame.size))
         window.contentViewController = NSHostingController(rootView: rootView
             .frame(width: 600))
         
