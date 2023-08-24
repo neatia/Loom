@@ -133,4 +133,27 @@ extension View {
             }
         }
     }
+    
+    func censorAutoFit(_ condition: Bool,
+                       kind: CensorView.Kind = .nsfw) -> some View {
+        return Group {
+            if condition {
+                //TODO: Other types
+                ZStack {
+                    Color.secondaryBackground
+                    switch kind {
+                    case .bot:
+                        Text("🤖")
+                            .font(.title)
+                    default:
+                        Image(systemName: "eye.slash.fill")
+                            .font(.title3)
+                            .foregroundColor(.foreground)
+                    }
+                }
+            } else {
+                self
+            }
+        }
+    }
 }

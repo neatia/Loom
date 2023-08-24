@@ -349,7 +349,7 @@ extension FooterView {
             
             Spacer()
             
-            if context.isPost {
+            if context.isPost && context.hasBody {
                 Button {
                     GraniteHaptic.light.invoke()
                     ModalService.shared.expand(context.postModel)

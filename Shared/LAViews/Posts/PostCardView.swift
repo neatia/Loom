@@ -248,6 +248,7 @@ extension PostCardView {
                         }
                     }
                 }
+                .censorAutoFit(shouldCensor, kind: censorKind)
                 .frame(width: 60, height: 60)
                 .cornerRadius(8.0)
                 .clipped()

@@ -358,6 +358,16 @@ struct ProfileSettingsView: View {
                     .font(.title3.bold())
                     .padding(.bottom, .layer2)
                 
+#if os(iOS)
+                TextToolView(text: $bio)
+                    .padding(.horizontal, .layer3)
+                    .frame(height: 160)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundColor(Color.tertiaryBackground)
+                    )
+#else
+                
                 if #available(macOS 13.0, iOS 16.0, *) {
                     TextEditor(text: $bio)
                         .textFieldStyle(.plain)
@@ -392,6 +402,7 @@ struct ProfileSettingsView: View {
                             }
                         }
                 }
+                #endif
                 
                 Text("PROFILE_DISPLAY_NAME")
                     .font(.title3.bold())
