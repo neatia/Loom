@@ -41,7 +41,7 @@ final public class GraniteSheetManager : ObservableObject {
     
     @MainActor
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                        detents: [Detent] = [.medium, .large],
+                                        detents: [Detent] = [.small, .medium, .large],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents
@@ -61,9 +61,17 @@ final public class GraniteSheetManager : ObservableObject {
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {
         DispatchQueue.main.async { [weak self] in
-            self?.detentsMap[id] = nil
-            self?.models[id] = nil
-            self?.shouldPreventDismissal = false
+            if Device.isiPad {
+                self?.detentsMap[id] = nil
+                self?.models[id] = nil
+                self?.shouldPreventDismissal = false
+            } else {
+                withAnimation(.easeOut.speed(1.2)) {
+                    self?.detentsMap[id] = nil
+                    self?.models[id] = nil
+                    self?.shouldPreventDismissal = false
+                }
+            }
         }
     }
     

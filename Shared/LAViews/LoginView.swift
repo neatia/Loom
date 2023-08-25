@@ -81,16 +81,7 @@ struct LoginView: View {
 extension LoginView {
     var addToProfilesForm: some View {
         VStack(spacing: 0) {
-            #if os(iOS)
-            TextToolView(text: $username,
-                         kind: .username("LOGIN_FORM_USERNAME"))
-                .frame(height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(Color.tertiaryBackground)
-                )
-                .padding(.bottom, .layer3)
-            #else
+            
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
@@ -103,20 +94,8 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer3)
-            #endif
             
-            #if os(iOS)
-            TextToolView(text: $password,
-                         kind: .password("LOGIN_FORM_PASSWORD"))
-                .frame(height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(Color.tertiaryBackground)
-                )
-                .padding(.bottom, .layer3)
-            #else
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
-            //TextField("Enter your password", text: $password)
                 .textFieldStyle(.plain)
                 .textContentType(.password)
                 .frame(height: 60)
@@ -127,7 +106,6 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer3)
-            #endif
             
             #if os(iOS)
             TextToolView(text: $host,
@@ -214,16 +192,6 @@ extension LoginView {
     var loginForm: some View {
         VStack(spacing: 0) {
             
-            #if os(iOS)
-            TextToolView(text: $username,
-                         kind: .username("LOGIN_FORM_USERNAME"))
-                .frame(height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(Color.tertiaryBackground)
-                )
-                .padding(.bottom, .layer3)
-            #else
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
@@ -235,19 +203,7 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer3)
-            #endif
             
-            
-            #if os(iOS)
-            TextToolView(text: $password,
-                         kind: .password("LOGIN_FORM_PASSWORD"))
-                .frame(height: 60)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(Color.tertiaryBackground)
-                )
-                .padding(.bottom, .layer3)
-            #else
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
                 .textFieldStyle(.plain)
                 .frame(height: 60)
@@ -258,7 +214,6 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer3)
-            #endif
             
             if kind == .login {
                 #if os(iOS)

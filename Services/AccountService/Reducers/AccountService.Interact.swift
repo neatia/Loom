@@ -36,6 +36,10 @@ extension AccountService {
          If network responses are required for view updates. Then the static solution
          seems to be a better solution. Especially for complex setups such as a social
          app
+         
+         -- UPDATE 8/25
+         
+         Bubbler method ~ see: CommentCardView.swift
          */
         
         enum Intent {

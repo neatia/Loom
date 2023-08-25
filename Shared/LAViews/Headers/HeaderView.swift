@@ -125,7 +125,7 @@ struct HeaderView: View {
                         }
                     }
                 }
-                .frame(maxHeight: 36)
+                .frame(maxHeight: AvatarView.Size.small.frame)
             } else {
                 AvatarView(context.person?.lemmy)
                     .overlay(Circle()
@@ -177,6 +177,7 @@ struct HeaderView: View {
                 }, at: \.edit)
             }
         }
+        .frame(minHeight: AvatarView.Size.small.frame)
     }
     
     func crumbColor(_ model: Person) -> Color {

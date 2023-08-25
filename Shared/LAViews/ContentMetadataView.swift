@@ -105,7 +105,7 @@ struct ContentMetadataView: View {
                             .padding(.horizontal, 12)
                             .padding(.vertical, 8)
                             .background(
-                                Rectangle()
+                                RoundedRectangle(cornerRadius: 12)
                                     .foregroundColor(backgroundColor)
                             )
                             Spacer()

@@ -74,7 +74,8 @@ extension Home: View {
         GraniteTabView(.init(height: tabViewHeight,
                              paddingTabs: .init(top: tabBarTopPadding, leading: 0, bottom: tabBarBottomPadding, trailing: 0),
                              paddingIcons: .init(top: topPadding, leading: 0, bottom: bottomPadding, trailing: 0),
-                             landscape: Device.isExpandedLayout) {
+                             landscape: Device.isExpandedLayout,
+                             enableHaptic: false) {
             
             Color.background.fitToContainer()
             

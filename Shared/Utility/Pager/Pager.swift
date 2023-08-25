@@ -102,6 +102,8 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     var isFetching: Bool = false
     
+    var initialFetch: Bool = true
+    
     var isEmpty: Bool {
         currentItems.isEmpty
     }
@@ -210,6 +212,8 @@ public class Pager<Model: Pageable>: ObservableObject {
         
         self.task?.cancel()
         self.task = Task(priority: .background) { [weak self] in
+            self?.initialFetch = false
+            
             guard let handler = self?.handler else {
                 LoomLog("🔴 Fetch failed | no handler", level: .error)
                 self?.clean()

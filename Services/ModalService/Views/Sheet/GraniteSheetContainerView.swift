@@ -3,30 +3,26 @@ import SwiftUI
 import Granite
 import GraniteUI
 
-public enum Detent: Hashable {
+public enum Detent: Hashable, CaseIterable {
     case large
     case medium
-}
-
-//Compatibility
-#if os(macOS)
-public struct UISheetPresentationController {
-    open class Detent : NSObject {
-        enum Identifier {
-            case large
-            case medium
-            case small
+    case small
+    
+    var height: CGFloat {
+        switch self {
+        case .large:
+            #if os(macOS)
+            return ContainerConfig.iPhoneScreenHeight - 100
+            #else
+            return UIScreen.main.bounds.height - 100
+            #endif
+        case .medium:
+            return 480
+        case .small:
+            return 360
         }
-        
-        
-        open class func medium() -> Detent { return Detent() }
-        
-        
-        open class func large() -> Detent { return Detent() }
-        
     }
 }
-#endif
 
 
 struct GraniteSheetContainerView<Content : View, Background : View> : View {
@@ -65,7 +61,8 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .showDrawer(manager.hasContent(id: self.id, with: .sheet)) {
+                .showDrawer(manager.hasContent(id: self.id, with: .sheet),
+                            manager.detents(id: self.id)) {
                     sheetContent(for: manager.style)
                 }
         } else {
@@ -211,15 +208,16 @@ private struct FullScreenCoverBackgroundRemovalView: NSViewRepresentable {
 
 fileprivate extension View {
     func showDrawer<Content: View>(_ condition: Binding<Bool>,
+                                   _ detents: [Detent] = [.small],
                     @ViewBuilder _ content: () -> Content) -> some View {
         self.overlayIf(condition.wrappedValue, alignment: .top) {
             Group {
                 #if os(iOS)
-                Drawer(startingHeight: 360) {
+                Drawer(startingHeight: detents.first?.height ?? Detent.small.height) {
                     ZStack(alignment: .top) {
                         RoundedRectangle(cornerRadius: 12)
                             .foregroundColor(Color.alternateSecondaryBackground)
-                            .shadow(radius: 100)
+                            .shadow(radius: 50)
                         
                         VStack(alignment: .center, spacing: 0) {
                             
@@ -258,11 +256,12 @@ fileprivate extension View {
                                 .padding(.top, .layer4)
                             
                             content()
+                                .adaptsToKeyboard(safeAreaAware: true)
                         }
-                        .frame(height: UIScreen.main.bounds.height - 100)
+                        .frame(height: Detent.large.height)
                     }
                 }
-                .rest(at: .constant([360, 480, UIScreen.main.bounds.height - 100]))
+                .rest(at: .constant(Detent.allCases.map { $0.height }))
                 .impact(.light)
                 .edgesIgnoringSafeArea(.vertical)
                 .transition(.move(edge: .bottom))

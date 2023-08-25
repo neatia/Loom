@@ -87,6 +87,9 @@ extension Feed: GraniteNavigationDestination {
         if isCommunity {
             return .init(navBarBGColor: Color.background) {
                 communityInfoMenuView
+                    .onChange(of: state.communityView) { _ in
+                        print("{TEST} changed")
+                    }
             }
         } else {
             return .init(navBarBGColor: Color.background)

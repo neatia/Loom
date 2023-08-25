@@ -68,18 +68,20 @@ extension AccountService {
                 LoomLog("keychain: \(error)", level: .error)
             }
             
-            if let user = LemmyKit.current.user?.local_user_view.person {
+        
+            if let user = client.user {
                 
-                broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_UPDATE_SETTINGS_SUCCESS", event: .success), person: user))
+                broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_UPDATE_SETTINGS_SUCCESS", event: .success), person: user.local_user_view.person))
                 
-                guard let user = LemmyKit.current.user, let host = state.meta?.host else {
+                guard let host = state.meta?.host else {
                     LoomLog("no user found", level: .debug)
                     state.meta = nil
                     return
                 }
                 
-                state.meta = .init(info: user, host: host)
-                LoomLog("updated user data after updating settings")
+                let newMeta: AccountMeta = .init(info: user, host: host)
+                LoomLog("updated user data after updating settings: \(newMeta.info.local_user_view.local_user.show_nsfw == state.meta?.info.local_user_view.local_user.show_nsfw)")
+                state.meta = newMeta
             }
         }
         

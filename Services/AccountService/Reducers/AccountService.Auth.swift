@@ -44,6 +44,10 @@ extension AccountService {
                     return
                 }
                 
+                ModalService.shared.dismissSheet()
+                
+                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \("@"+username)", event: .success))
+                
                 state.meta = .init(info: user, host: LemmyKit.host)
                 state.addToProfiles = false
                 state.authenticated = LemmyKit.auth != nil

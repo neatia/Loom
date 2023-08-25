@@ -53,6 +53,11 @@ struct TextToolView : GenericControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: KeyboardViewController,
                                 context: Context) {
+        if uiViewController.textView.text.isEmpty && text.isNotEmpty {
+            DispatchQueue.main.async {
+                uiViewController.textView.insertText(text)
+            }
+        }
         uiViewController.placeholderLabel.isHidden = text.isNotEmpty
         uiViewController.isVisible = visibility
         uiViewController.setupKeyboardTools()
@@ -193,6 +198,7 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
         case .password:
             textView.textContentType = .password
             textView.autocorrectionType = .no
+            textView.isSecureTextEntry = true
             textView.autocapitalizationType = .none
         case .otp:
             textView.textContentType = .oneTimeCode

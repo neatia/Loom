@@ -40,7 +40,7 @@ extension Settings {
                 VStack(spacing: 0) {
                     TextField("MISC_GATEWAY", text: bindingGateway)
                         .textFieldStyle(.plain)
-                        .frame(height: 40)
+                        .frame(height: 60)
                         .padding(.horizontal, .layer4)
                         .font(.title3.bold())
                         .background(
@@ -63,7 +63,7 @@ extension Settings {
                     
                     TextField("FORM_API_KEY", text: bindingKey)
                         .textFieldStyle(.plain)
-                        .frame(height: 40)
+                        .frame(height: 60)
                         .padding(.horizontal, .layer4)
                         .font(.title3.bold())
                         .background(
@@ -74,7 +74,7 @@ extension Settings {
                     
                     TextField("FORM_API_SECRET", text: bindingSecret)
                         .textFieldStyle(.plain)
-                        .frame(height: 40)
+                        .frame(height: 60)
                         .padding(.horizontal, .layer4)
                         .font(.title3.bold())
                         .background(
