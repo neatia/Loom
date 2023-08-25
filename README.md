@@ -49,6 +49,10 @@
 | :-------- | -------: |
 | ![Image](https://gateway.ipfs.io/ipfs/QmXoHKNAo2RHYAd843Mv4tzxAvRKswT1U8zVrEMnj4UFDQ)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
 
+| Travelling Modals    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmdXUT8RbYT6orPhHQMQig6TMMyg6crUhssmbC96bT266s)  | Writing modals can travel with your viewing context. Allowing you to browse content in any stack prior to publishing.   |
+
 | Bookmark Syncing    | |
 | :-------- | -------: |
 | <img src="https://gateway.ipfs.io/ipfs/Qmakr2HyJnXf87tseVhbjgqiKuqRoj3rUo79TK8DoKjwTg" width="50%"/> | All your saved posts and comments can be switched between accounts in a dedicated component.   |
@@ -69,7 +73,7 @@
 
 | Embedded Webview    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmV7Wo17wdB2vueyYiXeDxeLX2LLd8tS1JKgrFrAhcQ1M2) | Embedded Webview to customize the viewing experience. Custom JS insertion supported, customizing how webpages are viewed via direct user input is a possibility. |
+| ![Image](https://gateway.ipfs.io/ipfs/QmV7Wo17wdB2vueyYiXeDxeLX2LLd8tS1JKgrFrAhcQ1M2) | Custom JS insertion supported, customizing how webpages are viewed via direct user input is a possibility. |
 
 | Light Mode    | |
 | :-------- | -------: |
