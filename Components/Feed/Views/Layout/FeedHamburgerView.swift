@@ -37,7 +37,7 @@ extension Feed {
                 }
             }, at: \.switchAccount)
             .attach({
-                ModalService.shared.presentSheet(detents: [.large]) {
+                ModalService.shared.presentSheet(detents: [.medium, .large]) {
                     LoginView(addToProfiles: true)
                         .attach({
                             ModalService.shared.dismissSheet()
@@ -46,7 +46,7 @@ extension Feed {
             }, at: \.addProfile)
             .attach({
                 GraniteHaptic.light.invoke()
-                ModalService.shared.presentSheet {
+                ModalService.shared.presentSheet(detents: [.medium, .large]) {
                     LoginView()
                         .attach({
                             ModalService.shared.dismissSheet()

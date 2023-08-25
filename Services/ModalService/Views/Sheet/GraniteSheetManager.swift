@@ -41,7 +41,7 @@ final public class GraniteSheetManager : ObservableObject {
     
     @MainActor
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                        detents: [Detent] = [.medium, .large],
+                                        detents: [Detent] = [.small, .medium, .large],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents

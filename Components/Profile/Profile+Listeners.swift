@@ -15,9 +15,9 @@ extension Profile {
         account
             .center
             .update
-            .listen { value in
+            .listen(.broadcast("profile")) { value in
                 if let response = value as? AccountService.Update.ResponseMeta {
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                         _state.person.wrappedValue = response.person
                         ModalService.shared.presentModal(GraniteToastView(response.notification))
                     }

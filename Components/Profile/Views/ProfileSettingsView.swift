@@ -86,6 +86,7 @@ struct AccountModifyMeta: StandardMotify {
 
 struct ProfileSettingsView: View {
     @Environment(\.graniteEvent) var update
+    @Environment(\.graniteRouter) var router
     @Environment(\.presentationMode) var presentationMode
     
     @Relay var account: AccountService
@@ -162,11 +163,6 @@ struct ProfileSettingsView: View {
                                 listingType: config.state.listingType)
         
         config.silence(viewUpdatesOnly: true)
-        #if os(iOS)
-        UITextView.appearance().backgroundColor = .clear
-        #else
-        
-        #endif
     }
     
     var body: some View {
@@ -260,6 +256,7 @@ struct ProfileSettingsView: View {
                             .logout
                             .send()
                         presentationMode.wrappedValue.dismiss()
+                        router.pop()
                     } label: {
                         Text("MISC_LOGOUT")
                             .font(Device.isMacOS ? .title3.bold() : .headline.bold())
@@ -475,6 +472,9 @@ extension ProfileSettingsView {
                 LazyImage(url: url) { state in
                     if let image = state.image {
                         image.resizable().aspectRatio(contentMode: .fill)
+                            .overlay {
+                                Color.background.opacity(0.6)
+                            }
                     } else {
                         EmptyView()
                     }
@@ -526,6 +526,9 @@ extension ProfileSettingsView {
                 LazyImage(url: url) { state in
                     if let image = state.image {
                         image.resizable().aspectRatio(contentMode: .fill)
+                            .overlay {
+                                Color.background.opacity(0.6)
+                            }
                     } else {
                         EmptyView()
                     }

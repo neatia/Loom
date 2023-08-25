@@ -53,6 +53,11 @@ struct TextToolView : GenericControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: KeyboardViewController,
                                 context: Context) {
+        if uiViewController.textView.text.isEmpty && text.isNotEmpty {
+            DispatchQueue.main.async {
+                uiViewController.textView.insertText(text)
+            }
+        }
         uiViewController.placeholderLabel.isHidden = text.isNotEmpty
         uiViewController.isVisible = visibility
         uiViewController.setupKeyboardTools()

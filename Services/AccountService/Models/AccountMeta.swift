@@ -10,6 +10,10 @@ import Foundation
 import LemmyKit
 
 struct AccountMeta: GranitePayload, GraniteModel, Identifiable, Hashable {
+    static func ==(lhs: AccountMeta, rhs: AccountMeta) -> Bool {
+        AccountModifyMeta.fromLocal(lhs.info.local_user_view) == AccountModifyMeta.fromLocal(rhs.info.local_user_view) && lhs.id == rhs.id
+    }
+    
     var info: MyUserInfo
     var host: String
     

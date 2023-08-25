@@ -57,7 +57,7 @@ import PhotosUI
 extension Write {
     func importPicture() {
         modal.presentSheet(id: Write.modalId,
-                                  detents: [.large]) {
+                           detents: [.large]) {
             ImagePicker(imageData: _state.imageData)
                 .attach( {
                     modal.dismissSheet(id: Write.modalId)
