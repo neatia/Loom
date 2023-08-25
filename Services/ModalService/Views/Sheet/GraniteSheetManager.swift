@@ -46,10 +46,16 @@ final public class GraniteSheetManager : ObservableObject {
         self.style = style
         self.detentsMap[id] = detents
         
-        withAnimation(.easeIn.speed(1.2)) {
+        if Device.isiPad {
             self.models[id] = .init(id: id,
                                     content: AnyView(content()
                                         .graniteNavigation(backgroundColor: Color.clear)))
+        } else {
+            withAnimation(.easeIn.speed(1.2)) {
+                self.models[id] = .init(id: id,
+                                        content: AnyView(content()
+                                            .graniteNavigation(backgroundColor: Color.clear)))
+            }
         }
     }
     

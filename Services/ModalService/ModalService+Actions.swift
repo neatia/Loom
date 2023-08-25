@@ -33,6 +33,8 @@ extension ModalService {
         //        }
         modalManager.present(modal)
     }
+    
+    @MainActor
     func present(id: String = GraniteSheetManager.defaultId,
                  _ alert: GraniteAlertView) {
         
@@ -117,7 +119,6 @@ extension ModalService {
     }
     
     static func presentActivitySheet(items : [Any]) {
-        print("{TEST} showing sheet")
 #if os(iOS)
         let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
         controller.overrideUserInterfaceStyle = .dark

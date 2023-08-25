@@ -24,7 +24,8 @@ extension Feed {
              .attach({ postView in
                  ModalService.shared.presentSheet {
                      PostContentView(postView: postView)
-                         .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
+                         .frame(width: Device.isMacOS ? 600 : nil,
+                                height: Device.isMacOS ? 500 : nil)
                  }
              }, at: \.showContent)
              .graniteEvent(account.center.interact)

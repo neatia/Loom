@@ -107,7 +107,7 @@ struct UserCardView: View {
             HStack {
                 Spacer()
                 
-                VStack(spacing: 2) {
+                VStack(spacing: .layer1) {
                     Text(model.person.name)
                         .font(.footnote.bold())
                         .cornerRadius(4)

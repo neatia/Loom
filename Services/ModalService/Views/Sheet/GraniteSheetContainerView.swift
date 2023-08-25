@@ -65,22 +65,9 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-//                .bottomSheet(BottomSheet(
-//                    isExpanded: manager.hasContent(id: self.id, with: .sheet),
-//                    minHeight: .points(0),
-//                    maxHeight: .points(300),
-//                    style: .init()
-//                ) {
-//                    sheetContent(for: manager.style)
-//                        .background(FullScreenCoverBackgroundRemovalView())
-//                })
                 .showDrawer(manager.hasContent(id: self.id, with: .sheet)) {
                     sheetContent(for: manager.style)
                 }
-//                .sheet(isPresented: manager.hasContent(id: self.id, with: .sheet)) {
-//                    sheetContent(for: manager.style)
-//                        .background(FullScreenCoverBackgroundRemovalView())
-//                }
         } else {
             content
                 .fullScreenCover(isPresented: manager.hasContent(id: self.id, with: .cover)) {

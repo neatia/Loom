@@ -62,7 +62,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
             ZStack {
                 if Device.isMacOS == false || showBG {
                     RoundedRectangle(cornerRadius: 16)
-                        .foregroundColor(alternateBG ? .alternateBackground : (Device.isIPhone ? Color.secondaryBackground : Color.background))
+                        .foregroundColor(alternateBG ? .alternateBackground : (Device.isMacOS == false ? Color.secondaryBackground : Color.background))
                         .cornerRadius(16)
                         .edgesIgnoringSafeArea(.all)
                         .shadow(color: Brand.Colors.black.opacity(Device.isIPhone ? 0.0 : 0.5), radius: 8)
@@ -101,7 +101,8 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                     .frame(height: customHeaderView ? nil : 36)
                     .padding(.bottom, .layer4)
                     .padding(.horizontal, .layer5)
-                    .padding(.top, Device.isExpandedLayout == false ? (Device.isIPhone ? .layer2 : .layer5) : 0)
+                    //.padding(.top, Device.isExpandedLayout == false ? (Device.isIPhone ? .layer2 : .layer5) : 0)
+                    .padding(.top, Device.isMacOS == false ? (Device.isIPhone ? .layer2 : .layer5) : 0)
                     
                     if !customHeaderView {
                         Divider()

@@ -156,7 +156,7 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
         switch kind {
         case .link:
             textView.font = .preferredFont(forTextStyle: .title3)
-        case .standard, .password:
+        case .standard, .username, .password:
             textView.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize, weight: .bold)
         default:
             break

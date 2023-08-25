@@ -82,7 +82,7 @@ struct PagerLoadingView<Model: Pageable>: View {
     @State var progress: CGFloat = 0.0
     
     var body: some View {
-        VStack {
+        VStack(spacing: .layer2) {
             Spacer()
             HStack {
                 Spacer()
@@ -96,7 +96,17 @@ struct PagerLoadingView<Model: Pageable>: View {
                 } else if pager.hasMore == false {
                     Text(label)
                         .font(.headline.bold())
+                    
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        pager.tryAgain()
+                    } label : {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.headline.bold())
+                    }
+                    .buttonStyle(.plain)
                 }
+                
                 Spacer()
             }
             

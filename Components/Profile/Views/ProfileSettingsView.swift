@@ -609,11 +609,12 @@ extension ProfileSettingsView {
         if panel.runModal() == .OK {
             if let url = panel.url {
                 
-                if let data = try? Data(contentsOf: url) {
+                if let data = try? Data(contentsOf: url),
+                   let image = NSImage(data: data) {
                     if setAvatar {
-                        self.imageDataAvatar = data
+                        self.imageDataAvatar = image.compress().pngData()
                     } else if setBanner {
-                        self.imageDataBanner = data
+                        self.imageDataBanner = image.compress().pngData()
                     }
                 }
             }

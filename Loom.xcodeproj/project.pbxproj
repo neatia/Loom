@@ -548,20 +548,6 @@
 		71DA49822A9684E1006FB90C /* ContentUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49802A9684E1006FB90C /* ContentUpdater.swift */; };
 		71DA49882A96F5D1006FB90C /* ContentInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49872A96F5D1006FB90C /* ContentInteraction.swift */; };
 		71DA49892A96F5D1006FB90C /* ContentInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49872A96F5D1006FB90C /* ContentInteraction.swift */; };
-		71DA49B02A9752C8006FB90C /* View+BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49A92A9752C8006FB90C /* View+BottomSheet.swift */; };
-		71DA49B12A9752C8006FB90C /* View+BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49A92A9752C8006FB90C /* View+BottomSheet.swift */; };
-		71DA49B22A9752C8006FB90C /* BottomSheetHandleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AA2A9752C8006FB90C /* BottomSheetHandleStyle.swift */; };
-		71DA49B32A9752C8006FB90C /* BottomSheetHandleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AA2A9752C8006FB90C /* BottomSheetHandleStyle.swift */; };
-		71DA49B42A9752C8006FB90C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AB2A9752C8006FB90C /* BottomSheet.swift */; };
-		71DA49B52A9752C8006FB90C /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AB2A9752C8006FB90C /* BottomSheet.swift */; };
-		71DA49B62A9752C8006FB90C /* BottomSheetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AC2A9752C8006FB90C /* BottomSheetStyle.swift */; };
-		71DA49B72A9752C8006FB90C /* BottomSheetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AC2A9752C8006FB90C /* BottomSheetStyle.swift */; };
-		71DA49B82A9752C8006FB90C /* BottomSheetHandleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AD2A9752C8006FB90C /* BottomSheetHandleBar.swift */; };
-		71DA49B92A9752C8006FB90C /* BottomSheetHandleBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AD2A9752C8006FB90C /* BottomSheetHandleBar.swift */; };
-		71DA49BA2A9752C8006FB90C /* BottomSheetHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AE2A9752C8006FB90C /* BottomSheetHandle.swift */; };
-		71DA49BB2A9752C8006FB90C /* BottomSheetHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AE2A9752C8006FB90C /* BottomSheetHandle.swift */; };
-		71DA49BC2A9752C8006FB90C /* BottomSheetHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AF2A9752C8006FB90C /* BottomSheetHeight.swift */; };
-		71DA49BD2A9752C8006FB90C /* BottomSheetHeight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DA49AF2A9752C8006FB90C /* BottomSheetHeight.swift */; };
 		71DF106D28CC697600559DBC /* DictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106228CC697600559DBC /* DictionaryDecoder.swift */; };
 		71DF106E28CC697600559DBC /* DictionaryDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106228CC697600559DBC /* DictionaryDecoder.swift */; };
 		71DF106F28CC697600559DBC /* DictionaryEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71DF106328CC697600559DBC /* DictionaryEncoder.swift */; };
@@ -914,7 +900,6 @@
 		71B7A1EC2A691470003E6D4D /* Gradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		71B7A1ED2A691470003E6D4D /* ShinyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShinyView.swift; sourceTree = "<group>"; };
 		71B7A1EE2A691470003E6D4D /* MotionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
-		71BE94DC2A954732004A3AC3 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
 		71BE94DD2A954DCE004A3AC3 /* Compressor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Compressor.swift; sourceTree = "<group>"; };
 		71BE94EF2A9586FD004A3AC3 /* View+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Navigation.swift"; sourceTree = "<group>"; };
 		71BE94F52A958EC2004A3AC3 /* KeyboardToolbarTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardToolbarTextView.swift; sourceTree = "<group>"; };
@@ -976,13 +961,6 @@
 		71D027FF2A6F1AD400EA781A /* AccountService.Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Profile.swift; sourceTree = "<group>"; };
 		71DA49802A9684E1006FB90C /* ContentUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentUpdater.swift; sourceTree = "<group>"; };
 		71DA49872A96F5D1006FB90C /* ContentInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentInteraction.swift; sourceTree = "<group>"; };
-		71DA49A92A9752C8006FB90C /* View+BottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+BottomSheet.swift"; sourceTree = "<group>"; };
-		71DA49AA2A9752C8006FB90C /* BottomSheetHandleStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetHandleStyle.swift; sourceTree = "<group>"; };
-		71DA49AB2A9752C8006FB90C /* BottomSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
-		71DA49AC2A9752C8006FB90C /* BottomSheetStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetStyle.swift; sourceTree = "<group>"; };
-		71DA49AD2A9752C8006FB90C /* BottomSheetHandleBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetHandleBar.swift; sourceTree = "<group>"; };
-		71DA49AE2A9752C8006FB90C /* BottomSheetHandle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetHandle.swift; sourceTree = "<group>"; };
-		71DA49AF2A9752C8006FB90C /* BottomSheetHeight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BottomSheetHeight.swift; sourceTree = "<group>"; };
 		71DF106228CC697600559DBC /* DictionaryDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryDecoder.swift; sourceTree = "<group>"; };
 		71DF106328CC697600559DBC /* DictionaryEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryEncoder.swift; sourceTree = "<group>"; };
 		71DF106428CC697600559DBC /* DictionaryCodingKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryCodingKey.swift; sourceTree = "<group>"; };
@@ -1069,7 +1047,6 @@
 		71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySidebarCardView.swift; sourceTree = "<group>"; };
 		71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--macOS--Info.plist"; sourceTree = "<group>"; };
 		71FF4D622A93F394005BF579 /* Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modals.swift; sourceTree = "<group>"; };
-		71FF4D652A940FEA005BF579 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1378,8 +1355,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				71BE94DC2A954732004A3AC3 /* LemmyKit */,
-				71FF4D652A940FEA005BF579 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -1839,7 +1814,6 @@
 		7197FAEF2964B4BF005EBBA4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				71DA49A82A9752AE006FB90C /* New Group */,
 				7197FAFC2964B4BF005EBBA4 /* Sheet */,
 				7197FAF72964B4BF005EBBA4 /* Toast */,
 				7197FAF22964B4BF005EBBA4 /* Alert */,
@@ -2252,20 +2226,6 @@
 				71DA49872A96F5D1006FB90C /* ContentInteraction.swift */,
 			);
 			path = Interaction;
-			sourceTree = "<group>";
-		};
-		71DA49A82A9752AE006FB90C /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-				71DA49AB2A9752C8006FB90C /* BottomSheet.swift */,
-				71DA49AE2A9752C8006FB90C /* BottomSheetHandle.swift */,
-				71DA49AD2A9752C8006FB90C /* BottomSheetHandleBar.swift */,
-				71DA49AA2A9752C8006FB90C /* BottomSheetHandleStyle.swift */,
-				71DA49AF2A9752C8006FB90C /* BottomSheetHeight.swift */,
-				71DA49AC2A9752C8006FB90C /* BottomSheetStyle.swift */,
-				71DA49A92A9752C8006FB90C /* View+BottomSheet.swift */,
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		71DF106128CC697600559DBC /* Dictionary */ = {
@@ -2796,7 +2756,6 @@
 				7197FB1D2964B4C0005EBBA4 /* GraniteSheetPresenterView.swift in Sources */,
 				71A4A1242A61C51600689DF2 /* AccountService.Auth.swift in Sources */,
 				71F778B52A719D4400C9C5C4 /* HeaderCardAvatarView.swift in Sources */,
-				71DA49B02A9752C8006FB90C /* View+BottomSheet.swift in Sources */,
 				710540852A91D9EB00B9DC8A /* Snapshot.swift in Sources */,
 				71E5F3CB2A73A02500299558 /* Haptic.swift in Sources */,
 				71DA49812A9684E1006FB90C /* ContentUpdater.swift in Sources */,
@@ -2827,7 +2786,6 @@
 				71C69E292A70492100B54AD6 /* Brand.Color.swift in Sources */,
 				71C9F92C2A61064D0089D7EA /* AvatarView.swift in Sources */,
 				712BEB5C29074CFB00D257B7 /* CameraContent.swift in Sources */,
-				71DA49BA2A9752C8006FB90C /* BottomSheetHandle.swift in Sources */,
 				717C8FB52A6F9F3D00DF6037 /* Pager.swift in Sources */,
 				71C9F8D82A60B7C10089D7EA /* Feed.swift in Sources */,
 				71A28E08295233B200EAE8EE /* MenloFont.swift in Sources */,
@@ -2881,14 +2839,12 @@
 				710283992A2A54C300010877 /* PointSliderStyle.swift in Sources */,
 				710283A52A2A54C300010877 /* EnvironmentValues+TrackRange.swift in Sources */,
 				71EAF46D2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
-				71DA49B42A9752C8006FB90C /* BottomSheet.swift in Sources */,
 				71C69E512A7064AE00B54AD6 /* UserCardView.swift in Sources */,
 				71FBA7FF296D16110090B630 /* GraniteScrollViewStyle.swift in Sources */,
 				71A28D96295231E600EAE8EE /* Double.swift in Sources */,
 				71C7EE2D2A2C82DE00B52090 /* PEXApp.AppDelegate.swift in Sources */,
 				71FCDD172A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */,
 				71622E8D2A6E0A26006233F3 /* Image.swift in Sources */,
-				71DA49BC2A9752C8006FB90C /* BottomSheetHeight.swift in Sources */,
 				71DF107128CC697600559DBC /* DictionaryCodingKey.swift in Sources */,
 				71C5FF672A64688B00F99A84 /* Drawer.swift in Sources */,
 				71D027FD2A6F15FE00EA781A /* AccountModuleView.swift in Sources */,
@@ -2967,7 +2923,6 @@
 				71EAF4792A7DA3320034FCB9 /* ExplorerService+Center.swift in Sources */,
 				71C9F9182A60BFEA0089D7EA /* ContentService.swift in Sources */,
 				71A28EAB29523CC200EAE8EE /* GradientView.swift in Sources */,
-				71DA49B62A9752C8006FB90C /* BottomSheetStyle.swift in Sources */,
 				71BEA9C728E3D95B00B58933 /* String.swift in Sources */,
 				71C9F90B2A60BAEA0089D7EA /* Feed._.swift in Sources */,
 				71899E342A89528C0073158F /* LoomService.swift in Sources */,
@@ -2977,7 +2932,6 @@
 				710283872A2A54C300010877 /* RangeSliderStyleConfiguration.swift in Sources */,
 				71C8BE782A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */,
 				71622EA12A6E5796006233F3 /* Reply+View.swift in Sources */,
-				71DA49B22A9752C8006FB90C /* BottomSheetHandleStyle.swift in Sources */,
 				71C9F8FE2A60B9460089D7EA /* ConfigService.swift in Sources */,
 				71FBA7FB296D16110090B630 /* GraniteScrollViewPositionIndicator.swift in Sources */,
 				711D39252A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift in Sources */,
@@ -3022,7 +2976,6 @@
 				71DF107328CC697600559DBC /* DictionaryErrors.swift in Sources */,
 				71A4A12F2A63326400689DF2 /* URL+Host.swift in Sources */,
 				710283C52A2A54C300010877 /* LinearValueMath.swift in Sources */,
-				71DA49B82A9752C8006FB90C /* BottomSheetHandleBar.swift in Sources */,
 				71258D272A55F951007E52FC /* Device.swift in Sources */,
 				7197FB0B2964B4C0005EBBA4 /* GraniteAlertViewStyle.swift in Sources */,
 				7161D2FB29540AD00070FE59 /* View+Overlay.swift in Sources */,
@@ -3141,7 +3094,6 @@
 				715151202A8F6D0B00251978 /* SideMenu.swift in Sources */,
 				71FBA800296D16110090B630 /* GraniteScrollViewStyle.swift in Sources */,
 				71F0420A2A69C90B00788CDC /* AccountService.Profile.Add.swift in Sources */,
-				71DA49B32A9752C8006FB90C /* BottomSheetHandleStyle.swift in Sources */,
 				71BE94F12A9586FD004A3AC3 /* View+Navigation.swift in Sources */,
 				71CB6C392A6B823D00084ECC /* Write.Set.swift in Sources */,
 				710540802A91967200B9DC8A /* MarkdownFontGroup.swift in Sources */,
@@ -3156,7 +3108,6 @@
 				7197FB182964B4C0005EBBA4 /* GraniteSheetPresentationStyle.swift in Sources */,
 				71B7A1D72A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */,
 				71899E632A89D6A30073158F /* Loom.CreateView.swift in Sources */,
-				71DA49BD2A9752C8006FB90C /* BottomSheetHeight.swift in Sources */,
 				710283962A2A54C300010877 /* EnvironmentValues+PointSliderStyle.swift in Sources */,
 				71B7A1DA2A68E2C7003E6D4D /* Feed.HeaderMenuView.swift in Sources */,
 				710283C82A2A54C300010877 /* DefaultVerticalValueView.swift in Sources */,
@@ -3187,7 +3138,6 @@
 				710283922A2A54C300010877 /* VerticalRangeSliderStyle.swift in Sources */,
 				710BEAA32A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift in Sources */,
 				710BEAA92A86E89E0075A141 /* ListingType.swift in Sources */,
-				71DA49B72A9752C8006FB90C /* BottomSheetStyle.swift in Sources */,
 				71C69E492A70558100B54AD6 /* Search.HeaderMenuView.swift in Sources */,
 				71DF107228CC697600559DBC /* DictionaryCodingKey.swift in Sources */,
 				7197FB042964B4C0005EBBA4 /* GraniteModalManager.swift in Sources */,
@@ -3201,10 +3151,8 @@
 				71C9F8D72A60B7C10089D7EA /* Feed+Center.swift in Sources */,
 				71F042252A6A3AD700788CDC /* Write.swift in Sources */,
 				711B3FDE2885D4F000F3080D /* Home.swift in Sources */,
-				71DA49BB2A9752C8006FB90C /* BottomSheetHandle.swift in Sources */,
 				717C12A0293BEF730060A446 /* AppBlurBackground.swift in Sources */,
 				7166E9E92A7503A0004F88D7 /* CardActionsView.swift in Sources */,
-				71DA49B52A9752C8006FB90C /* BottomSheet.swift in Sources */,
 				71C7EE2E2A2C82DE00B52090 /* PEXApp.AppDelegate.swift in Sources */,
 				710283B22A2A54C300010877 /* ValueSliderStyleConfiguration.swift in Sources */,
 				71B21B5E2A6C4D96005B3BFB /* Write.Generate.Markdown.swift in Sources */,
@@ -3225,7 +3173,6 @@
 				71622EA02A6E5796006233F3 /* Reply.swift in Sources */,
 				71F0421C2A6A3AD100788CDC /* Globe+View.swift in Sources */,
 				71C9F8ED2A60B7F40089D7EA /* Settings+Center.swift in Sources */,
-				71DA49B92A9752C8006FB90C /* BottomSheetHandleBar.swift in Sources */,
 				7145EF1A28D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */,
 				710283A02A2A54C300010877 /* PointSlider.swift in Sources */,
 				71B7A1F42A691470003E6D4D /* MotionManager.swift in Sources */,
@@ -3270,7 +3217,6 @@
 				71899E582A89A0D80073158F /* Feed+Listeners.swift in Sources */,
 				717090AE2A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift in Sources */,
 				71F0420D2A69D39600788CDC /* ContentService.Interact.swift in Sources */,
-				71DA49B12A9752C8006FB90C /* View+BottomSheet.swift in Sources */,
 				711D392A2A8413EF00CF2DB2 /* InstanceCardView.swift in Sources */,
 				713129BC2A83280A00C6B31D /* Instance.swift in Sources */,
 				711B3F9B2885D43B00F3080D /* PEXApp.swift in Sources */,
@@ -3553,7 +3499,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3572,7 +3518,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Loom;
 				SDKROOT = iphoneos;
@@ -3588,7 +3534,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3607,7 +3553,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Loom;
 				SDKROOT = iphoneos;
@@ -3639,7 +3585,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Loom;
 				SDKROOT = macosx;
@@ -3669,7 +3615,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.stoic.Lemur;
 				PRODUCT_NAME = Loom;
 				SDKROOT = macosx;

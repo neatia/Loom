@@ -205,22 +205,23 @@ struct PostActionsView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                Button(role: .destructive) {
-                    GraniteHaptic.light.invoke()
-                    switch bookmarkKind {
-                    case .post(let postView):
-                        accountInteract?
-                            .send(AccountService.Interact.Meta(intent: .reportPost(postView)))
-                    case .comment(let commentView, _):
-                        accountInteract?
-                            .send(AccountService.Interact.Meta(intent: .reportComment(commentView)))
-                    default:
-                        break
-                    }
-                } label: {
-                    Text("REPORT_POST")
-                }
-                .buttonStyle(PlainButtonStyle())
+                //TODO: report functionality/testing
+//                Button(role: .destructive) {
+//                    GraniteHaptic.light.invoke()
+//                    switch bookmarkKind {
+//                    case .post(let postView):
+//                        accountInteract?
+//                            .send(AccountService.Interact.Meta(intent: .reportPost(postView)))
+//                    case .comment(let commentView, _):
+//                        accountInteract?
+//                            .send(AccountService.Interact.Meta(intent: .reportComment(commentView)))
+//                    default:
+//                        break
+//                    }
+//                } label: {
+//                    Text("REPORT_POST")
+//                }
+//                .buttonStyle(PlainButtonStyle())
             }
         } label: {
             Image(systemName: "ellipsis")

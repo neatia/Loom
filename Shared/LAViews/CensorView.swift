@@ -127,7 +127,7 @@ extension View {
         return Group {
             if condition {
                 CensorView(kind: kind, isComment: isComment)
-                    .frame(maxWidth: Device.isMacOS ? ContainerConfig.iPhoneScreenWidth : nil)
+                    .frame(maxWidth: Device.isExpandedLayout ? ContainerConfig.iPhoneScreenWidth : nil)
             } else {
                 self
             }

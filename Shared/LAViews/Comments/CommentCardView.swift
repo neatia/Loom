@@ -237,24 +237,7 @@ extension CommentCardView {
                     expandReplies.toggle()
                 }
             #else
-            if isPreview {
-                contentBody
-            } else {
-                contentBody
-                    .contentShape(Rectangle())
-                    .modifier(TapAndLongPressModifier(tapAction: {
-                    guard let model,
-                          isPreview == false,
-                          model.replyCount > 0 else { return }
-                    GraniteHaptic.light.invoke()
-                    expandReplies.toggle()
-                }, longPressAction: {
-                    guard let model,
-                          model.replyCount > 0 else { return }
-                    GraniteHaptic.light.invoke()
-                    showDrawer.perform(model)
-                }))
-            }
+            contentBody
             #endif
             FooterView(showScores: config.state.showScores)
                 .attach({ id in
@@ -291,32 +274,37 @@ extension CommentCardView {
             //prevent type erasure
             PostDisplayView(context: _context)
         } with : { router }
-//        .overlayIf(context.feedStyle == .style1) {
-//            GeometryReader { proxy in
-//                Rectangle()
-//                    .frame(width: 2,
-//                           height: proxy.size.height)
-//                    .cornerRadius(8)
-//                    .opacity(0.5)
-//            }
-//        }
     }
     
     var contentBody: some View {
         Group {
-            if isPreview {
-                ScrollView(showsIndicators: false) {
-                    MarkdownView(text: model?.comment.content ?? "")
+            if let model {
+                if isPreview {
+                    ScrollView(showsIndicators: false) {
+                        MarkdownView(text: model.comment.content)
+                            .fontGroup(CommentFontGroup())
+                            .markdownViewRole(.editor)
+                    }
+                    .frame(height: 120)
+                    .padding(.bottom, .layer3)
+                } else {
+                    MarkdownView(text: model.comment.content)
                         .fontGroup(CommentFontGroup())
                         .markdownViewRole(.editor)
+                        .padding(.bottom, .layer3)
+                        // This modifier causes a malloc crash on modal sheet previews
+                        .modifier(TapAndLongPressModifier(tapAction: {
+                            guard model.replyCount > 0 else { return }
+                            GraniteHaptic.light.invoke()
+                            expandReplies.toggle()
+                        }, longPressAction: {
+                            guard model.replyCount > 0 else { return }
+                            GraniteHaptic.light.invoke()
+                            showDrawer.perform(model)
+                        }))
                 }
-                .frame(height: 120)
-                .padding(.bottom, .layer3)
-            } else if let content = model?.comment.content {
-                MarkdownView(text: content)
-                    .fontGroup(CommentFontGroup())
-                    .markdownViewRole(.editor)
-                    .padding(.bottom, .layer3)
+            } else {
+                EmptyView()
             }
         }
     }

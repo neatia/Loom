@@ -59,7 +59,9 @@ public struct ScreenshotView<Content: View> : GenericViewRepresentable {
             return
         }
         
-        isScreenshotting = false
+        DispatchQueue.main.async {
+            self.isScreenshotting = false
+        }
         
         let renderer = UIGraphicsImageRenderer(size: uiView.frame.size)
 
@@ -100,7 +102,9 @@ public struct ScreenshotView<Content: View> : GenericViewRepresentable {
             return
         }
         
-        isScreenshotting = false
+        DispatchQueue.main.async {
+            self.isScreenshotting = false
+        }
         
         #if os(iOS)
         let renderer = UIGraphicsImageRenderer(size: uiView.frame.size)
@@ -108,15 +112,31 @@ public struct ScreenshotView<Content: View> : GenericViewRepresentable {
         let image = renderer.image { rendererContext in
             uiView.layer.render(in: rendererContext.cgContext)
         }
+        
+        ModalService
+            .share(image: image)
         #else
+        
         guard let image = context.coordinator.controller?.rootView.snapshot() else {
             return
         }
         
-        #endif
+        guard let data = image.pngData() else { return }
         
-        ModalService
-            .share(image: image)
+        let panel = NSSavePanel()
+        panel.nameFieldLabel = "Save Loom card as:"
+        panel.nameFieldStringValue = "loom_card_\(Date().asProperFileString).png"
+        panel.canCreateDirectories = true
+        panel.allowedContentTypes = [.image]
+        panel.begin { response in
+            if response == NSApplication.ModalResponse.OK,
+               let fileURL = panel.url {
+                
+                try? data.write(to: fileURL)
+            }
+        }
+        
+        #endif
         
         if let encodeMessage {
             
