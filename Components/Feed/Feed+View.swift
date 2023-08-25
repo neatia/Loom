@@ -25,6 +25,7 @@ extension Feed: GraniteNavigationDestination {
             }
         }
         .background(Color.background)
+        //Careful of expanded layout
         .graniteNavigationDestinationIf(isCommunity) {
             communityInfoMenuView
         }

@@ -758,7 +758,6 @@
 		711D392E2A84A96200CF2DB2 /* DebugComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugComponent.swift; sourceTree = "<group>"; };
 		712427B72A65C4AA007F2F77 /* Bookmark._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark._.swift; sourceTree = "<group>"; };
 		71258D262A55F951007E52FC /* Device.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Device.swift; sourceTree = "<group>"; };
-		71264C3C2A994A9E00D10775 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		712BEB5929074CFB00D257B7 /* CameraContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContent.swift; sourceTree = "<group>"; };
 		712BEB5A29074CFB00D257B7 /* CameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		712BEB5B29074CFB00D257B7 /* CameraContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraContentView.swift; sourceTree = "<group>"; };
@@ -1353,7 +1352,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				71264C3C2A994A9E00D10775 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -3447,7 +3445,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.25;
+				CURRENT_PROJECT_VERSION = 2023.8.26;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3482,7 +3480,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.25;
+				CURRENT_PROJECT_VERSION = 2023.8.26;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
