@@ -22,42 +22,42 @@ struct GenericPreview: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
-                HStack(spacing: .layer4) {
-                    VStack {
-                        Spacer()
-                        //TODO: localize
-                        Text("Preview")
-                            .font(.title.bold())
-                    }
-                    
-                    Spacer()
-                    
-                    if isModal {
-                        VStack {
-                            Spacer()
-                            
-                            Button {
-                                GraniteHaptic.light.invoke()
-                                presentationMode.wrappedValue.dismiss()
-                            } label: {
-                                Image(systemName: Device.isMacOS ? "xmark" : "chevron.down")
-                                    .renderingMode(.template)
-                                    .font(.title2)
-                                    .frame(width: 24, height: 24)
-                                    .contentShape(Rectangle())
-                                    .foregroundColor(.foreground)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .padding(.bottom, 2)
-                        }
-                    }
-                }
-                .frame(height: 36)
-                .padding(.bottom, .layer4)
-                .padding(.horizontal, .layer5)
-                .padding(.top, Device.isExpandedLayout == false ? .layer5 : 0)
+//                HStack(spacing: .layer4) {
+//                    VStack {
+//                        Spacer()
+//                        //TODO: localize
+//                        Text("Preview")
+//                            .font(.title.bold())
+//                    }
+//
+//                    Spacer()
+//
+//                    if isModal {
+//                        VStack {
+//                            Spacer()
+//
+//                            Button {
+//                                GraniteHaptic.light.invoke()
+//                                presentationMode.wrappedValue.dismiss()
+//                            } label: {
+//                                Image(systemName: Device.isMacOS ? "xmark" : "chevron.down")
+//                                    .renderingMode(.template)
+//                                    .font(.title2)
+//                                    .frame(width: 24, height: 24)
+//                                    .contentShape(Rectangle())
+//                                    .foregroundColor(.foreground)
+//                            }
+//                            .buttonStyle(PlainButtonStyle())
+//                            .padding(.bottom, 2)
+//                        }
+//                    }
+//                }
+//                .frame(height: 36)
+//                .padding(.bottom, .layer4)
+//                .padding(.horizontal, .layer5)
+//                .padding(.top, Device.isExpandedLayout == false ? .layer5 : 0)
                 
-                Divider()
+//                Divider()
                 
                 ScrollView {
                     MarkdownView(text: content)
@@ -73,6 +73,6 @@ struct GenericPreview: View {
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
         .frame(width: Device.isMacOS ? 400 : nil)
-        .background(Color.background)
+        .background(Device.isIPhone ? Color.alternateSecondaryBackground : Color.background)
     }
 }

@@ -23,6 +23,19 @@ extension Feed {
                 .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
             
             HStack(spacing: 0) {
+                if Device.isIPhone && state.community == nil {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        _state.isShowing.wrappedValue = true
+                    } label: {
+                        Image(systemName: "line.3.horizontal")
+                            .font(.title3)
+                            .rotationEffect(.degrees(90))
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.trailing, .layer2)
+                }
+                
                 headerMenuView
                 
                 Spacer()
@@ -50,7 +63,8 @@ extension Feed {
                 }
             }
             .padding(.vertical, Device.isExpandedLayout ? 0 : .layer2)
-            .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
+            .padding(.trailing, Device.isExpandedLayout ? .layer3 : .layer4)
+            .padding(.leading, Device.isIPhone && state.community == nil ? .layer3 : (Device.isExpandedLayout ? .layer3 : .layer4))
             .padding(.bottom, .layer2)
             
             Divider()

@@ -126,7 +126,7 @@ struct InstanceCardView: View {
                         .padding(.layer3)
                 }
                 .frame(maxHeight: 100)
-                .background(Color.tertiaryBackground)
+                .background(Color.secondaryBackground.opacity(0.8))
                 .cornerRadius(8)
                 .padding(.horizontal, .layer3)
                 .padding(.top, .layer2)
@@ -138,6 +138,7 @@ struct InstanceCardView: View {
             
             HStack(spacing: .layer3) {
                 Button {
+                    guard isConnected == false else { return }
                     GraniteHaptic.light.invoke()
                     connect.perform(instance)
                     restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: host))

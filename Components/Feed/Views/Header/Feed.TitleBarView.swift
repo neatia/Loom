@@ -45,11 +45,11 @@ extension Feed {
                 
                 Spacer()
                 
-                if let community = state.community {
+                if Device.isExpandedLayout || state.community != nil {
                     Button {
                         GraniteHaptic.light.invoke()
                         ModalService.shared.presentSheet(style: Device.isExpandedLayout ? .sheet : .cover) {
-                            Search(community, isModal: true)
+                            Search(state.community, isModal: true)
                                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                         }
                     } label: {

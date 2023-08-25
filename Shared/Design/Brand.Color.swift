@@ -18,6 +18,10 @@ extension Color {
         .init("colors/alternateBackground")
     }
     
+    public static var alternateSecondaryBackground: Color {
+        .init("colors/alternateSecondaryBackground")
+    }
+    
     public static var secondaryBackground: Color {
         .init("colors/secondaryBackground")
     }

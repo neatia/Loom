@@ -40,19 +40,13 @@ struct GlobeExplorerView: View {
                 searchView
             }
         }
-        .onChange(of: explorer.isLoaded) { _ in
-            guard instances.isEmpty else {
-                return
-            }
-            
-            if explorer.state.linkedInstances.isEmpty {
-                explorer.center.boot.send()
-            } else {
-                update()
-            }
-        }
         .onChange(of: explorer.state.lastUpdate) { _ in
             update()
+        }
+        .onAppear {
+            if explorer.isLoaded && instances.isEmpty {
+                explorer.center.boot.send()
+            }
         }
         .clipped()
     }

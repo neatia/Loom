@@ -9,9 +9,10 @@ import MarkdownView
 struct ThreadView: View {
     @Environment(\.contentContext) var context
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.graniteEvent) var interact
     
-    @GraniteAction<CommentView> var showDrawer
     @GraniteAction<Void> var closeDrawer
+    @GraniteAction<CommentView> var showDrawer
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
     @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
     
@@ -29,7 +30,7 @@ struct ThreadView: View {
     var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var currentModel: CommentView? {
-        breadCrumbs.last ?? context.commentModel
+        breadCrumbs.last ?? (updatedParentModel ?? context.commentModel)
     }
     
     var body: some View {
@@ -64,6 +65,7 @@ struct ThreadView: View {
                         }
                     }, at: \.showDrawer)
                     .contentContext(.addCommentModel(model: commentView, context))
+                    .graniteEvent(interact)
             }
             .environmentObject(pager)
             .background(Color.alternateBackground)
@@ -80,7 +82,7 @@ struct ThreadView: View {
                               type: .all,
                               location: context.location)
                 
-                return comments.filter { $0.comment.id != context.id }
+                return comments.filter { $0.id != context.commentModel?.id }
             }.fetch()
         }
     }

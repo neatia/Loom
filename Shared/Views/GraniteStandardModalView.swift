@@ -53,17 +53,19 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            if Device.isExpandedLayout == false && !drawerMode {
+            #if os(iOS)
+            if Device.isiPad, !drawerMode {
                 Spacer()
             }
+            #endif
             
             ZStack {
                 if Device.isMacOS == false || showBG {
                     RoundedRectangle(cornerRadius: 16)
-                        .foregroundColor(alternateBG ? .alternateBackground : Color.background)
+                        .foregroundColor(alternateBG ? .alternateBackground : (Device.isMacOS == false ? Color.secondaryBackground : Color.background))
                         .cornerRadius(16)
                         .edgesIgnoringSafeArea(.all)
-                        .shadow(color: Brand.Colors.black.opacity(0.5), radius: 8)
+                        .shadow(color: Brand.Colors.black.opacity(Device.isIPhone ? 0.0 : 0.5), radius: 8)
                 }
                 
                 VStack(spacing: 0) {
@@ -99,7 +101,8 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                     .frame(height: customHeaderView ? nil : 36)
                     .padding(.bottom, .layer4)
                     .padding(.horizontal, .layer5)
-                    .padding(.top, Device.isExpandedLayout == false ? .layer5 : 0)
+                    //.padding(.top, Device.isExpandedLayout == false ? (Device.isIPhone ? .layer2 : .layer5) : 0)
+                    .padding(.top, Device.isMacOS == false ? (Device.isIPhone ? .layer2 : .layer5) : 0)
                     
                     if !customHeaderView {
                         Divider()
@@ -108,7 +111,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                     
                     content()
                         .padding(.horizontal, fullWidthContent ? 0 : .layer5)
-                        .padding(.top, Device.isMacOS ? nil : .layer4)
+                        .padding(.top, Device.isMacOS || Device.isiPad == false ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                     
                     if Device.isiPad == false {
@@ -119,8 +122,9 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
             .frame(maxHeight: maxHeight)
             
         }
-        .frame(width: Device.isMacOS && !fullWidth ? 300 : nil)
+        .frame(width: Device.isMacOS && !fullWidth ? ContainerConfig.iPhoneScreenWidth : nil)
         .padding(.top, drawerMode || Device.isMacOS ? .layer4 : .layer5)
         .offset(x: 0, y: drawerMode ? .layer5 : 0)
+        .adaptsToKeyboard()
     }
 }

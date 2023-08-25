@@ -116,8 +116,12 @@ struct HeaderView: View {
                                 .font(.headline)
                         }
                         .onTapGesture {
+                            
+                            guard let id = context.commentModel?.comment.id else {
+                                return
+                            }
                             GraniteHaptic.light.invoke()
-                            tappedCrumb.perform(context.id)
+                            tappedCrumb.perform(id)
                         }
                     }
                 }
@@ -140,10 +144,19 @@ struct HeaderView: View {
             
             Spacer()
             
-            if let time = context.display.author.time {
-                Text(time.timeAgoDisplay())
-                    .font(.subheadline)
-                    .foregroundColor(.foreground.opacity(0.5))
+            HStack(alignment: .bottom, spacing: .layer1) {
+                if context.isEdited {
+                    //TODO: localize
+                    Text("edited")
+                        .font(.caption2.italic())
+                        .foregroundColor(.foreground.opacity(0.5))
+                }
+                
+                if let time = context.display.author.time {
+                    Text(time.timeAgoDisplay())
+                        .font(.subheadline)
+                        .foregroundColor(.foreground.opacity(0.5))
+                }
             }
             
             if showPostActions {
@@ -183,16 +196,13 @@ struct HeaderView: View {
             return
         }
         
-        let postId = context.commentModel?.post.id ?? context.postModel?.post.id
-        guard let postId else { return }
+        let post = context.commentModel?.post ?? context.postModel?.post
+        guard let post else { return }
         
         Task.detached { @MainActor in
-            guard let postView = await Lemmy.post(postId,
-                                                  comment: context.commentModel?.comment) else {
+            guard let postView = await ContentUpdater.fetchPostView(post) else {
                 return
             }
-            
-            self.postView = postView
             
             DispatchQueue.main.async {
                 self.route(postView)

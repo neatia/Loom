@@ -20,25 +20,34 @@ struct TextToolView : GenericControllerRepresentable {
     @Binding var visibility: Bool
     
     var kind: Kind
+    var inheritKind: Kind?
     
     init(text: Binding<String>,
          visibility: Binding<Bool> = .constant(false),
-         kind: Kind = .writing) {
+         kind: Kind = .writing,
+         inheritStyle: Kind? = nil) {
         self._text = text
         self._visibility = visibility
         self.kind = kind
+        self.inheritKind = inheritStyle
     }
     
     enum Kind {
         case writing
         case search
+        case link
+        case otp
+        case standard(String)//placeholder
+        case username(String)//placeholder
+        case password(String)
     }
     
     func makeUIViewController(context: Context) -> KeyboardViewController {
-        let controller: KeyboardViewController = .init(self.kind)
+        let controller: KeyboardViewController = .init(self.kind, inheritKind: self.inheritKind)
         controller.textView.insertText(text)
         controller.textView.delegate = context.coordinator
         controller.delegate = context.coordinator
+        context.coordinator.delegate = controller
         return controller
     }
     
@@ -55,6 +64,7 @@ struct TextToolView : GenericControllerRepresentable {
     
     class Coordinator: NSObject, UITextViewDelegate, KeyboardTextToolDelegate {
         var parent: TextToolView
+        weak var delegate: KeyboardTextToolControllerDelegate?
         
         @Binding var text: String
         init(parent: TextToolView, text: Binding<String>) {
@@ -87,8 +97,11 @@ struct TextToolView : GenericControllerRepresentable {
         }
         
         func textViewDidEndEditing(_ textView: UITextView) {
+            delegate?.setPlaceholderVisibility(text.isEmpty)
         }
+        
         func textViewDidBeginEditing(_ textView: UITextView) {
+            
         }
         
         //KeyboardTextToolDelegate
@@ -107,7 +120,11 @@ protocol KeyboardTextToolDelegate: AnyObject {
     func toggleVisibility()
 }
 
-final class KeyboardViewController: UIViewController {
+protocol KeyboardTextToolControllerDelegate: AnyObject {
+    func setPlaceholderVisibility(_ isVisible: Bool)
+}
+
+final class KeyboardViewController: UIViewController, KeyboardTextToolControllerDelegate {
     private let contentView = KeyboardView()
     private let keyboardToolbarView = KeyboardToolbarView()
     var textView: UITextView {
@@ -115,6 +132,7 @@ final class KeyboardViewController: UIViewController {
     }
     
     let kind: TextToolView.Kind
+    let inheritKind: TextToolView.Kind?
     
     weak var delegate: KeyboardTextToolDelegate?
     
@@ -123,8 +141,10 @@ final class KeyboardViewController: UIViewController {
     //States
     fileprivate var isVisible: Bool = false
     
-    init(_ kind: TextToolView.Kind) {
+    init(_ kind: TextToolView.Kind,
+         inheritKind: TextToolView.Kind? = nil) {
         self.kind = kind
+        self.inheritKind = inheritKind
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -140,29 +160,89 @@ final class KeyboardViewController: UIViewController {
         super.viewDidLoad()
         textView.inputAccessoryView = keyboardToolbarView
         
+        let kind = inheritKind ?? self.kind
+        switch kind {
+        case .link:
+            textView.font = .preferredFont(forTextStyle: .title3)
+        case .standard, .username, .password:
+            textView.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize, weight: .bold)
+        default:
+            break
+        }
+        
         placeholderLabel = UILabel()
         switch kind {
-        case .writing:
+        case .standard(let placeholder),
+                .password(let placeholder),
+                .username(let placeholder):
+            placeholderLabel.text = placeholder.localized()
+        case .link:
+            //TODO: placeholder
+            placeholderLabel.text = "Instance URL"
+        case .writing, .otp:
             break
         case .search:
             placeholderLabel.text = "MISC_SEARCH".localized()
         }
         
+        switch self.kind {
+        case .username:
+            textView.textContentType = .username
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
+        case .password:
+            textView.textContentType = .password
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
+        case .otp:
+            textView.textContentType = .oneTimeCode
+            textView.autocorrectionType = .no
+            textView.keyboardType = .numberPad
+        case .link:
+            textView.textContentType = .URL
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
+        default:
+            break
+        }
+        
         placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
+        placeholderLabel.frame.origin = CGPoint(x: 8, y: ((textView.font?.pointSize)! / 2) - 2)
         placeholderLabel.textColor = UIColor(Color.foreground.opacity(0.3))
         placeholderLabel.isHidden = !textView.text.isEmpty
         
-        textView.contentInset = .init(top: 2,
-                                      left: 0,
-                                      bottom: 0,
-                                      right: 0)
+        if Device.isiPad {
+            
+            textView.contentInset = .init(top: .layer1,
+                                          left: 0,
+                                          bottom: 0,
+                                          right: 0)
+        } else {
+            switch kind {
+            case .standard,
+                    .username,
+                    .password:
+                //TODO: customizable
+                //And or fully pre-styled
+                textView.contentInset = .init(top: 10,
+                                              left: 12,
+                                              bottom: 0,
+                                              right: 12)
+            default:
+                textView.contentInset = .init(top: 2,
+                                              left: 0,
+                                              bottom: 0,
+                                              right: 0)
+            }
+        }
         
         switch kind {
         case .search:
             textView.returnKeyType = .search
+        case .standard, .username, .password:
+            textView.returnKeyType = .done
         default:
             break
         }
@@ -173,8 +253,13 @@ final class KeyboardViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
+    
+    func setPlaceholderVisibility(_ isVisible: Bool) {
+        self.placeholderLabel.isHidden = isVisible == false
+    }
 }
 
+//MARK: Setup KeyboardGroups
 private extension KeyboardViewController {
     func setupKeyboardTools() {
         
@@ -183,7 +268,14 @@ private extension KeyboardViewController {
         ]
         
         switch kind {
-        case .search:
+        case .link:
+            //keyboardToolbarView.groups.append(linkToolgroup)
+            keyboardToolbarView.groups.append(actionToolgroup)
+        case .otp,
+                .search,
+                .standard,
+                .password,
+                .username:
             keyboardToolbarView.groups.append(actionToolgroup)
         case .writing:
             keyboardToolbarView.groups.append(editingToolgroup)
@@ -193,6 +285,7 @@ private extension KeyboardViewController {
     }
 }
 
+//MARK: Keyboard View
 final class KeyboardView: UIView {
     let textView: UITextView = {
         let this = UITextView()
@@ -420,6 +513,19 @@ extension KeyboardViewController {
                 InsertTextKeyboardTool(text: "@", textView: textView),
                 InsertTextKeyboardTool(text: "%", textView: textView),
                 InsertTextKeyboardTool(text: "~", textView: textView)
+            ])
+        ])
+    }
+    
+    var linkToolgroup: KeyboardToolGroup {
+        KeyboardToolGroup(items: [
+            KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: "https://", textView: textView)),
+            KeyboardToolGroupItem(representativeTool: InsertTextKeyboardTool(text: ".com", textView: textView), tools: [
+                InsertTextKeyboardTool(text: ".com", textView: textView),
+                InsertTextKeyboardTool(text: ".ee", textView: textView),
+                InsertTextKeyboardTool(text: ".ml", textView: textView),
+                InsertTextKeyboardTool(text: ".net", textView: textView),
+                InsertTextKeyboardTool(text: ".world", textView: textView)
             ])
         ])
     }

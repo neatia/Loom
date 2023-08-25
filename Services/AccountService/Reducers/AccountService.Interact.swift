@@ -14,6 +14,30 @@ extension AccountService {
     struct Interact: GraniteReducer {
         typealias Center = AccountService.Center
         
+        /*
+         Overall the process of using a service as a proxy to provide stateful updates
+         to many components for a singular action is a delicate situation.
+         
+         This thinking had initially lead development offstray when memory problems
+         were discovered.
+         
+         --
+         
+         This leads to the favorable statically served reactions to interactions.
+         See:
+           1. Modals/Modals.swift
+           2. ContentUpdater.swift
+         
+         Relays in Granite should be treated as Redis. Where core nodes are on top
+         of the tree. And relays spawned in child nodes/subviews communicate changes
+         upstream to the core node. Nothing comes back down stream, views only update
+         on the path upwards.
+         
+         If network responses are required for view updates. Then the static solution
+         seems to be a better solution. Especially for complex setups such as a social
+         app
+         */
+        
         enum Intent {
             case blockPerson(Person)
             case blockPersonFromPost(PostView)
@@ -27,6 +51,7 @@ extension AccountService {
             case removeComment(CommentView)
             case subscribe(CommunityView)
             case editPost(PostView)
+            case removeFromProfiles(Person?)
         }
         
         struct Meta: GranitePayload {
@@ -166,6 +191,11 @@ extension AccountService {
                 }
                 
                 broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_POST_REPORT_SUCCESS", event: .success), intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
+            case .removeFromProfiles(let person):
+                guard let person else { return }
+                state.profiles.removeAll(where: { $0.person.equals(person)})
+                try? AccountService.deleteToken(identifier: AccountService.keychainAuthToken + person.username,
+                                           service: AccountService.keychainService + person.actor_id.host)
             default:
                 break
             }

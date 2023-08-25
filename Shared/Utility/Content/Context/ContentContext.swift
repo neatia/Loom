@@ -28,8 +28,9 @@ struct ContentContext {
     var layoutStyle: LayoutService.Style = .compact
     var viewingContext: ViewingContext = .base
     
-    var id: Int {
-        (commentModel?.comment.id ?? postModel?.post.id) ?? -1
+    var id: String {
+        let contentId = (commentModel?.comment.id ?? postModel?.post.id) ?? -1
+        return "\(viewingContext)\(contentId)"
     }
     
     var community: FederatedCommunityCompact? {
@@ -40,7 +41,18 @@ struct ContentContext {
         if viewingContext.isBookmark {
             return viewingContext.bookmarkLocation
         } else {
-            return (postModel?.post.location ?? commentModel?.comment.location) ?? .base
+            return ((customLocation) ?? (postModel?.post.location ?? commentModel?.comment.location)) ?? .base
+        }
+    }
+    
+    var customLocation: FetchType?
+    
+    var preferredStyle: FeedStyle {
+        switch viewingContext {
+        case .search:
+            return .style1
+        default:
+            return feedStyle
         }
     }
     
@@ -96,6 +108,27 @@ struct ContentContext {
                      commentModel: context.commentModel,
                      feedStyle: style,
                      viewingContext: context.viewingContext)
+    }
+    
+    static func viewedIn(_ viewingContext: ViewingContext, _ context: ContentContext) -> Self {
+        return .init(postModel: context.postModel,
+                     commentModel: context.commentModel,
+                     feedStyle: context.feedStyle,
+                     viewingContext: viewingContext)
+    }
+    func viewedIn(_ viewingContext: ViewingContext) -> ContentContext {
+        return ContentContext.viewedIn(viewingContext, self)
+    }
+    
+    static func updateLocation(_ customLocation: FetchType, _ context: ContentContext) -> Self {
+        return .init(postModel: context.postModel,
+                     commentModel: context.commentModel,
+                     feedStyle: context.feedStyle,
+                     viewingContext: context.viewingContext,
+                     customLocation: customLocation)
+    }
+    func updateLocation(_ customLocation: FetchType) -> Self {
+        return ContentContext.updateLocation(customLocation, self)
     }
 }
 

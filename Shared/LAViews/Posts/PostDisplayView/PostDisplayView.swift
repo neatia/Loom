@@ -17,15 +17,16 @@ import MarkdownView
 struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
     @Environment(\.graniteNavigationShowingKey) var hasShown
-    @Environment(\.graniteNavigationAnimationKey) var isAnimating
     
     @GraniteAction<Community> var viewCommunity
     
+    @Relay(.silence) var account: AccountService
     @Relay var config: ConfigService
     
     var model: PostView? {
         updatedModel ?? context.postModel
     }
+    
     @State var updatedModel: PostView?
     
     @State var showDrawer: Bool = false
@@ -86,7 +87,10 @@ struct PostDisplayView: GraniteNavigationDestination {
             
             if hasShown || Device.isExpandedLayout {
                 PagerScrollView(CommentView.self,
-                                properties: .init(performant: Device.isMacOS == false,
+                                //should prefer performant for iOS
+                                //but it duplicates a ui element (refresh)
+                                properties: .init(performant: false,
+                                                  lazy: Device.isMacOS == false,
                                                   cacheViews: true,
                                                   showFetchMore: false)) {
                     EmptyView()
@@ -101,7 +105,11 @@ struct PostDisplayView: GraniteNavigationDestination {
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
-                        .contentContext(.addCommentModel(model: commentView, context))
+                        .contentContext(
+                            .addCommentModel(model: commentView, context)
+                            .viewedIn(.postDisplay)
+                            .updateLocation(threadLocation))
+                        .graniteEvent(account.center.interact)
                         .background(Color.alternateBackground)
                 }
                 .environmentObject(pager)
@@ -116,29 +124,22 @@ struct PostDisplayView: GraniteNavigationDestination {
         .showDrawer($showDrawer,
                     commentView: commentModel,
                     context: context)
-        .allowsHitTesting(isAnimating == false)
         .task {
             self.threadLocation = context.location
             
-            guard let model else { return }
-            
-            /*
-             Let's update the model incase
-             won't fire if triggered from postCard after editing
-             most likely if the model is yours, it could have changed
-             prior to entry
-             
-             can save on calls, otherwise
-             */
-            if model.creator.isMe,
-               updatedModel == nil {
-                let postView = await Lemmy.post(context.postModel?.post.id)
+            if updatedModel == nil {
+                /*
+                 - Comment cards from search won't have postViews
+                 - Updating your own post from a post card will update right away
+                 */
+                let postId = context.postModel?.post.id ?? context.commentModel?.post.id
+                let postView = await Lemmy.post(postId)
                 self.updatedModel = postView
             }
             
             pager.hook { page in
-                return await Lemmy.comments(model.post,
-                                            community: model.community,
+                return await Lemmy.comments(model?.post,
+                                            community: model?.community,
                                             page: page,
                                             type: .all,
                                             sort: sortingType[selectedSorting],
@@ -154,7 +155,7 @@ struct PostDisplayView: GraniteNavigationDestination {
         } else {
             return .init(fullWidth: true, navBarBGColor: Color.background) {
                 headerView
-                    .padding(.horizontal, .layer3)
+                    .padding(.leading, .layer3)
             }
         }
     }
@@ -205,7 +206,8 @@ extension PostDisplayView {
                 }, at: \.reply)
                 .contentContext(.withStyle(.style1, context))
                 .padding(.horizontal, .layer4)
-                .padding(.vertical, .layer5)
+                .padding(.top, model?.hasContent == true ? .layer5 : .layer2)
+                .padding(.bottom, .layer5)
             
             Divider()
             

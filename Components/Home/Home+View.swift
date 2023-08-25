@@ -85,13 +85,13 @@ extension Home: View {
                 GraniteTabIcon(name: "house")
             }
             
-            GraniteTab {
-                Search()
-            } icon: {
-                GraniteTabIcon(name: "magnifyingglass", isBoldFill: true)
-            }
-            
             if Device.isExpandedLayout == false {
+                GraniteTab {
+                    Search()
+                } icon: {
+                    GraniteTabIcon(name: "magnifyingglass", isBoldFill: true)
+                }
+                
                 GraniteTab {
                     Loom()
                 } icon: {
@@ -130,7 +130,7 @@ extension Home: View {
         }
         .edgesIgnoringSafeArea([.top, .bottom])
         .padding(.top, safeAreaTop)
-        .graniteNavigation(backgroundColor: Color.background, disable: Device.isExpandedLayout) {
+        .graniteNavigation(backgroundColor: Color.background) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
                 .font(.title2)

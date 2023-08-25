@@ -358,6 +358,17 @@ struct ProfileSettingsView: View {
                     .font(.title3.bold())
                     .padding(.bottom, .layer2)
                 
+#if os(iOS)
+                TextToolView(text: $bio)
+                    .padding(.horizontal, .layer3)
+                    .frame(height: 160)
+                    .padding(.bottom, .layer4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundColor(Color.tertiaryBackground)
+                    )
+#else
+                
                 if #available(macOS 13.0, iOS 16.0, *) {
                     TextEditor(text: $bio)
                         .textFieldStyle(.plain)
@@ -392,6 +403,7 @@ struct ProfileSettingsView: View {
                             }
                         }
                 }
+                #endif
                 
                 Text("PROFILE_DISPLAY_NAME")
                     .font(.title3.bold())
@@ -597,11 +609,12 @@ extension ProfileSettingsView {
         if panel.runModal() == .OK {
             if let url = panel.url {
                 
-                if let data = try? Data(contentsOf: url) {
+                if let data = try? Data(contentsOf: url),
+                   let image = NSImage(data: data) {
                     if setAvatar {
-                        self.imageDataAvatar = data
+                        self.imageDataAvatar = image.compress().pngData()
                     } else if setBanner {
-                        self.imageDataBanner = data
+                        self.imageDataBanner = image.compress().pngData()
                     }
                 }
             }

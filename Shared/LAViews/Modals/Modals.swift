@@ -15,7 +15,7 @@ extension ModalService {
     @MainActor
     func expand(_ postView: PostView?) {
         guard let content = postView?.post.body else { return }
-        presentSheet(detents: [.large()]) {
+        presentSheet(detents: [.large]) {
             GenericPreview(content: content)
         }
     }
@@ -38,7 +38,7 @@ extension ModalService {
     
     @MainActor
     func showWriteModal(_ model: CommunityView?) {
-        presentSheet(detents: [.large()]) {
+        presentSheet(detents: [.large]) {
             Write(communityView: model)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -56,7 +56,7 @@ extension ModalService {
             return
         }
         
-        presentSheet(detents: [.large()]) {
+        presentSheet(detents: [.large]) {
             Write(postView: model)
                 .attach({ updatedModel in
                     update?(updatedModel)
@@ -154,16 +154,15 @@ extension ModalService {
     @MainActor
     func showShareCommentModal(_ model: CommentView?) {
         presentSheet {
-            GraniteStandardModalView(title: "MISC_SHARE", maxHeight: Device.isMacOS ? 600 : nil, fullWidth: Device.isMacOS) {
+            GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
                 ShareModal(urlString: model?.comment.ap_id) {
                     CommentCardView()
                         .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+                        .contentContext(.init(commentModel: model,
+                                              viewingContext: .screenshot))
                 }
-                .contentContext(.init(commentModel: model,
-                                      viewingContext: .screenshot))
             }
             .frame(width: Device.isMacOS ? 600 : nil)
-            .frame(minHeight: Device.isMacOS ? 500 : nil)
         }
     }
     
@@ -174,14 +173,14 @@ extension ModalService {
             GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
                 ShareModal(urlString: model?.post.ap_id) {
                     PostCardView()
+                        .background(Color.background)
                         .environment(\.pagerMetadata, metadata)
                         .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+                        .contentContext(.init(postModel: model,
+                                              viewingContext: .screenshot))
                 }
-                .contentContext(.init(postModel: model,
-                                      viewingContext: .screenshot))
             }
             .frame(width: Device.isMacOS ? 600 : nil)
-            .frame(minHeight: Device.isMacOS ? 500 : nil)
         }
     }
 }

@@ -20,6 +20,7 @@ public struct GraniteModalContainerView : View {
                 manager.presenters[index].modalView
                     .zIndex(100.0 + Double(index))
                     .environmentObject(manager)
+                    .frame(maxWidth: Device.isExpandedLayout ? ContainerConfig.iPhoneScreenWidth : nil)
             }
         }
     }

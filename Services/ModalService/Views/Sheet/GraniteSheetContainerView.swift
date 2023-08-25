@@ -1,6 +1,12 @@
 import Foundation
 import SwiftUI
 import Granite
+import GraniteUI
+
+public enum Detent: Hashable {
+    case large
+    case medium
+}
 
 //Compatibility
 #if os(macOS)
@@ -22,13 +28,15 @@ public struct UISheetPresentationController {
 }
 #endif
 
+
 struct GraniteSheetContainerView<Content : View, Background : View> : View {
     
     @EnvironmentObject var manager : GraniteSheetManager
     
     #if os(iOS)
-    @State private var selectedDetentIdentifier: UISheetPresentationController.Detent.Identifier? = UISheetPresentationController.Detent.Identifier.medium
+    @State var isSheetExpanded: Bool = false
     #endif
+    
     
     let id: String
     let content : Content
@@ -57,15 +65,8 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                         .background(FullScreenCoverBackgroundRemovalView())
 
                 }
-                .shee(isPresented: manager.hasContent(id: self.id, with: .sheet),
-                      presentationStyle:
-                        .formSheet(properties:
-                                .init(detents: manager.detents(),
-                                      selectedDetentIdentifier: $selectedDetentIdentifier,
-                                      animatesSelectedDetentIdentifierChange: true))) {
-                    
+                .showDrawer(manager.hasContent(id: self.id, with: .sheet)) {
                     sheetContent(for: manager.style)
-                        .background(FullScreenCoverBackgroundRemovalView())
                 }
         } else {
             content
@@ -207,3 +208,66 @@ private struct FullScreenCoverBackgroundRemovalView: NSViewRepresentable {
     
 }
 #endif
+
+fileprivate extension View {
+    func showDrawer<Content: View>(_ condition: Binding<Bool>,
+                    @ViewBuilder _ content: () -> Content) -> some View {
+        self.overlayIf(condition.wrappedValue, alignment: .top) {
+            Group {
+                #if os(iOS)
+                Drawer(startingHeight: 360) {
+                    ZStack(alignment: .top) {
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundColor(Color.alternateSecondaryBackground)
+                            .shadow(radius: 100)
+                        
+                        VStack(alignment: .center, spacing: 0) {
+                            
+                            HStack(spacing: 0) {
+                                Button {
+                                    GraniteHaptic.light.invoke()
+                                    withAnimation(.easeOut.speed(1.2)) {
+                                        condition.wrappedValue = false
+                                    }
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title3)
+                                        .foregroundColor(.foreground)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding(.top, .layer4)
+                                .padding(.leading, .layer4)
+                                
+                                Spacer()
+                                
+                                RoundedRectangle(cornerRadius: 8)
+                                    .frame(width: 42, height: 6)
+                                    .foregroundColor(Color.gray)
+                                    .padding(.top, .layer4)
+                                
+                                Spacer()
+                                //centering purposes
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title3)
+                                    .foregroundColor(.foreground)
+                                    .opacity(0.0)
+                                    .padding(.trailing, .layer4)
+                            }
+                            
+                            Divider()
+                                .padding(.top, .layer4)
+                            
+                            content()
+                        }
+                        .frame(height: UIScreen.main.bounds.height - 100)
+                    }
+                }
+                .rest(at: .constant([360, 480, UIScreen.main.bounds.height - 100]))
+                .impact(.light)
+                .edgesIgnoringSafeArea(.vertical)
+                .transition(.move(edge: .bottom))
+                #endif
+            }
+        }
+    }
+}

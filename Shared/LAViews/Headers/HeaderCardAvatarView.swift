@@ -80,7 +80,7 @@ struct HeaderCardAvatarView: View {
                 AvatarView(context.person?.lemmy,
                            size: size)
                     .overlay(Circle()
-                        .stroke(avatarBorderColor, lineWidth: 1.0))
+                    .stroke(avatarBorderColor, lineWidth: 1.0))
             }
             
             GeometryReader { proxy in
@@ -97,6 +97,7 @@ struct HeaderCardAvatarView: View {
                             Text("🤖")
                                 .font(.title2)
                                 .padding(.top, .layer3)
+                                .offset(y: 2)
                         } else {
                             Spacer().frame(height: 2)
                         }

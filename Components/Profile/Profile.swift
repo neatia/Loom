@@ -10,7 +10,7 @@ struct Profile: GraniteComponent {
     @Relay var account: AccountService
     @Relay var content: ContentService
     
-    var pager: Pager<PersonDetailsPageable> = .init(emptyText: "EMPTY_STATE_MISC")
+    @StateObject var pager: Pager<PersonDetailsPageable> = .init(emptyText: "EMPTY_STATE_MISC")
     
     let isMe: Bool
     
@@ -18,6 +18,8 @@ struct Profile: GraniteComponent {
         isMe = person?.isMe == true
         _center = .init(.init(person: person ?? LemmyKit.current.user?.local_user_view.person))
         content.silence(viewUpdatesOnly: true)
+        
+        LoomLog("profile init")
     }
 }
 

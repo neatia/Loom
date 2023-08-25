@@ -40,9 +40,11 @@ public struct ShareModal<Content: View>: View {
                                    encodeMessage: urlString) {
                         content()
                     }
+                    .frame(maxWidth: Device.isExpandedLayout ? (ContainerConfig.iPhoneScreenWidth * 0.9) : nil)
+                    .cornerRadius(12)
                 }
             }
-            .frame(maxHeight: .infinity)
+            .frame(maxHeight: 400)
             
             Spacer()
             
@@ -76,6 +78,7 @@ public struct ShareModal<Content: View>: View {
 
                 Spacer()
             }
+            .padding(.top, Device.isMacOS ? .layer5 : 0)
             
             Spacer()
         }
@@ -113,6 +116,7 @@ public struct ShareModal<Content: View>: View {
             }
             .menuStyle(.borderlessButton)
             .menuIndicator(.hidden)
+            .frame(width: 30)
         }
     }
     #endif

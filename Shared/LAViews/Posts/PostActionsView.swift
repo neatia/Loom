@@ -15,8 +15,12 @@ struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Void> var goToPost
     @GraniteAction<Void> var edit
+    
+    @GraniteAction<ContentInteraction.Kind> var interact
+    //A view needs updating outside of this view's potential hierarchy
+    @Environment(\.graniteEvent) var accountInteract
+    
     @Environment(\.graniteRouter) var router
-    @Environment(\.graniteEvent) var interact
     @Environment(\.contentContext) var context
     
     @Environment(\.pagerMetadata) var metadata
@@ -153,12 +157,10 @@ struct PostActionsView: View {
                     GraniteHaptic.light.invoke()
                     switch bookmarkKind {
                     case .post(let postView):
-                        interact?
-                            .send(AccountService
-                                .Interact
-                                .Meta(intent: .removePost(postView)))
+                        interact.perform(.removePost(postView))
                     case .comment(let commentView, _):
-                        interact?
+                        LoomLog("removing comment \(accountInteract == nil)")
+                        accountInteract?
                             .send(AccountService
                                 .Interact
                                 .Meta(intent: .removeComment(commentView)))
@@ -182,17 +184,17 @@ struct PostActionsView: View {
                         
                         switch bookmarkKind {
                         case .post(let postView):
-                            interact?
+                            accountInteract?
                                 .send(AccountService
                                     .Interact
                                     .Meta(intent: .blockPersonFromPost(postView)))
                         case .comment(let commentView, _):
-                            interact?
+                            accountInteract?
                                 .send(AccountService
                                     .Interact
                                     .Meta(intent: .blockPersonFromComment(commentView)))
                         default:
-                            interact?
+                            accountInteract?
                                 .send(AccountService
                                     .Interact
                                     .Meta(intent: .blockPerson(person)))
@@ -203,22 +205,23 @@ struct PostActionsView: View {
                     .buttonStyle(PlainButtonStyle())
                 }
                 
-                Button(role: .destructive) {
-                    GraniteHaptic.light.invoke()
-                    switch bookmarkKind {
-                    case .post(let postView):
-                        interact?
-                            .send(AccountService.Interact.Meta(intent: .reportPost(postView)))
-                    case .comment(let commentView, _):
-                        interact?
-                            .send(AccountService.Interact.Meta(intent: .reportComment(commentView)))
-                    default:
-                        break
-                    }
-                } label: {
-                    Text("REPORT_POST")
-                }
-                .buttonStyle(PlainButtonStyle())
+                //TODO: report functionality/testing
+//                Button(role: .destructive) {
+//                    GraniteHaptic.light.invoke()
+//                    switch bookmarkKind {
+//                    case .post(let postView):
+//                        accountInteract?
+//                            .send(AccountService.Interact.Meta(intent: .reportPost(postView)))
+//                    case .comment(let commentView, _):
+//                        accountInteract?
+//                            .send(AccountService.Interact.Meta(intent: .reportComment(commentView)))
+//                    default:
+//                        break
+//                    }
+//                } label: {
+//                    Text("REPORT_POST")
+//                }
+//                .buttonStyle(PlainButtonStyle())
             }
         } label: {
             Image(systemName: "ellipsis")

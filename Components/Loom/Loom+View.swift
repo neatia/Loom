@@ -101,14 +101,14 @@ extension Loom: View {
                         .attach({ model in
                             ModalService.shared.presentSheet {
                                 LoomEditView(manifest: model)
-                                .attach({ manifest in
-                                    service.center.modify.send(LoomService.Modify.Intent.removeManifest(manifest))
-                                    ModalService.shared.dismissSheet()
-                                }, at: \.remove)
-                                .attach({ manifest in
-                                    service.center.modify.send(LoomService.Modify.Intent.update(manifest))
-                                    ModalService.shared.dismissSheet()
-                                }, at: \.edit)
+                                    .attach({ manifest in
+                                        service.center.modify.send(LoomService.Modify.Intent.removeManifest(manifest))
+                                        ModalService.shared.dismissSheet()
+                                    }, at: \.remove)
+                                    .attach({ manifest in
+                                        service.center.modify.send(LoomService.Modify.Intent.update(manifest))
+                                        ModalService.shared.dismissSheet()
+                                    }, at: \.edit)
                             }
                         }, at: \.edit)
                 case .communities:

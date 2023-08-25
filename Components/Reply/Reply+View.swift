@@ -60,7 +60,6 @@ extension Reply: View {
             
             WriteView(kind: kind, title: .constant(""),
                       content: _state.content)
-            .background(Color.background.ignoresSafeArea())
             
             Divider()
             
@@ -92,6 +91,6 @@ extension Reply: View {
             .padding(.vertical, .layer4)
         }
         .padding(.top, .layer4)
-        .background(Color.background)
+        .background(Device.isIPhone ? .clear : Color.background)
     }
 }

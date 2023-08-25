@@ -14,12 +14,17 @@ import LemmyKit
 struct UserCardView: View {
     @Environment(\.graniteEvent) var interact
     
+    //To register menu touches effectively
+    @GraniteAction<Void> var tapped
+    
     var model: PersonView
     var meta: AccountMeta?
     
     var isBlocked: Bool = false
     var fullWidth: Bool = false
     var showCounts: Bool = false
+    var isSelected: Bool = false
+    var canRemoveFromProfiles: Bool = false
     var style: CardStyle = .style1
     
     var totalScore: String {
@@ -102,7 +107,7 @@ struct UserCardView: View {
             HStack {
                 Spacer()
                 
-                VStack(spacing: 0) {
+                VStack(spacing: .layer1) {
                     Text(model.person.name)
                         .font(.footnote.bold())
                         .cornerRadius(4)
@@ -119,7 +124,7 @@ struct UserCardView: View {
             }
         }
         .padding(.vertical, .layer3)
-        .background(Color.secondaryBackground.opacity(0.8))
+        .background(Color.secondaryBackground)
         .cornerRadius(style == .style1 ? 8 : size.frame / 2)
     }
     
@@ -129,51 +134,60 @@ struct UserCardView: View {
             HStack(spacing: .layer3) {
                 AvatarView(model.person.avatarURL, size: size)
                 
-                VStack(alignment: .leading, spacing: 0) {
-                    if showCounts {
-                        HStack {
-                            Text("LABEL_SCORE \(totalScore)")
-                                .font(primaryFont)
-                            
-                            Spacer()
+                Group {
+                    VStack(alignment: .leading, spacing: 0) {
+                        if showCounts {
+                            HStack {
+                                Text("LABEL_SCORE \(totalScore)")
+                                    .font(primaryFont)
+                                
+                                Spacer()
+                            }
                         }
-                    }
-                    if let displayName = model.person.display_name {
+                        if let displayName = model.person.display_name {
+                            HStack(spacing: .layer2) {
+                                Text(displayName)
+                                    .font(showCounts ? .headline.bold() : .footnote.bold())
+                                    .cornerRadius(4)
+                                
+                                Spacer()
+                            }
+                        }
                         HStack(spacing: .layer2) {
-                            Text(displayName)
-                                .font(showCounts ? .headline.bold() : .footnote.bold())
+                            Text("@" + model.person.name)
+                                .font(primaryFont)
+                                .cornerRadius(4)
+                            Text("@" + model.person.actor_id.host)
+                                .font(secondaryFont)
+                                .padding(.vertical, .layer1)
+                                .padding(.horizontal, .layer1)
+                                .background(Color.tertiaryBackground)
                                 .cornerRadius(4)
                             
                             Spacer()
                         }
+                        .scrollOnOverflowIf(style == .style1)
                     }
-                    HStack(spacing: .layer2) {
-                        Text("@" + model.person.name)
-                            .font(primaryFont)
-                            .cornerRadius(4)
-                        Text("@" + model.person.actor_id.host)
-                            .font(secondaryFont)
-                            .padding(.vertical, .layer1)
-                            .padding(.horizontal, .layer1)
-                            .background(Color.tertiaryBackground)
-                            .cornerRadius(4)
-                        
-                        Spacer()
-                    }
-                    .scrollOnOverflowIf(style == .style1)
+                    
+                    Spacer()
+                }.onTapGesture {
+                    tapped.perform()
                 }
-                
-                Spacer()
                 
                 CardActionsView(enableCommunityRoute: .constant(false),
                                 person: model.person,
-                                isBlocked: isBlocked || model.blocked)
+                                isBlocked: isBlocked || model.blocked,
+                                canRemoveFromProfiles: canRemoveFromProfiles)
                 .graniteEvent(interact)
                 .padding(.trailing, .layer3)
             }
             .padding(.layer3)
             .foregroundColor(.foreground)
-            .background(Color.secondaryBackground.opacity(0.8))
+            .background(
+                RoundedRectangle(cornerRadius: size.frame)
+                    .strokeBorder(isSelected ? Color.secondaryForeground : Color.clear, lineWidth: 1)
+            )
+            .background(Color.secondaryBackground)
             .cornerRadius(style == .style1 ? 8 : size.frame)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9)
             .padding(.bottom, .layer2)

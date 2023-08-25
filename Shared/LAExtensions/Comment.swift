@@ -32,6 +32,14 @@ extension CommentView {
     func updateBlock(_ blocked: Bool, personView: PersonView) -> CommentView {
         .init(comment: self.comment, creator: personView.person, post: self.post, community: self.community, counts: self.counts, creator_banned_from_community: self.creator_banned_from_community, subscribed: self.subscribed, saved: self.saved, creator_blocked: blocked)
     }
+    
+    func updateRemoved() -> CommentView {
+        .init(comment: self.comment.updateRemoved(), creator: self.person, post: self.post, community: self.community, counts: self.counts, creator_banned_from_community: self.creator_banned_from_community, subscribed: self.subscribed, saved: self.saved, creator_blocked: blocked)
+    }
+    
+    func updateDeleted() -> CommentView {
+        .init(comment: self.comment.updateDeleted(), creator: self.person, post: self.post, community: self.community, counts: self.counts, creator_banned_from_community: self.creator_banned_from_community, subscribed: self.subscribed, saved: self.saved, creator_blocked: blocked)
+    }
 }
 
 extension CommentView: Identifiable {
@@ -69,6 +77,14 @@ extension Comment {
     
     func asView(with model: CommentView) -> CommentView {
         .init(comment: self, creator: model.creator, post: model.post, community: model.community, counts: model.counts, creator_banned_from_community: model.creator_banned_from_community, subscribed: model.subscribed, saved: model.saved, creator_blocked: model.creator_blocked)
+    }
+    
+    func updateRemoved() -> Comment {
+        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: !self.removed, published: self.published, deleted: self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id)
+    }
+    
+    func updateDeleted() -> Comment {
+        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: self.removed, published: self.published, deleted: !self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id)
     }
 }
 

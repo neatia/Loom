@@ -45,7 +45,7 @@ extension Write {
                 if let data = try? Data(contentsOf: url),
                    //TODO: customize compression level
                    let image = NSImage(data: data)?.compress() {
-                    _state.imageData.wrappedValue = image.png
+                    _state.imageData.wrappedValue = image.pngData()
                 }
             }
         }
@@ -57,7 +57,7 @@ import PhotosUI
 extension Write {
     func importPicture() {
         modal.presentSheet(id: Write.modalId,
-                                  detents: [.large()]) {
+                                  detents: [.large]) {
             ImagePicker(imageData: _state.imageData)
                 .attach( {
                     modal.dismissSheet(id: Write.modalId)

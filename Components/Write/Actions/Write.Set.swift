@@ -25,14 +25,13 @@ extension Write {
                     TextField("MISC_URL", text: bindingString)
                         .textFieldStyle(.plain)
                         .correctionDisabled()
-                        .frame(height: 40)
+                        .frame(height: 60)
                         .padding(.horizontal, .layer4)
                         .font(.title3.bold())
                         .background(
                             RoundedRectangle(cornerRadius: 8)
                                 .foregroundColor(Color.alternateBackground.opacity(0.3))
                         )
-                        .frame(minWidth: Device.isMacOS ? 400 : nil)
                     
                     HStack(spacing: .layer2) {
                         Spacer()
@@ -40,7 +39,7 @@ extension Write {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.postURL.wrappedValue = lastState
-                            ModalService.shared.dismissSheet()
+                            modal.dismissSheet(id: Write.modalId)
                         } label: {
                             Text("MISC_CANCEL")
                                 .font(.headline)
@@ -51,7 +50,7 @@ extension Write {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.postURL.wrappedValue = ""
-                            ModalService.shared.dismissSheet()
+                            modal.dismissSheet(id: Write.modalId)
                         } label: {
                             Text("MISC_REMOVE")
                                 .font(.headline)
@@ -62,7 +61,7 @@ extension Write {
                         Button {
                             GraniteHaptic.light.invoke()
                             _state.postURL.wrappedValue = value
-                            ModalService.shared.dismissSheet()
+                            modal.dismissSheet(id: Write.modalId)
                         } label: {
                             Text("MISC_DONE")
                                 .font(.headline)
@@ -85,6 +84,7 @@ extension Write {
                 .attach({ communityView in
                     GraniteHaptic.light.invoke()
                     _state.postCommunity.wrappedValue = communityView
+                    modal.dismissSheet(id: Write.modalId)
                 }, at: \.pickedCommunity)
                 .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
         }

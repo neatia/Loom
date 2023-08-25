@@ -13,10 +13,6 @@ import SwiftUI
 extension Search {
     var headerMenuView: some View {
         HStack(spacing: 0) {
-            
-            Text("Type: ")
-                .padding(.trailing, .layer1)
-            
             Menu {
                 ForEach(0..<state.searchType.count) { index in
                     Button {

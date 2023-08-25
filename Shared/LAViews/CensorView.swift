@@ -22,18 +22,36 @@ struct CensorView: View {
     
     var kind: Kind
     
+    var isComment: Bool
+    
+    var height: CGFloat {
+        isComment ? 100 : 200
+    }
+    
+    var titleFont: Font {
+        isComment ? .title3 : .title
+    }
+    
+    var titleFontAlt: Font {
+        isComment ? .title : .largeTitle
+    }
+    
+    var bodyFont: Font {
+        isComment ? .footnote : .subheadline
+    }
+    
     var body: some View {
         VStack {
-            AppBlurView(size: .init(width: 0, height: 200)) {
+            AppBlurView(size: .init(width: 0, height: height)) {
                 switch kind {
                 case .nsfw:
                     VStack(spacing: .layer4) {
                         Image(systemName: "eye.slash.fill")
-                            .font(.title)
+                            .font(titleFont)
                             .foregroundColor(.foreground)
                         
                         Text("CENSOR_NSFW")
-                            .font(.subheadline.bold())
+                            .font(bodyFont.bold())
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, .layer3)
                             .foregroundColor(.foreground)
@@ -42,9 +60,9 @@ struct CensorView: View {
                 case .bot:
                     VStack(spacing: .layer4) {
                         Text("🤖")
-                            .font(.largeTitle)
+                            .font(titleFontAlt)
                         Text("CENSOR_BOT")
-                            .font(.subheadline.bold())
+                            .font(bodyFont.bold())
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, .layer3)
                             .foregroundColor(.foreground)
@@ -53,11 +71,11 @@ struct CensorView: View {
                 case .removed:
                     VStack(spacing: .layer4) {
                         Image(systemName: "trash")
-                            .font(.title)
+                            .font(titleFont)
                             .foregroundColor(.foreground)
                         
                         Text("MISC_REMOVED")
-                            .font(.subheadline.bold())
+                            .font(bodyFont.bold())
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, .layer3)
                             .foregroundColor(.foreground)
@@ -67,11 +85,11 @@ struct CensorView: View {
                 case .blocked:
                     VStack(spacing: .layer4) {
                         Image(systemName: "exclamationmark.shield")
-                            .font(.title)
+                            .font(titleFont)
                             .foregroundColor(.foreground)
                         
                         Text("TITLE_BLOCKED")
-                            .font(.subheadline.bold())
+                            .font(bodyFont.bold())
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, .layer3)
                             .foregroundColor(.foreground)
@@ -81,11 +99,11 @@ struct CensorView: View {
                 case .reported:
                     VStack(spacing: .layer4) {
                         Image(systemName: "exclamationmark.octagon")
-                            .font(.title)
+                            .font(titleFont)
                             .foregroundColor(.foreground)
                         
                         Text("MISC_REPORTED")
-                            .font(.subheadline.bold())
+                            .font(bodyFont.bold())
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, .layer3)
                             .foregroundColor(.foreground)
@@ -97,17 +115,42 @@ struct CensorView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .frame(height: height)
         }
     }
 }
 
 extension View {
-    func censor(_ condition: Bool, kind: CensorView.Kind = .nsfw) -> some View {
-        Group {
+    func censor(_ condition: Bool,
+                kind: CensorView.Kind = .nsfw,
+                isComment: Bool = false) -> some View {
+        return Group {
             if condition {
-                CensorView(kind: kind)
-                    .frame(height: 200)
-                    .frame(maxWidth: Device.isMacOS ? 400 : nil)
+                CensorView(kind: kind, isComment: isComment)
+                    .frame(maxWidth: Device.isExpandedLayout ? ContainerConfig.iPhoneScreenWidth : nil)
+            } else {
+                self
+            }
+        }
+    }
+    
+    func censorAutoFit(_ condition: Bool,
+                       kind: CensorView.Kind = .nsfw) -> some View {
+        return Group {
+            if condition {
+                //TODO: Other types
+                ZStack {
+                    Color.secondaryBackground
+                    switch kind {
+                    case .bot:
+                        Text("🤖")
+                            .font(.title)
+                    default:
+                        Image(systemName: "eye.slash.fill")
+                            .font(.title3)
+                            .foregroundColor(.foreground)
+                    }
+                }
             } else {
                 self
             }

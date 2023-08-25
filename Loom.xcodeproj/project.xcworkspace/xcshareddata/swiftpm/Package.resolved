@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "granite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/Granite.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a36eba392b55cf640eef89474bb34f1e1e5060fc"
+      }
+    },
+    {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raspu/Highlightr.git",
@@ -34,6 +43,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "77292529fc436541c5d31664d263460778060210"
+      }
+    },
+    {
+      "identity" : "lemmykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/LemmyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "1b9f4dd1e03ff2692fb853c9b96077da0f2d3ce0"
       }
     },
     {

@@ -44,6 +44,15 @@ extension View {
     func adaptsToKeyboard() -> some View {
         return modifier(AdaptsToKeyboard())
     }
+    func adaptsToKeyboardIf(_ condition: Bool) -> some View {
+        Group {
+            if condition {
+                modifier(AdaptsToKeyboard())
+            } else {
+                self
+            }
+        }
+    }
 }
 #else
 

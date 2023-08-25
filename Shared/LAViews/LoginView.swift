@@ -59,7 +59,8 @@ struct LoginView: View {
                     switch kind {
                     case .login:
                         Text("AUTH_LOGIN")
-                            .font(.title.bold())
+                            .font(.title.bold()) + Text("   @") + Text(LemmyKit.host)
+                            .font(.subheadline)
                     case .signup:
                         Text("AUTH_SIGNUP")
                             .font(.title.bold())
@@ -80,7 +81,16 @@ struct LoginView: View {
 extension LoginView {
     var addToProfilesForm: some View {
         VStack(spacing: 0) {
-            
+            #if os(iOS)
+            TextToolView(text: $username,
+                         kind: .username("LOGIN_FORM_USERNAME"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer3)
+            #else
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
@@ -92,8 +102,19 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer2)
+                .padding(.bottom, .layer3)
+            #endif
             
+            #if os(iOS)
+            TextToolView(text: $password,
+                         kind: .password("LOGIN_FORM_PASSWORD"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer3)
+            #else
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
             //TextField("Enter your password", text: $password)
                 .textFieldStyle(.plain)
@@ -105,9 +126,21 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer2)
+                .padding(.bottom, .layer3)
+            #endif
             
-            TextField("https://lemmy.world", text: $host)
+            #if os(iOS)
+            TextToolView(text: $host,
+                         kind: .link,
+                         inheritStyle: .standard("MISC_URL"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer3)
+            #else
+            TextField("MISC_URL", text: $host)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
                 .frame(height: 60)
@@ -117,8 +150,20 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer4)
+                .padding(.bottom, .layer3)
+            #endif
         
+            #if os(iOS)
+            TextToolView(text: $token2FA,
+                         kind: .otp,
+                         inheritStyle: .standard("LOGIN_FORM_ONE_TIME_CODE"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer5)
+            #else
             TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)
                 .textFieldStyle(.plain)
                 .otpContent()
@@ -130,6 +175,7 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer5)
+            #endif
             
             HStack(spacing: .layer2) {
                 Spacer()
@@ -167,6 +213,17 @@ extension LoginView {
     //TODO: combing both/reuse
     var loginForm: some View {
         VStack(spacing: 0) {
+            
+            #if os(iOS)
+            TextToolView(text: $username,
+                         kind: .username("LOGIN_FORM_USERNAME"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer3)
+            #else
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
@@ -177,8 +234,20 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer2)
+                .padding(.bottom, .layer3)
+            #endif
             
+            
+            #if os(iOS)
+            TextToolView(text: $password,
+                         kind: .password("LOGIN_FORM_PASSWORD"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer3)
+            #else
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
                 .textFieldStyle(.plain)
                 .frame(height: 60)
@@ -188,9 +257,21 @@ extension LoginView {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundColor(Color.tertiaryBackground)
                 )
-                .padding(.bottom, .layer5)
+                .padding(.bottom, .layer3)
+            #endif
             
             if kind == .login {
+                #if os(iOS)
+                TextToolView(text: $token2FA,
+                             kind: .otp,
+                             inheritStyle: .standard("LOGIN_FORM_ONE_TIME_CODE"))
+                    .frame(height: 60)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundColor(Color.tertiaryBackground)
+                    )
+                    .padding(.bottom, .layer5)
+                #else
                 TextField("LOGIN_FORM_ONE_TIME_CODE", text: $token2FA)
                     .textFieldStyle(.plain)
                     .otpContent()
@@ -202,6 +283,7 @@ extension LoginView {
                             .foregroundColor(Color.tertiaryBackground)
                     )
                     .padding(.bottom, .layer5)
+                #endif
             } else {
                 HStack {
                     if let captchaResponse,

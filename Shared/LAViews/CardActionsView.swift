@@ -13,16 +13,71 @@ import LemmyKit
 
 struct CardActionsView: View {
     @Environment(\.graniteEvent) var interact
+    @Environment(\.graniteRouter) var router
     
     @Binding var enableCommunityRoute: Bool
     
     var community: Community?
     var person: Person?
     var isBlocked: Bool = false
+    var canRemoveFromProfiles: Bool = false
     
     
     var body: some View {
         Menu {
+            if person?.isMe == true || canRemoveFromProfiles {
+                personalActionsView
+            } else {
+                generalActionsView
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
+                .frame(width: 24, height: 24)
+                .contentShape(Rectangle())
+                .foregroundColor(.foreground)
+        }
+        .menuStyle(BorderlessButtonMenuStyle())
+        .menuIndicator(.hidden)
+        .frame(width: 24, height: 24)
+        //.scaleEffect(x: -1, y: 1)
+    }
+}
+
+extension CardActionsView {
+    var personalActionsView: some View {
+        Group {
+            Button {
+                GraniteHaptic.light.invoke()
+                
+                router.navigation.push {
+                    Profile(person)
+                }
+            } label: {
+                //TODO: localize
+                Text("Profile")
+                Image(systemName: "person")
+            }
+            .buttonStyle(PlainButtonStyle())
+            
+            if canRemoveFromProfiles {
+                Divider()
+                
+                Button(role: .destructive) {
+                    GraniteHaptic.light.invoke()
+                    
+                    interact?.send(AccountService.Interact.Meta(intent: .removeFromProfiles(person)))
+                } label: {
+                    Text("MISC_REMOVE")
+                    Image(systemName: "trash")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
+    }
+    
+    var generalActionsView: some View {
+        Group {
             if let name = community?.name {
                 Button {
                     GraniteHaptic.light.invoke()
@@ -76,16 +131,6 @@ struct CardActionsView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
             }
-        } label: {
-            Image(systemName: "ellipsis")
-                .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
-                .frame(width: 24, height: 16)
-                .contentShape(Rectangle())
-                .foregroundColor(.foreground)
         }
-        .menuStyle(BorderlessButtonMenuStyle())
-        .menuIndicator(.hidden)
-        .frame(width: 24, height: 16)
-        //.scaleEffect(x: -1, y: 1)
     }
 }

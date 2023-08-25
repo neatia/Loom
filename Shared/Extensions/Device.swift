@@ -27,6 +27,14 @@ struct Device {
         #endif
     }
     
+    static var isIPhone: Bool {
+        #if os(iOS)
+        return UIDevice.current.userInterfaceIdiom != .pad
+        #else
+        return false
+        #endif
+    }
+    
     static var isExpandedLayout: Bool {
         isMacOS || isiPad
     }

@@ -15,7 +15,6 @@ import Combine
 struct HeaderCardView: View {
     @Environment(\.contentContext) var context
     @Environment(\.graniteRouter) var router
-    @Environment(\.graniteEvent) var interact
     
     @Relay var layout: LayoutService
     
@@ -72,10 +71,19 @@ struct HeaderCardView: View {
                     .resizable()
                     .frame(width: 24, height: 24)
             default:
-                if let time = context.timeAbbreviated {
-                    Text(time)
-                        .font(.footnote)
-                        .foregroundColor(.foreground.opacity(0.5))
+                HStack(alignment: .bottom, spacing: .layer1) {
+                    if context.isEdited {
+                        //TODO: localize
+                        Text("edited")
+                            .font(.caption2.italic())
+                            .foregroundColor(.foreground.opacity(0.5))
+                    }
+                    
+                    if let time = context.timeAbbreviated {
+                        Text(time)
+                            .font(.footnote)
+                            .foregroundColor(.foreground.opacity(0.5))
+                    }
                 }
                 
                 VStack(alignment: .trailing, spacing: 0) {
@@ -94,7 +102,6 @@ struct HeaderCardView: View {
                         .attach({
                             edit.perform()
                         }, at: \.edit)
-                        .graniteEvent(interact)
                 }
             }
         }
@@ -113,7 +120,7 @@ struct HeaderCardView: View {
         guard let commentView = context.commentModel else { return }
         
         Task { @MainActor in
-            guard let postView = await Lemmy.post(commentView.post.id, comment: commentView.comment) else {
+            guard let postView = await ContentUpdater.fetchPostView(commentView.post, commentModel: commentView.comment) else {
                 return
             }
             

@@ -8,12 +8,16 @@ final public class GraniteSheetManager : ObservableObject {
     var style : GraniteSheetPresentationStyle = .sheet
     
     @Published var models : [String: ContentModel] = [:]
-    var detentsMap : [String: [UISheetPresentationController.Detent]] = [:]
+    var detentsMap : [String: [Detent]] = [:]
     @Published public var shouldPreventDismissal : Bool = false
     
     struct ContentModel {
         let id: String
         let content: AnyView
+    }
+    
+    var hasContent: Bool {
+        models.isEmpty == false
     }
     
     public init() {
@@ -31,18 +35,28 @@ final public class GraniteSheetManager : ObservableObject {
         })
     }
     
-    func detents(id: String = GraniteSheetManager.defaultId) -> [UISheetPresentationController.Detent] {
-        return self.detentsMap[id] ?? [.medium(), .large()]
+    func detents(id: String = GraniteSheetManager.defaultId) -> [Detent] {
+        return self.detentsMap[id] ?? [.medium, .large]
     }
     
+    @MainActor
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                        detents: [UISheetPresentationController.Detent] = [.medium(), .large()],
+                                        detents: [Detent] = [.medium, .large],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents
-        self.models[id] = .init(id: id,
-                                content: AnyView(content()
-            .graniteNavigation(backgroundColor: Color.clear)))
+        
+        if Device.isiPad {
+            self.models[id] = .init(id: id,
+                                    content: AnyView(content()
+                                        .graniteNavigation(backgroundColor: Color.clear)))
+        } else {
+            withAnimation(.easeIn.speed(1.2)) {
+                self.models[id] = .init(id: id,
+                                        content: AnyView(content()
+                                            .graniteNavigation(backgroundColor: Color.clear)))
+            }
+        }
     }
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {

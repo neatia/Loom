@@ -27,7 +27,6 @@ struct PostCardView: View {
     @Relay var layout: LayoutService
     
     @State var model: PostView?
-    @State var routePostDisplay: Bool = false
     
     var topPadding: CGFloat = .layer6
     var bottomPadding: CGFloat = .layer6
@@ -47,15 +46,19 @@ struct PostCardView: View {
     }
     
     var censorRemoved: Bool {
-        context.isRemoved
+        model?.post.removed ?? context.isRemoved
+    }
+    //TODO: differentiate between removed
+    var censorDeleted: Bool {
+        model?.post.deleted ?? context.isRemoved
     }
     
     var shouldCensor: Bool {
-        censorRemoved || censorBlocked || censorNSFW
+        censorRemoved || censorDeleted || censorBlocked || censorNSFW || censorBot
     }
     
     var censorKind: CensorView.Kind {
-        if censorRemoved {
+        if censorRemoved || censorDeleted {
             return .removed
         } else if censorNSFW {
             return .nsfw
@@ -99,7 +102,7 @@ struct PostCardView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            switch context.feedStyle {
+            switch context.preferredStyle {
             case .style1:
                 VStack(alignment: .leading, spacing: .layer3) {
                     HeaderView(badge: .noBadge)
@@ -136,6 +139,21 @@ struct PostCardView: View {
                 .overlayIf(isSelected,
                            overlay: Color.alternateBackground.opacity(0.3))
             }
+        }
+        .task {
+            //Experiment
+            interact?
+                .listen(.bubble(context.id)) { value in
+                    if let interact = value as? AccountService.Interact.Meta {
+                        switch interact.intent {
+                        case .removePost(let model):
+                            guard model.id == context.postModel?.id else { return }
+                            self.model = model.updateRemoved()
+                        default:
+                            break
+                        }
+                    }
+                }
         }
     }
     
@@ -177,7 +195,7 @@ struct PostCardView: View {
 extension PostCardView {
     var content: some View {
         Group {
-            switch context.feedStyle {
+            switch context.preferredStyle {
             case .style1:
                 contentBody
                     .padding(.bottom, .layer3)
@@ -230,6 +248,7 @@ extension PostCardView {
                         }
                     }
                 }
+                .censorAutoFit(shouldCensor, kind: censorKind)
                 .frame(width: 60, height: 60)
                 .cornerRadius(8.0)
                 .clipped()
@@ -303,18 +322,18 @@ extension PostCardView {
             }
         }
         .frame(maxWidth: .infinity)
-        .onTapIf(layout.state.style == .expanded) {
+        .onTapIf(Device.isExpandedLayout) {
             
-            guard layout.state.style == .expanded,
+            guard Device.isExpandedLayout,
                   let model = context.postModel else {
                 GraniteHaptic.light.invoke()
-                routePostDisplay = true
                 return
             }
             
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .route(window: .resizable(600, 500)) {
+        .routeIf(Device.isExpandedLayout == false,
+                 window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context, updatedModel: model)
         } with : { router }

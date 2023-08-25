@@ -137,7 +137,7 @@ struct InstanceMetaView: View {
                 MarkdownView(text: sidebar)
                     .markdownViewRole(.editor)
                     .padding(.layer3)
-                    .background(Color.tertiaryBackground)
+                    .background(Color.secondaryBackground)
                     .cornerRadius(8)
                     .padding(.layer3)
             }

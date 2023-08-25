@@ -72,7 +72,7 @@ extension Feed: GraniteNavigationDestination {
             }
             
             pager.onReset {
-                //Nuke.ImageCache.shared.removeAll()
+                Nuke.ImageCache.shared.removeAll()
             }
             
             if let community = state.community {

@@ -3,7 +3,7 @@ import GraniteUI
 import SwiftUI
 import LemmyKit
 
-extension Profile: View {
+extension Profile: GraniteNavigationDestination {
     public var view: some View {
         VStack(spacing: 0) {
             PagerScrollView(PersonDetailsPageable.self,
@@ -28,9 +28,6 @@ extension Profile: View {
             }
             .environmentObject(pager)
         }
-        .padding(.top, Device.isMacOS ? .layer5 : 0)
-        //TODO: Negative space from transparent titlebar. (Need to investigate why I needed to resolve this again vs. PostDisplayView and other cases with the same layout/enviornment)
-        .overlayIf(Device.isMacOS, alignment: .top) { Color.background.frame(maxWidth: .infinity).frame(height: 28) }
         .background(Color.background)
         .task {
             pager.hook { page in
@@ -42,7 +39,7 @@ extension Profile: View {
                                                       limit: ConfigService.Preferences.pageLimit,
                                                       community: nil,
                                                       saved_only: nil,
-                                                      location: state.person?.isMe == true ? .base : .source)
+                                                      location: state.person?.isMe == true ? .source : .base)
                     
                     var models: [any Pageable] = (details?.comments ?? []) + (details?.posts ?? [])
                     models = models.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
@@ -71,5 +68,9 @@ extension Profile: View {
                 }
             }.fetch()
         }
+    }
+    
+    var destinationStyle: GraniteNavigationDestinationStyle {
+        return .init(navBarBGColor: Color.background)
     }
 }

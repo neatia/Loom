@@ -74,14 +74,15 @@ struct PostContentView: View {
     
     var body: some View {
         VStack {
-            if fullPage == false {
+            if fullPage == false && !Device.isIPhone {
                 Spacer()
             }
             
             ZStack {
-                #if os(iOS)
-                RoundedRectangle(cornerRadius: 16)
-                    .foregroundColor(.background)
+#if os(iOS)
+                
+                RoundedRectangle(cornerRadius: Device.isIPhone ? 0 : 16)
+                    .foregroundColor(Color.background)
                     .edgesIgnoringSafeArea(.all)
                 #endif
                 
@@ -118,7 +119,7 @@ struct PostContentView: View {
                 }
                 .padding(.layer5)
             }
-            .frame(maxHeight: 600)
+            .frame(maxHeight: Device.isIPhone ? nil : 600)
             
             if fullPage {
                 Button {

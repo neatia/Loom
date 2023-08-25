@@ -59,7 +59,7 @@ extension Profile {
             .frame(height: hasBanner ? 72 : 48)
             .padding(.bottom, .layer3)
             .padding(.horizontal, .layer4)
-            .padding(.top, hasBanner ? .layer1 : 0)
+            .padding(.top, hasBanner ? .layer4 : 0)
             
             Divider()
         }

@@ -99,7 +99,7 @@ struct AvatarView: View {
     var body: some View {
         ZStack {
             Rectangle()
-                .foregroundColor(.secondaryBackground)
+                .foregroundColor(.tertiaryBackground)
             
             if let avatarURL = self.avatarURL {
                 
