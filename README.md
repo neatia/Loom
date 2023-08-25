@@ -36,13 +36,47 @@
 
 > WIP previews of major components
 
+| Expanded Layout (iPad/macOS)   | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmXjYReP9dcu2jiW52yUNTNZdZTYqEvVEoNsohSjzaXMnC) | [Granite](https://github.com/pexavc/Granite) supports macOS. Same navigation API can direct window spawning or navigation stack pushing. |
+| ![Image](https://gateway.ipfs.io/ipfs/QmcaJEm7Mq4qsgnKbLUe8TcoYJxP2m6b9SSiEwazdXe7hv) | Spawn multiple windows of entire feed layouts with multiple communities to observe. Will be helpful in the case of moderating multiple communities for instance. |
+
 | Looms    | |
-| -------- | ------- |
-| ![Image](https://gateway.ipfs.io/ipfs/QmRFMkKZ3oVHfzkduRcTKsB1SDiV2yYWT78nfg32d2czDv) | Create "Looms" of any community from any instance. Grouping their content into a singular feed |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmbkjKBrrmnxoo28rc1xuxqJDHoz4P2LdMLctyQATu8HC2) | Create "Looms" of any group of communities from any instance. Merging their content into a singular feed.|
 
 | Explore    | |
-| -------- | ------- |
-| ![Image](https://gateway.ipfs.io/ipfs/QmPr9TxMX4VP94hkQPwncRPdtLYbjqDriMowWPxDozreym)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmXoHKNAo2RHYAd843Mv4tzxAvRKswT1U8zVrEMnj4UFDQ)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
+
+| Bookmark Syncing    | |
+| :-------- | -------: |
+| <img src="https://gateway.ipfs.io/ipfs/Qmakr2HyJnXf87tseVhbjgqiKuqRoj3rUo79TK8DoKjwTg" width="50%"/> | All your saved posts and comments can be switched between accounts in a dedicated component.   |
+
+| Sharing    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmYykQW876J2pa1kL935TTifAEnyFqF6inUwhMJqJz3piA) | Share posts or comments as images. With the intention of supporting QR codes and *Engravings* in the future. |
+
+| Search    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmV6HpHVvRaEeJRBJAtQZC2mefBEKw4Lgj3TJXBtqsxQP4) | Either search all, a specific subcategory with sort support. View expanded contents within the view, interacting with content as normal. |
+
+| Profile    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmYgVViPqKpYJttMeK32C5uLQy88HWqRJRjLAxjVU48tpL) | Dynamic threads, despite viewing context. Swipe to reply to comments or tap the more button, to modify, remove, block, etc.  |
+| ![Image](https://gateway.ipfs.io/ipfs/QmbcEyh6qHqJt3sfEF2CL8Xjhjbcd2wLXUd27GNro7pgCD) | Deleting and restoring with toast reactions. |
+| ![Image](https://gateway.ipfs.io/ipfs/Qmf1NCciupPPGFsqnza2F9QMVE8fSYUyqDqMcTT7pdiozw) | Switch accounts, view their profiles, and their scores. |
+
+| Embedded Webview    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmV7Wo17wdB2vueyYiXeDxeLX2LLd8tS1JKgrFrAhcQ1M2) | Embedded Webview to customize the viewing experience. Custom JS insertion supported, customizing how webpages are viewed via direct user input is a possibility. |
+
+| Light Mode    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmUtjSKkYmvJ1erK4eQpwuMpqLPBHZWTUGH2V658Td3u6W) | Light mode and Dark mode supported. Refer to the color group in `Assets` to define preferences. |
+
+
+
 
 ## Contributing 
 
