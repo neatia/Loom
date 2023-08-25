@@ -39,14 +39,18 @@ final public class GraniteSheetManager : ObservableObject {
         return self.detentsMap[id] ?? [.medium, .large]
     }
     
+    @MainActor
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
                                         detents: [Detent] = [.medium, .large],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents
-        self.models[id] = .init(id: id,
-                                content: AnyView(content()
-            .graniteNavigation(backgroundColor: Color.clear)))
+        
+        withAnimation(.easeIn.speed(1.2)) {
+            self.models[id] = .init(id: id,
+                                    content: AnyView(content()
+                                        .graniteNavigation(backgroundColor: Color.clear)))
+        }
     }
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {

@@ -34,6 +34,8 @@ struct TextToolView : GenericControllerRepresentable {
         case search
         case link
         case standard(String)//placeholder
+        case username(String)//placeholder
+        case password(String)
     }
     
     func makeUIViewController(context: Context) -> KeyboardViewController {
@@ -154,13 +156,17 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
         switch kind {
         case .link:
             textView.font = .preferredFont(forTextStyle: .title3)
+        case .standard, .password:
+            textView.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize, weight: .bold)
         default:
             break
         }
         
         placeholderLabel = UILabel()
         switch kind {
-        case .standard(let placeholder):
+        case .standard(let placeholder),
+                .password(let placeholder),
+                .username(let placeholder):
             placeholderLabel.text = placeholder.localized()
         case .link:
             //TODO: placeholder
@@ -171,10 +177,19 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
             placeholderLabel.text = "MISC_SEARCH".localized()
         }
         
+        switch kind {
+        case .username:
+            textView.textContentType = .username
+        case .password:
+            textView.textContentType = .password
+        default:
+            break
+        }
+        
         placeholderLabel.font = textView.font
         placeholderLabel.sizeToFit()
         textView.addSubview(placeholderLabel)
-        placeholderLabel.frame.origin = CGPoint(x: 5, y: (textView.font?.pointSize)! / 2)
+        placeholderLabel.frame.origin = CGPoint(x: 8, y: ((textView.font?.pointSize)! / 2) - 2)
         placeholderLabel.textColor = UIColor(Color.foreground.opacity(0.3))
         placeholderLabel.isHidden = !textView.text.isEmpty
         
@@ -185,16 +200,29 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
                                           bottom: 0,
                                           right: 0)
         } else {
-            
-            textView.contentInset = .init(top: 2,
-                                          left: 0,
-                                          bottom: 0,
-                                          right: 0)
+            switch kind {
+            case .standard,
+                    .username,
+                    .password:
+                //TODO: customizable
+                //And or fully pre-styled
+                textView.contentInset = .init(top: 10,
+                                              left: 12,
+                                              bottom: 0,
+                                              right: 12)
+            default:
+                textView.contentInset = .init(top: 2,
+                                              left: 0,
+                                              bottom: 0,
+                                              right: 0)
+            }
         }
         
         switch kind {
         case .search:
             textView.returnKeyType = .search
+        case .standard, .username, .password:
+            textView.returnKeyType = .done
         default:
             break
         }
@@ -221,7 +249,7 @@ private extension KeyboardViewController {
         switch kind {
         case .link:
             keyboardToolbarView.groups.append(linkToolgroup)
-        case .search, .standard:
+        case .search, .standard, .password, .username:
             keyboardToolbarView.groups.append(actionToolgroup)
         case .writing:
             keyboardToolbarView.groups.append(editingToolgroup)

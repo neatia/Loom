@@ -81,7 +81,16 @@ struct LoginView: View {
 extension LoginView {
     var addToProfilesForm: some View {
         VStack(spacing: 0) {
-            
+            #if os(iOS)
+            TextToolView(text: $username,
+                         kind: .username("LOGIN_FORM_USERNAME"))
+                .frame(height: 60)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .foregroundColor(Color.tertiaryBackground)
+                )
+                .padding(.bottom, .layer2)
+            #else
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()
@@ -94,6 +103,7 @@ extension LoginView {
                         .foregroundColor(Color.tertiaryBackground)
                 )
                 .padding(.bottom, .layer2)
+            #endif
             
             SecureField("LOGIN_FORM_PASSWORD", text: $password)
             //TextField("Enter your password", text: $password)

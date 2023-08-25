@@ -51,6 +51,7 @@ extension AccountService {
             case removeComment(CommentView)
             case subscribe(CommunityView)
             case editPost(PostView)
+            case removeFromProfiles(Person?)
         }
         
         struct Meta: GranitePayload {
@@ -190,6 +191,11 @@ extension AccountService {
                 }
                 
                 broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_POST_REPORT_SUCCESS", event: .success), intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
+            case .removeFromProfiles(let person):
+                guard let person else { return }
+                state.profiles.removeAll(where: { $0.person.equals(person)})
+                try? AccountService.deleteToken(identifier: AccountService.keychainAuthToken + person.username,
+                                           service: AccountService.keychainService + person.actor_id.host)
             default:
                 break
             }

@@ -39,7 +39,7 @@ public struct ShareModal<Content: View>: View {
                     ScreenshotView($isScreenshotting,
                                    encodeMessage: urlString) {
                         content()
-                    }
+                    }.cornerRadius(12)
                 }
             }
             .frame(maxHeight: .infinity)

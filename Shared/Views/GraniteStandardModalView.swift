@@ -124,5 +124,6 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
         .frame(width: Device.isMacOS && !fullWidth ? ContainerConfig.iPhoneScreenWidth : nil)
         .padding(.top, drawerMode || Device.isMacOS ? .layer4 : .layer5)
         .offset(x: 0, y: drawerMode ? .layer5 : 0)
+        .adaptsToKeyboard()
     }
 }

@@ -174,6 +174,7 @@ extension ModalService {
             GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
                 ShareModal(urlString: model?.post.ap_id) {
                     PostCardView()
+                        .background(Color.background)
                         .environment(\.pagerMetadata, metadata)
                         .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
                 }

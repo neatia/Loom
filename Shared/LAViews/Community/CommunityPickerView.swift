@@ -49,13 +49,13 @@ struct CommunityPickerView: View {
     
     var body: some View {
         VStack {
-            if modal {
+            if modal && Device.isIPhone == false {
                 Spacer()
             }
             
             ZStack {
 #if os(iOS)
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: Device.isIPhone ? 0 : 16)
                     .foregroundColor(Color.background)
                     .edgesIgnoringSafeArea(.all)
 #endif

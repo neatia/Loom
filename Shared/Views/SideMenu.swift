@@ -85,16 +85,9 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
             .onEnded { event in
                 DispatchQueue.main.async {
                     if offsetX > activeThreshold * width {
-                        withAnimation {
-                            self.isShowing = true
-                            self.offsetX = width
-                        }
+                        self.isShowing = true
                     } else{
-                        
-                        withAnimation {
-                            self.isShowing = false
-                            self.offsetX = 0
-                        }
+                        self.isShowing = false
                     }
                 }
         }
@@ -111,7 +104,13 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
                 .offset(x: self.offsetX - width)
                 .opacity(self.offsetX > 0 ? 1.0 : 0)
                 .environment(\.sideMenuVisible, isShowing)
-        }.gesture(drag)
+        }
+        .gesture(drag)
+        .onChange(of: isShowing) { value in
+            withAnimation {
+                self.offsetX = value ? width : 0
+            }
+        }
     }
 }
 

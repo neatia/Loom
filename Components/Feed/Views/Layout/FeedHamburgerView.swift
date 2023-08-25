@@ -25,13 +25,6 @@ extension Feed {
                 #endif
             }, at: \.present)
             .attach( { meta in
-//                    modal.presentModal(GraniteAlertView(message: .init("ALERT_SWITCH_ACCOUNT \("@\(meta.username)@\(meta.hostDisplay)")")) {
-//
-//                        GraniteAlertAction(title: "MISC_NO")
-//                        GraniteAlertAction(title: "MISC_YES") {
-//                            config.center.restart.send(ConfigService.Restart.Meta(accountMeta: meta))
-//                        }
-//                    })
                 config
                     .center
                     .restart
@@ -227,17 +220,24 @@ extension FeedHamburgerView {
                                     ForEach(account.state.profiles) { profile in
                                         UserCardView(model: profile.person.asView(),
                                                      meta: profile,
-                                                     fullWidth: true, showCounts: true, style: .style2)
-                                        .onTapGesture {
+                                                     fullWidth: true,
+                                                     showCounts: true,
+                                                     isSelected: profile.person.isMe,
+                                                     canRemoveFromProfiles: true,
+                                                     style: .style2)
+                                        .attach({
+                                            guard profile.person.isMe == false else { return }
                                             GraniteHaptic.light.invoke()
                                             switchAccount.perform(profile)
-                                        }
+                                        }, at: \.tapped)
+                                        .graniteEvent(account.center.interact)
                                         .padding(.horizontal, .layer4)
                                         
                                     }
                                 }
                                 .wrappedInScrollView(when: account.state.profiles.count > 3,
                                                      axis: .vertical)
+                                .id(account.state.profiles)
                             }
                         }
                         

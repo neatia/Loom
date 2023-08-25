@@ -60,7 +60,6 @@ extension Reply: View {
             
             WriteView(kind: kind, title: .constant(""),
                       content: _state.content)
-            .background(Color.background.ignoresSafeArea())
             
             Divider()
             

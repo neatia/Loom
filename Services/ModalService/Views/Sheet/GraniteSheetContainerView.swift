@@ -235,14 +235,41 @@ fileprivate extension View {
                             .shadow(radius: 100)
                         
                         VStack(alignment: .center, spacing: 0) {
-                            RoundedRectangle(cornerRadius: 8)
-                                .frame(width: 42, height: 6)
-                                .foregroundColor(Color.gray)
-                                .padding(.top, .layer5)
-                                .onTapGesture {
+                            
+                            HStack(spacing: 0) {
+                                Button {
                                     GraniteHaptic.light.invoke()
-                                    condition.wrappedValue = false
+                                    withAnimation(.easeOut.speed(1.2)) {
+                                        condition.wrappedValue = false
+                                    }
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .font(.title3)
+                                        .foregroundColor(.foreground)
                                 }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding(.top, .layer4)
+                                .padding(.leading, .layer4)
+                                
+                                Spacer()
+                                
+                                RoundedRectangle(cornerRadius: 8)
+                                    .frame(width: 42, height: 6)
+                                    .foregroundColor(Color.gray)
+                                    .padding(.top, .layer4)
+                                
+                                Spacer()
+                                //centering purposes
+                                Image(systemName: "xmark.circle.fill")
+                                    .font(.title3)
+                                    .foregroundColor(.foreground)
+                                    .opacity(0.0)
+                                    .padding(.trailing, .layer4)
+                            }
+                            
+                            Divider()
+                                .padding(.top, .layer4)
+                            
                             content()
                         }
                         .frame(height: UIScreen.main.bounds.height - 100)
