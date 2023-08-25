@@ -41,6 +41,7 @@ extension Feed {
         .sideMenuIf(state.community == nil && Device.isExpandedLayout == false,
                     isShowing: _state.isShowing) {
             accountExpandedMenuView
+                .id("\(account.state.profiles.count)\(account.state.authenticated)")
         }
     }
 }

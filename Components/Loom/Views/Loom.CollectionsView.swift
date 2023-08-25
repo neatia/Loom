@@ -89,7 +89,7 @@ struct LoomCollectionsView: View {
             } else {
                 Spacer()
                 //TODO: localize
-                Text("Create \"Looms\" of multiple communities you'd like to see in 1 feed, here.")
+                Text("Create \"Looms\" of communities you'd like to see in 1 feed, here.")
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, .layer4)
                     .font(.headline)

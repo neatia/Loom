@@ -20,26 +20,30 @@ struct TextToolView : GenericControllerRepresentable {
     @Binding var visibility: Bool
     
     var kind: Kind
+    var inheritKind: Kind?
     
     init(text: Binding<String>,
          visibility: Binding<Bool> = .constant(false),
-         kind: Kind = .writing) {
+         kind: Kind = .writing,
+         inheritStyle: Kind? = nil) {
         self._text = text
         self._visibility = visibility
         self.kind = kind
+        self.inheritKind = inheritStyle
     }
     
     enum Kind {
         case writing
         case search
         case link
+        case otp
         case standard(String)//placeholder
         case username(String)//placeholder
         case password(String)
     }
     
     func makeUIViewController(context: Context) -> KeyboardViewController {
-        let controller: KeyboardViewController = .init(self.kind)
+        let controller: KeyboardViewController = .init(self.kind, inheritKind: self.inheritKind)
         controller.textView.insertText(text)
         controller.textView.delegate = context.coordinator
         controller.delegate = context.coordinator
@@ -128,6 +132,7 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
     }
     
     let kind: TextToolView.Kind
+    let inheritKind: TextToolView.Kind?
     
     weak var delegate: KeyboardTextToolDelegate?
     
@@ -136,8 +141,10 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
     //States
     fileprivate var isVisible: Bool = false
     
-    init(_ kind: TextToolView.Kind) {
+    init(_ kind: TextToolView.Kind,
+         inheritKind: TextToolView.Kind? = nil) {
         self.kind = kind
+        self.inheritKind = inheritKind
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -153,6 +160,7 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
         super.viewDidLoad()
         textView.inputAccessoryView = keyboardToolbarView
         
+        let kind = inheritKind ?? self.kind
         switch kind {
         case .link:
             textView.font = .preferredFont(forTextStyle: .title3)
@@ -171,17 +179,29 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
         case .link:
             //TODO: placeholder
             placeholderLabel.text = "Instance URL"
-        case .writing:
+        case .writing, .otp:
             break
         case .search:
             placeholderLabel.text = "MISC_SEARCH".localized()
         }
         
-        switch kind {
+        switch self.kind {
         case .username:
             textView.textContentType = .username
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
         case .password:
             textView.textContentType = .password
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
+        case .otp:
+            textView.textContentType = .oneTimeCode
+            textView.autocorrectionType = .no
+            textView.keyboardType = .numberPad
+        case .link:
+            textView.textContentType = .URL
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
         default:
             break
         }
@@ -239,6 +259,7 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
     }
 }
 
+//MARK: Setup KeyboardGroups
 private extension KeyboardViewController {
     func setupKeyboardTools() {
         
@@ -248,8 +269,13 @@ private extension KeyboardViewController {
         
         switch kind {
         case .link:
-            keyboardToolbarView.groups.append(linkToolgroup)
-        case .search, .standard, .password, .username:
+            //keyboardToolbarView.groups.append(linkToolgroup)
+            keyboardToolbarView.groups.append(actionToolgroup)
+        case .otp,
+                .search,
+                .standard,
+                .password,
+                .username:
             keyboardToolbarView.groups.append(actionToolgroup)
         case .writing:
             keyboardToolbarView.groups.append(editingToolgroup)
@@ -259,6 +285,7 @@ private extension KeyboardViewController {
     }
 }
 
+//MARK: Keyboard View
 final class KeyboardView: UIView {
     let textView: UITextView = {
         let this = UITextView()
