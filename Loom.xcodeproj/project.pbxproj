@@ -984,7 +984,6 @@
 		71EB91C42A803F240091EE5B /* InstanceMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceMetaView.swift; sourceTree = "<group>"; };
 		71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCommunityPickerView.swift; sourceTree = "<group>"; };
 		71EB91CE2A80A75B0091EE5B /* DebugSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSettingsView.swift; sourceTree = "<group>"; };
-		71F018202A98663A007A1FEF /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
 		71F042082A69C90B00788CDC /* AccountService.Profile.Add.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Profile.Add.swift; sourceTree = "<group>"; };
 		71F0420B2A69D39600788CDC /* ContentService.Interact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentService.Interact.swift; sourceTree = "<group>"; };
 		71F042152A6A3AD100788CDC /* Globe+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Globe+Center.swift"; sourceTree = "<group>"; };
@@ -1356,7 +1355,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				71F018202A98663A007A1FEF /* LemmyKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
