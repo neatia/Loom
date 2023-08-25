@@ -176,7 +176,7 @@ struct ProfileSettingsView: View {
                     VStack {
                         Spacer()
                         Text("TITLE_ACCOUNT")
-                            .font(.title2.bold())
+                            .font(.title.bold())
                     }
                     
                     Spacer()
@@ -217,32 +217,32 @@ struct ProfileSettingsView: View {
                 
                 Divider()
                     .padding(.bottom, .layer2)
-                    .padding(.leading, .layer4)
             }
             
             if isModal {
                 ScrollView(showsIndicators: false) {
                     settingOptions
                     
-                    VStack(spacing: .layer3) {
-                        Spacer()
-                        Divider()
-                        
-                        HStack {
-                            Spacer()
-                            Button {
-                                GraniteHaptic.light.invoke()
-                            } label: {
-                                Text("AUTH_DELETE_ACCOUNT")
-                                    .font(Device.isMacOS ? .title3.bold() : .headline.bold())
-                                    .foregroundColor(Brand.Colors.red)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            Spacer()
-                        }
-                        .padding(.top, .layer2)
-                        .padding(.bottom, .layer4)
-                    }
+                    //TODO: delete account feature
+//                    VStack(spacing: .layer3) {
+//                        Spacer()
+//                        Divider()
+//
+//                        HStack {
+//                            Spacer()
+//                            Button {
+//                                GraniteHaptic.light.invoke()
+//                            } label: {
+//                                Text("AUTH_DELETE_ACCOUNT")
+//                                    .font(Device.isMacOS ? .title3.bold() : .headline.bold())
+//                                    .foregroundColor(Brand.Colors.red)
+//                            }
+//                            .buttonStyle(PlainButtonStyle())
+//                            Spacer()
+//                        }
+//                        .padding(.top, .layer2)
+//                        .padding(.bottom, .layer4)
+//                    }
                 }
             } else {
                 settingOptions
@@ -270,7 +270,6 @@ struct ProfileSettingsView: View {
                 .padding(.vertical, .layer4)
             }
         }
-        .padding(.top, showProfileSettings ? .layer4 : 0)
         .background(Color.background)
         .onChange(of: currentLocalMeta) { status in
             guard offline else { return }
@@ -362,11 +361,11 @@ struct ProfileSettingsView: View {
                 TextToolView(text: $bio)
                     .padding(.horizontal, .layer3)
                     .frame(height: 160)
-                    .padding(.bottom, .layer4)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color.tertiaryBackground)
+                            .foregroundColor(Color.secondaryBackground)
                     )
+                    .padding(.bottom, .layer4)
 #else
                 
                 if #available(macOS 13.0, iOS 16.0, *) {
@@ -378,7 +377,7 @@ struct ProfileSettingsView: View {
                         .padding(.layer3)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .foregroundColor(Color.tertiaryBackground)
+                                .foregroundColor(Color.secondaryBackground)
                         )
                         .padding(.bottom, .layer4)
                         .toolbar {
@@ -394,7 +393,7 @@ struct ProfileSettingsView: View {
                         .padding(.layer3)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .foregroundColor(Color.tertiaryBackground)
+                                .foregroundColor(Color.secondaryBackground)
                         )
                         .padding(.bottom, .layer4)
                         .toolbar {
@@ -416,7 +415,7 @@ struct ProfileSettingsView: View {
                     .font(.title3.bold())
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color.tertiaryBackground)
+                            .foregroundColor(Color.secondaryBackground)
                     )
                     .padding(.bottom, .layer4)
             }
@@ -483,16 +482,6 @@ extension ProfileSettingsView {
             }
             
             HStack(spacing: .layer2) {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    importPicture(setAvatar: true, setBanner: false)
-                } label : {
-                    Image(systemName: "plus.app")
-                        .font(.title3.bold())
-                        .foregroundColor(.foreground)
-                        .offset(x: 0, y: -1)
-                }.buttonStyle(PlainButtonStyle())
-                
                 if let avatarUserContent {
                     Button {
                         GraniteHaptic.light.invoke()
@@ -500,6 +489,7 @@ extension ProfileSettingsView {
                         _ = Task.detached(priority: .userInitiated) { @MainActor in
                             let result = await Lemmy.deleteImage(avatarUserContent.imageFile)
                                 
+                            self.avatarUserContent = nil
                             self.imageDataAvatar = nil
                             self.avatar = ""
                         }
@@ -507,6 +497,16 @@ extension ProfileSettingsView {
                         Image(systemName: "trash")
                             .font(.title3.bold())
                             .foregroundColor(.red)
+                            .offset(x: 0, y: -1)
+                    }.buttonStyle(PlainButtonStyle())
+                } else {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        importPicture(setAvatar: true, setBanner: false)
+                    } label : {
+                        Image(systemName: "plus.app")
+                            .font(.title3.bold())
+                            .foregroundColor(.foreground)
                             .offset(x: 0, y: -1)
                     }.buttonStyle(PlainButtonStyle())
                 }
@@ -534,23 +534,14 @@ extension ProfileSettingsView {
             
             
             HStack(spacing: .layer2) {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    importPicture(setAvatar: false, setBanner: true)
-                } label : {
-                    Image(systemName: "plus.app")
-                        .font(.title3.bold())
-                        .foregroundColor(.foreground)
-                        .offset(x: 0, y: -1)
-                }.buttonStyle(PlainButtonStyle())
-                
                 if let bannerUserContent {
                     Button {
                         GraniteHaptic.light.invoke()
                         
                         _ = Task.detached(priority: .userInitiated) { @MainActor in
                             let result = await Lemmy.deleteImage(bannerUserContent.imageFile)
-                                
+                            
+                            self.bannerUserContent = nil
                             self.imageDataBanner = nil
                             self.banner = ""
                         }
@@ -558,6 +549,16 @@ extension ProfileSettingsView {
                         Image(systemName: "trash")
                             .font(.title3.bold())
                             .foregroundColor(.red)
+                            .offset(x: 0, y: -1)
+                    }.buttonStyle(PlainButtonStyle())
+                } else {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        importPicture(setAvatar: false, setBanner: true)
+                    } label : {
+                        Image(systemName: "plus.app")
+                            .font(.title3.bold())
+                            .foregroundColor(.foreground)
                             .offset(x: 0, y: -1)
                     }.buttonStyle(PlainButtonStyle())
                 }

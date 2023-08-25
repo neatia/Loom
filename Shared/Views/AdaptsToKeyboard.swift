@@ -12,11 +12,12 @@ import Combine
 #if os(iOS)
 struct AdaptsToKeyboard: ViewModifier {
     @State var currentHeight: CGFloat = 0
+    var safeAreaAware: Bool = false
     
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content
-                .padding(.bottom, self.currentHeight)
+                .padding(.bottom, self.currentHeight + (safeAreaAware ? UIApplication.shared.windowSafeAreaInsets.bottom : 0))
                 .onAppear(perform: {
                     NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillShowNotification)
                         .merge(with: NotificationCenter.Publisher(center: NotificationCenter.default, name: UIResponder.keyboardWillChangeFrameNotification))
@@ -26,7 +27,7 @@ struct AdaptsToKeyboard: ViewModifier {
                             }
                     }
                     .map { rect in
-                        rect.height - geometry.safeAreaInsets.bottom
+                        return (rect.height - geometry.safeAreaInsets.bottom) - (safeAreaAware ? UIApplication.shared.windowSafeAreaInsets.bottom : 0)
                     }
                     .subscribe(Subscribers.Assign(object: self, keyPath: \.currentHeight))
                     
@@ -41,8 +42,8 @@ struct AdaptsToKeyboard: ViewModifier {
 }
 
 extension View {
-    func adaptsToKeyboard() -> some View {
-        return modifier(AdaptsToKeyboard())
+    func adaptsToKeyboard(safeAreaAware: Bool = false) -> some View {
+        return modifier(AdaptsToKeyboard(safeAreaAware: safeAreaAware))
     }
     func adaptsToKeyboardIf(_ condition: Bool) -> some View {
         Group {

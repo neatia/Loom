@@ -45,6 +45,7 @@ struct LoomCardView: View {
                                         CommunityCardView(model: lemmyView,
                                                           showCounts: false)
                                         .frame(minWidth: 240)
+                                        .outline()
                                     } else {
                                         EmptyView()
                                     }

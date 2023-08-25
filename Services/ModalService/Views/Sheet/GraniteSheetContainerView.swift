@@ -219,7 +219,7 @@ fileprivate extension View {
                     ZStack(alignment: .top) {
                         RoundedRectangle(cornerRadius: 12)
                             .foregroundColor(Color.alternateSecondaryBackground)
-                            .shadow(radius: 100)
+                            .shadow(radius: 50)
                         
                         VStack(alignment: .center, spacing: 0) {
                             
@@ -258,6 +258,7 @@ fileprivate extension View {
                                 .padding(.top, .layer4)
                             
                             content()
+                                .adaptsToKeyboard(safeAreaAware: true)
                         }
                         .frame(height: UIScreen.main.bounds.height - 100)
                     }

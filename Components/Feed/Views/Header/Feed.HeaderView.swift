@@ -34,6 +34,7 @@ extension Feed {
                     }
                     .buttonStyle(.plain)
                     .padding(.trailing, .layer2)
+                    .padding(.leading, 2)//nitpick
                 }
                 
                 headerMenuView
@@ -64,7 +65,7 @@ extension Feed {
             }
             .padding(.vertical, Device.isExpandedLayout ? 0 : .layer2)
             .padding(.trailing, Device.isExpandedLayout ? .layer3 : .layer4)
-            .padding(.leading, Device.isIPhone && state.community == nil ? .layer3 : (Device.isExpandedLayout ? .layer3 : .layer4))
+            .padding(.leading, Device.isIPhone && state.community == nil ? .layer2 : (Device.isExpandedLayout ? .layer3 : .layer4))
             .padding(.bottom, .layer2)
             
             Divider()

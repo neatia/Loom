@@ -21,7 +21,7 @@ extension View {
     }
     
     func readability(cornerRadius: CGFloat = 8,
-                     bgColor: Color = .tertiaryBackground) -> some View {
+                     bgColor: Color = .secondaryBackground) -> some View {
         self
             .padding(.layer3)
             .background(bgColor)

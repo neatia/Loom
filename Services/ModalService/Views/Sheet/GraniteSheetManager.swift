@@ -61,9 +61,17 @@ final public class GraniteSheetManager : ObservableObject {
     
     public func dismiss(id: String = GraniteSheetManager.defaultId) {
         DispatchQueue.main.async { [weak self] in
-            self?.detentsMap[id] = nil
-            self?.models[id] = nil
-            self?.shouldPreventDismissal = false
+            if Device.isiPad {
+                self?.detentsMap[id] = nil
+                self?.models[id] = nil
+                self?.shouldPreventDismissal = false
+            } else {
+                withAnimation(.easeOut.speed(1.2)) {
+                    self?.detentsMap[id] = nil
+                    self?.models[id] = nil
+                    self?.shouldPreventDismissal = false
+                }
+            }
         }
     }
     

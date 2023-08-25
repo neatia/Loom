@@ -208,29 +208,3 @@ public struct GraniteAlertView : GraniteModal {
     }
     
 }
-
-struct GraniteAlertView_Previews: PreviewProvider {
-    
-    static var alert : some View {
-        GraniteAlertView(title: "Delete Post",
-                         message: "Are you sure you want to delete this post? This action cannot be undone.") {
-            GraniteAlertAction(title: "Cancel")
-            GraniteAlertAction(title: "Delete", kind: .destructive)
-        }
-        .graniteAlertViewStyle(
-            GraniteAlertViewStyle(backgroundColor: Color.black,
-                                  foregroundColor: Color.white,
-                                  actionColor: Color.blue)
-        )
-    }
-    
-    static var previews: some View {
-        Group {
-            alert
-                .preferredColorScheme(.dark)
-            
-            alert
-        }
-        .background(Color.white.opacity(0.2))
-    }
-}

@@ -128,7 +128,7 @@ struct SearchAllView: View {
                                 ForEach(model.posts) { postView in
                                     PostCardView()
                                         .frame(minWidth: ContainerConfig.iPhoneScreenWidth * 0.85, maxWidth: Device.isExpandedLayout ? 450 : ContainerConfig.iPhoneScreenWidth * 0.9)
-                                        .frame(height: 200)
+                                        .frame(height: 220)
                                         .contentContext(.init(postModel: postView,
                                                               viewingContext: .search))
                                         .padding(.bottom, .layer4)

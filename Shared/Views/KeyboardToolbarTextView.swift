@@ -193,6 +193,7 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
         case .password:
             textView.textContentType = .password
             textView.autocorrectionType = .no
+            textView.isSecureTextEntry = true
             textView.autocapitalizationType = .none
         case .otp:
             textView.textContentType = .oneTimeCode

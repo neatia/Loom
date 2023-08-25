@@ -18,7 +18,7 @@ public struct GraniteAlertViewStyle {
     public var sheetVerticalPadding : CGFloat
     
     public init(backgroundColor : Color = Color.black,
-                foregroundColor : Color = .white,
+                foregroundColor : Color = Color.foreground,
                 actionColor : Color = .blue,
                 destructiveColor : Color = .red,
                 overlayColor : Color = Color.black.opacity(0.5),

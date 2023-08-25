@@ -86,12 +86,13 @@ struct LoomCollectionsView: View {
                     .padding(.layer4)
                 }
                 .frame(minHeight: manifests.count > 1 ? 400 : 240)
+                .id(manifests)
             } else {
                 Spacer()
                 //TODO: localize
                 Text("Create \"Looms\" of communities you'd like to see in 1 feed, here.")
                     .multilineTextAlignment(.center)
-                    .padding(.horizontal, .layer4)
+                    .padding(.horizontal, .layer6)
                     .font(.headline)
                     .foregroundColor(Color.foreground)
                 Spacer()

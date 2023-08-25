@@ -14,6 +14,15 @@ extension Feed {
     var listeners: Void {
         account
             .center
+            .auth
+            .listen(.broadcast("feed")) { value in
+                if let response = value as? StandardNotificationMeta {
+                    ModalService.shared.presentModal(GraniteToastView(response))
+                }
+            }
+        
+        account
+            .center
             .interact
             .listen(.broadcast("feed")) { value in
                 if let response = value as? StandardErrorMeta {

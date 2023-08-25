@@ -29,7 +29,7 @@ struct ModalService : GraniteService {
     static var alertViewStyle: GraniteAlertViewStyle {
         GraniteAlertViewStyle(backgroundColor: Color.background,
                               foregroundColor: Color.white,
-                              actionColor: Brand.Colors.marbleV2,
+                              actionColor: Color.foreground,
                               overlayColor: Color.red,
                               sheetVerticalPadding: 15)
     }

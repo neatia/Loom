@@ -123,7 +123,6 @@ struct CommunityCardView: View {
             .background(Color.secondaryBackground)
             .cornerRadius(8)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
-            .padding(.bottom, .layer2)
             
             if showCounts {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -145,7 +144,7 @@ struct CommunityCardView: View {
                                 }
                                 .padding(.vertical, .layer1)
                                 .padding(.horizontal, .layer2)
-                                .background(Brand.Colors.marble.opacity(0.9))
+                                .background(Color.tertiaryBackground.opacity(0.9))
                                 .cornerRadius(4)
                                 
                                 VStack(alignment: .center, spacing: 0) {
@@ -157,7 +156,7 @@ struct CommunityCardView: View {
                                 }
                                 .padding(.vertical, .layer1)
                                 .padding(.horizontal, .layer2)
-                                .background(Brand.Colors.marble.opacity(0.9))
+                                .background(Color.tertiaryBackground.opacity(0.9))
                                 .cornerRadius(4)
                                 
                                 VStack(alignment: .center, spacing: 0) {
@@ -169,7 +168,7 @@ struct CommunityCardView: View {
                                 }
                                 .padding(.vertical, .layer1)
                                 .padding(.horizontal, .layer2)
-                                .background(Brand.Colors.marble.opacity(0.9))
+                                .background(Color.tertiaryBackground.opacity(0.9))
                                 .cornerRadius(4)
                             }
                         }
@@ -181,6 +180,7 @@ struct CommunityCardView: View {
                         }
                     }//hstack counts end
                 }
+                .padding(.top, .layer2)
             }
         }
     }

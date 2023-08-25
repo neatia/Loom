@@ -63,7 +63,6 @@ struct GenericPreview: View {
                     MarkdownView(text: content)
                         .markdownViewRole(.editor)
                         .fontGroup(PostDisplayFontGroup())
-                        .padding(.top, .layer4)
                         .padding(.top, Device.isMacOS ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                         .padding(.horizontal, .layer2)
@@ -73,6 +72,7 @@ struct GenericPreview: View {
         }
         .padding(.top, ContainerConfig.generalViewTopPadding)
         .frame(width: Device.isMacOS ? 400 : nil)
+        .frame(minHeight: Device.isMacOS ? 400 : nil)
         .background(Device.isIPhone ? Color.alternateSecondaryBackground : Color.background)
     }
 }
