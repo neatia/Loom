@@ -33,7 +33,7 @@ extension Feed {
                         pager.block(item: model)
                     case .blockPerson(let model):
                         pager.updateBlockFromPerson(item: model)
-                    case .removePost(let model):
+                    case .deletePost(let model):
                         pager.update(item: model)
                     case .subscribe(let model):
                         _state.community.wrappedValue = model.community

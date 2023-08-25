@@ -70,7 +70,7 @@ struct GenericPreview: View {
                 .padding(.horizontal, .layer3)
             }
         }
-        .padding(.top, ContainerConfig.generalViewTopPadding)
+        //.padding(.top, ContainerConfig.generalViewTopPadding)
         .frame(width: Device.isMacOS ? 400 : nil)
         .frame(minHeight: Device.isMacOS ? 400 : nil)
         .background(Device.isIPhone ? Color.alternateSecondaryBackground : Color.background)

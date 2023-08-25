@@ -7,7 +7,6 @@
 <a href="https://testflight.apple.com/join/owwIagmV"><h2 align="center">Testflight (iOS)</h2></a>
 <p align="center">https://testflight.apple.com/join/owwIagmV</p>
 
-
 <p align="center">Aggregating aggregation. Providing everyone with a premium experience when interacting with federated servers. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
 ## Requirements
@@ -30,7 +29,7 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### [Changelog // Developer updates](https://lemmy.world/post/2779700)
+### [Changelog // Developer updates](https://neatia.xyz/c/loom)
 
 ## Component Previews
 
@@ -48,6 +47,10 @@
 | Explore    | |
 | :-------- | -------: |
 | ![Image](https://gateway.ipfs.io/ipfs/QmXoHKNAo2RHYAd843Mv4tzxAvRKswT1U8zVrEMnj4UFDQ)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
+
+| MD helper  | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmZ5H7u64ceJ6nvVkBpdtzWSc7FkHhih4SFnNo7HdgEB7B) | Keyboard toolbar provides easy to access shortcuts on iPhone/iPad to help with Markdown formatting. |
 
 | Travelling Modals    | |
 | :-------- | -------: |
@@ -77,7 +80,7 @@
 
 | Light Mode    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmUtjSKkYmvJ1erK4eQpwuMpqLPBHZWTUGH2V658Td3u6W) | Light mode and Dark mode supported. Refer to the color group in `Assets` to define preferences. |
+| ![Image](https://gateway.ipfs.io/ipfs/QmUtjSKkYmvJ1erK4eQpwuMpqLPBHZWTUGH2V658Td3u6W) | Light mode and Dark mode supported. Refer to the color group in `Assets` to define your own preferences for each. |
 
 
 
@@ -101,7 +104,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 - [MarbleKit](https://github.com/pexavc/marblekit)
 - [LemmyKit](https://github.com/pexavc/lemmykit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)
-- [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean/nuke)
+- [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean)
 - [MarkdownView](https://github.com/pexavc/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004)
 - [KeyboardToolbar](https://github.com/simonbs/KeyboardToolbar) Thanks to [@simonbs](https://github.com/simonbs)
 
@@ -110,6 +113,7 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 In an attempt to build a community around Loom as well, feel free to explore the places below!
 
 - [@lemmy.world](https://lemmy.world/c/loom)
+- [@neatia.xyz](https://neatia.xyz/c/loom)
 - Matrix Spaces: `!cYiAYEKIMRaZcuuudA:matrix.org`
 
 ### Contact

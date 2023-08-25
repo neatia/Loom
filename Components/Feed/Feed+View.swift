@@ -25,6 +25,9 @@ extension Feed: GraniteNavigationDestination {
             }
         }
         .background(Color.background)
+        .graniteNavigationDestinationIf(isCommunity) {
+            communityInfoMenuView
+        }
 //        .onAppear {
 //            if content.state.lastVersionUpdateNotice != Device.appVersion {
 //                modal.presentSheet {
@@ -84,15 +87,7 @@ extension Feed: GraniteNavigationDestination {
     }
     
     var destinationStyle: GraniteNavigationDestinationStyle {
-        if isCommunity {
-            return .init(navBarBGColor: Color.background) {
-                communityInfoMenuView
-                    .onChange(of: state.communityView) { _ in
-                        print("{TEST} changed")
-                    }
-            }
-        } else {
-            return .init(navBarBGColor: Color.background)
-        }
+        .init(navBarBGColor: Color.background,
+              isCustomTrailing: isCommunity)
     }
 }

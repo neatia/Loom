@@ -14,6 +14,7 @@ import GraniteUI
 
 struct TextToolView : GenericControllerRepresentable {
     @GraniteAction<Void> var onSubmit
+    @GraniteAction<Bool> var isFocused
     @GraniteAction<Void> var toggleVisibility
     
     @Binding var text: String
@@ -103,9 +104,11 @@ struct TextToolView : GenericControllerRepresentable {
         
         func textViewDidEndEditing(_ textView: UITextView) {
             delegate?.setPlaceholderVisibility(text.isEmpty)
+            parent.isFocused.perform(false)
         }
         
         func textViewDidBeginEditing(_ textView: UITextView) {
+            parent.isFocused.perform(true)
             
         }
         

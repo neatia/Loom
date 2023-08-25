@@ -134,7 +134,7 @@ extension WriteView {
                     .padding(.horizontal, .layer4 + additionalPadding)
                 
                 Divider()
-                    .padding(.vertical, .layer2)
+                    .padding(.top, .layer2)
             }
             
             ZStack {
@@ -142,8 +142,11 @@ extension WriteView {
 #if os(iOS)
                 TextToolView(text: $content,
                              visibility: $isVisible)
-                .focused($isFocused)
+                .attach({ state in
+                    self.isFocused = state
+                }, at: \.isFocused)
                 .padding(.horizontal, .layer3)
+                .padding(.top, .layer2)
                 .overlayIf(content.isEmpty && isFocused == false) {
                     placeholderView
                 }
@@ -159,6 +162,7 @@ extension WriteView {
                         .font(.title3.bold())
                         .scrollContentBackground(Visibility.hidden)
                         .padding(.horizontal, .layer3 + additionalPadding)
+                        .padding(.top, .layer2)
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
                                 KeyboardToolbarSView(isVisible: $isVisible)
@@ -180,6 +184,7 @@ extension WriteView {
                                 .background(.clear)
                                 .font(.title3.bold())
                                 .padding(.horizontal, .layer3 + additionalPadding)
+                                .padding(.top, .layer2)
                                 .id(id)
                                 .toolbar {
                                     
@@ -198,18 +203,19 @@ extension WriteView {
                     .inlineNavTitle()
                 }
 #endif
-                
                 if isVisible {
+                    
                     ScrollView {
                         VStack(alignment: .leading, spacing: 0) {
                             MarkdownView(text: $content)
                                 .markdownViewRole(.editor)
                                 .id(isVisible)
+                                .padding(.vertical, .layer3)
+                                .padding(.top, .layer2)//nitpick to align overlay with divider
                                 .padding(.horizontal, .layer2)
                         }
                     }
                     .padding(.horizontal, .layer3)
-                    .padding(.vertical, .layer3)
                     .background(Color.background.opacity(0.9))
                 }
             }
@@ -227,6 +233,7 @@ extension WriteView {
             }
             .padding(.horizontal, .layer4)
             .padding(.vertical, Device.isExpandedLayout ? .layer3 : .layer2)
+            .padding(.top, .layer2)
             Spacer()
         }.allowsHitTesting(false)
     }

@@ -16,6 +16,7 @@ struct CommunityCardView: View {
     var model: CommunityView
     var showCounts: Bool = true
     var fullWidth: Bool = false
+    var outline: Bool = false
     
     
     var subscribers: String {
@@ -123,6 +124,7 @@ struct CommunityCardView: View {
             .background(Color.secondaryBackground)
             .cornerRadius(8)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
+            .outlineIf(outline)
             
             if showCounts {
                 ScrollView(.horizontal, showsIndicators: false) {

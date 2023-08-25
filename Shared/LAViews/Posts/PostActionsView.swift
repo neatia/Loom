@@ -41,17 +41,6 @@ struct PostActionsView: View {
     @Relay var config: ConfigService
     @Relay var content: ContentService
     
-    var modelIsRemoved: Bool {
-        switch bookmarkKind {
-        case .post(let postView):
-            return postView.post.removed
-        case .comment(let commentView, _):
-            return commentView.comment.removed
-        default:
-            return false
-        }
-    }
-    
     var body: some View {
         Menu {
             if let name = community?.name {
@@ -153,22 +142,23 @@ struct PostActionsView: View {
             Divider()
             
             if person?.isMe == true {
-                Button(role: modelIsRemoved ? .none : .destructive) {
+                Button(role: context.isDeleted ? .none : .destructive) {
                     GraniteHaptic.light.invoke()
-                    switch bookmarkKind {
-                    case .post(let postView):
-                        interact.perform(.removePost(postView))
-                    case .comment(let commentView, _):
-                        LoomLog("removing comment \(accountInteract == nil)")
+                    
+                    if context.isPost,
+                       let postView = context.postModel {
                         accountInteract?
                             .send(AccountService
                                 .Interact
-                                .Meta(intent: .removeComment(commentView)))
-                    default:
-                        break
+                                .Meta(intent: .deletePost(postView)))
+                    } else if let commentView = context.commentModel {
+                        accountInteract?
+                            .send(AccountService
+                                .Interact
+                                .Meta(intent: .deleteComment(commentView)))
                     }
                 } label: {
-                    if modelIsRemoved {
+                    if context.isDeleted {
                         Text("MISC_RESTORE")
                         Image(systemName: "arrow.counterclockwise.circle")
                     } else {

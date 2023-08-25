@@ -11,6 +11,17 @@ import GraniteUI
 import SwiftUI
 import NukeUI
 
+/*
+ All this header view logic can definitely be cleanly
+ reorganized...
+ 
+ This is a product of constant nitpicking on 4 form factors
+ - iphone
+ - iphone w/ community banner
+ - ipad/macos
+ - ipad/macos w/ community banner
+ */
+
 extension Feed {
     var headerView: some View {
         VStack(alignment: .leading, spacing: 0) {
