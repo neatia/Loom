@@ -40,4 +40,14 @@ extension View {
             .overlay(RoundedRectangle(cornerRadius: cornerRadius)
                 .stroke(Color.foreground.opacity(0.3), lineWidth: 1.0))
     }
+    
+    func outlineIf(_ condition: Bool, cornerRadius: CGFloat = 8) -> some View {
+        Group {
+            if condition {
+                self.outline(cornerRadius: cornerRadius)
+            } else {
+                self
+            }
+        }
+    }
 }

@@ -138,15 +138,20 @@ extension ContentContext {
     }
     
     var isBot: Bool {
-        postModel?.creator.bot_account == true || commentModel?.creator.bot_account == true
+        commentModel?.creator.bot_account == true || postModel?.creator.bot_account == true
     }
     
+    //commentModel first, since posts come downstream with commentviews as well
     var isBlocked: Bool {
-        postModel?.creator_blocked == true || commentModel?.creator_blocked == true
+        commentModel?.creator_blocked == true || postModel?.creator_blocked == true
     }
     
     var isRemoved: Bool {
-        postModel?.post.removed == true || commentModel?.comment.removed == true
+        commentModel?.comment.removed == true || postModel?.post.removed == true
+    }
+    
+    var isDeleted: Bool {
+        commentModel?.comment.deleted == true || postModel?.post.deleted == true
     }
 }
 

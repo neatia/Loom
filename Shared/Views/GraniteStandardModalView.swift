@@ -19,6 +19,7 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
     var showBG: Bool
     var alternateBG: Bool
     var drawerMode: Bool
+    //unecessary option
     var customHeaderView: Bool
     @Binding var shouldShowDrawer: Bool
     var canCloseDrawer: Bool
@@ -71,7 +72,9 @@ struct GraniteStandardModalView<Header: View, Content: View>: View {
                 VStack(spacing: 0) {
                     HStack(spacing: .layer4) {
                         VStack {
-                            Spacer()
+                            if customHeaderView == false {
+                                Spacer()
+                            }
                             
                             if let title {
                                 Text(title)

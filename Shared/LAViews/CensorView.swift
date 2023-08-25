@@ -15,6 +15,7 @@ struct CensorView: View {
         case nsfw
         case bot
         case removed
+        case deleted
         case unknown
         case blocked
         case reported
@@ -69,6 +70,21 @@ struct CensorView: View {
                     }
                     .frame(maxWidth: .infinity)
                 case .removed:
+                    VStack(spacing: .layer4) {
+                        Image(systemName: "exclamationmark.octagon")
+                            .font(titleFont)
+                            .foregroundColor(.foreground)
+                        
+                        //TODO: localize
+                        Text("Removed by moderators")
+                            .font(bodyFont.bold())
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, .layer3)
+                            .foregroundColor(.foreground)
+                        
+                    }
+                    .frame(maxWidth: .infinity)
+                case .deleted:
                     VStack(spacing: .layer4) {
                         Image(systemName: "trash")
                             .font(titleFont)

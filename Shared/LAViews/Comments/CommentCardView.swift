@@ -41,6 +41,7 @@ struct CommentCardView: View {
         context.viewingContext == .search
     }
     
+    //Mod removal
     var isRemoved: Bool {
         currentModel?.comment.removed == true
     }
@@ -58,7 +59,9 @@ struct CommentCardView: View {
     }
     
     var censorKind: CensorView.Kind {
-        if isRemoved || isDeleted {
+        if isDeleted {
+            return .deleted
+        } else if isRemoved {
             return .removed
         } else if isBot {
             return .bot
@@ -164,9 +167,9 @@ struct CommentCardView: View {
                 .listen(.bubble(context.id)) { value in
                     if let interact = value as? AccountService.Interact.Meta {
                         switch interact.intent {
-                        case .removeComment(let model):
+                        case .deleteComment(let model):
                             guard model.id == context.commentModel?.id else { return }
-                            self.model = model.updateRemoved()
+                            self.model = model.updateDeleted()
                         default:
                             break
                         }

@@ -51,8 +51,10 @@ extension AccountService {
             case reportPost(PostView)
             case reportPostSubmit(ReportView.Submit)
             case reportComment(CommentView)
-            case removePost(PostView)
-            case removeComment(CommentView)
+//            case removePost(PostView)
+//            case removeComment(CommentView)
+            case deletePost(PostView)
+            case deleteComment(CommentView)
             case subscribe(CommunityView)
             case editPost(PostView)
             case removeFromProfiles(Person?)
@@ -166,18 +168,35 @@ extension AccountService {
                 }
                 
             //MARK: Remove
-            case .removePost(let model):
-                let result = await Lemmy.removePost(model.post, removed: model.post.removed == true ? false : true)
+//            case .removePost(let model):
+//                let result = await Lemmy.removePost(model.post, removed: model.post.removed == true ? false : true)
+//                if let result, let meta {
+//                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.post.removed ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS", event: .success), intent: .removePost(result.post_view)))
+//                } else {
+//                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REMOVE", event: .error))
+//                }
+//            case .removeComment(let model):
+//                let result = await Lemmy.removeComment(model.comment, removed: model.comment.removed == true ? false : true)
+//
+//                if let result, let meta {
+//                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.comment.removed ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS", event: .success), intent: meta.intent))
+//
+//                } else {
+//                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_COMMENT_FAILED_TO_REMOVE", event: .error))
+//                }
+            //MARK: Delete
+            case .deletePost(let model):
+                let result = await Lemmy.deletePost(model.post, deleted: model.post.deleted == true ? false : true)
                 if let result, let meta {
-                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.post.removed ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS", event: .success), intent: .removePost(result.post_view)))
+                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.post.deleted ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS", event: .success), intent: .deletePost(result.post_view)))
                 } else {
                     broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REMOVE", event: .error))
                 }
-            case .removeComment(let model):
-                let result = await Lemmy.removeComment(model.comment, removed: model.comment.removed == true ? false : true)
+            case .deleteComment(let model):
+                let result = await Lemmy.deleteComment(model.comment, deleted: model.comment.deleted == true ? false : true)
                 
                 if let result, let meta {
-                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.comment.removed ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS", event: .success), intent: meta.intent))
+                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.comment.deleted ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS", event: .success), intent: .deleteComment(result.comment_view)))
                     
                 } else {
                     broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_COMMENT_FAILED_TO_REMOVE", event: .error))

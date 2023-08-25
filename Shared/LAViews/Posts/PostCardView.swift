@@ -58,7 +58,9 @@ struct PostCardView: View {
     }
     
     var censorKind: CensorView.Kind {
-        if censorRemoved || censorDeleted {
+        if censorDeleted {
+            return .deleted
+        } else if censorRemoved {
             return .removed
         } else if censorNSFW {
             return .nsfw
@@ -146,9 +148,9 @@ struct PostCardView: View {
                 .listen(.bubble(context.id)) { value in
                     if let interact = value as? AccountService.Interact.Meta {
                         switch interact.intent {
-                        case .removePost(let model):
+                        case .deletePost(let model):
                             guard model.id == context.postModel?.id else { return }
-                            self.model = model.updateRemoved()
+                            self.model = model.updateDeleted()
                         default:
                             break
                         }

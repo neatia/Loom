@@ -289,8 +289,6 @@
 		717C8FBF2A6FD51F00DF6037 /* Feed.TitleBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717C8FBD2A6FD51C00DF6037 /* Feed.TitleBarView.swift */; };
 		717D388B2887A44D00165D7D /* Home+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717D388A2887A44D00165D7D /* Home+View.swift */; };
 		717D388C2887A44D00165D7D /* Home+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717D388A2887A44D00165D7D /* Home+View.swift */; };
-		717E613328A0D69B009A2B1A /* Home._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E613228A0D69B009A2B1A /* Home._.swift */; };
-		717E613428A0D69B009A2B1A /* Home._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717E613228A0D69B009A2B1A /* Home._.swift */; };
 		71899E272A8952100073158F /* Loom+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E232A8952100073158F /* Loom+View.swift */; };
 		71899E282A8952100073158F /* Loom+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E232A8952100073158F /* Loom+View.swift */; };
 		71899E2B2A8952100073158F /* Loom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E252A8952100073158F /* Loom.swift */; };
@@ -834,7 +832,6 @@
 		717C8FBA2A6FD1EF00DF6037 /* Feed.HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.HeaderView.swift; sourceTree = "<group>"; };
 		717C8FBD2A6FD51C00DF6037 /* Feed.TitleBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.TitleBarView.swift; sourceTree = "<group>"; };
 		717D388A2887A44D00165D7D /* Home+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Home+View.swift"; sourceTree = "<group>"; };
-		717E613228A0D69B009A2B1A /* Home._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home._.swift; sourceTree = "<group>"; };
 		71899E232A8952100073158F /* Loom+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loom+View.swift"; sourceTree = "<group>"; };
 		71899E252A8952100073158F /* Loom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loom.swift; sourceTree = "<group>"; };
 		71899E312A89528C0073158F /* LoomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoomService.swift; sourceTree = "<group>"; };
@@ -1468,21 +1465,12 @@
 		711B3FD42885D4F000F3080D /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				711B3FDF2885E67E00F3080D /* Reducers */,
 				71A28D1B29522F8300EAE8EE /* Models */,
 				711B3FD62885D4F000F3080D /* Home+Center.swift */,
 				717D388A2887A44D00165D7D /* Home+View.swift */,
 				711B3FD82885D4F000F3080D /* Home.swift */,
 			);
 			path = Home;
-			sourceTree = "<group>";
-		};
-		711B3FDF2885E67E00F3080D /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-				717E613228A0D69B009A2B1A /* Home._.swift */,
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		711D39202A8408C000CF2DB2 /* Search */ = {
@@ -1626,19 +1614,11 @@
 		71622E982A6E5796006233F3 /* Reply */ = {
 			isa = PBXGroup;
 			children = (
-				71622E9C2A6E5796006233F3 /* Reducers */,
 				71622E992A6E5796006233F3 /* Reply+Center.swift */,
 				71622E9B2A6E5796006233F3 /* Reply+View.swift */,
 				71622E9A2A6E5796006233F3 /* Reply.swift */,
 			);
 			path = Reply;
-			sourceTree = "<group>";
-		};
-		71622E9C2A6E5796006233F3 /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		7166E9D72A74A28D004F88D7 /* LAExtensions */ = {
@@ -1698,18 +1678,18 @@
 		717C8FB32A6F9EA000DF6037 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				71DA49832A96CF83006FB90C /* Content */,
-				710540822A91D9BA00B9DC8A /* Snapshot */,
 				717C12A1293BF02D0060A446 /* Animations */,
+				710540822A91D9BA00B9DC8A /* Snapshot */,
+				71DA49832A96CF83006FB90C /* Content */,
 				711D39202A8408C000CF2DB2 /* Search */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
 				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
 				71A28E18295237AE00EAE8EE /* Passthrough.swift */,
+				71BE94DD2A954DCE004A3AC3 /* Compressor.swift */,
 				71AF14662A2E807300EEBD4B /* Disclaimer.swift */,
 				714B48772A816CF900AC6199 /* Logger.swift */,
 				71E5F3CA2A73A02500299558 /* Haptic.swift */,
-				71BE94DD2A954DCE004A3AC3 /* Compressor.swift */,
 				71A28E1E295237AE00EAE8EE /* Run.swift */,
 			);
 			path = Utility;
@@ -1718,20 +1698,12 @@
 		71899E202A8951E30073158F /* Loom */ = {
 			isa = PBXGroup;
 			children = (
-				71899E262A8952100073158F /* Reducers */,
 				71899E3C2A8958E30073158F /* Views */,
 				716CCADB2A8CA28E009F9413 /* Loom+Center.swift */,
 				71899E232A8952100073158F /* Loom+View.swift */,
 				71899E252A8952100073158F /* Loom.swift */,
 			);
 			path = Loom;
-			sourceTree = "<group>";
-		};
-		71899E262A8952100073158F /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		71899E302A89528C0073158F /* LoomService */ = {
@@ -2002,20 +1974,12 @@
 		71C69E1D2A70469900B54AD6 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				71C69E202A70469900B54AD6 /* Reducers */,
 				71C69E462A70556F00B54AD6 /* Views */,
 				71C69E1E2A70469900B54AD6 /* Search+Center.swift */,
 				71C69E1F2A70469900B54AD6 /* Search+View.swift */,
 				71C69E212A70469900B54AD6 /* Search.swift */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		71C69E202A70469900B54AD6 /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		71C69E462A70556F00B54AD6 /* Views */ = {
@@ -2054,7 +2018,6 @@
 		71C9F8DD2A60B7E10089D7EA /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				71C9F8E12A60B7E10089D7EA /* Reducers */,
 				71F778CA2A71C5D400C9C5C4 /* Views */,
 				7151512B2A8FB12F00251978 /* Profile+Listeners.swift */,
 				71C9F8DE2A60B7E10089D7EA /* Profile+Center.swift */,
@@ -2062,13 +2025,6 @@
 				71C9F8DF2A60B7E10089D7EA /* Profile.swift */,
 			);
 			path = Profile;
-			sourceTree = "<group>";
-		};
-		71C9F8E12A60B7E10089D7EA /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		71C9F8E82A60B7F40089D7EA /* Settings */ = {
@@ -2132,9 +2088,9 @@
 				7166E9E42A74EE64004F88D7 /* BlockedPickerView.swift */,
 				7166E9E72A7503A0004F88D7 /* CardActionsView.swift */,
 				71B7A1DB2A68E5CA003E6D4D /* LoginView.swift */,
-				71FF4D612A93F380005BF579 /* Modals */,
 				71E5F3C52A739E3000299558 /* User */,
 				71E5F3C42A739E1900299558 /* Posts */,
+				71FF4D612A93F380005BF579 /* Modals */,
 				71E5F3C82A739E6100299558 /* Footers */,
 				71E5F3C72A739E5200299558 /* Headers */,
 				711D39272A8413E100CF2DB2 /* Instances */,
@@ -2339,20 +2295,12 @@
 		71F042142A6A3AD100788CDC /* Globe */ = {
 			isa = PBXGroup;
 			children = (
-				71F042172A6A3AD100788CDC /* Reducers */,
 				71EAF46B2A7D99070034FCB9 /* Views */,
 				71F042152A6A3AD100788CDC /* Globe+Center.swift */,
 				71F042162A6A3AD100788CDC /* Globe+View.swift */,
 				71F042182A6A3AD100788CDC /* Globe.swift */,
 			);
 			path = Globe;
-			sourceTree = "<group>";
-		};
-		71F042172A6A3AD100788CDC /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		71F0421F2A6A3AD700788CDC /* Write */ = {
@@ -2902,7 +2850,6 @@
 				71C9F8E62A60B7E10089D7EA /* Profile+View.swift in Sources */,
 				7166E9E52A74EE64004F88D7 /* BlockedPickerView.swift in Sources */,
 				710283952A2A54C300010877 /* EnvironmentValues+PointSliderStyle.swift in Sources */,
-				717E613328A0D69B009A2B1A /* Home._.swift in Sources */,
 				7197FB112964B4C0005EBBA4 /* GraniteToastViewStyle.swift in Sources */,
 				71DF107928CC697600559DBC /* Outcome.swift in Sources */,
 				711B3FD92885D4F000F3080D /* Home+Center.swift in Sources */,
@@ -3207,7 +3154,6 @@
 				71C9F8E72A60B7E10089D7EA /* Profile+View.swift in Sources */,
 				710283CE2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				7197FB2C2964B4EC005EBBA4 /* ModalService.swift in Sources */,
-				717E613428A0D69B009A2B1A /* Home._.swift in Sources */,
 				710283B62A2A54C300010877 /* HorizontalValueSliderStyle.swift in Sources */,
 				71DF107A28CC697600559DBC /* Outcome.swift in Sources */,
 				710283C62A2A54C300010877 /* LinearValueMath.swift in Sources */,
@@ -3499,7 +3445,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.25;
+				CURRENT_PROJECT_VERSION = 2023.8.26;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3534,7 +3480,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.25;
+				CURRENT_PROJECT_VERSION = 2023.8.26;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

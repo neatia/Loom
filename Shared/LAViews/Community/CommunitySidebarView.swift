@@ -20,15 +20,31 @@ struct CommunitySidebarView: View {
     //@State var communityView: CommunityView? = nil
     
     var body: some View {
-        GraniteStandardModalView(maxHeight: 600,
+        GraniteStandardModalView(maxHeight: nil,
                                  customHeaderView: true) {
             Group {
                 if let communityView {
-                    CommunityCardView(model: communityView, fullWidth: true)
+                    CommunityCardView(model: communityView,
+                                      fullWidth: true,
+                                      outline: true)
                 }
             }
         } content: {
-            VStack {
+            VStack(spacing: .layer2) {
+//                //TODO: admin list
+//                if let communityView {
+//                    HStack(spacing: .layer4) {
+//                        VStack {
+//                            Spacer()
+//                            Text("TITLE_ADMINS")
+//                                .font(.title.bold())
+//                        }
+//
+//                        Spacer()
+//                    }
+//                    .frame(height: 36)
+//                }
+                
                 ScrollView(showsIndicators: false) {
                     if let description = community.description {
                         MarkdownView(text: description)
@@ -36,20 +52,6 @@ struct CommunitySidebarView: View {
                             .padding(.layer3)
                             .background(Color.tertiaryBackground)
                             .cornerRadius(8)
-                    }
-                    
-                    //TODO: admin list
-                    if let communityView {
-                        HStack(spacing: .layer4) {
-                            VStack {
-                                Spacer()
-                                Text("TITLE_ADMINS")
-                                    .font(.title.bold())
-                            }
-                            
-                            Spacer()
-                        }
-                        .frame(height: 36)
                     }
                 }
                 Spacer()
