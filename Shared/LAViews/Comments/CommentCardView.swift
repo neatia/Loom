@@ -88,6 +88,9 @@ struct CommentCardView: View {
                     .attach({
                         editModel()
                     }, at: \.edit)
+                    .attach({
+                        showThreadDrawer(model)
+                    }, at: \.goToThread)
                     .contentContext(.addCommentModel(model: currentModel, context))
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)

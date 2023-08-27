@@ -58,7 +58,7 @@
 
 | Bookmark Syncing    | |
 | :-------- | -------: |
-| <img src="https://gateway.ipfs.io/ipfs/Qmakr2HyJnXf87tseVhbjgqiKuqRoj3rUo79TK8DoKjwTg" width="50%"/> | All your saved posts and comments can be switched between accounts in a dedicated component.   |
+| ![Image](https://gateway.ipfs.io/ipfs/QmVeqWMZZ2TipxVK5aRfbFxtQBTsvJ1snYDaVCs16jRmK7)  | All your saved posts and comments can be switched between accounts in a dedicated component.   |
 
 | Sharing    | |
 | :-------- | -------: |

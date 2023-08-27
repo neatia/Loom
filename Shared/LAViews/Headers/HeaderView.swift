@@ -42,6 +42,7 @@ struct HeaderView: View {
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
+    @GraniteAction<Void> var goToThread
     
     @State var postView: PostView? = nil
     
@@ -172,6 +173,9 @@ struct HeaderView: View {
                 .attach({
                     self.fetchPostView()
                 }, at: \.goToPost)
+                .attach({
+                    goToThread.perform()
+                }, at: \.goToThread)
                 .attach({
                     edit.perform()
                 }, at: \.edit)
