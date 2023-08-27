@@ -59,5 +59,24 @@ extension Drawer {
                 .edgesIgnoringSafeArea(.all)
             }
         }
+       .onReceive(NotificationCenter
+        .Publisher(center: NotificationCenter.default,
+                   name: UIResponder.keyboardWillShowNotification)) { _ in
+           guard keyboardAware else { return }
+           DispatchQueue.main.async {
+               self.lastHeight = self.height
+               self.height = self.heightWithKeyboard.height
+               self.restingHeight = self.height
+           }
+       }
+       .onReceive(NotificationCenter
+        .Publisher(center: NotificationCenter.default,
+                   name: UIResponder.keyboardWillHideNotification)) { _ in
+           guard keyboardAware else { return }
+           DispatchQueue.main.async {
+               self.height = self.lastHeight
+               self.restingHeight = self.height
+           }
+       }
     }
 }

@@ -42,25 +42,10 @@ struct PostDisplayView: GraniteNavigationDestination {
     var sortingType: [CommentSortType] = CommentSortType.allCases
     @State var selectedHost: String = LemmyKit.host
     
+    var isPushed: Bool = false
+    
     var viewableHosts: [String] {
-        var hosts: [String] = [LemmyKit.host]
-        
-        guard let model else { return [] }
-        
-        if model.isBaseResource == false {
-            hosts += [model.community.actor_id.host]
-        }
-        
-        if model.isPeerResource {
-            hosts += [model.creator.actor_id.host]
-        }
-        
-        if context.viewingContext.isBookmark,
-           case .peer(let host) = context.viewingContext.bookmarkLocation {
-            hosts += [host]
-        }
-        
-        return hosts
+        context.viewbaleHosts
     }
     
     @StateObject var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
@@ -70,7 +55,7 @@ struct PostDisplayView: GraniteNavigationDestination {
             if Device.isExpandedLayout {
                 headerView
                     .padding(.horizontal, .layer3)
-                    .padding(.bottom, .layer4)
+                    .padding(.bottom, .layer3)
             }
 
             Divider()
@@ -98,10 +83,6 @@ struct PostDisplayView: GraniteNavigationDestination {
                     contentView
                 } content: { commentView in
                     CommentCardView()
-                        .attach({ model in
-                            self.showDrawer = true
-                            self.commentModel = model
-                        }, at: \.showDrawer)
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
@@ -118,12 +99,8 @@ struct PostDisplayView: GraniteNavigationDestination {
             }
         }
         .padding(.top, Device.isExpandedLayout ? .layer4 : .layer2)
-        //.addGraniteSheet(modal.sheetManager, background: Color.clear)
         .background(Color.background)
         .foregroundColor(.foreground)
-        .showDrawer($showDrawer,
-                    commentView: commentModel,
-                    context: context)
         .task {
             self.threadLocation = context.location
             
@@ -147,15 +124,21 @@ struct PostDisplayView: GraniteNavigationDestination {
             }.fetch()
         }
         .ignoresSafeArea(.keyboard)
+        //This overlays
+        .graniteNavigationDestinationIf(isPushed) {
+            headerView
+                .padding(.leading, .layer5)
+        }
     }
     
+    //This inserts into a HStack
     var destinationStyle: GraniteNavigationDestinationStyle {
         if Device.isExpandedLayout {
             return .init(navBarBGColor: Color.background)
         } else {
             return .init(fullWidth: true, navBarBGColor: Color.background) {
                 headerView
-                    .padding(.leading, .layer3)
+                    .padding(.leading, .layer4)
             }
         }
     }
@@ -194,16 +177,18 @@ extension PostDisplayView {
                 }
             }
             
+            //Header refers to being a part of the focal content of the view
+            //Threadview's first comment is a "header" too
             FooterView(isHeader: true,
                        showScores: config.state.showScores,
                        isComposable: true)
                 .attach({ model in
                     ModalService
                         .shared
-                        .showReplyPostModal(model: model) { postView in
-                        pager.insert(postView)
+                        .showReplyPostModal(model: model) { commentView in
+                        pager.insert(commentView)
                     }
-                }, at: \.reply)
+                }, at: \.replyPost)
                 .contentContext(.withStyle(.style1, context))
                 .padding(.horizontal, .layer4)
                 .padding(.top, model?.hasContent == true ? .layer5 : .layer2)
@@ -309,43 +294,18 @@ extension PostDisplayView {
 }
 
 
-fileprivate extension View {
-    func showDrawer(_ condition: Binding<Bool>,
-                    commentView: CommentView?,
-                    context: ContentContext) -> some View {
-        self.overlayIf(condition.wrappedValue, alignment: .top) {
-            Group {
-                if let commentView {
-                    #if os(iOS)
-                    Drawer(startingHeight: 480) {
-                        ZStack(alignment: .top) {
-                            RoundedRectangle(cornerRadius: 12)
-                                .foregroundColor(Color.background)
-                                .shadow(radius: 100)
-                            
-                            VStack(alignment: .center, spacing: 0) {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .frame(width: 50, height: 8)
-                                    .foregroundColor(Color.gray)
-                                    .padding(.top, .layer5)
-                                ThreadView()
-                                    .attach({
-                                        condition.wrappedValue = false
-                                    }, at: \.closeDrawer)
-                                    .contentContext(.addCommentModel(model: commentView, context))
-                                Spacer()
-                            }
-                            .frame(height: UIScreen.main.bounds.height - 100)
-                        }
-                    }
-                    .rest(at: .constant([100, 480, UIScreen.main.bounds.height - 100]))
-                    .impact(.light)
-                    .edgesIgnoringSafeArea(.vertical)
-                    .transition(.move(edge: .bottom))
-                    .id(commentView.comment.id)
-                    #endif
-                }
-            }
+extension ModalService {
+    @MainActor
+    func showThreadDrawer(commentView: CommentView?,
+                          context: ContentContext) {
+        ModalService
+            .shared
+            .presentSheet {
+            ThreadView()
+                .attach({
+                    ModalService.shared.dismissSheet()
+                }, at: \.closeDrawer)
+                .contentContext(.addCommentModel(model: commentView, context))
         }
     }
 }

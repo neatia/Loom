@@ -86,9 +86,9 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: replyKind)
-                .attach({ model in
+                .attach({ (updatedModel, replyModel) in
                     DispatchQueue.main.async {
-                        update?(model)
+                        update?(updatedModel)
                         
                         self.dismissSheet()
                     }
@@ -124,15 +124,15 @@ extension ModalService {
     @MainActor
     func showReplyCommentModal(isEditing: Bool,
                                model: CommentView?,
-                               _ update: ((CommentView) -> Void)? = nil) {
+                               _ update: ((CommentView, CommentView?) -> Void)? = nil) {
         guard let model else {
             return
         }
         
         presentSheet {
             Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
-                .attach({ replyModel in
-                    update?(replyModel)
+                .attach({ (updatedModel, replyModel) in
+                    update?(updatedModel, replyModel)
                     
                     if isEditing {
                         //TODO: edit success modal

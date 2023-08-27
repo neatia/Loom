@@ -6,7 +6,8 @@ import GraniteUI
 public enum Detent: Hashable, CaseIterable {
     case large
     case medium
-    case small
+    //case small
+    case inactive
     
     var height: CGFloat {
         switch self {
@@ -17,9 +18,11 @@ public enum Detent: Hashable, CaseIterable {
             return UIScreen.main.bounds.height - 100
             #endif
         case .medium:
-            return 480
-        case .small:
             return 360
+//        case .small:
+//            return 360
+        case .inactive:
+            return 100
         }
     }
 }
@@ -29,9 +32,6 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
     
     @EnvironmentObject var manager : GraniteSheetManager
     
-    #if os(iOS)
-    @State var isSheetExpanded: Bool = false
-    #endif
     
     
     let id: String
@@ -208,12 +208,13 @@ private struct FullScreenCoverBackgroundRemovalView: NSViewRepresentable {
 
 fileprivate extension View {
     func showDrawer<Content: View>(_ condition: Binding<Bool>,
-                                   _ detents: [Detent] = [.small],
+                                   _ detents: [Detent] = [.medium],
                     @ViewBuilder _ content: () -> Content) -> some View {
-        self.overlayIf(condition.wrappedValue, alignment: .top) {
+
+        return self.overlayIf(condition.wrappedValue, alignment: .top) {
             Group {
                 #if os(iOS)
-                Drawer(startingHeight: detents.first?.height ?? Detent.small.height) {
+                Drawer(startingHeight: detents.first?.height ?? Detent.medium.height, keyboardAware: true) {
                     ZStack(alignment: .top) {
                         RoundedRectangle(cornerRadius: 12)
                             .foregroundColor(Color.alternateSecondaryBackground)

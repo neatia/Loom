@@ -39,6 +39,32 @@ struct Device {
         isMacOS || isiPad
     }
     
+    static var hasNotch: Bool {
+        guard Device.isIPhone else { return false}
+        
+        #if os(iOS)
+        guard let windowScene = UIApplication.shared
+            .connectedScenes
+            .first as? UIWindowScene else {
+            LoomLog("Could not get connected scene", level: .error)
+            return false
+        }
+        
+        guard let keyWindow = windowScene.keyWindow else {
+            LoomLog("Could not get keyWindow", level: .error)
+            return false
+        }
+        
+        if UIDevice.current.orientation.isPortrait {
+            return keyWindow.safeAreaInsets.bottom > 0
+        } else {
+            return keyWindow.safeAreaInsets.left > 0 || keyWindow.safeAreaInsets.right > 0
+        }
+        #else
+        return false
+        #endif
+    }
+    
     static var appVersion: String? {
         if let releaseVersion = Bundle.main.releaseVersionNumber,
            let buildVersion = Bundle.main.buildVersionNumber {

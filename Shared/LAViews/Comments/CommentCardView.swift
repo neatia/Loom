@@ -37,10 +37,6 @@ struct CommentCardView: View {
         context.viewingContext.isBookmark
     }
     
-    var isPreview: Bool {
-        context.viewingContext == .search
-    }
-    
     //Mod removal
     var isRemoved: Bool {
         currentModel?.comment.removed == true
@@ -108,6 +104,12 @@ struct CommentCardView: View {
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
                             .attach({
+                                replyModel()
+                            }, at: \.replyToContent)
+                            .attach({
+                                showThreadDrawer(model)
+                            }, at: \.goToThread)
+                            .attach({
                                 editModel()
                             }, at: \.edit)
                             .graniteEvent(interact)
@@ -127,7 +129,7 @@ struct CommentCardView: View {
                            isModal: false,
                            isInline: true)
                     .attach({ model in
-                        showDrawer.perform(model)
+                        showThreadDrawer(model)
                     }, at: \.showDrawer)
                     .id(refreshThread)
             }
@@ -139,24 +141,9 @@ struct CommentCardView: View {
                  icon: "arrowshape.turn.up.backward.fill",
                  iconColor: Brand.Colors.babyBlue,
                  backgroundColor: .alternateBackground,
-                 disabled: isPreview || context.isScreenshot) {
+                 disabled: context.isPreview || context.isScreenshot) {
             
-            guard let model else { return }
-            
-            ModalService
-                .shared
-                .showReplyCommentModal(isEditing: false,
-                                       model: model) { updatedModel in
-                
-                DispatchQueue.main.async {
-                    self.model = self.model?.incrementReplyCount()
-                    if expandReplies == false {
-                        expandReplies = true
-                    } else {
-                        self.refreshThread.toggle()
-                    }
-                }
-            }
+            replyModel()
         }
         .task {
             self.model = context.commentModel
@@ -212,7 +199,7 @@ struct CommentCardView: View {
             ModalService
                 .shared
                 .showReplyCommentModal(isEditing: true,
-                                       model: model) { updatedModel in
+                                       model: model) { (updatedModel, replyModel) in
                 
                 DispatchQueue.main.async {
                     self.model = updatedModel
@@ -227,6 +214,25 @@ struct CommentCardView: View {
                 }
         }
     }
+    
+    func replyModel() {
+        guard let model else { return }
+        
+        ModalService
+            .shared
+            .showReplyCommentModal(isEditing: false,
+                                   model: model) { (updatedModel, replyModel) in
+            
+            DispatchQueue.main.async {
+                self.model = self.model?.incrementReplyCount()
+                if expandReplies == false {
+                    expandReplies = true
+                } else {
+                    self.refreshThread.toggle()
+                }
+            }
+        }
+    }
 }
 
 extension CommentCardView {
@@ -235,7 +241,7 @@ extension CommentCardView {
             #if os(macOS)
             contentBody
                 .onTapGesture {
-                    guard isPreview == false, model?.replyCount ?? 0 > 0 else { return }
+                    guard context.isPreview == false, model?.replyCount ?? 0 > 0 else { return }
                     GraniteHaptic.light.invoke()
                     expandReplies.toggle()
                 }
@@ -244,15 +250,16 @@ extension CommentCardView {
             #endif
             FooterView(showScores: config.state.showScores)
                 .attach({ id in
-                    guard let model,
-                          isPreview == false else { return }
-                    showDrawer.perform(model)
+                    guard let model else { return }
+                    showThreadDrawer(model)
                 }, at: \.showComments)
+                .attach({ model in
+                    replyModel()
+                }, at: \.replyComment)
         }
         .censor(shouldCensor, kind: censorKind, isComment: true)
         .onTapIf(Device.isExpandedLayout || shouldCensor) {
-            
-            guard isPreview else {
+            guard context.isPreview else {
                 if shouldCensor {
                     expandReplies.toggle()
                 }
@@ -272,7 +279,7 @@ extension CommentCardView {
                 layout._state.wrappedValue.feedContext = .viewPost(postView)
             }
         }
-        .routeIf(Device.isExpandedLayout == false && isPreview,
+        .routeIf(Device.isExpandedLayout == false && context.isPreview,
                  window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context)
@@ -282,7 +289,7 @@ extension CommentCardView {
     var contentBody: some View {
         Group {
             if let model {
-                if isPreview {
+                if context.isPreview {
                     ScrollView(showsIndicators: false) {
                         MarkdownView(text: model.comment.content)
                             .fontGroup(CommentFontGroup())
@@ -301,14 +308,26 @@ extension CommentCardView {
                             GraniteHaptic.light.invoke()
                             expandReplies.toggle()
                         }, longPressAction: {
-                            guard model.replyCount > 0 else { return }
                             GraniteHaptic.light.invoke()
-                            showDrawer.perform(model)
+                            showThreadDrawer(model)
                         }))
                 }
             } else {
                 EmptyView()
             }
+        }
+    }
+}
+
+extension CommentCardView {
+    func showThreadDrawer(_ model: CommentView?) {
+        if parentModel == nil {
+            ModalService
+                .shared
+                .showThreadDrawer(commentView: model,
+                                  context: context)
+        } else if let model {
+            showDrawer.perform(model)
         }
     }
 }

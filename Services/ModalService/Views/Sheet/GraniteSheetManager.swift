@@ -41,12 +41,12 @@ final public class GraniteSheetManager : ObservableObject {
     
     @MainActor
     public func present<Content : View>(id: String = GraniteSheetManager.defaultId,
-                                        detents: [Detent] = [.small, .medium, .large],
+                                        detents: [Detent] = [.medium, .large],
                                         @ViewBuilder content : () -> Content, style : GraniteSheetPresentationStyle = .sheet) {
         self.style = style
         self.detentsMap[id] = detents
         
-        if Device.isiPad {
+        if Device.isIPhone == false {
             self.models[id] = .init(id: id,
                                     content: AnyView(content()
                                         .graniteNavigation(backgroundColor: Color.clear)))

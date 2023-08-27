@@ -5,6 +5,8 @@ import LemmyKit
 struct Search: GraniteComponent {
     @Command var center: Center
     
+    @Relay var config: ConfigService
+    
     @Environment(\.presentationMode) var presentationMode
     
     @StateObject var conductor: SearchConductor = .init()

@@ -84,6 +84,11 @@ public class Pager<Model: Pageable>: ObservableObject {
             shouldUpdate = true
         }
     }
+    var shouldReset: Int = 0 {
+        didSet {
+            self.objectWillChange.send()
+        }
+    }
     #else
     @Published var currentItems: [Model] = []
     #endif
@@ -338,7 +343,9 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     @MainActor
     func getLPMetadata(url: URL) async -> PageableMetadata? {
-        let provider = LPMetadataProvider()
+        var provider = LPMetadataProvider()
+        provider.timeout = 5
+        
         let metaData = try? await provider.startFetchingMetadata(for: url)
         let type = String(describing: UTType.image)
         guard let imageProvider = metaData?.imageProvider else {
@@ -447,6 +454,9 @@ extension Pager {
 extension Pager{
     func reset() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            #if os(macOS)
+            self?.shouldReset += 1
+            #endif
             self?.clear()
             self?.resetHandler?()
         }

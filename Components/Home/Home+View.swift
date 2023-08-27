@@ -8,38 +8,28 @@ extension Home: View {
     var safeAreaTop: CGFloat {
         #if os(iOS)
         return .layer1
-        #endif
+        #else
         return 0
-    }
-    
-    var isBottom: Bool {
-        #if os(iOS)
-        if #available(iOS 11.0, *),
-           let keyWindow = UIApplication.shared.keyWindow,
-           keyWindow.safeAreaInsets.bottom > 0 {
-            return true
-        }
         #endif
-        return false
     }
     
     var tabViewHeight: CGFloat {
-        if Device.isExpandedLayout {
-            return 56
-        } else {
+        if Device.hasNotch {
             return 84
+        } else {
+            return 56
         }
     }
     
     var bottomPadding: CGFloat {
-        if isBottom && Device.isExpandedLayout == false {
+        if Device.hasNotch {
             return 20
         } else if Device.isMacOS {
             return 24
         } else if Device.isiPad {
             return 36
         } else {
-            return 10
+            return 0
         }
     }
     

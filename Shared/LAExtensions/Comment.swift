@@ -28,6 +28,33 @@ extension CommentView: Pageable {
     }
 }
 
+extension CommentView: Locateable {
+    var isBaseResource: Bool {
+        LemmyKit.host == community.actor_id.host
+    }
+    
+    var isPeerResource: Bool {
+        community.actor_id.host != creator.actor_id.host
+    }
+}
+
+//TODO: reusable with PostView
+extension CommentView {
+    var viewableHosts: [String] {
+        var hosts: [String] = [LemmyKit.host]
+        
+        if isBaseResource == false {
+            hosts += [community.actor_id.host]
+        }
+        
+        if isPeerResource {
+            hosts += [creator.actor_id.host]
+        }
+        
+        return hosts
+    }
+}
+
 extension CommentView {
     func updateBlock(_ blocked: Bool, personView: PersonView) -> CommentView {
         .init(comment: self.comment, creator: personView.person, post: self.post, community: self.community, counts: self.counts, creator_banned_from_community: self.creator_banned_from_community, subscribed: self.subscribed, saved: self.saved, creator_blocked: blocked)
@@ -73,6 +100,22 @@ extension CommentReplyView {
 extension Comment {
     func asView(creator: Person, postView: PostView) -> CommentView {
         .init(comment: self, creator: creator, post: postView.post, community: postView.community, counts: .new(commentId: self.id, published: self.published), creator_banned_from_community: postView.creator_banned_from_community, subscribed: postView.subscribed, saved: false, creator_blocked: false)
+    }
+    
+    func asView(creator: Person,
+                post: Post,
+                community: Community) -> CommentView {
+        .init(comment: self,
+              creator: creator,
+              post: post,
+              community: community,
+              counts: .new(commentId: self.id, published: self.published),
+              //Thiss can be inconsistent, but since its from replies its highly unlikely
+              creator_banned_from_community: false,
+              //This can be inconsistent
+              subscribed: .notSubscribed,
+              saved: false,
+              creator_blocked: false)
     }
     
     func asView(with model: CommentView) -> CommentView {

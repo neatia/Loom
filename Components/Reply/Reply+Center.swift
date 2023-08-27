@@ -5,6 +5,7 @@ extension Reply {
     struct Center: GraniteCenter {
         struct State: GraniteState {
             var content: String = ""
+            var isReplying: Bool = false
         }
         
         @Store public var state: State

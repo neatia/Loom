@@ -46,7 +46,7 @@ extension Community {
 
 extension CommunityAggregates {
     static var mock: CommunityAggregates {
-        .init(id: 0, community_id: 0, subscribers: 0, posts: 0, comments: 0, published: "", users_active_day: 0, users_active_week: 0, users_active_month: 0, users_active_half_year: 0, hot_rank: 0)
+        .init(id: 0, community_id: 0, subscribers: 0, posts: 0, comments: 0, published: Date.today.asString, users_active_day: 0, users_active_week: 0, users_active_month: 0, users_active_half_year: 0, hot_rank: 0)
     }
 }
 

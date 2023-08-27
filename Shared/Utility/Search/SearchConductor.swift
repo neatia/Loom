@@ -90,4 +90,9 @@ class SearchConductor: ObservableObject {
         searchTimer = nil
         self.lastQuery = ""
     }
+    
+    func reset() {
+        self.response = nil
+        self.clean()
+    }
 }
