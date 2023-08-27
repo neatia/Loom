@@ -26,6 +26,7 @@ extension ContentService {
             case replyPost(PostView, String)
             case replyPostSubmit(Comment, PostView)
             case replyComment(CommentView, String)
+            //Target, Reply
             case replyCommentSubmit(CommentView, CommentView)
             case editComment(CommentView, PostView?)
             case editCommentSubmit(CommentView, String)
@@ -148,7 +149,11 @@ extension ContentService {
 
                 guard let result else { return }
                 
-                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result.asView(with: model), model)))
+                guard let user = LemmyKit.current.user?.local_user_view.person else {
+                    return
+                }
+                
+                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result.asView(with: model), result.asView(creator: user, post: model.post, community: model.community))))
             case .savePost(let model):
                 _ = await Lemmy.savePost(model.post, save: true)
             case .unsavePost(let model):

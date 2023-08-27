@@ -14,7 +14,9 @@ import LemmyKit
 struct PostActionsView: View {
     @GraniteAction<Community> var viewCommunity
     @GraniteAction<Void> var goToPost
+    @GraniteAction<Void> var goToThread
     @GraniteAction<Void> var edit
+    @GraniteAction<Void> var replyToContent
     
     @GraniteAction<ContentInteraction.Kind> var interact
     //A view needs updating outside of this view's potential hierarchy
@@ -43,44 +45,35 @@ struct PostActionsView: View {
     
     var body: some View {
         Menu {
-            if let name = community?.name {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    
-                    let community: Community? = community ?? postView?.community
-                    
-                    guard let community else { return }
-                    
-                    if Device.isExpandedLayout {
-                        
-                        viewCommunity.perform(community)
-                    } else {
-                        router.push {
-                            Feed(community)
-                        }
-                    }
-                } label: {
-                    Text("!\(name)")
-                    Image(systemName: "arrow.right.circle")
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            
-            if shouldRouteToPost {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    goToPost.perform()
-                } label: {
-                    Text("POST_ACTIONS_GO_TO_POST")
-                    Image(systemName: "arrow.right.circle")
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
+            navigationActions
             
             if community != nil || postView != nil {
                 Divider()
             }
             
+            interactionActions
+            
+            Divider()
+            
+            destructiveActions
+                
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
+                .frame(width: Device.isMacOS ? 16 : 24, height: isCompact ? 12 : 24)
+                .contentShape(Rectangle())
+                .foregroundColor(.foreground)
+                .offset(x: Device.isMacOS ? 8 : 0)
+        }
+        .menuStyle(BorderlessButtonMenuStyle())
+        .menuIndicator(.hidden)
+        .frame(width: Device.isMacOS ? 20 : 24, height: 12)
+    }
+}
+
+extension PostActionsView {
+    var interactionActions: some View {
+        Group {
             if person?.isMe == false,
                let bookmarkKind {
                 Button {
@@ -126,21 +119,84 @@ struct PostActionsView: View {
             .buttonStyle(PlainButtonStyle())
             #endif
             
+            Divider()
             if person?.isMe == true {
-                Divider()
                 
                 Button {
                     GraniteHaptic.light.invoke()
                     edit.perform()
                 } label: {
                     Text("MISC_EDIT")
-                    Image(systemName: "square.and.pencil")
+                    Image(systemName: "pencil.and.outline")
                 }
                 .buttonStyle(PlainButtonStyle())
             }
             
-            Divider()
+            if context.isPreview == false {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    replyToContent.perform()
+                } label: {
+                    //TODO: localize
+                    Text("Reply")
+                    Image(systemName: "square.and.pencil")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
+    }
+    var navigationActions: some View {
+        Group {
+            if let name = community?.name {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    
+                    let community: Community? = community ?? postView?.community
+                    
+                    guard let community else { return }
+                    
+                    if Device.isExpandedLayout {
+                        
+                        viewCommunity.perform(community)
+                    } else {
+                        router.push {
+                            Feed(community)
+                        }
+                    }
+                } label: {
+                    Text("!\(name)")
+                    Image(systemName: "arrow.right.circle")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
             
+            if shouldRouteToPost {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    goToPost.perform()
+                } label: {
+                    Text("POST_ACTIONS_GO_TO_POST")
+                    Image(systemName: "arrow.right.circle")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            
+            if context.isComment {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    goToThread.perform()
+                } label: {
+                    //TODO: localize
+                    Text("Go to thread")
+                    Image(systemName: "scroll")
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+        }
+    }
+    
+    var destructiveActions: some View {
+        Group {
             if person?.isMe == true {
                 Button(role: context.isDeleted ? .none : .destructive) {
                     GraniteHaptic.light.invoke()
@@ -194,8 +250,10 @@ struct PostActionsView: View {
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
-                
-                //TODO: report functionality/testing
+            }
+            
+            
+            //TODO: report functionality/testing
 //                Button(role: .destructive) {
 //                    GraniteHaptic.light.invoke()
 //                    switch bookmarkKind {
@@ -212,17 +270,6 @@ struct PostActionsView: View {
 //                    Text("REPORT_POST")
 //                }
 //                .buttonStyle(PlainButtonStyle())
-            }
-        } label: {
-            Image(systemName: "ellipsis")
-                .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
-                .frame(width: Device.isMacOS ? 16 : 24, height: isCompact ? 12 : 24)
-                .contentShape(Rectangle())
-                .foregroundColor(.foreground)
-                .offset(x: Device.isMacOS ? 8 : 0)
         }
-        .menuStyle(BorderlessButtonMenuStyle())
-        .menuIndicator(.hidden)
-        .frame(width: Device.isMacOS ? 20 : 24, height: 12)
     }
 }

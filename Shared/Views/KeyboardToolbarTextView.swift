@@ -2,7 +2,7 @@
 //  KeyboardToolbar.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/22/23.
+//  Created by PEXAVC on 8/22/23.
 //
 
 #if os(iOS)
@@ -239,6 +239,11 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
                                               left: 12,
                                               bottom: 0,
                                               right: 12)
+            case .search:
+                textView.contentInset = .init(top: .layer1,
+                                              left: 0,
+                                              bottom: 0,
+                                              right: 0)
             default:
                 textView.contentInset = .init(top: 2,
                                               left: 0,
@@ -353,7 +358,7 @@ struct StyleTextKeyboardTool: KeyboardTool {
     enum Kind: String {
         case bold = "**"
         case italic = "*"
-        case strikethrough = "~"
+        case strikethrough = "~~"
         
         var symbolName: String {
             switch self {

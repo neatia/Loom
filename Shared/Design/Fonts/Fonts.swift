@@ -106,7 +106,10 @@ extension Font {
         case .title2:
             return .title3
         case .title3:
-            return .headline
+            //headline's weight is bold
+            return .body//.headline
+        case .body:
+            return .subheadline
         case .headline:
             return .subheadline
         case .subheadline:

@@ -72,6 +72,10 @@ struct ContentContext {
         viewingContext == .screenshot
     }
     
+    var isPreview: Bool {
+        viewingContext == .search
+    }
+    
     var isOP: Bool {
         guard let poster = postModel?.creator else {
             return false
@@ -99,6 +103,13 @@ struct ContentContext {
     static func addCommentModel(model: CommentView?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: model ?? context.commentModel,
+                     feedStyle: context.feedStyle,
+                     viewingContext: context.viewingContext)
+    }
+    
+    static func withPostModel(_ model: PostView?, _ context: ContentContext) -> Self {
+        return .init(postModel: model,
+                     commentModel: nil,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext)
     }

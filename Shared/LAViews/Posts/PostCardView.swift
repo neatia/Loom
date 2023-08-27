@@ -97,11 +97,6 @@ struct PostCardView: View {
         }
     }
     
-    //primarily in SearchAllView
-    var isPreview: Bool {
-        context.viewingContext == .search
-    }
-    
     var body: some View {
         VStack(spacing: 0) {
             switch context.preferredStyle {
@@ -114,10 +109,10 @@ struct PostCardView: View {
                         .attach({
                             editModel()
                         }, at: \.edit)
-                    content
                     
+                    content
                 }
-                .padding(.vertical, isPreview ? 0 : topPadding)
+                .padding(.vertical, context.isPreview ? 0 : topPadding)
                 .padding(.horizontal, .layer4)
             case .style2:
                 HStack(spacing: .layer3) {
@@ -132,6 +127,14 @@ struct PostCardView: View {
                             .attach({
                                 editModel()
                             }, at: \.edit)
+                            .attach({
+                                let model = self.model ?? self.context.postModel
+                                guard let model else { return }
+                                ModalService
+                                    .shared
+                                    .showReplyPostModal(model: model) { _ in
+                                }
+                            }, at: \.replyToContent)
                             .graniteEvent(interact)
                         
                         content
@@ -171,9 +174,9 @@ struct PostCardView: View {
             bottom = .layer4
             trailing = .layer4
         } else {
-            top = isPreview ? (isCompact ? .layer3 : 0) : topPadding
+            top = context.isPreview ? (isCompact ? .layer3 : 0) : topPadding
             leading = .layer4
-            bottom = isPreview ? (isCompact ? .layer3 : 0) : bottomPadding
+            bottom = context.isPreview ? (isCompact ? .layer3 : 0) : bottomPadding
             trailing = isCompact ? .layer3 : .layer4
         }
          
@@ -214,17 +217,17 @@ extension PostCardView {
                 FooterView(showScores: config.state.showScores)
                     .attach({ model in
                         reply.perform(model)
-                    }, at: \.reply)
+                    }, at: \.replyPost)
             }
         }
-        .fixedSize(horizontal: false, vertical: isPreview ? false : true)
+        .fixedSize(horizontal: false, vertical: context.isPreview ? false : true)
     }
     
     @MainActor
     var contentBody: some View {
         
         HStack {
-            if isPreview {
+            if context.isPreview {
                 ScrollView {
                     contentMetaBody
                 }
@@ -266,7 +269,7 @@ extension PostCardView {
     
     var contentBodyStacked: some View {
         Group {
-            if isPreview {
+            if context.isPreview {
                 ScrollView {
                     contentMetaBody
                 }
@@ -324,8 +327,7 @@ extension PostCardView {
             }
         }
         .frame(maxWidth: .infinity)
-        .onTapIf(Device.isExpandedLayout) {
-            
+        .onTapIf(Device.isExpandedLayout && !shouldCensor) {
             guard Device.isExpandedLayout,
                   let model = context.postModel else {
                 GraniteHaptic.light.invoke()
@@ -334,7 +336,7 @@ extension PostCardView {
             
             layout._state.wrappedValue.feedContext = .viewPost(model)
         }
-        .routeIf(Device.isExpandedLayout == false,
+        .routeIf(Device.isExpandedLayout == false && !shouldCensor,
                  window: .resizable(600, 500)) {
             //prevent type erasure
             PostDisplayView(context: _context, updatedModel: model)

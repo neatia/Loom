@@ -218,8 +218,9 @@ struct HeaderView: View {
         } else {
             self.postView = postView
             
-            router.push {
-                PostDisplayView(context: _context)
+            router.push(style: .customTrailing(Color.background)) {
+                PostDisplayView(isPushed: true)
+                    .contentContext(.withPostModel(postView, context))
             }
         }
     }

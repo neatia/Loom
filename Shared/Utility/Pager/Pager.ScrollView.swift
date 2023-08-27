@@ -126,6 +126,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     }
                 }
             }
+            .id(pager.shouldReset)
             if properties.showFetchMore {
                 PagerFooterLoadingView<Model>()
                     .environmentObject(pager)

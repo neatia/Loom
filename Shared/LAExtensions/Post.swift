@@ -39,6 +39,22 @@ extension PostView: Locateable {
 }
 
 extension PostView {
+    var viewableHosts: [String] {
+        var hosts: [String] = [LemmyKit.host]
+        
+        if isBaseResource == false {
+            hosts += [community.actor_id.host]
+        }
+        
+        if isPeerResource {
+            hosts += [creator.actor_id.host]
+        }
+        
+        return hosts
+    }
+}
+
+extension PostView {
     func updateBlock(_ blocked: Bool, personView: PersonView) -> PostView {
         .init(post: self.post, creator: personView.person, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: blocked, unread_comments: self.unread_comments)
     }

@@ -17,7 +17,8 @@ struct FooterView: View {
     @Environment(\.pagerMetadata) var metadata
     
     @GraniteAction<CommentId> var showComments
-    @GraniteAction<PostView> var reply
+    @GraniteAction<PostView> var replyPost
+    @GraniteAction<CommentView> var replyComment
     
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
@@ -155,11 +156,19 @@ extension FooterView {
                 
                 Spacer()
                 
-                if isComposable && context.isPost,
-                   let postView = context.postModel {
+                if isComposable {
                    Button {
-                       GraniteHaptic.light.invoke()
-                       reply.perform(postView)
+                       if context.isPost,
+                          let postView = context.postModel {
+                           
+                           GraniteHaptic.light.invoke()
+                           replyPost.perform(postView)
+                       } else if context.isComment,
+                          let commentView = context.commentModel {
+                           
+                           GraniteHaptic.light.invoke()
+                           replyComment.perform(commentView)
+                       }
                    } label: {
                        Image(systemName: "square.and.pencil")
                            .font(font)
@@ -376,20 +385,45 @@ extension FooterView {
                 .buttonStyle(PlainButtonStyle())
                 .padding(.trailing, .layer3)
                 
-                Image(systemName: "paperplane")
-                    .font(font.smaller)
-            } else if isComposable,
-                      context.isPost,
-                      let postView = context.postModel {
                 Button {
                     GraniteHaptic.light.invoke()
-                    reply.perform(postView)
-                } label: {
-                    Image(systemName: "square.and.pencil")
-                        .font(font)
+                    if context.isComment {
+                        ModalService
+                            .shared
+                            .showShareCommentModal(context.commentModel)
+                    } else {
+                        ModalService
+                            .shared
+                            .showSharePostModal(context.postModel, metadata: metadata)
+                    }
+                } label : {
+                    Image(systemName: "paperplane")
+                        .font(font.smaller)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
+            } else if isComposable {
+                if isComposable {
+                   Button {
+                       if context.isPost,
+                          let postView = context.postModel {
+                           LoomLog("Editing post", level: .debug)
+                           GraniteHaptic.light.invoke()
+                           replyPost.perform(postView)
+                       } else if context.isComment,
+                          let commentView = context.commentModel {
+                           
+                           GraniteHaptic.light.invoke()
+                           replyComment.perform(commentView)
+                       }
+                   } label: {
+                       Image(systemName: "square.and.pencil")
+                           .font(font)
+                           .contentShape(Rectangle())
+                           .foregroundColor(.foreground)
+                   }
+                   .buttonStyle(PlainButtonStyle())
+                }
             }
         }
         .frame(height: 20)

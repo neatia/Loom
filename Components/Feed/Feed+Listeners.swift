@@ -41,6 +41,7 @@ extension Feed {
                     default:
                         break
                     }
+                    
                     ModalService.shared.presentModal(GraniteToastView(response.notification))
                 }
             }
@@ -52,7 +53,7 @@ extension Feed {
                 if let error = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(error))
                 } else {
-                    LoomLog("🟡 Restarting")
+                    LoomLog("🟡 Restarting Feed")
                     pager.reset()
                 }
             }

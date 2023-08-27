@@ -17,6 +17,7 @@ public struct Drawer<Content>: View where Content: View {
     
     /// The current height of the displayed drawer
     @State public var height: CGFloat
+    @State internal var lastHeight: CGFloat = 100
     
     /// The current height marker the drawer is conformed to. Change triggers `onRest`
     @State internal var restingHeight: CGFloat {
@@ -57,6 +58,10 @@ public struct Drawer<Content>: View where Content: View {
     
     @State internal var animation: Animation? = Animation.spring()
     
+    // MARK: keyboard aware
+    var keyboardAware: Bool
+    var heightWithKeyboard: Detent
+    
     // MARK: Haptics
     
     internal var impactGenerator: UIImpactFeedbackGenerator?
@@ -78,12 +83,16 @@ public extension Drawer {
     init(
         heights: Binding<[CGFloat]> = .constant([0]),
         startingHeight: CGFloat? = nil,
+        keyboardAware: Bool = false,
+        heightWithKeyboard: Detent = .large,
         @ViewBuilder _ content: () -> Content
     ) {
         self._heights = heights
         self._height = .init(initialValue: startingHeight ?? heights.wrappedValue.first!)
         self._restingHeight = .init(initialValue: startingHeight ?? heights.wrappedValue.first!)
         self.content = content()
+        self.keyboardAware = keyboardAware
+        self.heightWithKeyboard = heightWithKeyboard
     }
 }
 
@@ -95,6 +104,8 @@ internal extension Drawer {
         height: CGFloat,
         restingHeight: CGFloat,
         springHeight: CGFloat,
+        keyboardAware: Bool = true,
+        heightWithKeyboard: Detent = .large,
         didRest: ((_ height: CGFloat) -> ())?,
         didLayoutForSizeClass: ((SizeClass) -> ())?,
         impactGenerator: UIImpactFeedbackGenerator?,
@@ -108,6 +119,8 @@ internal extension Drawer {
         self.didLayoutForSizeClass = didLayoutForSizeClass
         self.content = content
         self.impactGenerator = impactGenerator
+        self.keyboardAware = keyboardAware
+        self.heightWithKeyboard = heightWithKeyboard
     }
 }
 

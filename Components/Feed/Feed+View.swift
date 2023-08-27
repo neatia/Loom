@@ -29,6 +29,7 @@ extension Feed: GraniteNavigationDestination {
         .graniteNavigationDestinationIf(isCommunity) {
             communityInfoMenuView
         }
+        //What's New Modal
 //        .onAppear {
 //            if content.state.lastVersionUpdateNotice != Device.appVersion {
 //                modal.presentSheet {

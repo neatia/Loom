@@ -22,6 +22,8 @@ struct HeaderCardView: View {
     @GraniteAction<Int> var tappedDetail
     @GraniteAction<Int> var tappedCrumb
     @GraniteAction<Void> var edit
+    @GraniteAction<Void> var goToThread
+    @GraniteAction<Void> var replyToContent
     
     @State var postView: PostView? = nil
     
@@ -100,6 +102,12 @@ struct HeaderCardView: View {
                             self.fetchPostView()
                         }, at: \.goToPost)
                         .attach({
+                            goToThread.perform()
+                        }, at: \.goToThread)
+                        .attach({
+                            replyToContent.perform()
+                        }, at: \.replyToContent)
+                        .attach({
                             edit.perform()
                         }, at: \.edit)
                 }
@@ -135,8 +143,9 @@ struct HeaderCardView: View {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {
             
-            router.push {
-                PostDisplayView(context: _context)
+            router.push(style: .customTrailing()) {
+                PostDisplayView(isPushed: true)
+                    .contentContext(.withPostModel(postView, context))
             }
             
             self.postView = postView
