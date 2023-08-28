@@ -154,6 +154,7 @@ extension ThreadView {
                         }, at: \.updateComment)
                 }
             }, at: \.replyComment)
+            .contentContext(.addCommentModel(model: currentModel, context))
         }
         .fixedSize(horizontal: false, vertical: true)
     }

@@ -19,8 +19,7 @@ struct HeaderCardView: View {
     @Relay var layout: LayoutService
     
     @GraniteAction<Community> var viewCommunity
-    @GraniteAction<Int> var tappedDetail
-    @GraniteAction<Int> var tappedCrumb
+    @GraniteAction<Void> var tapped
     @GraniteAction<Void> var edit
     @GraniteAction<Void> var goToThread
     @GraniteAction<Void> var replyToContent
@@ -29,6 +28,7 @@ struct HeaderCardView: View {
     
     var shouldRouteCommunity: Bool
     var shouldRoutePost: Bool
+    var shouldCollapse: Bool
     
     let badge: HeaderView.Badge
     
@@ -40,11 +40,13 @@ struct HeaderCardView: View {
     init(crumbs: [CommentView] = [],
          shouldRouteCommunity: Bool = true,
          shouldRoutePost: Bool = true,
+         shouldCollapse: Bool = false,
          badge: HeaderView.Badge? = nil,
          isCompact: Bool = false) {
         
         self.shouldRouteCommunity = shouldRouteCommunity
         self.shouldRoutePost = shouldRoutePost
+        self.shouldCollapse = shouldCollapse
         
         self.badge = .noBadge
         
@@ -55,18 +57,24 @@ struct HeaderCardView: View {
     
     var body: some View {
         HStack(spacing: .layer2) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(context.display.author.headline)
-                    .lineLimit(1)
-                    .font(isCompact ? .subheadline : .headline)
-                if let subheadline = context.display.author.subheadline {
-                    Text("@"+subheadline)
-                        .font(.caption2)
-                        .foregroundColor(.foreground.opacity(0.5))
+            HStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(context.display.author.headline)
+                        .lineLimit(1)
+                        .font(isCompact ? .subheadline : .headline)
+                    if let subheadline = context.display.author.subheadline {
+                        Text("@"+subheadline)
+                            .font(.caption2)
+                            .foregroundColor(.foreground.opacity(0.5))
+                    }
                 }
+                
+                Spacer()
             }
-            
-            Spacer()
+            .contentShape(Rectangle())
+            .onTapGesture {
+                tapped.perform()
+            }
             
             switch context.viewingContext {
             case .screenshot:
@@ -117,7 +125,7 @@ struct HeaderCardView: View {
         .task {
             postView = context.postModel
         }
-        .offset(y: -4)//offset
+        .offset(y: shouldCollapse ? 0 : -4)//offset
     }
     
     func fetchPostView() {

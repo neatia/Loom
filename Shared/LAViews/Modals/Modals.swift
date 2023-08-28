@@ -181,3 +181,24 @@ extension ModalService {
         }
     }
 }
+
+
+
+extension ModalService {
+    @MainActor
+    func showThreadDrawer(commentView: CommentView?,
+                          context: ContentContext) {
+        presentSheet {
+            ThreadView()
+                .attach({
+                    ModalService.shared.dismissSheet()
+                }, at: \.closeDrawer)
+                .contentContext(
+                    .addCommentModel(model: commentView,
+                                     context)
+                    .withStyle(.style2)
+                    .viewedIn(.thread)
+                )
+        }
+    }
+}

@@ -18,6 +18,7 @@ enum ViewingContext: Equatable {
     case profile
     case screenshot
     case postDisplay
+    case thread
 }
 
 extension ViewingContext {

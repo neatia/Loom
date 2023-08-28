@@ -588,6 +588,12 @@
 		71EAF47C2A7DA3320034FCB9 /* ExplorerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAF4772A7DA3320034FCB9 /* ExplorerService.swift */; };
 		71EAF47E2A7DA3440034FCB9 /* ExplorerService._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAF47D2A7DA3440034FCB9 /* ExplorerService._.swift */; };
 		71EAF47F2A7DA3440034FCB9 /* ExplorerService._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EAF47D2A7DA3440034FCB9 /* ExplorerService._.swift */; };
+		71EB15962A9C6C9F0098AD5B /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15952A9C6C9F0098AD5B /* DebugOverlay.swift */; };
+		71EB15972A9C6C9F0098AD5B /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15952A9C6C9F0098AD5B /* DebugOverlay.swift */; };
+		71EB15992A9C6CB00098AD5B /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15982A9C6CB00098AD5B /* Debug.swift */; };
+		71EB159A2A9C6CB00098AD5B /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15982A9C6CB00098AD5B /* Debug.swift */; };
+		71EB159C2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */; };
+		71EB159D2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */; };
 		71EB91BD2A8028400091EE5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91BC2A8028400091EE5B /* Numbers.swift */; };
 		71EB91BE2A8028400091EE5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91BC2A8028400091EE5B /* Numbers.swift */; };
 		71EB91C12A8037D40091EE5B /* Granite in Frameworks */ = {isa = PBXBuildFile; productRef = 71EB91C02A8037D40091EE5B /* Granite */; };
@@ -995,6 +1001,9 @@
 		71EAF4762A7DA3320034FCB9 /* ExplorerService+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ExplorerService+Center.swift"; sourceTree = "<group>"; };
 		71EAF4772A7DA3320034FCB9 /* ExplorerService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorerService.swift; sourceTree = "<group>"; };
 		71EAF47D2A7DA3440034FCB9 /* ExplorerService._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerService._.swift; sourceTree = "<group>"; };
+		71EB15952A9C6C9F0098AD5B /* DebugOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOverlay.swift; sourceTree = "<group>"; };
+		71EB15982A9C6CB00098AD5B /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
+		71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoomsPickerView.swift; sourceTree = "<group>"; };
 		71EB91BC2A8028400091EE5B /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		71EB91C42A803F240091EE5B /* InstanceMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceMetaView.swift; sourceTree = "<group>"; };
 		71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCommunityPickerView.swift; sourceTree = "<group>"; };
@@ -1702,13 +1711,13 @@
 		717C8FB32A6F9EA000DF6037 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				71EB15942A9C6C910098AD5B /* Debug */,
 				71FF5BF62A9C056000DD83EB /* Onboarding */,
 				717C12A1293BF02D0060A446 /* Animations */,
 				710540822A91D9BA00B9DC8A /* Snapshot */,
 				71DA49832A96CF83006FB90C /* Content */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
-				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
 				71A28E18295237AE00EAE8EE /* Passthrough.swift */,
 				71BE94DD2A954DCE004A3AC3 /* Compressor.swift */,
 				71AF14662A2E807300EEBD4B /* Disclaimer.swift */,
@@ -1768,6 +1777,7 @@
 				71899E612A89D6A30073158F /* Loom.CreateView.swift */,
 				71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */,
 				71899E3D2A8958F40073158F /* Loom.CardView.swift */,
+				71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2332,6 +2342,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		71EB15942A9C6C910098AD5B /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
+				71EB15952A9C6C9F0098AD5B /* DebugOverlay.swift */,
+				71EB15982A9C6CB00098AD5B /* Debug.swift */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
 		71F042142A6A3AD100788CDC /* Globe */ = {
 			isa = PBXGroup;
 			children = (
@@ -2759,6 +2779,7 @@
 				71DA49812A9684E1006FB90C /* ContentUpdater.swift in Sources */,
 				714B48982A8238A400AC6199 /* GlobeView.swift in Sources */,
 				714B48812A81A5D600AC6199 /* Locateable.swift in Sources */,
+				71EB15992A9C6CB00098AD5B /* Debug.swift in Sources */,
 				712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
 				71F0421D2A6A3AD100788CDC /* Globe.swift in Sources */,
 				71BE94DE2A954DCE004A3AC3 /* Compressor.swift in Sources */,
@@ -2853,6 +2874,7 @@
 				71A28D98295231E600EAE8EE /* Color.swift in Sources */,
 				711B3FDD2885D4F000F3080D /* Home.swift in Sources */,
 				717C129F293BEF730060A446 /* AppBlurBackground.swift in Sources */,
+				71EB15962A9C6C9F0098AD5B /* DebugOverlay.swift in Sources */,
 				71FF5BFE2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift in Sources */,
 				7197FB272964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71C8BE752A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
@@ -2960,6 +2982,7 @@
 				710283AF2A2A54C300010877 /* EnvironmentValues+ValueSliderStyle.swift in Sources */,
 				7151511F2A8F6D0B00251978 /* SideMenu.swift in Sources */,
 				710283A92A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
+				71EB159C2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */,
 				717090EE2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
 				710283CD2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
@@ -3066,6 +3089,7 @@
 				716CCAD32A8ACCC2009F9413 /* StandardToolbarView.swift in Sources */,
 				71C69E552A70747E00B54AD6 /* CommunityCardView.swift in Sources */,
 				71A4A1132A61C39600689DF2 /* Bookmark+Center.swift in Sources */,
+				71EB15972A9C6C9F0098AD5B /* DebugOverlay.swift in Sources */,
 				71C9F9422A613E750089D7EA /* BookmarkService.swift in Sources */,
 				7166E9DA2A74A2B2004F88D7 /* Person.swift in Sources */,
 				71F042272A6A3AD700788CDC /* Write+View.swift in Sources */,
@@ -3093,6 +3117,7 @@
 				710BEAA62A86E87B0075A141 /* SortType.swift in Sources */,
 				71C9F9082A60B9C10089D7EA /* Config.Boot.swift in Sources */,
 				712BEB5F29074CFB00D257B7 /* CameraView.swift in Sources */,
+				71EB159A2A9C6CB00098AD5B /* Debug.swift in Sources */,
 				71FCDD0E2A75EC69000A6309 /* Feed.Vertical.swift in Sources */,
 				7102839E2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				715151202A8F6D0B00251978 /* SideMenu.swift in Sources */,
@@ -3132,6 +3157,7 @@
 				71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
 				71DF107C28CC697600559DBC /* Double+Rounding.swift in Sources */,
 				711D39232A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */,
+				71EB159D2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */,
 				7102838C2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
 				71A28D97295231E600EAE8EE /* Double.swift in Sources */,

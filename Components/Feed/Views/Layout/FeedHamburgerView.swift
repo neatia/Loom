@@ -81,6 +81,7 @@ struct FeedHamburgerView: View {
     @GraniteAction<FetchType> var changeLocation
     
     //Conditional views
+    @State var loomsIsActive: Bool = false
     @State var blockedListIsActive: Bool = false
     @State var profileIsActive: Bool = false
     @State var settingsIsActive: Bool = false
@@ -203,6 +204,41 @@ struct FeedHamburgerView: View {
     }
 }
 
+
+//MARK: Looms menu
+extension FeedHamburgerView {
+    var loomsView: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    loomsIsActive.toggle()
+                } label : {
+                    HStack(spacing: .layer4) {
+                        Image(systemName: "manuscript")
+                            .font(.title3)
+                            .foregroundColor(.foreground)
+                        Text("Looms")
+                            .font(.title3.bold())
+                            .foregroundColor(.foreground)
+                    }
+                }
+                
+                Spacer()
+            }
+            
+            if loomsIsActive {
+                Divider()
+                    .padding(.top, .layer4)
+                
+                BlockedPickerView(meta: account.state.meta,
+                                  modal: false,
+                                  verticalPadding: 0)
+                    .graniteEvent(account.center.interact)
+            }
+        }
+    }
+}
 
 //MARK: Switch account menu
 extension FeedHamburgerView {

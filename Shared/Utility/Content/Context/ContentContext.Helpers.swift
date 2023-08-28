@@ -9,7 +9,8 @@ import Foundation
 
 extension ContentContext {
     var viewbaleHosts: [String] {
-        var hosts = commentModel?.viewableHosts ?? postModel?.viewableHosts ?? []
+        var hosts = commentModel?.viewableHosts ?? []
+        hosts += postModel?.viewableHosts ?? []
         
         if viewingContext.isBookmark,
            case .peer(let host) = viewingContext.bookmarkLocation {

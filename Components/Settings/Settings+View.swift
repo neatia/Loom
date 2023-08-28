@@ -291,6 +291,7 @@ extension Settings: View {
             }
         }
         .background(Color.background)
+        .padding(.top, Device.isMacOS ? ContainerConfig.generalViewTopPadding : 0)
     }
     
 }

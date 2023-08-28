@@ -291,24 +291,3 @@ extension PostDisplayView {
         }
     }
 }
-
-
-extension ModalService {
-    @MainActor
-    func showThreadDrawer(commentView: CommentView?,
-                          context: ContentContext) {
-        ModalService
-            .shared
-            .presentSheet {
-            ThreadView()
-                .attach({
-                    ModalService.shared.dismissSheet()
-                }, at: \.closeDrawer)
-                .contentContext(
-                    .addCommentModel(model: commentView,
-                                     context)
-                    .withStyle(.style2)
-                )
-        }
-    }
-}

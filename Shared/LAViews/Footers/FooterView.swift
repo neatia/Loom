@@ -323,7 +323,12 @@ extension FooterView {
                 if replyCount > 0 {
                     Button {
                         if let commentView = context.commentModel {
-                            showComments.perform(commentView.comment.id)
+                            GraniteHaptic.light.invoke()
+                            
+                            ModalService
+                                .shared
+                                .showThreadDrawer(commentView: commentView,
+                                                  context: context)
                         }
                     } label: {
                         HStack(spacing: 0) {
