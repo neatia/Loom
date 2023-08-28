@@ -42,9 +42,6 @@ struct FeedMainView<Content: View>: View {
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
-                .attach({ postView in
-                    showContent.perform(postView)
-                }, at: \.showContent)
                 .graniteEvent(interact)
                 .contentContext(.init(postModel: postView))
         }

@@ -27,7 +27,7 @@ extension AccountService {
                 return
             }
             
-            guard let token = try? AccountService.getToken(identifier: AccountService.keychainAuthToken + meta.username, service: AccountService.keychainService + meta.host) else {
+            guard let token = try? AccountService.getToken(identifier: meta.username, service: meta.host) else {
                 
                 Lemmy.getSite()
                 state.authenticated = false

@@ -211,6 +211,7 @@ struct CommentCardView: View {
     }
     
     func editModel() {
+        //This entire logic needs to be revised
         switch context.viewingContext {
         case .base,
              .bookmark,

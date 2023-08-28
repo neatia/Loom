@@ -81,12 +81,12 @@ extension AccountService {
             
             do {
                 try AccountService.insertToken(data,
-                                               identifier: AccountService.keychainAuthToken + username,
-                                               service: AccountService.keychainService + LemmyKit.host)
-                print("{TEST} inserted data into keychain")
+                                               identifier: username,
+                                               service: LemmyKit.host)
+                LoomLog("Auth | Boot | inserted into \(LemmyKit.host) keychain", level: .debug)
                 return true
             } catch let error {
-                print("{TEST} keychain: \(error)")
+                LoomLog("Auth | Boot | Error \(error.localizedDescription)", level: .error)
                 return false
             }
         }

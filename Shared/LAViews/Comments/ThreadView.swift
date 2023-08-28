@@ -153,18 +153,6 @@ extension ThreadView {
                             }
                         }, at: \.updateComment)
                 }
-//                ModalService
-//                    .shared
-//                    .showReplyCommentModal(isEditing: false,
-//                                           model: model) { (updatedModel, replyModel) in
-//
-//                    DispatchQueue.main.async {
-//                        self.updatedParentModel = (updatedParentModel ?? model)?.incrementReplyCount()
-//
-//                        guard let replyModel else { return }
-//                        pager.insert(replyModel)
-//                    }
-//                }
             }, at: \.replyComment)
         }
         .fixedSize(horizontal: false, vertical: true)

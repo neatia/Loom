@@ -21,13 +21,6 @@ extension Feed {
              .attach({ community in
                  fetchCommunity(community, reset: true)
              }, at: \.viewCommunity)
-             .attach({ postView in
-                 ModalService.shared.presentSheet {
-                     PostContentView(postView: postView)
-                         .frame(width: Device.isMacOS ? 600 : nil,
-                                height: Device.isMacOS ? 500 : nil)
-                 }
-             }, at: \.showContent)
              .graniteEvent(account.center.interact)
              .overlay(LogoView()
                 .attach({
