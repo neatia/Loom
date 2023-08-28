@@ -95,6 +95,7 @@ struct HeaderView: View {
                                         .stroke(crumbColor(crumb.1), lineWidth: 1.0))
                                 Text(crumb.1.name)
                                     .font(.headline)
+                                    .lineLimit(1)
                                 Image(systemName: "chevron.right")
                                     .font(.headline.bold())
                             }
@@ -115,6 +116,7 @@ struct HeaderView: View {
                             
                             Text(context.display.author.headline)
                                 .font(.headline)
+                                .lineLimit(1)
                         }
                         .onTapGesture {
                             
@@ -135,9 +137,11 @@ struct HeaderView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(context.display.author.headline)
                         .font(.headline)
+                        .lineLimit(1)
                     if let subheadline = context.display.author.subheadline {
                         Text("@"+subheadline)
                             .font(.caption2)
+                            .lineLimit(1)
                             .foregroundColor(.foreground.opacity(0.5))
                     }
                 }

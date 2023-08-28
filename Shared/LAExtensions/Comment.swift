@@ -26,6 +26,10 @@ extension CommentView: Pageable {
     public var isAdmin: Bool {
         self.person.admin
     }
+    
+    public var shouldHide: Bool {
+        self.post.nsfw == true || self.community.nsfw == true
+    }
 }
 
 extension CommentView: Locateable {

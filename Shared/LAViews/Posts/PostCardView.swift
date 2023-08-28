@@ -19,7 +19,6 @@ struct PostCardView: View {
     @Environment(\.graniteEvent) var interact //account.center.interact
     @Environment(\.pagerMetadata) var contentMetadata
     
-    @GraniteAction<PostView> var showContent
     @GraniteAction<PostView> var reply
     @GraniteAction<Community> var viewCommunity
     
@@ -259,8 +258,13 @@ extension PostCardView {
                 .clipped()
                 .onTapGesture {
                     let model = model ?? context.postModel
-                    guard let model else { return }
-                    showContent.perform(model)
+                    guard let model,
+                          shouldCensor == false else { return }
+                    ModalService.shared.presentSheet {
+                        PostContentView(postView: model)
+                            .frame(width: Device.isMacOS ? 600 : nil,
+                                   height: Device.isMacOS ? 500 : nil)
+                    }
                 }
             }
         }
@@ -284,8 +288,13 @@ extension PostCardView {
                                     shouldLoad: context.hasURL)
                     .attach({
                         let model = model ?? context.postModel
-                        guard let model else { return }
-                        showContent.perform(model)
+                        guard let model,
+                              shouldCensor == false else { return }
+                        ModalService.shared.presentSheet {
+                            PostContentView(postView: model)
+                                .frame(width: Device.isMacOS ? 600 : nil,
+                                       height: Device.isMacOS ? 500 : nil)
+                        }
                     }, at: \.showContent)
                     .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
                     .padding(.top, .layer2)

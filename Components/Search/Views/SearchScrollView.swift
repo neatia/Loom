@@ -51,13 +51,6 @@ struct SearchScrollView: View {
                     EmptyView()
                 } content: { model in
                     PostCardView()
-                        .attach({ postView in
-                            GraniteHaptic.light.invoke()
-//                            modal.presentSheet {
-//                                PostContentView(postView: postView)
-//                                    .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-//                            }
-                        }, at: \.showContent)
                         .contentContext(.init(postModel: model))
                 }.environmentObject(pagerPosts)
             case .communities:
@@ -84,7 +77,7 @@ struct SearchScrollView: View {
                 } inlineBody: {
                     EmptyView()
                 } content: { model in
-                    UserCardView(model: model, fullWidth: true)
+                    UserCardView(model: model, fullWidth: true, showCounts: true, style: .style2)
                         .padding(.layer4)
                 }.environmentObject(pagerUsers)
             default:
@@ -119,26 +112,18 @@ struct SearchScrollView: View {
     }
     
     func setInitial() {
-        switch searchType {
-        case .posts:
-            LoomLog("🔎 initial set | \(response?.posts.count ?? 0) posts 🔎", level: .debug)
-            let pageIndex = response?.posts.isEmpty == true ? 1 : 2
-            pagerPosts.add(response?.posts ?? [], pageIndex: pageIndex)
-        case .comments:
-            LoomLog("🔎 initial set | \(response?.comments.count ?? 0) comments 🔎", level: .debug)
-            let pageIndex = response?.comments.isEmpty == true ? 1 : 2
-            pagerComments.add(response?.comments ?? [], pageIndex: pageIndex)
-        case .users:
-            LoomLog("🔎 initial set | \(response?.users.count ?? 0) users 🔎", level: .debug)
-            let pageIndex = response?.users.isEmpty == true ? 1 : 2
-            pagerUsers.add(response?.users ?? [], pageIndex: pageIndex)
-        case .communities:
-            LoomLog("🔎 initial set | \(response?.communities.count ?? 0) communities 🔎", level: .debug)
-            let pageIndex = response?.communities.isEmpty == true ? 1 : 2
-            pagerCommunities.add(response?.communities ?? [], pageIndex: pageIndex)
-        default:
-            break
-        }
+        LoomLog("🔎 initial set | \(response?.posts.count ?? 0) posts 🔎", level: .debug)
+        let pageIndexPosts = response?.posts.isEmpty == true ? 1 : 2
+        pagerPosts.add(response?.posts ?? [], pageIndex: pageIndexPosts, initialFetch: false)
+        LoomLog("🔎 initial set | \(response?.comments.count ?? 0) comments 🔎", level: .debug)
+        let pageIndexComments = response?.comments.isEmpty == true ? 1 : 2
+        pagerComments.add(response?.comments ?? [], pageIndex: pageIndexComments, initialFetch: false)
+        LoomLog("🔎 initial set | \(response?.users.count ?? 0) users 🔎", level: .debug)
+        let pageIndexUsers = response?.users.isEmpty == true ? 1 : 2
+        pagerUsers.add(response?.users ?? [], pageIndex: pageIndexUsers, initialFetch: false)
+        LoomLog("🔎 initial set | \(response?.communities.count ?? 0) communities 🔎", level: .debug)
+        let pageIndexCommunities = response?.communities.isEmpty == true ? 1 : 2
+        pagerCommunities.add(response?.communities ?? [], pageIndex: pageIndexCommunities, initialFetch: false)
     }
     
     func search(_ page: Int?) async -> SearchResponse? {

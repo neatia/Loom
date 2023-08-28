@@ -89,9 +89,11 @@
 
 Loom uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
 
+An interactive websites to generate boilerplate components using a GUI to define styling and needed state properties is in the works! This will allow you to simply download the generated component and drag into XCode for immediate use.
+
 ### Why Granite?
 
-Mostly because of *Relays*. These work like environment objects, but are more flexible in initializations. No need to passdown directly. The ability to simply declare relays in any `View` or `GraniteComponent` allows for a more effective iterative process and cleaner context passing throughout the application.
+Mostly because of *Relays* and project organization. I'd say testing too, but once I get around towards writing the unit tests, I'd feel more confident in sharing the strengths then. These work like @Observables/@AppStorage, but are more flexible in initializations and caching data. The ability to simply declare relays in any `View` or `GraniteComponent` allows for a more effective iterative process and cleaner context passing throughout the application.
 
 ```swift
 @Relay var configService: ConfigService
@@ -110,11 +112,8 @@ Mostly because of *Relays*. These work like environment objects, but are more fl
 
 ## Discussion
 
-In an attempt to build a community around Loom as well, feel free to explore the places below!
-
 - [@lemmy.world](https://lemmy.world/c/loom)
 - [@neatia.xyz](https://neatia.xyz/c/loom)
-- Matrix Spaces: `!cYiAYEKIMRaZcuuudA:matrix.org`
 
 ### Contact
 

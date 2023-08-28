@@ -29,12 +29,31 @@ struct DebugSettingsView: View {
             
             Divider()
             
+//            VStack(spacing: 0) {
+//                Button {
+//                    GraniteHaptic.light.invoke()
+//                    restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: "https://lemmy.world"))
+//                } label: {
+//                    Text("Reset to lemmy.world")
+//                        .font(.headline.bold())
+//                        .lineLimit(1)
+//                        .foregroundColor(Color.black)
+//                        .padding(.horizontal, .layer2)
+//                        .padding(.vertical, .layer1)
+//                        .background(RoundedRectangle(cornerRadius: .layer2)
+//                            .fill(Brand.Colors.yellow))
+//                }
+//                .buttonStyle(PlainButtonStyle())
+//            }
+//            .padding(.vertical, .layer5)
+//            .padding(.horizontal, .layer4)
+            
             VStack(spacing: 0) {
                 Button {
                     GraniteHaptic.light.invoke()
-                    restart?.send(ConfigService.Restart.Meta(accountMeta: nil, host: "https://lemmy.world"))
+                    ModalService.shared.dismissAll()
                 } label: {
-                    Text("Reset to lemmy.world")
+                    Text("Dismiss all modals")
                         .font(.headline.bold())
                         .lineLimit(1)
                         .foregroundColor(Color.black)
@@ -45,7 +64,27 @@ struct DebugSettingsView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
             }
-            .padding(.vertical, .layer5)
+            .padding(.top, .layer5)
+            .padding(.bottom, .layer3)
+            .padding(.horizontal, .layer4)
+            
+            VStack(spacing: 0) {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    ModalService.shared.dismissSheet()
+                } label: {
+                    Text("Dismiss sheet")
+                        .font(.headline.bold())
+                        .lineLimit(1)
+                        .foregroundColor(Color.black)
+                        .padding(.horizontal, .layer2)
+                        .padding(.vertical, .layer1)
+                        .background(RoundedRectangle(cornerRadius: .layer2)
+                            .fill(Brand.Colors.yellow))
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.bottom, .layer5)
             .padding(.horizontal, .layer4)
         }
         .padding(.top, .layer4)

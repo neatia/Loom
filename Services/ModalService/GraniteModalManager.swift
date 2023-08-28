@@ -28,9 +28,10 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             .throttle(for: .seconds(0.2),
                       scheduler: RunLoop.main,
                       latest: true)
-            .sink { value in
+            .sink {[weak self] value in
                 #if os(iOS)
-                self.window?.isUserInteractionEnabled = value.keys.isEmpty == false
+                guard self?.presenters.isEmpty == true else { return }
+                self?.window?.isUserInteractionEnabled = value.keys.isEmpty == false
                 #else
                 DispatchQueue.main.async { [weak self] in
                     self?.centerWindow()

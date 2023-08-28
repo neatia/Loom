@@ -22,19 +22,20 @@ extension AccountService {
         @Payload var meta: Meta?
         
         func reduce(state: inout Center.State) async {
-            guard let meta = meta?.accountMeta ?? state.meta else {
+            let accountMeta = meta?.accountMeta ?? state.meta
+            guard let accountMeta else {
                 LoomLog("[No account in state] \(meta?.accountMeta == nil) \(state.meta == nil)", level: .debug)
                 return
             }
             
-            guard let token = try? AccountService.getToken(identifier: AccountService.keychainAuthToken + meta.username, service: AccountService.keychainService + meta.host) else {
+            guard let token = try? AccountService.getToken(identifier: accountMeta.username, service: accountMeta.host) else {
                 
                 Lemmy.getSite()
                 state.authenticated = false
                 state.meta = nil
                 
-                LoomLog("[No Account Found] id: \(AccountService.keychainAuthToken + meta.username), service: \(AccountService.keychainService + LemmyKit.baseUrl)", level: .debug)
-                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host)", event: .normal))
+                LoomLog("[No Account Found] id: \(AccountService.keychainAuthToken + accountMeta.username), service: \(AccountService.keychainService + LemmyKit.baseUrl)", level: .debug)
+                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(accountMeta.host)", event: .normal))
                 return
             }
             
@@ -55,9 +56,9 @@ extension AccountService {
             
             LoomLog("[Account Restored] - connected", level: .debug)
             
-            broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(meta.host + " @\(meta.username)")", event: .success))
+            broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(accountMeta.host + " @\(accountMeta.username)")", event: .success))
             
-            state.meta = .init(info: user, host: meta.host)
+            state.meta = .init(info: user, host: accountMeta.host)
             state.addToProfiles = false
             state.authenticated = LemmyKit.auth != nil
             

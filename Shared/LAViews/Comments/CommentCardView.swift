@@ -91,16 +91,30 @@ struct CommentCardView: View {
                     .attach({
                         showThreadDrawer(model)
                     }, at: \.goToThread)
-                    .contentContext(.addCommentModel(model: currentModel, context))
+                    .contentContext(.addCommentModel(model: model, context))
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
                 
-                contentView
-                    .padding(.trailing, padding.trailing)
-                    .padding(.bottom, .layer3)
+                if model != nil {
+                    contentView
+                        .padding(.trailing, padding.trailing)
+                        .padding(.bottom, .layer3)
+                }
             case .style2:
                 HStack(spacing: .layer3) {
                     HeaderCardAvatarView(showAvatar: showAvatar)
+                        .attach({
+                            guard let currentModel,
+                                  currentModel.replyCount > 0 else { return }
+                            GraniteHaptic.light.invoke()
+                            expandReplies.toggle()
+                        }, at: \.tappedThreadLine)
+                        .attach({
+                            guard let currentModel,
+                                  currentModel.replyCount > 0 else { return }
+                            GraniteHaptic.light.invoke()
+                            showThreadDrawer(currentModel)
+                        }, at: \.longPressThreadLine)
                     VStack(alignment: .leading, spacing: 2) {
                         HeaderCardView(shouldRoutePost: self.shouldLinkToPost)
                             .attach({ community in
@@ -117,8 +131,12 @@ struct CommentCardView: View {
                             }, at: \.edit)
                             .graniteEvent(interact)
                             //Since the model could get updated (removal/deletion)
-                            .contentContext(.addCommentModel(model: currentModel, context))
-                        contentView
+//                            .contentContext(.addCommentModel(model: model, context))
+                        
+                        //Crash when accessing the computable `currentModel` for markdown preview, checking for nil before rendering the last group, resolves it...
+                        if model != nil {
+                            contentView
+                        }
                     }
                 }
                 .padding(.trailing, padding.trailing)
@@ -193,6 +211,7 @@ struct CommentCardView: View {
     }
     
     func editModel() {
+        //This entire logic needs to be revised
         switch context.viewingContext {
         case .base,
              .bookmark,
@@ -219,12 +238,12 @@ struct CommentCardView: View {
     }
     
     func replyModel() {
-        guard let model else { return }
+        guard let currentModel else { return }
         
         ModalService
             .shared
             .showReplyCommentModal(isEditing: false,
-                                   model: model) { (updatedModel, replyModel) in
+                                   model: currentModel) { (updatedModel, replyModel) in
             
             DispatchQueue.main.async {
                 self.model = self.model?.incrementReplyCount()
@@ -253,8 +272,8 @@ extension CommentCardView {
             #endif
             FooterView(showScores: config.state.showScores)
                 .attach({ id in
-                    guard let model else { return }
-                    showThreadDrawer(model)
+                    guard let currentModel else { return }
+                    showThreadDrawer(currentModel)
                 }, at: \.showComments)
                 .attach({ model in
                     replyModel()
@@ -291,29 +310,21 @@ extension CommentCardView {
     
     var contentBody: some View {
         Group {
-            if let model {
+            if let currentModel {
                 if context.isPreview {
                     ScrollView(showsIndicators: false) {
-                        MarkdownView(text: model.comment.content)
+                        MarkdownView(text: currentModel.comment.content)
                             .fontGroup(CommentFontGroup())
                             .markdownViewRole(.editor)
                     }
                     .frame(height: 120)
                     .padding(.bottom, .layer3)
                 } else {
-                    MarkdownView(text: model.comment.content)
+                    MarkdownView(text: currentModel.comment.content)
                         .fontGroup(CommentFontGroup())
                         .markdownViewRole(.editor)
                         .padding(.bottom, .layer3)
-                        // This modifier causes a malloc crash on modal sheet previews
-                        .modifier(TapAndLongPressModifier(tapAction: {
-                            guard model.replyCount > 0 else { return }
-                            GraniteHaptic.light.invoke()
-                            expandReplies.toggle()
-                        }, longPressAction: {
-                            GraniteHaptic.light.invoke()
-                            showThreadDrawer(model)
-                        }))
+
                 }
             } else {
                 EmptyView()

@@ -41,9 +41,11 @@ extension AccountService {
                 broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
                 return
             }
-
+            
             do {
-                try AccountService.insertToken(data, identifier: AccountService.keychainAuthToken + meta.username, service: AccountService.keychainService + meta.host)
+                try AccountService.insertToken(data,
+                                               identifier: meta.username,
+                                               service: meta.host)
                 
                 broadcast.send(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_ADD_ACCOUNT_SUCCESS \(meta.username)", event: .success))
                 

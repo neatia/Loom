@@ -13,7 +13,7 @@ import NukeUI
 
 /*
  All this header view logic can definitely be cleanly
- reorganized...
+ reorganized... (with related files)
  
  This is a product of constant nitpicking on 4 form factors
  - iphone
@@ -44,7 +44,7 @@ extension Feed {
                             .rotationEffect(.degrees(90))
                     }
                     .buttonStyle(.plain)
-                    .padding(.trailing, .layer2)
+                    .padding(.trailing, .layer3)
                     .padding(.leading, 2)//nitpick
                 }
                 

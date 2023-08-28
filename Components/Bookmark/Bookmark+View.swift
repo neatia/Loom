@@ -145,13 +145,6 @@ extension Bookmark: View {
             ForEach(postViews) { postView in
                 PostCardView(topPadding: postViews.first?.id == postView.id ? .layer5 : .layer6,
                              linkPreviewType: .largeNoMetadata)
-                    .attach({ postView in
-                        GraniteHaptic.light.invoke()
-                        ModalService.shared.presentSheet {
-                            PostContentView(postView: postView)
-                                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
-                        }
-                    }, at: \.showContent)
                     .contentContext(.init(postModel: postView,
                                           viewingContext: showHeader ? .bookmark(state.selectedBookmarkPostKey.host) : .bookmarkExpanded(state.selectedBookmarkPostKey.host)))
                 

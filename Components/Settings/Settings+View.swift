@@ -227,9 +227,9 @@ extension Settings: View {
                 Spacer()
                 #endif
                     
-//                //Debug Settings
-//                DebugSettingsView()
-//                    .graniteEvent(config.center.restart)
+                //Debug Settings
+                DebugSettingsView()
+                    //.graniteEvent(config.center.restart)
                 
                 Spacer()
                     .frame(height: 60)

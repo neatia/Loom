@@ -19,14 +19,16 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         var hideDivider: Bool = false
         var hideLastDivider: Bool = false
         var performant: Bool = false
+        var partition: Bool = false
         var lazy: Bool = true
         var cacheViews: Bool = false
+        var listView: Bool = false
         var showFetchMore: Bool = true
         var verticalPadding: CGFloat = 0
         var backgroundColor: Color = .clear
     }
     
-    @EnvironmentObject private var pager: Pager<Model>
+    @EnvironmentObject internal var pager: Pager<Model>
     
     var currentItems: [Model] {
         pager.currentItems
@@ -74,6 +76,10 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         header()
                     }
                     simpleScrollView
+                } else if Device.isMacOS == false && properties.partition {
+                    partitionScrollView
+                } else if Device.isMacOS == false && properties.listView {
+                    listView
                 } else {
                     normalScrollView
                 }
@@ -84,63 +90,47 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
     var normalScrollView: some View {
         GraniteScrollView(onRefresh: pager.refresh(_:),
                           bgColor: properties.backgroundColor) {
+            
+            if properties.lazy {
+                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
 
-            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-
-                if properties.alternateContentPosition {
-                    addContent()
-                }
-
-                Section(header: header()) {
-                    if !properties.alternateContentPosition {
+                    if properties.alternateContentPosition {
                         addContent()
                     }
 
-                    ForEach(currentItems) { item in
-                        mainContent(item)
-                            .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
-                    }
-                }
-                
-                if properties.showFetchMore {
-                    PagerFooterLoadingView<Model>()
-                        .environmentObject(pager)
-                }
-            }.padding(.top, 1)
-        }
-    }
-    
-    var simpleScrollView: some View {
-        #if os(macOS)
-        VStack(spacing: 0) {
-            if !properties.alternateContentPosition {
-                addContent()
-            }
-            NSScrollViewWrapper($pager.shouldUpdate) {
-                LazyVStack(spacing: 0) {
-                    //Generates a section in a stackView
-                    ForEach(pager.currentLastItems) { item in
-                        mainContent(item)
-                            .environment(\.pagerMetadata,
-                                          pager.itemMetadatas[item.id])
-                    }
-                }
-            }
-            .id(pager.shouldReset)
-            if properties.showFetchMore {
-                PagerFooterLoadingView<Model>()
-                    .environmentObject(pager)
-            }
-        }
-        #else
-        GraniteScrollView(showsIndicators: false,
-                          onRefresh: pager.refresh(_:)) {
-            if !properties.alternateContentPosition {
-                addContent()
-            }
+                    Section(header: header()) {
+                        if !properties.alternateContentPosition {
+                            addContent()
+                        }
 
-            if properties.lazy {
-                LazyVStack(spacing: 0) {
+                        ForEach(currentItems) { item in
+                            if properties.cacheViews {
+                                cache(item)
+                                    .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                            } else {
+                                mainContent(item)
+                                    .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                            }
+                        }
+                    }
+                    
+                    if properties.showFetchMore {
+                        PagerFooterLoadingView<Model>()
+                            .environmentObject(pager)
+                    }
+                }
+            } else {
+                VStack(spacing: 0) {
+                    if properties.alternateContentPosition {
+                        addContent()
+                    }
+                    
+                    header()
+                    
+                    if !properties.alternateContentPosition {
+                        addContent()
+                    }
+                    
                     ForEach(currentItems) { item in
                         if properties.cacheViews {
                             cache(item)
@@ -150,23 +140,17 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                                 .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                         }
                     }
-                }
-            } else {
-                VStack(spacing: 0) {
-                    ForEach(currentItems) { item in
-                        mainContent(item)
-                            .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
+                    
+                    if properties.showFetchMore {
+                        PagerFooterLoadingView<Model>()
+                            .environmentObject(pager)
                     }
                 }
             }
-            
-            if properties.showFetchMore {
-                PagerFooterLoadingView<Model>()
-                    .environmentObject(pager)
-            }
         }
-        #endif
     }
+    
+    
     
     func cache(_ item: Model, retrieveOnly: Bool = false, storeOnly: Bool = false) -> some View {
         if storeOnly == false,
@@ -181,10 +165,8 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         
         let view: AnyView = AnyView(mainContent(item))
         
-        if properties.cacheViews {
-            cache.viewCache[item.id] = view
-            cache.flush()
-        }
+        cache.viewCache[item.id] = view
+        cache.flush()
         
         if storeOnly {
             return AnyView(EmptyView())

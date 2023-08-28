@@ -18,7 +18,8 @@ extension Reply: View {
                 ScrollView(showsIndicators: false) {
                     switch kind {
                     case .replyPost(let model), .editReplyPost(_, let model):
-                        if let url = postUrl {
+                        if postOrCommentContent == nil,
+                           let url = postUrl {
                             HStack {
                                 LinkPreview(url: url)
                                     .type(model.post.body == nil ? .large : .small)

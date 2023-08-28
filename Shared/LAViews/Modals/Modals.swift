@@ -58,7 +58,7 @@ extension ModalService {
         
         presentSheet(detents: [.medium, .large]) {
             Write(postView: model)
-                .attach({ updatedModel in
+                .attachAndClear({ updatedModel in
                     update?(updatedModel)
                     
                     self.dismissSheet()
@@ -86,12 +86,9 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: replyKind)
-                .attach({ (updatedModel, replyModel) in
-                    DispatchQueue.main.async {
-                        update?(updatedModel)
-                        
-                        self.dismissSheet()
-                    }
+                .attachAndClear({ (updatedModel, replyModel) in
+                    update?(updatedModel)
+                    self.dismissSheet()
                 }, at: \.updateComment)
                 .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
         }
@@ -110,7 +107,7 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: .replyPost(model))
-                .attach({ (model, modelView) in
+                .attachAndClear({ (model, modelView) in
                     update?(modelView)
                     
                     ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
@@ -131,7 +128,7 @@ extension ModalService {
         
         presentSheet {
             Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
-                .attach({ (updatedModel, replyModel) in
+                .attachAndClear({ (updatedModel, replyModel) in
                     update?(updatedModel, replyModel)
                     
                     if isEditing {

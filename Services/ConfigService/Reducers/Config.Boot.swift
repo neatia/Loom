@@ -15,9 +15,11 @@ extension ConfigService {
             LemmyKit.baseUrl = state.config.baseUrl
             ConfigService.configureIPFS(state.ipfsGatewayUrl)
             
+            
+            account.restore(wait: true)
             account.center.boot.send()
             
-            content.preload()
+            content.restore(wait: true)
             content.center.boot.send()
             
             layout.preload()
@@ -41,10 +43,15 @@ extension ConfigService {
             }
             
             //Loom
-            loom.preload()
+            loom.restore(wait: true)
             loom._state.intent.wrappedValue = .idle
             loom._state.display.wrappedValue = .compact
             loom._state.activeManifest.wrappedValue = nil
+            
+            //Pager Filter
+            //TODO: a reducer meant for all content filteration needs. This could site in ContentService
+            PagerFilter.enable = state.showNSFW == false
+            PagerFilter.enableForKeywords = state.keywordsFilterEnabled
         }
         
         var behavior: GraniteReducerBehavior {

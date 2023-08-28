@@ -86,32 +86,32 @@ struct PagerLoadingView<Model: Pageable>: View {
             Spacer()
             HStack {
                 Spacer()
-                if pager.isFetching || pager.hasMore {
+                if pager.isFetching || pager.initialFetch {
                     #if os(iOS)
                     ProgressView()
                     #else
                     ProgressView()
                         .scaleEffect(0.6)
                     #endif
-                } else if pager.hasMore == false {
+                } else {
                     VStack(spacing: .layer3) {
                         Text(label)
                             .font(.headline.bold())
                         
                         Button {
                             GraniteHaptic.light.invoke()
-                            pager.tryAgain()
+                            pager.reset()
                         } label : {
                             Image(systemName: "arrow.counterclockwise")
                                 .font(.headline.bold())
                         }
                         .buttonStyle(.plain)
                     }
-                    .padding(.vertical, .layer3)
                 }
                 
                 Spacer()
             }
+            .padding(.vertical, .layer3)
             
             Spacer()
         }
@@ -129,20 +129,6 @@ struct PagerLoadingView<Model: Pageable>: View {
             pager.progress { value in
                 self.progress = value ?? 0.0
             }
-        }
-    }
-}
-
-extension View {
-    func setupPlainListRow() -> some View {
-        if #available(macOS 13.0, *) {
-            return self
-                .listRowBackground(Color.clear)
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                     .listRowSeparator(.hidden)
-                     .background(Color.clear.onTapGesture { })
-        } else {
-            return self
         }
     }
 }

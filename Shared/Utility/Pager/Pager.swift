@@ -18,6 +18,7 @@ public protocol Pageable: Equatable, Identifiable, Hashable {
     var id: String { get }
     var date: Date { get }
     var blocked: Bool { get }
+    var shouldHide: Bool { get }
     var person: Person { get }
     var thumbURL: URL? { get }
     var postURL: URL? { get }
@@ -35,11 +36,21 @@ extension Pageable {
     public var postURL: URL? {
         nil
     }
+    
+    public var shouldHide: Bool {
+        false
+    }
 }
 
 struct PageableMetadata: Hashable {
     var linkMeta: LPLinkMetadata?
     var imageThumb: GraniteImage?
+}
+
+public class PagerFilter {
+    //hides models to appear that have shouldHide set to true
+    static var enable: Bool = false
+    static var enableForKeywords: Bool = false
 }
 
 public class Pager<Model: Pageable>: ObservableObject {
@@ -105,7 +116,7 @@ public class Pager<Model: Pageable>: ObservableObject {
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
     
-    var isFetching: Bool = false
+    @Published var isFetching: Bool = false
     
     var initialFetch: Bool = true
     
@@ -225,7 +236,15 @@ public class Pager<Model: Pageable>: ObservableObject {
                 return
             }
             
-            let models: [Model] = (await handler(self?.pageIndex))
+            let results: [Model] = (await handler(self?.pageIndex))
+            
+            let models: [Model]
+            
+            if PagerFilter.enable {
+                models = results.filter { $0.shouldHide == false }
+            } else {
+                models = results
+            }
             
             guard let this = self else { return }
             
@@ -383,14 +402,14 @@ public class Pager<Model: Pageable>: ObservableObject {
 
 //MARK: -- datasource modifiers
 extension Pager {
-    func add(_ items: [Model], pageIndex: Int? = nil) {
+    func add(_ items: [Model], pageIndex: Int? = nil, initialFetch: Bool = true) {
         itemIDs = items.map { $0.id }
         for item in items {
             itemMap[item.id] = item
             blockedItemMap[item.id] = item.blocked
         }
         lastItem = items.last ?? lastItem
-        
+        self.initialFetch = initialFetch
         self.pageIndex = pageIndex ?? self.pageIndex
         self.update()
     }
@@ -453,16 +472,13 @@ extension Pager {
 //MARK: user-interactive modifiers
 extension Pager{
     func reset() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             #if os(macOS)
             self?.shouldReset += 1
             #endif
             self?.clear()
             self?.resetHandler?()
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.fetch(force: true)
+            self?.fetch()
         }
     }
     

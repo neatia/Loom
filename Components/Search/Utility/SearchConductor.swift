@@ -56,7 +56,7 @@ class SearchConductor: ObservableObject {
           .autoconnect()
           .sink(receiveValue: { [weak self] (output) in
               self?.searchTimer?.cancel()
-//              self?.isSearching = false
+              self?.isSearching = false
               print("[Executing Query] \(query)")
               self?.search(query)
           })

@@ -211,6 +211,9 @@ final class KeyboardViewController: UIViewController, KeyboardTextToolController
             textView.textContentType = .URL
             textView.autocorrectionType = .no
             textView.autocapitalizationType = .none
+        case .search:
+            textView.autocorrectionType = .no
+            textView.autocapitalizationType = .none
         default:
             break
         }
