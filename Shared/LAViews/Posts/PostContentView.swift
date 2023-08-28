@@ -113,6 +113,7 @@ struct PostContentView: View {
                         }
                         .cornerRadius(8.0)
                         .clipped()
+                        .contentShape(Rectangle())
                     case .text:
                         EmptyView()
                     }
@@ -186,7 +187,6 @@ struct PhotoView: View {
                 }
             
             #if os(iOS)
-            
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()

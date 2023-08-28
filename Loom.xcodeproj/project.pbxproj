@@ -263,8 +263,6 @@
 		716CCADD2A8CA28E009F9413 /* Loom+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716CCADB2A8CA28E009F9413 /* Loom+Center.swift */; };
 		717090A72A7ED7DC009F1FB7 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090832A7ED7DC009F1FB7 /* Lock.swift */; };
 		717090A82A7ED7DC009F1FB7 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090832A7ED7DC009F1FB7 /* Lock.swift */; };
-		717090A92A7ED7DC009F1FB7 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090842A7ED7DC009F1FB7 /* MD5.swift */; };
-		717090AA2A7ED7DC009F1FB7 /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090842A7ED7DC009F1FB7 /* MD5.swift */; };
 		717090AB2A7ED7DC009F1FB7 /* Gap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090852A7ED7DC009F1FB7 /* Gap.swift */; };
 		717090AC2A7ED7DC009F1FB7 /* Gap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090852A7ED7DC009F1FB7 /* Gap.swift */; };
 		717090AD2A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090862A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift */; };
@@ -671,6 +669,18 @@
 		71FCDD182A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */; };
 		71FF4D632A93F394005BF579 /* Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF4D622A93F394005BF579 /* Modals.swift */; };
 		71FF4D642A93F394005BF579 /* Modals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF4D622A93F394005BF579 /* Modals.swift */; };
+		71FF5BED2A9BDEDA00DD83EB /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BEC2A9BDEDA00DD83EB /* MD5.swift */; };
+		71FF5BEE2A9BDEDA00DD83EB /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BEC2A9BDEDA00DD83EB /* MD5.swift */; };
+		71FF5BF12A9C003D00DD83EB /* FilterConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BF02A9C003D00DD83EB /* FilterConfig.swift */; };
+		71FF5BF22A9C003D00DD83EB /* FilterConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BF02A9C003D00DD83EB /* FilterConfig.swift */; };
+		71FF5BF42A9C046800DD83EB /* Pager.ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BF32A9C046800DD83EB /* Pager.ListView.swift */; };
+		71FF5BF52A9C046800DD83EB /* Pager.ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BF32A9C046800DD83EB /* Pager.ListView.swift */; };
+		71FF5BF82A9C056D00DD83EB /* WhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BF72A9C056D00DD83EB /* WhatsNew.swift */; };
+		71FF5BF92A9C056D00DD83EB /* WhatsNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BF72A9C056D00DD83EB /* WhatsNew.swift */; };
+		71FF5BFB2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BFA2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift */; };
+		71FF5BFC2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BFA2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift */; };
+		71FF5BFE2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BFD2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift */; };
+		71FF5BFF2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF5BFD2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -825,7 +835,6 @@
 		716CCAD82A8C6DAD009F9413 /* Config.Restart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.Restart.swift; sourceTree = "<group>"; };
 		716CCADB2A8CA28E009F9413 /* Loom+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Loom+Center.swift"; sourceTree = "<group>"; };
 		717090832A7ED7DC009F1FB7 /* Lock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
-		717090842A7ED7DC009F1FB7 /* MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
 		717090852A7ED7DC009F1FB7 /* Gap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gap.swift; sourceTree = "<group>"; };
 		717090862A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimeInterval+Util.swift"; sourceTree = "<group>"; };
 		717090E62A7EEF0B009F1FB7 /* LayoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutService.swift; sourceTree = "<group>"; };
@@ -1053,6 +1062,14 @@
 		71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySidebarCardView.swift; sourceTree = "<group>"; };
 		71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--macOS--Info.plist"; sourceTree = "<group>"; };
 		71FF4D622A93F394005BF579 /* Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modals.swift; sourceTree = "<group>"; };
+		71FF5BEB2A9BCA6600DD83EB /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
+		71FF5BEC2A9BDEDA00DD83EB /* MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
+		71FF5BEF2A9BE8A200DD83EB /* MarkdownView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MarkdownView; path = ../../../pexavc/repositories/MarkdownView; sourceTree = "<group>"; };
+		71FF5BF02A9C003D00DD83EB /* FilterConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterConfig.swift; sourceTree = "<group>"; };
+		71FF5BF32A9C046800DD83EB /* Pager.ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ListView.swift; sourceTree = "<group>"; };
+		71FF5BF72A9C056D00DD83EB /* WhatsNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNew.swift; sourceTree = "<group>"; };
+		71FF5BFA2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ScrollView.Partition.swift; sourceTree = "<group>"; };
+		71FF5BFD2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ScrollView.Simple.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1361,6 +1378,8 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71FF5BEF2A9BE8A200DD83EB /* MarkdownView */,
+				71FF5BEB2A9BCA6600DD83EB /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -1482,14 +1501,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		711D39202A8408C000CF2DB2 /* Search */ = {
+		711D39202A8408C000CF2DB2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
 				71C69E432A70515F00B54AD6 /* SearchConductor.swift */,
 				711D39212A8408CF00CF2DB2 /* SearchConductor.Views.swift */,
 				711D39242A840AED00CF2DB2 /* SearchConductor.BasicKeys.swift */,
 			);
-			path = Search;
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		711D39272A8413E100CF2DB2 /* Instances */ = {
@@ -1653,7 +1672,6 @@
 			isa = PBXGroup;
 			children = (
 				717090832A7ED7DC009F1FB7 /* Lock.swift */,
-				717090842A7ED7DC009F1FB7 /* MD5.swift */,
 				717090852A7ED7DC009F1FB7 /* Gap.swift */,
 				717090862A7ED7DC009F1FB7 /* NSTimeInterval+Util.swift */,
 			);
@@ -1688,10 +1706,10 @@
 		717C8FB32A6F9EA000DF6037 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				71FF5BF62A9C056000DD83EB /* Onboarding */,
 				717C12A1293BF02D0060A446 /* Animations */,
 				710540822A91D9BA00B9DC8A /* Snapshot */,
 				71DA49832A96CF83006FB90C /* Content */,
-				711D39202A8408C000CF2DB2 /* Search */,
 				71C8BE702A7F2BC3008694C7 /* Pager */,
 				71A28E19295237AE00EAE8EE /* TapAndLongPressModifier.swift */,
 				711D392E2A84A96200CF2DB2 /* DebugComponent.swift */,
@@ -1702,6 +1720,7 @@
 				714B48772A816CF900AC6199 /* Logger.swift */,
 				71E5F3CA2A73A02500299558 /* Haptic.swift */,
 				71A28E1E295237AE00EAE8EE /* Run.swift */,
+				71FF5BEC2A9BDEDA00DD83EB /* MD5.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -1993,6 +2012,7 @@
 		71C69E1D2A70469900B54AD6 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				711D39202A8408C000CF2DB2 /* Utility */,
 				71C69E462A70556F00B54AD6 /* Views */,
 				7195B4942A9AA5380026A6E9 /* Search+Listeners.swift */,
 				71C69E1E2A70469900B54AD6 /* Search+Center.swift */,
@@ -2017,6 +2037,9 @@
 			children = (
 				717C8FB42A6F9F3D00DF6037 /* Pager.swift */,
 				71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */,
+				71FF5BFD2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift */,
+				71FF5BFA2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift */,
+				71FF5BF32A9C046800DD83EB /* Pager.ListView.swift */,
 				71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */,
 			);
 			path = Pager;
@@ -2084,6 +2107,7 @@
 			isa = PBXGroup;
 			children = (
 				71C9F9032A60B9950089D7EA /* InstanceConfig.swift */,
+				71FF5BF02A9C003D00DD83EB /* FilterConfig.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2418,6 +2442,14 @@
 			path = Modals;
 			sourceTree = "<group>";
 		};
+		71FF5BF62A9C056000DD83EB /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				71FF5BF72A9C056D00DD83EB /* WhatsNew.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2658,6 +2690,7 @@
 				71C9F9242A60ECEF0089D7EA /* ThreadView.swift in Sources */,
 				7166E9D52A748C7F004F88D7 /* PostActionsView.swift in Sources */,
 				71DF106F28CC697600559DBC /* DictionaryEncoder.swift in Sources */,
+				71FF5BF42A9C046800DD83EB /* Pager.ListView.swift in Sources */,
 				71F042242A6A3AD700788CDC /* Write.swift in Sources */,
 				7197FB192964B4C0005EBBA4 /* GraniteSheetContainerView.swift in Sources */,
 				71BE94FD2A95DF74004A3AC3 /* GenericPreview.swift in Sources */,
@@ -2699,7 +2732,6 @@
 				71B7A1F12A691470003E6D4D /* ShinyView.swift in Sources */,
 				7151512C2A8FB12F00251978 /* Profile+Listeners.swift in Sources */,
 				7195B4922A9A9C8E0026A6E9 /* ContentContext.Helpers.swift in Sources */,
-				717090A92A7ED7DC009F1FB7 /* MD5.swift in Sources */,
 				710283972A2A54C300010877 /* AnyPointSliderStyle.swift in Sources */,
 				710283832A2A54C300010877 /* RangeSlider.swift in Sources */,
 				71FCDD002A758AEF000A6309 /* ProfilePickerView.swift in Sources */,
@@ -2825,6 +2857,7 @@
 				71A28D98295231E600EAE8EE /* Color.swift in Sources */,
 				711B3FDD2885D4F000F3080D /* Home.swift in Sources */,
 				717C129F293BEF730060A446 /* AppBlurBackground.swift in Sources */,
+				71FF5BFE2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift in Sources */,
 				7197FB272964B4EC005EBBA4 /* ModalService+Actions.swift in Sources */,
 				71C8BE752A7F2BFA008694C7 /* Pager.LoadingView.swift in Sources */,
 				71B7A1D62A68DE9C003E6D4D /* Feed.AccountView.swift in Sources */,
@@ -2837,8 +2870,10 @@
 				71C69E262A70469900B54AD6 /* Search.swift in Sources */,
 				71622E9F2A6E5796006233F3 /* Reply.swift in Sources */,
 				714FA06229FF11E1002E4A7C /* InfoIconView.swift in Sources */,
+				71FF5BED2A9BDEDA00DD83EB /* MD5.swift in Sources */,
 				710283CF2A2A54C400010877 /* AccentColor.swift in Sources */,
 				71FBA7F9296D16110090B630 /* GranitePagingView.swift in Sources */,
+				71FF5BF12A9C003D00DD83EB /* FilterConfig.swift in Sources */,
 				714B48782A816CF900AC6199 /* Logger.swift in Sources */,
 				71BE94F62A958EC2004A3AC3 /* KeyboardToolbarTextView.swift in Sources */,
 				71622E9D2A6E5796006233F3 /* Reply+Center.swift in Sources */,
@@ -2857,6 +2892,7 @@
 				71C9F8F02A60B7F40089D7EA /* Settings.swift in Sources */,
 				71899E572A89A0D80073158F /* Feed+Listeners.swift in Sources */,
 				71C9F9332A610C110089D7EA /* FooterView.swift in Sources */,
+				71FF5BFB2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift in Sources */,
 				71899E3E2A8958F40073158F /* Loom.CardView.swift in Sources */,
 				710540722A91427100B9DC8A /* View+Size.swift in Sources */,
 				71A4A1212A61C41000689DF2 /* AccountService+Center.swift in Sources */,
@@ -2912,6 +2948,7 @@
 				71FF4D632A93F394005BF579 /* Modals.swift in Sources */,
 				716157E22A85FD9D00449EE4 /* Keyboard.swift in Sources */,
 				71BE94F02A9586FD004A3AC3 /* View+Navigation.swift in Sources */,
+				71FF5BF82A9C056D00DD83EB /* WhatsNew.swift in Sources */,
 				71C8BE722A7F2BF1008694C7 /* Pager.ScrollView.swift in Sources */,
 				71A28D3229522F8300EAE8EE /* ContainerConfig.swift in Sources */,
 				7145EF0D28D43F1D00BFD19A /* Date.swift in Sources */,
@@ -2997,6 +3034,7 @@
 				71F778BD2A71A95300C9C5C4 /* SfSafariView.swift in Sources */,
 				71C9F9452A613EA30089D7EA /* BookmarkService.Modify.swift in Sources */,
 				71EAF47A2A7DA3320034FCB9 /* ExplorerService+Center.swift in Sources */,
+				71FF5BFF2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift in Sources */,
 				715151272A8F720300251978 /* ContentContext.swift in Sources */,
 				71C9F9402A613E750089D7EA /* BookmarkService+Center.swift in Sources */,
 				710283AC2A2A54C300010877 /* ValueSlider.swift in Sources */,
@@ -3036,7 +3074,6 @@
 				7166E9DA2A74A2B2004F88D7 /* Person.swift in Sources */,
 				71F042272A6A3AD700788CDC /* Write+View.swift in Sources */,
 				7197FB1C2964B4C0005EBBA4 /* GraniteSheetManager.swift in Sources */,
-				717090AA2A7ED7DC009F1FB7 /* MD5.swift in Sources */,
 				7197FB222964B4C0005EBBA4 /* GraniteModalWindow.swift in Sources */,
 				71CB6C3A2A6B824C00084ECC /* CommunityPickerView.swift in Sources */,
 				710540732A91427100B9DC8A /* View+Size.swift in Sources */,
@@ -3068,9 +3105,11 @@
 				71BE94F12A9586FD004A3AC3 /* View+Navigation.swift in Sources */,
 				71CB6C392A6B823D00084ECC /* Write.Set.swift in Sources */,
 				710540802A91967200B9DC8A /* MarkdownFontGroup.swift in Sources */,
+				71FF5BEE2A9BDEDA00DD83EB /* MD5.swift in Sources */,
 				71F778B62A719D4400C9C5C4 /* HeaderCardAvatarView.swift in Sources */,
 				71DF107628CC697600559DBC /* Style.swift in Sources */,
 				7166E9CA2A74457A004F88D7 /* CommunitySidebarView.swift in Sources */,
+				71FF5BF92A9C056D00DD83EB /* WhatsNew.swift in Sources */,
 				71F0421E2A6A3AD100788CDC /* Globe.swift in Sources */,
 				71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71CB6C342A6B742200084ECC /* Write.Import.swift in Sources */,
@@ -3088,6 +3127,7 @@
 				71A4A1332A6352CA00689DF2 /* CGFloat.swift in Sources */,
 				710283CC2A2A54C300010877 /* DefaultHorizontalValueView.swift in Sources */,
 				71BE94FE2A95DF74004A3AC3 /* GenericPreview.swift in Sources */,
+				71FF5BF52A9C046800DD83EB /* Pager.ListView.swift in Sources */,
 				71B7A1F02A691470003E6D4D /* Gradient.swift in Sources */,
 				713129B62A82FC2200C6B31D /* GlobeScene.Helpers.swift in Sources */,
 				711849512A8F079E000F5A67 /* Feed.SetInstanceURL.swift in Sources */,
@@ -3100,6 +3140,7 @@
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
 				71A28D97295231E600EAE8EE /* Double.swift in Sources */,
 				710283BA2A2A54C300010877 /* VerticalValueSliderStyle.swift in Sources */,
+				71FF5BFC2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift in Sources */,
 				7118494D2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */,
 				710283882A2A54C300010877 /* RangeSliderStyleConfiguration.swift in Sources */,
 				717090EF2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
@@ -3139,6 +3180,7 @@
 				714B487F2A8188DA00AC6199 /* ResourceContext.swift in Sources */,
 				71B7A1E42A68FE81003E6D4D /* AccountMeta.swift in Sources */,
 				7197FB082964B4C0005EBBA4 /* GraniteAlertAction.swift in Sources */,
+				71FF5BF22A9C003D00DD83EB /* FilterConfig.swift in Sources */,
 				7151512D2A8FB12F00251978 /* Profile+Listeners.swift in Sources */,
 				71FCDD182A75F254000A6309 /* CommunitySidebarCardView.swift in Sources */,
 				71622EA02A6E5796006233F3 /* Reply.swift in Sources */,

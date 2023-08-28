@@ -45,6 +45,11 @@ extension ConfigService {
             loom._state.intent.wrappedValue = .idle
             loom._state.display.wrappedValue = .compact
             loom._state.activeManifest.wrappedValue = nil
+            
+            //Pager Filter
+            //TODO: a reducer meant for all content filteration needs. This could site in ContentService
+            PagerFilter.enable = state.showNSFW == false
+            PagerFilter.enableForKeywords = state.keywordsFilterEnabled
         }
         
         var behavior: GraniteReducerBehavior {

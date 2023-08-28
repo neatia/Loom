@@ -1,9 +1,8 @@
 //
 //  MD5.swift
-//  CryptoSwift
+//  Loom
 //
-//  Created by Marcin Krzyzanowski on 06/08/14.
-//  Copyright (c) 2014 Marcin Krzyzanowski. All rights reserved.
+//  Created by PEXAVC on 8/27/23.
 //
 
 /*
@@ -29,6 +28,7 @@
  */
 
 import Foundation
+import CommonCrypto
 
 extension String {
     public func md5() -> String {

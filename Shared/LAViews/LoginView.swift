@@ -81,7 +81,6 @@ struct LoginView: View {
 extension LoginView {
     var addToProfilesForm: some View {
         VStack(spacing: 0) {
-            
             TextField("LOGIN_FORM_USERNAME", text: $username)
                 .textFieldStyle(.plain)
                 .correctionDisabled()

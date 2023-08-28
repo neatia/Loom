@@ -166,7 +166,8 @@ struct UserCardView: View {
                             
                             Spacer()
                         }
-                        .scrollOnOverflowIf(style == .style1)
+                        .scrollOnOverflow()
+                        .padding(.bottom, model.person.display_name == nil ? 0 : .layer3)
                     }
                     
                     Spacer()
@@ -181,6 +182,7 @@ struct UserCardView: View {
                 .graniteEvent(interact)
                 .padding(.trailing, .layer3)
             }
+            .frame(maxHeight: size.frame + (model.person.display_name == nil ? 0 : 24))
             .padding(.layer3)
             .foregroundColor(.foreground)
             .background(
@@ -190,7 +192,6 @@ struct UserCardView: View {
             .background(Color.secondaryBackground)
             .cornerRadius(style == .style1 ? 8 : size.frame)
             .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9)
-            .padding(.bottom, .layer2)
             
             if showCounts && style == .style1 {
                 HStack(spacing: .layer2) {
@@ -232,6 +233,7 @@ struct UserCardView: View {
                     }
                     Spacer()
                 }//hstack counts end
+                .padding(.top, .layer2)
             }
         }
     }

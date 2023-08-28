@@ -26,6 +26,10 @@ extension PostView: Pageable {
     public var person: Person {
         self.creator
     }
+    
+    public var shouldHide: Bool {
+        self.post.nsfw == true || self.community.nsfw == true
+    }
 }
 
 extension PostView: Locateable {

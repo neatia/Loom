@@ -14,8 +14,8 @@ import LemmyKit
 struct HeaderCardAvatarView: View {
     @Environment(\.contentContext) var context
     
-    @GraniteAction<Int> var tappedDetail
-    @GraniteAction<Int> var tappedCrumb
+    @GraniteAction<Void> var tappedThreadLine
+    @GraniteAction<Void> var longPressThreadLine
     
     var postView: PostView? {
         context.postModel
@@ -107,6 +107,11 @@ struct HeaderCardAvatarView: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity)
+                .modifier(TapAndLongPressModifier(tapAction: {
+                    tappedThreadLine.perform()
+                }, longPressAction: {
+                    longPressThreadLine.perform()
+                }))
             }
         }
         .frame(width: size.frame)

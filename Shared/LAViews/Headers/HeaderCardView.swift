@@ -57,6 +57,7 @@ struct HeaderCardView: View {
         HStack(spacing: .layer2) {
             VStack(alignment: .leading, spacing: 0) {
                 Text(context.display.author.headline)
+                    .lineLimit(1)
                     .font(isCompact ? .subheadline : .headline)
                 if let subheadline = context.display.author.subheadline {
                     Text("@"+subheadline)

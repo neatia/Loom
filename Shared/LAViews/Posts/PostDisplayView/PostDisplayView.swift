@@ -72,11 +72,10 @@ struct PostDisplayView: GraniteNavigationDestination {
             
             if hasShown || Device.isExpandedLayout {
                 PagerScrollView(CommentView.self,
-                                //should prefer performant for iOS
-                                //but it duplicates a ui element (refresh)
                                 properties: .init(performant: false,
-                                                  lazy: Device.isMacOS == false,
-                                                  cacheViews: true,
+                                                  partition: Device.isMacOS == false,
+                                                  lazy: true,
+                                                  cacheViews: false,
                                                   showFetchMore: false)) {
                     EmptyView()
                 } inlineBody: {
@@ -158,7 +157,7 @@ extension PostDisplayView {
                     }
                 }
             }, at: \.edit)
-            .contentContext(context)
+            .contentContext(.addPostModel(model: updatedModel, context))
     }
     
     var contentView: some View {
@@ -189,7 +188,7 @@ extension PostDisplayView {
                         pager.insert(commentView)
                     }
                 }, at: \.replyPost)
-                .contentContext(.withStyle(.style1, context))
+                .contentContext(.addPostModel(model: updatedModel, context).withStyle(.style1))
                 .padding(.horizontal, .layer4)
                 .padding(.top, model?.hasContent == true ? .layer5 : .layer2)
                 .padding(.bottom, .layer5)
@@ -305,7 +304,11 @@ extension ModalService {
                 .attach({
                     ModalService.shared.dismissSheet()
                 }, at: \.closeDrawer)
-                .contentContext(.addCommentModel(model: commentView, context))
+                .contentContext(
+                    .addCommentModel(model: commentView,
+                                     context)
+                    .withStyle(.style2)
+                )
         }
     }
 }

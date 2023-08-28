@@ -78,7 +78,11 @@ struct ThreadView: View {
                                                   context: context)
                         }
                     }, at: \.showDrawer)
-                    .contentContext(.addCommentModel(model: commentView, context))
+                    .contentContext(
+                        .addCommentModel(model: commentView,
+                                         context)
+                        .withStyle(.style2)
+                    )
                     .graniteEvent(interact)
             }
             .environmentObject(pager)
@@ -118,7 +122,7 @@ extension ThreadView {
         VStack(alignment: .leading, spacing: 0) {
             #if os(iOS)
             contentBody
-                .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.5)
+                .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.35)
                 .modifier(TapAndLongPressModifier(tapAction: {
                 }, longPressAction: {
                     GraniteHaptic.light.invoke()
@@ -127,7 +131,7 @@ extension ThreadView {
                 .padding(.bottom, .layer5)
             #else
             contentBody
-                .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.5)
+                .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.35)
                 .padding(.bottom, .layer5)
             #endif
             

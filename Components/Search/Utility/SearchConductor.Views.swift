@@ -63,26 +63,11 @@ struct SearchBar: View {
                             #if os(iOS)
                             hideKeyboard()
                             guard textDebouncer.text != lastQuery else { return }
+                            isSearching = true
                             query.perform(textDebouncer.text)
                             #endif
                         }
                         #endif
-                        
-//                        .toolbar {
-//                            ToolbarItemGroup(placement: .keyboard) {
-//                                StandardSearchToolbarView()
-//                                    .attach({
-//                                        DispatchQueue.main.async {
-//                                            if offline == false {
-//                                                self.isSearching = true
-//                                            }
-//                                            LoomLog("🔎 performing search query: \(textDebouncer.text) 🔎", level: .debug)
-//                                            query.perform(textDebouncer.text)
-//                                        }
-//                                    }, at: \.search)
-//
-//                            }
-//                        }
                     }
                     .cornerRadius(6.0)
                 }

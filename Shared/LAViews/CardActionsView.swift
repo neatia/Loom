@@ -25,9 +25,8 @@ struct CardActionsView: View {
     
     var body: some View {
         Menu {
-            if person?.isMe == true || canRemoveFromProfiles {
-                personalActionsView
-            } else {
+            personalActionsView
+            if person?.isMe == false && !canRemoveFromProfiles {
                 generalActionsView
             }
         } label: {

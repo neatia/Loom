@@ -114,6 +114,13 @@ struct ContentContext {
                      viewingContext: context.viewingContext)
     }
     
+    func withStyle(_ style: FeedStyle) -> Self {
+        return .init(postModel: self.postModel,
+                     commentModel: self.commentModel,
+                     feedStyle: style,
+                     viewingContext: self.viewingContext)
+    }
+    
     static func withStyle(_ style: FeedStyle, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,

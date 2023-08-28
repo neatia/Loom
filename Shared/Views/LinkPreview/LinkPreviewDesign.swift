@@ -299,8 +299,15 @@ struct LinkPreviewDesign: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(
-                        Rectangle()
-                            .foregroundColor(backgroundColor)
+                        Group {
+                            if cachedImage == nil {
+                                RoundedRectangle(cornerRadius: 12)
+                                    .foregroundColor(backgroundColor)
+                            } else {
+                                Rectangle()
+                                    .foregroundColor(backgroundColor)
+                            }
+                        }
                     )
                     if cachedImage == nil {
                         Spacer()

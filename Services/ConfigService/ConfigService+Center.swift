@@ -27,11 +27,23 @@ extension ConfigService {
             var ipfsContentType: Int = 0
             
             //Account
-            var showNSFW: Bool = false
+            var showNSFW: Bool = false {
+                didSet {
+                    PagerFilter.enable = showNSFW == false
+                }
+            }
             var showScores: Bool = false
             var showBotAccounts: Bool = false
             var sortType: SortType = .hot
             var listingType: ListingType = .all
+            
+            //Filter
+            var keywordsFilter: FilterConfig = .empty
+            var keywordsFilterEnabled: Bool = false {
+                didSet {
+                    PagerFilter.enableForKeywords = keywordsFilterEnabled
+                }
+            }
             
             //Marble
             var marbleYoutubeLinks: Bool = false {
@@ -51,7 +63,7 @@ extension ConfigService {
         @Event(debounce: 0.25) var restart: Restart.Reducer
         @Event(debounce: 0.25) var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0022", autoSave: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0023", autoSave: true) public var state: State
     }
     
     struct Preferences {
