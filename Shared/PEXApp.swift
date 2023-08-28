@@ -20,7 +20,7 @@ struct PEXApp: App {
     
     
     init() {
-        config.preload()
+        config.restore(wait: true)
         
         #if os(iOS)
         config.center.boot.send()

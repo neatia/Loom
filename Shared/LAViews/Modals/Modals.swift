@@ -138,10 +138,6 @@ extension ModalService {
                     }
                     
                     ModalService.shared.dismissSheet()
-                    //TODO: ?
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                        ModalService.shared.dismissAll()
-                    }
                 }, at: \.updateComment)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }

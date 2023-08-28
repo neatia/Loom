@@ -15,9 +15,11 @@ extension ConfigService {
             LemmyKit.baseUrl = state.config.baseUrl
             ConfigService.configureIPFS(state.ipfsGatewayUrl)
             
+            
+            account.restore(wait: true)
             account.center.boot.send()
             
-            content.preload()
+            content.restore(wait: true)
             content.center.boot.send()
             
             layout.preload()
@@ -41,7 +43,7 @@ extension ConfigService {
             }
             
             //Loom
-            loom.preload()
+            loom.restore(wait: true)
             loom._state.intent.wrappedValue = .idle
             loom._state.display.wrappedValue = .compact
             loom._state.activeManifest.wrappedValue = nil
