@@ -26,4 +26,9 @@ extension LoomService {
     var manifests: [LoomManifest] {
         state.manifests.values.sorted(by: { $0.meta.updatedDate.compare($1.meta.updatedDate) == .orderedDescending })
     }
+    
+    func manifest(for idString: String) -> LoomManifest? {
+        guard let uuid = UUID(uuidString: idString) else { return nil}
+        return state.manifests[uuid]
+    }
 }

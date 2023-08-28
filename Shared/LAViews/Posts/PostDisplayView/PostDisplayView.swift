@@ -59,7 +59,6 @@ struct PostDisplayView: GraniteNavigationDestination {
             }
 
             Divider()
-                
             
             switch context.feedStyle {
             case .style1:

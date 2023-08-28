@@ -592,8 +592,8 @@
 		71EB15972A9C6C9F0098AD5B /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15952A9C6C9F0098AD5B /* DebugOverlay.swift */; };
 		71EB15992A9C6CB00098AD5B /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15982A9C6CB00098AD5B /* Debug.swift */; };
 		71EB159A2A9C6CB00098AD5B /* Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB15982A9C6CB00098AD5B /* Debug.swift */; };
-		71EB159C2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */; };
-		71EB159D2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */; };
+		71EB159C2A9C771A0098AD5B /* LoomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB159B2A9C771A0098AD5B /* LoomPickerView.swift */; };
+		71EB159D2A9C771A0098AD5B /* LoomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB159B2A9C771A0098AD5B /* LoomPickerView.swift */; };
 		71EB91BD2A8028400091EE5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91BC2A8028400091EE5B /* Numbers.swift */; };
 		71EB91BE2A8028400091EE5B /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EB91BC2A8028400091EE5B /* Numbers.swift */; };
 		71EB91C12A8037D40091EE5B /* Granite in Frameworks */ = {isa = PBXBuildFile; productRef = 71EB91C02A8037D40091EE5B /* Granite */; };
@@ -1003,7 +1003,7 @@
 		71EAF47D2A7DA3440034FCB9 /* ExplorerService._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplorerService._.swift; sourceTree = "<group>"; };
 		71EB15952A9C6C9F0098AD5B /* DebugOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOverlay.swift; sourceTree = "<group>"; };
 		71EB15982A9C6CB00098AD5B /* Debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debug.swift; sourceTree = "<group>"; };
-		71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoomsPickerView.swift; sourceTree = "<group>"; };
+		71EB159B2A9C771A0098AD5B /* LoomPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoomPickerView.swift; sourceTree = "<group>"; };
 		71EB91BC2A8028400091EE5B /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 		71EB91C42A803F240091EE5B /* InstanceMetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceMetaView.swift; sourceTree = "<group>"; };
 		71EB91C82A8054520091EE5B /* LocalCommunityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCommunityPickerView.swift; sourceTree = "<group>"; };
@@ -1777,7 +1777,7 @@
 				71899E612A89D6A30073158F /* Loom.CreateView.swift */,
 				71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */,
 				71899E3D2A8958F40073158F /* Loom.CardView.swift */,
-				71EB159B2A9C771A0098AD5B /* LoomsPickerView.swift */,
+				71EB159B2A9C771A0098AD5B /* LoomPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2982,7 +2982,7 @@
 				710283AF2A2A54C300010877 /* EnvironmentValues+ValueSliderStyle.swift in Sources */,
 				7151511F2A8F6D0B00251978 /* SideMenu.swift in Sources */,
 				710283A92A2A54C300010877 /* VerticalRangeTrack.swift in Sources */,
-				71EB159C2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */,
+				71EB159C2A9C771A0098AD5B /* LoomPickerView.swift in Sources */,
 				717090EE2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */,
 				710283CD2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				71EB91C92A8054520091EE5B /* LocalCommunityPickerView.swift in Sources */,
@@ -3157,7 +3157,7 @@
 				71C69E4C2A70638D00B54AD6 /* Search.AllView.swift in Sources */,
 				71DF107C28CC697600559DBC /* Double+Rounding.swift in Sources */,
 				711D39232A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */,
-				71EB159D2A9C771A0098AD5B /* LoomsPickerView.swift in Sources */,
+				71EB159D2A9C771A0098AD5B /* LoomPickerView.swift in Sources */,
 				7102838C2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
 				71A28D97295231E600EAE8EE /* Double.swift in Sources */,

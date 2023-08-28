@@ -102,6 +102,7 @@ extension Feed {
         let community: Community? = model ?? state.community
         
         guard let community else { return }
+        
         _ = Task.detached {
             let communityView = await Lemmy.community(community: community,
                                                       location: state.location)

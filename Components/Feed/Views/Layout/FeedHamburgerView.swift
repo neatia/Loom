@@ -183,10 +183,13 @@ struct FeedHamburgerView: View {
                 VStack(spacing: .layer5) {
                     if account.isLoggedIn {
                         profileView
+                        loomsView
                         blockedListView
                     } else {
                         loginView
+                        loomsView
                     }
+                    
                     
                     Spacer()
                     
@@ -214,15 +217,14 @@ extension FeedHamburgerView {
                     GraniteHaptic.light.invoke()
                     loomsIsActive.toggle()
                 } label : {
-                    HStack(spacing: .layer4) {
-                        Image(systemName: "manuscript")
-                            .font(.title3)
-                            .foregroundColor(.foreground)
-                        Text("Looms")
-                            .font(.title3.bold())
-                            .foregroundColor(.foreground)
-                    }
+                    Image(systemName: "applescript")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                    Text("Looms")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
                 }
+                .buttonStyle(.plain)
                 
                 Spacer()
             }
@@ -231,10 +233,7 @@ extension FeedHamburgerView {
                 Divider()
                     .padding(.top, .layer4)
                 
-                BlockedPickerView(meta: account.state.meta,
-                                  modal: false,
-                                  verticalPadding: 0)
-                    .graniteEvent(account.center.interact)
+                LoomPickerView()
             }
         }
     }
@@ -402,10 +401,12 @@ extension FeedHamburgerView {
                     GraniteHaptic.light.invoke()
                     login.perform()
                 } label: {
+                    Image(systemName: "globe")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
                     Text("AUTH_LOGIN")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)//nitpick alignment
                 }
                 .buttonStyle(.plain)
                 
@@ -417,7 +418,7 @@ extension FeedHamburgerView {
     var profileView: some View {
         Group {
             HStack {
-                HStack(spacing: .layer4) {
+                Group {
                     Image(systemName: "person")
                         .font(.title3)
                         .foregroundColor(.foreground)
@@ -425,7 +426,6 @@ extension FeedHamburgerView {
                     Text("Profile")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)//nitpick alignment
                 }
                 .routeButton(window: .resizable(600, 500)) {
                     Profile(account.state.meta?.person)
@@ -444,15 +444,14 @@ extension FeedHamburgerView {
                     GraniteHaptic.light.invoke()
                     blockedListIsActive.toggle()
                 } label : {
-                    HStack(spacing: .layer4) {
-                        Image(systemName: "exclamationmark.octagon")
-                            .font(.title3)
-                            .foregroundColor(.foreground)
-                        Text("TITLE_BLOCKED")
-                            .font(.title3.bold())
-                            .foregroundColor(.foreground)
-                    }
+                    Image(systemName: "exclamationmark.octagon")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                    Text("TITLE_BLOCKED")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
                 }
+                .buttonStyle(.plain)
                 
                 Spacer()
             }
@@ -472,7 +471,7 @@ extension FeedHamburgerView {
     var settingsView: some View {
         Group {
             HStack {
-                HStack(spacing: .layer4) {
+                Group {
                     Image(systemName: "gearshape")
                         .font(.title3)
                         .foregroundColor(.foreground)

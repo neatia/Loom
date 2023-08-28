@@ -13,11 +13,15 @@ import LemmyKit
 
 //TODO: merge with SidebarCardView
 struct CommunityCardView: View {
+    @Environment(\.graniteRouter) var router
+    @GraniteAction<Community> var viewCommunity
+    
+    
     var model: CommunityView
     var showCounts: Bool = true
     var fullWidth: Bool = false
     var outline: Bool = false
-    
+    var style: CardStyle = .style1
     
     var subscribers: String {
         NumberFormatter.formatAbbreviated(model.counts.subscribers)
@@ -44,6 +48,68 @@ struct CommunityCardView: View {
     }
     
     var body: some View {
+        Group {
+            switch style {
+            case .style1:
+                style1View
+            case .style2:
+                style2View
+            }
+        }
+    }
+    
+    var style2View: some View {
+        HStack(spacing: .layer3) {
+            AvatarView(model.iconURL, size: .mini, isCommunity: true)
+            Group {
+                HStack(spacing: .layer1) {
+                    Text("!"+model.community.name)
+                        .font(.subheadline)
+                        .cornerRadius(4)
+                    Text("@" + model.community.actor_id.host)
+                        .font(.caption2)
+                        .padding(.horizontal, .layer1)
+                        .background(Color.tertiaryBackground)
+                        .cornerRadius(4)
+                }
+                
+                
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .scrollOnOverflow()
+            .offset(y: .layer1)
+            .onTapGesture {
+                routeCommunityView()
+            }
+            
+            Menu {
+                Button {
+                    routeCommunityView()
+                } label: {
+                    Text("!\(model.community.name)")
+                    Image(systemName: "arrow.right.circle")
+                }
+                .buttonStyle(PlainButtonStyle())
+                    
+            } label: {
+                Image(systemName: "ellipsis")
+                    .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
+                    .frame(width: Device.isMacOS ? 16 : 24, height: 24)
+                    .contentShape(Rectangle())
+                    .foregroundColor(.foreground)
+            }
+            .menuStyle(BorderlessButtonMenuStyle())
+            .menuIndicator(.hidden)
+            .frame(width: Device.isMacOS ? 20 : 24, height: 12)
+        }
+        .frame(maxHeight: AvatarView.Size.mini.frame)
+        .padding(.layer3)
+        .background(Color.secondaryBackground)
+        .clipShape(Capsule())
+    }
+    
+    var style1View: some View {
         VStack(spacing: 0) {
             HStack(spacing: .layer3) {
                 AvatarView(model.iconURL, size: .large, isCommunity: true)
@@ -221,6 +287,22 @@ struct CommunityCardView: View {
                 .padding(.horizontal, .layer2)
                 .background(Brand.Colors.salmon.opacity(0.9))
                 .cornerRadius(4)
+            }
+        }
+    }
+}
+
+//MARK: Actions
+
+extension CommunityCardView {
+    func routeCommunityView() {
+        let community = model.community
+        GraniteHaptic.light.invoke()
+        if Device.isExpandedLayout {
+            viewCommunity.perform(community)
+        } else {
+            router.push {
+                Feed(community)
             }
         }
     }

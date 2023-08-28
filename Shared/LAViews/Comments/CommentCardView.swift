@@ -140,9 +140,8 @@ struct CommentCardView: View {
                             }, at: \.tapped)
                             .graniteEvent(interact)
                             //Since the model could get updated (removal/deletion)
-//                            .contentContext(.addCommentModel(model: model, context))
+//                            .contentContext(.addCommentModel(model: currentModel, context))
                         
-                        //Crash when accessing the computable `currentModel` for markdown preview, checking for nil before rendering the last group, resolves it...
                         if !collapseView,
                            model != nil {
                             contentView
@@ -211,7 +210,7 @@ struct CommentCardView: View {
         } else {
             top = .layer5
             leading = .layer4
-            bottom = expandReplies ? 0 : .layer5
+            bottom = expandReplies && !collapseView ? 0 : .layer5
             trailing = .layer3
         }
          
