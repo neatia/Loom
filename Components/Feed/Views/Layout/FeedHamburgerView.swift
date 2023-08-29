@@ -54,8 +54,9 @@ extension Feed {
                 }
             }, at: \.login)
             .attach({ location in
-                _state.location.wrappedValue = location
-                pager.reset()
+                fetchCommunity(state.community,
+                               location: location,
+                               reset: true)
             }, at: \.changeLocation)
             .id(account.state.meta)
     }
@@ -81,6 +82,7 @@ struct FeedHamburgerView: View {
     @GraniteAction<FetchType> var changeLocation
     
     //Conditional views
+    @State var loomsIsActive: Bool = false
     @State var blockedListIsActive: Bool = false
     @State var profileIsActive: Bool = false
     @State var settingsIsActive: Bool = false
@@ -171,6 +173,7 @@ struct FeedHamburgerView: View {
                 }
             }
             .padding(.bottom, .layer2)
+            .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
             
             if Device.isExpandedLayout == false {
                 
@@ -182,10 +185,13 @@ struct FeedHamburgerView: View {
                 VStack(spacing: .layer5) {
                     if account.isLoggedIn {
                         profileView
+                        loomsView
                         blockedListView
                     } else {
                         loginView
+                        loomsView
                     }
+                    
                     
                     Spacer()
                     
@@ -198,11 +204,42 @@ struct FeedHamburgerView: View {
         .padding(.top, Device.isExpandedLayout ? .layer3 : .layer4)
         .padding(.bottom, Device.isExpandedLayout ? 0 : .layer4)
         .padding(.leading, Device.isExpandedLayout ? 0 : .layer5)
-        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
         .background(Device.isExpandedLayout ? Color.clear : Color.background)
     }
 }
 
+
+//MARK: Looms menu
+extension FeedHamburgerView {
+    var loomsView: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    loomsIsActive.toggle()
+                } label : {
+                    Image(systemName: "applescript")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                    //TODO: localize
+                    Text("Looms")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
+                }
+                .buttonStyle(.plain)
+                
+                Spacer()
+            }
+            
+            if loomsIsActive {
+                Divider()
+                    .padding(.top, .layer4)
+                
+                LoomPickerView(trailingPadding: .layer4)
+            }
+        }
+    }
+}
 
 //MARK: Switch account menu
 extension FeedHamburgerView {
@@ -366,10 +403,12 @@ extension FeedHamburgerView {
                     GraniteHaptic.light.invoke()
                     login.perform()
                 } label: {
+                    Image(systemName: "globe")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
                     Text("AUTH_LOGIN")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)//nitpick alignment
                 }
                 .buttonStyle(.plain)
                 
@@ -381,7 +420,7 @@ extension FeedHamburgerView {
     var profileView: some View {
         Group {
             HStack {
-                HStack(spacing: .layer4) {
+                Group {
                     Image(systemName: "person")
                         .font(.title3)
                         .foregroundColor(.foreground)
@@ -389,7 +428,6 @@ extension FeedHamburgerView {
                     Text("Profile")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)//nitpick alignment
                 }
                 .routeButton(window: .resizable(600, 500)) {
                     Profile(account.state.meta?.person)
@@ -408,15 +446,14 @@ extension FeedHamburgerView {
                     GraniteHaptic.light.invoke()
                     blockedListIsActive.toggle()
                 } label : {
-                    HStack(spacing: .layer4) {
-                        Image(systemName: "exclamationmark.octagon")
-                            .font(.title3)
-                            .foregroundColor(.foreground)
-                        Text("TITLE_BLOCKED")
-                            .font(.title3.bold())
-                            .foregroundColor(.foreground)
-                    }
+                    Image(systemName: "exclamationmark.octagon")
+                        .font(.title3)
+                        .foregroundColor(.foreground)
+                    Text("TITLE_BLOCKED")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
                 }
+                .buttonStyle(.plain)
                 
                 Spacer()
             }
@@ -427,7 +464,8 @@ extension FeedHamburgerView {
                 
                 BlockedPickerView(meta: account.state.meta,
                                   modal: false,
-                                  verticalPadding: 0)
+                                  verticalPadding: 0,
+                                  trailingPadding: .layer4)
                     .graniteEvent(account.center.interact)
             }
         }
@@ -436,7 +474,7 @@ extension FeedHamburgerView {
     var settingsView: some View {
         Group {
             HStack {
-                HStack(spacing: .layer4) {
+                Group {
                     Image(systemName: "gearshape")
                         .font(.title3)
                         .foregroundColor(.foreground)

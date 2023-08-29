@@ -104,6 +104,7 @@ Mostly because of *Relays* and project organization. I'd say testing too, but on
 - [Granite](https://github.com/pexavc/Granite)
 - [MarqueKit](https://github.com/pexavc/marquekit)
 - [MarbleKit](https://github.com/pexavc/marblekit)
+- [ModerationKit](https://github.com/pexavc/moderationkit)
 - [LemmyKit](https://github.com/pexavc/lemmykit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean)

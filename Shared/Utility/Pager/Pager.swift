@@ -13,6 +13,7 @@ import Granite
 import GraniteUI
 import LinkPresentation
 import UniformTypeIdentifiers
+import ModerationKit
 
 public protocol Pageable: Equatable, Identifiable, Hashable {
     var id: String { get }
@@ -50,6 +51,7 @@ struct PageableMetadata: Hashable {
 public class PagerFilter {
     //hides models to appear that have shouldHide set to true
     static var enable: Bool = false
+    static var enableForNSFWExtended: Bool = false
     static var enableForKeywords: Bool = false
 }
 
@@ -246,6 +248,8 @@ public class Pager<Model: Pageable>: ObservableObject {
                 models = results
             }
             
+            let extendedFilterEnabled: Bool = PagerFilter.enableForNSFWExtended
+            
             guard let this = self else { return }
             
             LoomLog("🟢 Fetch succeeded | \(models.count) items", level: .debug)
@@ -274,6 +278,8 @@ public class Pager<Model: Pageable>: ObservableObject {
                  */
                 self?.rlProcessorTask = Task(priority: .userInitiated) { [weak self] in
                     var completed: CGFloat = 0.0
+                    var filterModelIDs: [String] = []
+                    
                     for (id, url, isThumb) in thumbURLs {
                         guard let url else { continue }
                         
@@ -287,8 +293,17 @@ public class Pager<Model: Pageable>: ObservableObject {
                             this.itemMetadatas[id] = await this.getLPMetadata(url: url)
                         }
                         
-                        if this.itemMetadatas[id] != nil {
+                        if let metadata = this.itemMetadatas[id] {
                             LoomLog("Rich Link Data received: \(CFAbsoluteTimeGetCurrent() - time) - isThumb: \(isThumb)", level: .info)
+                            
+                            if let image = metadata.imageThumb,
+                               extendedFilterEnabled {
+                                let isNSFW = await ModerationKit.current.check(image, for: .nsfw)
+                                
+                                if isNSFW {
+                                    filterModelIDs.append(id)
+                                }
+                            }
                         }
                         
                         completed += 1
@@ -298,7 +313,8 @@ public class Pager<Model: Pageable>: ObservableObject {
                             self?.progressHandler?(progress)
                         }
                     }
-                    this.insertModels(models, force: force)
+                    
+                    this.insertModels(models.filter { filterModelIDs.contains($0.id) == false }, force: force)
                 }
             }
         }

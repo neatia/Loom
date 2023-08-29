@@ -98,21 +98,28 @@ extension Feed {
         isCommunity && state.community?.banner != nil
     }
     
-    func fetchCommunity(_ model: Community? = nil, reset: Bool = false) {
+    func fetchCommunity(_ model: Community? = nil,
+                        location: FetchType? = nil,
+                        reset: Bool = false) {
+        let feedLocation = location ?? state.location
         let community: Community? = model ?? state.community
         
         guard let community else { return }
+        
         _ = Task.detached {
             let communityView = await Lemmy.community(community: community,
-                                                      location: state.location)
+                                                      location: feedLocation)
             
             DispatchQueue.main.async {
                 self._state.community.wrappedValue = model
                 self._state.communityView.wrappedValue = communityView
-            }
-            
-            if reset {
-                await self.pager.reset()
+                if let location {
+                    self._state.location.wrappedValue = location
+                }
+                
+                if reset {
+                    self.pager.reset()
+                }
             }
         }
     }

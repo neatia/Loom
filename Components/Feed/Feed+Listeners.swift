@@ -66,11 +66,6 @@ extension Feed {
                     ModalService.shared.presentModal(GraniteToastView(meta))
                 } else if let meta = value as? ContentService.Interact.Meta {
                     switch meta.kind {
-                    case .editPostSubmit:
-                        //TODO: localize
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "Post edited", event: .success)))
-                        }
                     case .editComment:
                         //Delay for toast modals activating the keyborad prematurely
                         //TODO: localize

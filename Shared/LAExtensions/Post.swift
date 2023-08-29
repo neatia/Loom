@@ -10,7 +10,7 @@ import LemmyKit
 
 extension PostView: Pageable {
     public var id: String {
-        "\(post.id)\(creator.actor_id)\(creator.name)\(post.ap_id)"
+        "\(post.id)\(creator.actor_id)\(creator.name)\(post.ap_id)\(post.updated ?? "")"
     }
     
     public var date: Date {
@@ -30,31 +30,10 @@ extension PostView: Pageable {
     public var shouldHide: Bool {
         self.post.nsfw == true || self.community.nsfw == true
     }
-}
-
-extension PostView: Locateable {
-    var isBaseResource: Bool {
-        LemmyKit.host == community.actor_id.host
-    }
     
-    var isPeerResource: Bool {
-        community.actor_id.host != creator.actor_id.host
-    }
-}
-
-extension PostView {
-    var viewableHosts: [String] {
-        var hosts: [String] = [LemmyKit.host]
-        
-        if isBaseResource == false {
-            hosts += [community.actor_id.host]
-        }
-        
-        if isPeerResource {
-            hosts += [creator.actor_id.host]
-        }
-        
-        return hosts
+    public var md5: String {
+        let compiled = post.name + (post.body ?? "") + (post.url ?? "")
+        return compiled.md5()
     }
 }
 

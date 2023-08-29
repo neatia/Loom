@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FeedStyle {
+enum FeedStyle: String {
     case style1
     case style2
 }

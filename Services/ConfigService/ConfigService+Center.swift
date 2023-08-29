@@ -38,6 +38,11 @@ extension ConfigService {
             var listingType: ListingType = .all
             
             //Filter
+            var extendedNSFWFilterEnabled: Bool = false {
+                didSet {
+                    PagerFilter.enableForNSFWExtended = extendedNSFWFilterEnabled
+                }
+            }
             var keywordsFilter: FilterConfig = .empty
             var keywordsFilterEnabled: Bool = false {
                 didSet {
@@ -63,7 +68,7 @@ extension ConfigService {
         @Event(debounce: 0.25) var restart: Restart.Reducer
         @Event(debounce: 0.25) var update: Update.Reducer
         
-        @Store(persist: "persistence.config.Loom.0023", autoSave: true) public var state: State
+        @Store(persist: "persistence.config.Loom.0024", autoSave: true) public var state: State
     }
     
     struct Preferences {

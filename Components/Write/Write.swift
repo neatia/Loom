@@ -39,10 +39,6 @@ struct Write: GraniteComponent {
                     ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let meta = value as? Write.Create.ResponseMeta {
                     updatedPost.perform(meta.postView)
-                    content
-                        .center
-                        .interact
-                        .send(ContentService.Interact.Meta(kind: .editPostSubmit(meta.postView)))
                 }
             }
     }

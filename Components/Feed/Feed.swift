@@ -23,30 +23,20 @@ struct Feed: GraniteComponent {
     
     let isCommunity: Bool
     
-    init(_ community: Community? = nil) {
+    init(_ community: Community? = nil, federatedData: FederatedData? = nil) {
         self.isCommunity = community != nil
         
-        /* Routing logic, this should probably be on the LemmyKit level? */
-        if community != nil {
-            LoomLog("Feed Starting: \(community?.actor_id.host) from: \(LemmyKit.host)")
-        }
+        let location: FetchType?
         
-        let location: FetchType
-        if community?.actor_id.host != LemmyKit.host,
-           let peerHost = community?.actor_id.host {
-            if peerHost == community?.ap_id?.host {
-            
-                LoomLog("Feed Connected to source")
-                location = .source
-            } else {
-                LoomLog("Feed Connected to peer")
-                location = .peer(peerHost)
-            }
+        if let federatedData, federatedData.host != LemmyKit.host {
+            location = .peer(federatedData.host)
         } else {
-            location = .base
+            location = nil
         }
         
-        _center = .init(.init(community: community, location: location, peerLocation: community?.location?.isPeer == true ? community?.location : nil))
+        _center = .init(.init(community: community,
+                              location: location ?? .base,
+                              peerLocation: location))
         
         content.preload()
         content.silence(viewUpdatesOnly: true)

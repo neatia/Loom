@@ -46,11 +46,9 @@ struct SearchAllView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: .layer4) {
                                 ForEach(model.communities) { model in
-                                    CommunityCardView(model: model)
+                                    CommunityCardView(model: model,
+                                                      shouldRoute: true)
                                         .frame(maxWidth: ContainerConfig.iPhoneScreenWidth * 0.9)
-                                        .route(window: .resizable(600, 500)) {
-                                            Feed(model.community)
-                                        } with : { router }
                                 }
                                 
                                 Spacer().frame(width: .layer4)

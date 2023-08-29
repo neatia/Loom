@@ -34,6 +34,8 @@ struct HeaderCardAvatarView: View {
     
     let showThreadLine: Bool
     
+    let shouldCollapse: Bool
+    
     var isAdmin: Bool {
         postView?.creator.admin == true && commentView == nil
     }
@@ -67,11 +69,13 @@ struct HeaderCardAvatarView: View {
     init(crumbs: [CommentView] = [],
          showAvatar: Bool = true,
          size: AvatarView.Size = .small,
-         showThreadLine: Bool = true) {
+         showThreadLine: Bool = true,
+         shouldCollapse: Bool = false) {
         self.crumbs = crumbs.map { ($0.comment.id, $0.creator) }
         self.showAvatar = showAvatar
         self.size = size
         self.showThreadLine = showThreadLine
+        self.shouldCollapse = shouldCollapse
     }
     
     var body: some View {
@@ -83,35 +87,37 @@ struct HeaderCardAvatarView: View {
                     .stroke(avatarBorderColor, lineWidth: 1.0))
             }
             
-            GeometryReader { proxy in
-                HStack(spacing: 0) {
-                    Spacer()
-                    
-                    VStack(spacing: 0) {
-                        Rectangle()
-                            .frame(width: 1.5)
-                            .cornerRadius(8)
-                            .foregroundColor((isProminent ? avatarBorderColor.opacity(0.7) : .foreground.opacity(0.3)))
+            if !shouldCollapse {
+                GeometryReader { proxy in
+                    HStack(spacing: 0) {
+                        Spacer()
                         
-                        if isBot {
-                            Text("🤖")
-                                .font(.title2)
-                                .padding(.top, .layer3)
-                                .offset(y: 2)
-                        } else {
-                            Spacer().frame(height: 2)
+                        VStack(spacing: 0) {
+                            Rectangle()
+                                .frame(width: 1.5)
+                                .cornerRadius(8)
+                                .foregroundColor((isProminent ? avatarBorderColor.opacity(0.7) : .foreground.opacity(0.3)))
+                            
+                            if isBot {
+                                Text("🤖")
+                                    .font(.title2)
+                                    .padding(.top, .layer3)
+                                    .offset(y: 2)
+                            } else {
+                                Spacer().frame(height: 2)
+                            }
                         }
+                        .frame(height: proxy.size.height)
+                        
+                        Spacer()
                     }
-                    .frame(height: proxy.size.height)
-                    
-                    Spacer()
+                    .frame(maxWidth: .infinity)
+                    .modifier(TapAndLongPressModifier(tapAction: {
+                        tappedThreadLine.perform()
+                    }, longPressAction: {
+                        longPressThreadLine.perform()
+                    }))
                 }
-                .frame(maxWidth: .infinity)
-                .modifier(TapAndLongPressModifier(tapAction: {
-                    tappedThreadLine.perform()
-                }, longPressAction: {
-                    longPressThreadLine.perform()
-                }))
             }
         }
         .frame(width: size.frame)

@@ -14,9 +14,10 @@ import GraniteUI
 struct CommunityPickerView: View {
     @Environment(\.graniteRouter) var router
     
-    @GraniteAction<CommunityView> var pickedCommunity
+    @GraniteAction<(CommunityView, FederatedData?)> var pickedCommunity
     
     var modal: Bool = true
+    var shouldRoute: Bool = false
     var verticalPadding: CGFloat = .layer5
     var sidebar: Bool = false
     
@@ -79,20 +80,18 @@ struct CommunityPickerView: View {
                                 CommunitySidebarCardView(model: communityView,
                                                          fullWidth: true)
                                 .onTapGesture {
-                                    pickedCommunity.perform(communityView)
+                                    pickedCommunity.perform((communityView, nil))
                                 }
                                 .padding(.leading, .layer3)
                                 .padding(.trailing, .layer3)
                                 .padding(.vertical, .layer3)
                             } else {
                                 CommunityCardView(model: communityView,
+                                                  shouldRoute: shouldRoute,
                                                   fullWidth: true)
-                                .routeIf(modal == false, window: .resizable(600, 500)) {
-                                    Feed(communityView.community)
-                                } with : { router }
-                                .onTapGesture {
-                                    pickedCommunity.perform(communityView)
-                                }
+                                .attach({ (communityView, federatedData) in
+                                    pickedCommunity.perform((communityView, federatedData))
+                                }, at: \.viewCommunity)
                                 .padding(.leading, .layer3)
                                 .padding(.trailing, .layer3)
                                 .padding(.vertical, .layer3)

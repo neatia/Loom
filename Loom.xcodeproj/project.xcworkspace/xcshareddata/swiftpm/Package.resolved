@@ -51,7 +51,7 @@
       "location" : "https://github.com/pexavc/LemmyKit",
       "state" : {
         "branch" : "main",
-        "revision" : "d995db52bd6b645627d40083dbd5329768606c4c"
+        "revision" : "43cc856ce27ea098bdd0dbf8911a145eceb7dea1"
       }
     },
     {
@@ -60,7 +60,7 @@
       "location" : "https://github.com/pexavc/MarbleKit",
       "state" : {
         "branch" : "main",
-        "revision" : "9a2b5ff0b4d7743659476958aed1569660093c90"
+        "revision" : "172cfe18d77bc140bb0b5a595d9bf747d6833b3a"
       }
     },
     {
@@ -70,6 +70,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
+      }
+    },
+    {
+      "identity" : "moderationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/ModerationKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "262da0a3e23b216232a6312b0d01505ce6525438"
       }
     },
     {

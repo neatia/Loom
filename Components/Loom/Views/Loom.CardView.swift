@@ -39,11 +39,12 @@ struct LoomCardView: View {
                 if collectionNames.isNotEmpty {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: .layer3) {
-                            ForEach(manifest.communities, id: \.id) { model in
+                            ForEach(manifest.data) { fd in
                                 Group {
-                                    if let lemmyView = model.lemmy {
+                                    if let lemmyView = fd.community?.lemmy {
                                         CommunityCardView(model: lemmyView,
-                                                          showCounts: false)
+                                                          showCounts: false,
+                                                          federatedData: fd)
                                         .frame(minWidth: 240)
                                         .outline()
                                     } else {

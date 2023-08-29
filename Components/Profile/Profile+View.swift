@@ -33,7 +33,7 @@ extension Profile: GraniteNavigationDestination {
             pager.hook { page in
                 switch state.viewingDataType {
                 case .overview:
-                    let details = await Lemmy.details(state.person,
+                    let details = await Lemmy.person(state.person,
                                                       sort: .new,
                                                       page: page,
                                                       limit: ConfigService.Preferences.pageLimit,

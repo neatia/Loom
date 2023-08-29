@@ -32,33 +32,6 @@ extension CommentView: Pageable {
     }
 }
 
-extension CommentView: Locateable {
-    var isBaseResource: Bool {
-        LemmyKit.host == community.actor_id.host
-    }
-    
-    var isPeerResource: Bool {
-        community.actor_id.host != creator.actor_id.host
-    }
-}
-
-//TODO: reusable with PostView
-extension CommentView {
-    var viewableHosts: [String] {
-        var hosts: [String] = [LemmyKit.host]
-        
-        if isBaseResource == false {
-            hosts += [community.actor_id.host]
-        }
-        
-        if isPeerResource {
-            hosts += [creator.actor_id.host]
-        }
-        
-        return hosts
-    }
-}
-
 extension CommentView {
     func updateBlock(_ blocked: Bool, personView: PersonView) -> CommentView {
         .init(comment: self.comment, creator: personView.person, post: self.post, community: self.community, counts: self.counts, creator_banned_from_community: self.creator_banned_from_community, subscribed: self.subscribed, saved: self.saved, creator_blocked: blocked)
@@ -75,7 +48,7 @@ extension CommentView {
 
 extension CommentView: Identifiable {
     public var id: String {
-        "\(creator.actor_id)\(creator.name)\(comment.ap_id)"
+        "\(creator.actor_id)\(creator.name)\(comment.updated ?? "")\(comment.ap_id)"
     }
     
     var avatarURL: URL? {
@@ -92,6 +65,11 @@ extension CommentView: Identifiable {
     
     var downvoteCount: Int {
         counts.downvotes
+    }
+    
+    public var md5: String {
+        let compiled = comment.content
+        return compiled.md5()
     }
 }
 

@@ -81,7 +81,7 @@ extension Write {
     func setCommunity() {
         modal.presentSheet(id: Write.modalId, detents: [.large]) {
             CommunityPickerView()
-                .attach({ communityView in
+                .attach({ (communityView, federatedData) in
                     GraniteHaptic.light.invoke()
                     _state.postCommunity.wrappedValue = communityView
                     modal.dismissSheet(id: Write.modalId)

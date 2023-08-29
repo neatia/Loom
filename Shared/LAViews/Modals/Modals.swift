@@ -62,6 +62,9 @@ extension ModalService {
                     update?(updatedModel)
                     
                     self.dismissSheet()
+                    
+                    //TODO: localize
+                    ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "Post edited", event: .success)))
                 }, at: \.updatedPost)
                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -178,6 +181,27 @@ extension ModalService {
                 }
             }
             .frame(width: Device.isMacOS ? 600 : nil)
+        }
+    }
+}
+
+
+
+extension ModalService {
+    @MainActor
+    func showThreadDrawer(commentView: CommentView?,
+                          context: ContentContext) {
+        presentSheet {
+            ThreadView()
+                .attach({
+                    ModalService.shared.dismissSheet()
+                }, at: \.closeDrawer)
+                .contentContext(
+                    .addCommentModel(model: commentView,
+                                     context)
+                    .withStyle(.style2)
+                    .viewedIn(.thread)
+                )
         }
     }
 }

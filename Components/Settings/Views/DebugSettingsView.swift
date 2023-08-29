@@ -8,6 +8,7 @@ import Granite
 import GraniteUI
 import Foundation
 import SwiftUI
+import Nuke
 
 struct DebugSettingsView: View {
     @Environment(\.graniteEvent) var restart
@@ -51,9 +52,9 @@ struct DebugSettingsView: View {
             VStack(spacing: 0) {
                 Button {
                     GraniteHaptic.light.invoke()
-                    ModalService.shared.dismissAll()
+                    Nuke.ImageCache.shared.removeAll()
                 } label: {
-                    Text("Dismiss all modals")
+                    Text("Clear Image Cache")
                         .font(.headline.bold())
                         .lineLimit(1)
                         .foregroundColor(Color.black)
@@ -66,25 +67,6 @@ struct DebugSettingsView: View {
             }
             .padding(.top, .layer5)
             .padding(.bottom, .layer3)
-            .padding(.horizontal, .layer4)
-            
-            VStack(spacing: 0) {
-                Button {
-                    GraniteHaptic.light.invoke()
-                    ModalService.shared.dismissSheet()
-                } label: {
-                    Text("Dismiss sheet")
-                        .font(.headline.bold())
-                        .lineLimit(1)
-                        .foregroundColor(Color.black)
-                        .padding(.horizontal, .layer2)
-                        .padding(.vertical, .layer1)
-                        .background(RoundedRectangle(cornerRadius: .layer2)
-                            .fill(Brand.Colors.yellow))
-                }
-                .buttonStyle(PlainButtonStyle())
-            }
-            .padding(.bottom, .layer5)
             .padding(.horizontal, .layer4)
         }
         .padding(.top, .layer4)

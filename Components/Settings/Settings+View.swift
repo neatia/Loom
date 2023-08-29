@@ -37,6 +37,44 @@ extension Settings: View {
                     HStack {
                         Group {
                             //TODO: Localize
+                            Text("Filtering")
+                                .font(.title2.bold())
+                        }
+                        //TODO: Localize
+                        .addInfoIcon(text: "Filter content via various offline inferencing strategies and/or keywords.")
+                        
+                        Spacer()
+                    }
+                    .padding(.vertical, .layer4)
+                    .padding(.horizontal, .layer4)
+                    
+                    Divider()
+                        .padding(.bottom, .layer2)
+                        .padding(.leading, .layer4)
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Toggle(isOn: config._state.extendedNSFWFilterEnabled) {
+                                //TODO: localize
+                                Text("NSFW Extended")
+                                    .font(.body)
+                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
+                            }
+                        }.padding(.vertical, .layer3)
+                        
+#if os(macOS)
+                        Spacer()
+#endif
+                    }
+                    .padding(.horizontal, .layer4)
+                }
+                .padding(.bottom, .layer4)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer()
+                    HStack {
+                        Group {
+                            //TODO: Localize
                             Text("Marble")
                                 .font(.title2.bold())
                         }
@@ -291,6 +329,7 @@ extension Settings: View {
             }
         }
         .background(Color.background)
+        .padding(.top, Device.isMacOS ? ContainerConfig.generalViewTopPadding : 0)
     }
     
 }

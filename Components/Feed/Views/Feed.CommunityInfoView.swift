@@ -29,9 +29,10 @@ extension Feed {
                 }
             }
         }, at: \.interact)
-        .attach({ location in
-            _state.location.wrappedValue = location
-            pager.reset()
+        .attachAndClear({ location in
+            fetchCommunity(state.community,
+                           location: location,
+                           reset: true)
         }, at: \.changeLocation)
     }
 }
@@ -155,11 +156,12 @@ struct FeedCommunityInfoMenuView: View {
         } label: {
             Image(systemName: "ellipsis")
                 .font(Device.isExpandedLayout ? .title : .title3)
+                .frame(width: Device.isMacOS ? 16 : 24, height: 24)
                 .contentShape(Rectangle())
                 .foregroundColor(.foreground)
         }
         .menuStyle(BorderlessButtonMenuStyle())
         .menuIndicator(.hidden)
-        .frame(width: 20)
+        .frame(width: Device.isMacOS ? 16 : 24, height: 24)
     }
 }

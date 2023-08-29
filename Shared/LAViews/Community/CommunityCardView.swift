@@ -13,11 +13,27 @@ import LemmyKit
 
 //TODO: merge with SidebarCardView
 struct CommunityCardView: View {
+    @Environment(\.graniteRouter) var router
+    @GraniteAction<(CommunityView, FederatedData?)> var viewCommunity
+    
+    
     var model: CommunityView
+    //TODO: centralize this at a higher level
+    //since this component is used for many case scenarios
+    var shouldRoute: Bool = false
     var showCounts: Bool = true
     var fullWidth: Bool = false
     var outline: Bool = false
+    var style: CardStyle = .style1
+    var federatedData: FederatedData? = nil
     
+    var peerHost: String? {
+        if federatedData?.host == LemmyKit.host {
+            return nil
+        } else {
+            return federatedData?.host
+        }
+    }
     
     var subscribers: String {
         NumberFormatter.formatAbbreviated(model.counts.subscribers)
@@ -44,6 +60,70 @@ struct CommunityCardView: View {
     }
     
     var body: some View {
+        Group {
+            switch style {
+            case .style1:
+                style1View
+            case .style2:
+                style2View
+            }
+        }
+    }
+    
+    var style2View: some View {
+        HStack(spacing: .layer3) {
+            AvatarView(model.iconURL, size: .mini, isCommunity: true)
+            Group {
+                HStack(spacing: .layer1) {
+                    Text("!"+model.community.name)
+                        .font(.subheadline)
+                        .cornerRadius(4)
+                    Text("\(peerHost ?? "")@" + model.community.actor_id.host)
+                        .font(.caption2)
+                        .lineLimit(1)
+                        .padding(.horizontal, .layer1)
+                        .background(Color.tertiaryBackground)
+                        .cornerRadius(4)
+                }
+                .padding(.top, 2)//nitpick
+                
+                
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .offset(y: .layer1)//nitpick
+            .scrollOnOverflow()
+            .onTapGesture {
+                routeCommunityView()
+            }
+            
+            Menu {
+                Button {
+                    routeCommunityView()
+                } label: {
+                    Text("!\(model.community.name)")
+                    Image(systemName: "arrow.right.circle")
+                }
+                .buttonStyle(PlainButtonStyle())
+                    
+            } label: {
+                Image(systemName: "ellipsis")
+                    .font(Device.isExpandedLayout ? .subheadline : .footnote.bold())
+                    .frame(width: Device.isMacOS ? 16 : 24, height: 24)
+                    .contentShape(Rectangle())
+                    .foregroundColor(.foreground)
+            }
+            .menuStyle(BorderlessButtonMenuStyle())
+            .menuIndicator(.hidden)
+            .frame(width: Device.isMacOS ? 20 : 24, height: 12)
+        }
+        .frame(maxHeight: AvatarView.Size.mini.frame)
+        .padding(.layer3)
+        .background(Color.secondaryBackground)
+        .clipShape(Capsule())
+    }
+    
+    var style1View: some View {
         VStack(spacing: 0) {
             HStack(spacing: .layer3) {
                 AvatarView(model.iconURL, size: .large, isCommunity: true)
@@ -65,20 +145,26 @@ struct CommunityCardView: View {
                         Spacer()
                     }//.scrollOnOverflow()
                     
-                    HStack(spacing: .layer1) {
-                        Text("!"+model.community.name)
-                            .font(.subheadline)
-                            .cornerRadius(4)
-                        Text("@" + model.community.actor_id.host)
-                            .font(.caption2)
-                            .padding(.vertical, .layer1)
-                            .padding(.horizontal, .layer1)
-                            .background(Color.tertiaryBackground)
-                            .cornerRadius(4)
+                    Group {
+                        HStack(spacing: .layer1) {
+                            Text("!"+model.community.name)
+                                .font(.subheadline)
+                                .cornerRadius(4)
+                            Text("\(peerHost ?? "")@" + model.community.actor_id.host)
+                                .font(.caption2)
+                                .lineLimit(1)
+                                .padding(.vertical, .layer1)
+                                .padding(.horizontal, .layer1)
+                                .background(Color.tertiaryBackground)
+                                .cornerRadius(4)
+                        }
                         
                         Spacer()
                     }
-                    .scrollOnOverflow()
+                }
+                .offset(y: .layer1)
+                .onTapGesture {
+                    routeCommunityView()
                 }
                 
                 if fullWidth {
@@ -101,8 +187,7 @@ struct CommunityCardView: View {
                             .sharingServices(forItems: [""]),
                                 id: \.title) { item in
                             Button(action: {
-                                print(model.community.actor_id)
-                    //                                        item.perform(withItems: [""])
+                                item.perform(withItems: [""])
                             }) {
                                 Image(nsImage: item.image)
                                 Text(item.title)
@@ -221,6 +306,23 @@ struct CommunityCardView: View {
                 .padding(.horizontal, .layer2)
                 .background(Brand.Colors.salmon.opacity(0.9))
                 .cornerRadius(4)
+            }
+        }
+    }
+}
+
+//MARK: Actions
+
+extension CommunityCardView {
+    func routeCommunityView() {
+        let community = model.community
+        GraniteHaptic.light.invoke()
+        
+        if Device.isExpandedLayout || shouldRoute == false {
+            viewCommunity.perform((model, federatedData))
+        } else {
+            router.push {
+                Feed(community, federatedData: federatedData)
             }
         }
     }

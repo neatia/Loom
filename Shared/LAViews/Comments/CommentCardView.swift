@@ -24,6 +24,8 @@ struct CommentCardView: View {
         model ?? context.commentModel
     }
     
+    //Viewing kind
+    @State var collapseView: Bool = false
     @State var expandReplies: Bool = false
     @State var refreshThread: Bool = false
     
@@ -102,7 +104,8 @@ struct CommentCardView: View {
                 }
             case .style2:
                 HStack(spacing: .layer3) {
-                    HeaderCardAvatarView(showAvatar: showAvatar)
+                    HeaderCardAvatarView(showAvatar: showAvatar,
+                                         shouldCollapse: collapseView)
                         .attach({
                             guard let currentModel,
                                   currentModel.replyCount > 0 else { return }
@@ -116,7 +119,8 @@ struct CommentCardView: View {
                             showThreadDrawer(currentModel)
                         }, at: \.longPressThreadLine)
                     VStack(alignment: .leading, spacing: 2) {
-                        HeaderCardView(shouldRoutePost: self.shouldLinkToPost)
+                        HeaderCardView(shouldRoutePost: self.shouldLinkToPost,
+                                       shouldCollapse: collapseView)
                             .attach({ community in
                                 viewCommunity.perform(community)
                             }, at: \.viewCommunity)
@@ -129,12 +133,17 @@ struct CommentCardView: View {
                             .attach({
                                 editModel()
                             }, at: \.edit)
+                            .attach({
+                                guard context.viewingContext == .postDisplay || context.viewingContext == .thread else { return }
+                                GraniteHaptic.light.invoke()
+                                collapseView.toggle()
+                            }, at: \.tapped)
                             .graniteEvent(interact)
                             //Since the model could get updated (removal/deletion)
-//                            .contentContext(.addCommentModel(model: model, context))
+//                            .contentContext(.addCommentModel(model: currentModel, context))
                         
-                        //Crash when accessing the computable `currentModel` for markdown preview, checking for nil before rendering the last group, resolves it...
-                        if model != nil {
+                        if !collapseView,
+                           model != nil {
                             contentView
                         }
                     }
@@ -142,7 +151,8 @@ struct CommentCardView: View {
                 .padding(.trailing, padding.trailing)
             }
             
-            if expandReplies {
+            if !collapseView,
+               expandReplies {
                 Divider()
                     .padding(.top, .layer5)
                 
@@ -200,7 +210,7 @@ struct CommentCardView: View {
         } else {
             top = .layer5
             leading = .layer4
-            bottom = expandReplies ? 0 : .layer5
+            bottom = expandReplies && !collapseView ? 0 : .layer5
             trailing = .layer3
         }
          
@@ -271,10 +281,6 @@ extension CommentCardView {
             contentBody
             #endif
             FooterView(showScores: config.state.showScores)
-                .attach({ id in
-                    guard let currentModel else { return }
-                    showThreadDrawer(currentModel)
-                }, at: \.showComments)
                 .attach({ model in
                     replyModel()
                 }, at: \.replyComment)

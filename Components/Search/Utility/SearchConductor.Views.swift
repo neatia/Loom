@@ -59,6 +59,7 @@ struct SearchBar: View {
                         .font(.headline.bold())
                         .autocorrectionDisabled(true)
                         .submitLabel(.search)
+                        .frame(height: 48)
                         .onSubmit {
                             #if os(iOS)
                             hideKeyboard()

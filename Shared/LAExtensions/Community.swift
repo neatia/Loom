@@ -20,15 +20,7 @@ extension CommunityView: Pageable {
     }
 }
 
-extension CommunityView: Locateable {
-    var isBaseResource: Bool {
-        LemmyKit.host == community.actor_id.host
-    }
-    
-    var isPeerResource: Bool {
-        false
-    }
-    
+extension CommunityView {
     var displayName: String {
         self.community.displayName
     }
