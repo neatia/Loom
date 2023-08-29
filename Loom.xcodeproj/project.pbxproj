@@ -165,12 +165,6 @@
 		7145EF1A28D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */; };
 		714B48782A816CF900AC6199 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48772A816CF900AC6199 /* Logger.swift */; };
 		714B48792A816CF900AC6199 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48772A816CF900AC6199 /* Logger.swift */; };
-		714B487B2A81847800AC6199 /* ResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B487A2A81847800AC6199 /* ResourceType.swift */; };
-		714B487C2A81847800AC6199 /* ResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B487A2A81847800AC6199 /* ResourceType.swift */; };
-		714B487E2A8188DA00AC6199 /* ResourceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B487D2A8188DA00AC6199 /* ResourceContext.swift */; };
-		714B487F2A8188DA00AC6199 /* ResourceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B487D2A8188DA00AC6199 /* ResourceContext.swift */; };
-		714B48812A81A5D600AC6199 /* Locateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48802A81A5D600AC6199 /* Locateable.swift */; };
-		714B48822A81A5D600AC6199 /* Locateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48802A81A5D600AC6199 /* Locateable.swift */; };
 		714B48902A8238A400AC6199 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48872A8238A400AC6199 /* EarthNode.swift */; };
 		714B48912A8238A400AC6199 /* EarthNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714B48872A8238A400AC6199 /* EarthNode.swift */; };
 		714B48922A8238A400AC6199 /* earth-dark.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 714B48892A8238A400AC6199 /* earth-dark.jpg */; };
@@ -393,6 +387,12 @@
 		71A4A1302A63326400689DF2 /* URL+Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A4A12E2A63326400689DF2 /* URL+Host.swift */; };
 		71A4A1322A6352CA00689DF2 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A4A1312A6352CA00689DF2 /* CGFloat.swift */; };
 		71A4A1332A6352CA00689DF2 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A4A1312A6352CA00689DF2 /* CGFloat.swift */; };
+		71AAD3B82A9D287400D133F4 /* ModerationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71AAD3B72A9D287400D133F4 /* ModerationKit */; };
+		71AAD3BA2A9D28C300D133F4 /* ModerationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71AAD3B92A9D28C300D133F4 /* ModerationKit */; };
+		71AAD3BD2A9D5A4400D133F4 /* HostSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */; };
+		71AAD3BE2A9D5A4400D133F4 /* HostSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */; };
+		71AAD3C02A9D73A900D133F4 /* ListingSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */; };
+		71AAD3C12A9D73A900D133F4 /* ListingSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */; };
 		71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */; };
 		71AB675C2A8AA9630083AB7C /* Loom.EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */; };
 		71AF14672A2E807300EEBD4B /* Disclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF14662A2E807300EEBD4B /* Disclaimer.swift */; };
@@ -792,9 +792,6 @@
 		7145EF0C28D43F1D00BFD19A /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+SafeArea.swift"; sourceTree = "<group>"; };
 		714B48772A816CF900AC6199 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		714B487A2A81847800AC6199 /* ResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceType.swift; sourceTree = "<group>"; };
-		714B487D2A8188DA00AC6199 /* ResourceContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceContext.swift; sourceTree = "<group>"; };
-		714B48802A81A5D600AC6199 /* Locateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locateable.swift; sourceTree = "<group>"; };
 		714B48872A8238A400AC6199 /* EarthNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EarthNode.swift; sourceTree = "<group>"; };
 		714B48892A8238A400AC6199 /* earth-dark.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "earth-dark.jpg"; sourceTree = "<group>"; };
 		714B488A2A8238A400AC6199 /* StarsParticles.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = StarsParticles.scnp; sourceTree = "<group>"; };
@@ -906,6 +903,11 @@
 		71A4A1232A61C51600689DF2 /* AccountService.Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Auth.swift; sourceTree = "<group>"; };
 		71A4A12E2A63326400689DF2 /* URL+Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Host.swift"; sourceTree = "<group>"; };
 		71A4A1312A6352CA00689DF2 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
+		71AAD3B62A9D1FF600D133F4 /* ModerationKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ModerationKit; path = ../../../pexavc/repositories/ModerationKit; sourceTree = "<group>"; };
+		71AAD3BB2A9D3AD400D133F4 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
+		71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostSelectorView.swift; sourceTree = "<group>"; };
+		71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingSelectorView.swift; sourceTree = "<group>"; };
+		71AAD3C22A9D9C6B00D133F4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loom.EditView.swift; sourceTree = "<group>"; };
 		71AF14662A2E807300EEBD4B /* Disclaimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disclaimer.swift; sourceTree = "<group>"; };
 		71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Markdown.swift; sourceTree = "<group>"; };
@@ -1093,6 +1095,7 @@
 				71C5FF722A646BE100F99A84 /* NukeUI in Frameworks */,
 				71BE94F42A958DA8004A3AC3 /* KeyboardToolbar in Frameworks */,
 				71899E522A8977C00073158F /* MarbleKit in Frameworks */,
+				71AAD3B82A9D287400D133F4 /* ModerationKit in Frameworks */,
 				715797702A7B833400B7FEC9 /* GraniteUI in Frameworks */,
 				71C5FF6E2A646BE100F99A84 /* Nuke in Frameworks */,
 				71C5FF702A646BE100F99A84 /* NukeExtensions in Frameworks */,
@@ -1103,6 +1106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71AAD3BA2A9D28C300D133F4 /* ModerationKit in Frameworks */,
 				71899E502A8977AD0073158F /* MarbleKit in Frameworks */,
 				71CB6C2C2A6AF99400084ECC /* IPFSKit in Frameworks */,
 				71EB91C32A8037D40091EE5B /* GraniteUI in Frameworks */,
@@ -1385,6 +1389,9 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71AAD3C22A9D9C6B00D133F4 /* Granite */,
+				71AAD3BB2A9D3AD400D133F4 /* LemmyKit */,
+				71AAD3B62A9D1FF600D133F4 /* ModerationKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -1658,11 +1665,8 @@
 		7166E9D72A74A28D004F88D7 /* LAExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				714B487D2A8188DA00AC6199 /* ResourceContext.swift */,
-				714B487A2A81847800AC6199 /* ResourceType.swift */,
 				710BEAA72A86E89E0075A141 /* ListingType.swift */,
 				7166E9DE2A74A2C6004F88D7 /* Community.swift */,
-				714B48802A81A5D600AC6199 /* Locateable.swift */,
 				7166E9E12A74A2CE004F88D7 /* Comment.swift */,
 				710BEAA42A86E87B0075A141 /* SortType.swift */,
 				7166E9EA2A751441004F88D7 /* UserInfo.swift */,
@@ -1686,18 +1690,10 @@
 		717090E52A7EEF0B009F1FB7 /* LayoutService */ = {
 			isa = PBXGroup;
 			children = (
-				717090E72A7EEF0B009F1FB7 /* Reducers */,
 				717090E62A7EEF0B009F1FB7 /* LayoutService.swift */,
 				717090E82A7EEF0B009F1FB7 /* LayoutService+Center.swift */,
 			);
 			path = LayoutService;
-			sourceTree = "<group>";
-		};
-		717090E72A7EEF0B009F1FB7 /* Reducers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Reducers;
 			sourceTree = "<group>";
 		};
 		717C12A1293BF02D0060A446 /* Animations */ = {
@@ -2139,6 +2135,8 @@
 				71E5F3C52A739E3000299558 /* User */,
 				71C8BE772A7F2E1E008694C7 /* ContentMetadataView.swift */,
 				7166E9E42A74EE64004F88D7 /* BlockedPickerView.swift */,
+				71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */,
+				71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */,
 				7166E9E72A7503A0004F88D7 /* CardActionsView.swift */,
 				715826772A881DD8000E4B49 /* ViewingContext.swift */,
 				71F778C42A71ABAC00C9C5C4 /* CensorView.swift */,
@@ -2320,7 +2318,6 @@
 			isa = PBXGroup;
 			children = (
 				71EAF4782A7DA3320034FCB9 /* Reducers */,
-				71EAF4802A7DA40B0034FCB9 /* Models */,
 				71EAF4772A7DA3320034FCB9 /* ExplorerService.swift */,
 				71EAF4762A7DA3320034FCB9 /* ExplorerService+Center.swift */,
 			);
@@ -2333,13 +2330,6 @@
 				71EAF47D2A7DA3440034FCB9 /* ExplorerService._.swift */,
 			);
 			path = Reducers;
-			sourceTree = "<group>";
-		};
-		71EAF4802A7DA40B0034FCB9 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		71EB15942A9C6C910098AD5B /* Debug */ = {
@@ -2495,6 +2485,7 @@
 				715797782A7B843100B7FEC9 /* MarkdownView */,
 				71899E512A8977C00073158F /* MarbleKit */,
 				71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */,
+				71AAD3B72A9D287400D133F4 /* ModerationKit */,
 			);
 			productName = "PEX (iOS)";
 			productReference = 711B3F792885D43B00F3080D /* Loom.app */;
@@ -2524,6 +2515,7 @@
 				71EB91C02A8037D40091EE5B /* Granite */,
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 				71899E4F2A8977AD0073158F /* MarbleKit */,
+				71AAD3B92A9D28C300D133F4 /* ModerationKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
@@ -2778,7 +2770,6 @@
 				71E5F3CB2A73A02500299558 /* Haptic.swift in Sources */,
 				71DA49812A9684E1006FB90C /* ContentUpdater.swift in Sources */,
 				714B48982A8238A400AC6199 /* GlobeView.swift in Sources */,
-				714B48812A81A5D600AC6199 /* Locateable.swift in Sources */,
 				71EB15992A9C6CB00098AD5B /* Debug.swift in Sources */,
 				712427B82A65C4AA007F2F77 /* Bookmark._.swift in Sources */,
 				71F0421D2A6A3AD100788CDC /* Globe.swift in Sources */,
@@ -2792,6 +2783,7 @@
 				7118494C2A8EF7BD000F5A67 /* LoomTypes.swift in Sources */,
 				710540812A91970700B9DC8A /* MarkdownFontGroup.swift in Sources */,
 				715151292A8F79A200251978 /* ContentContext.Display.swift in Sources */,
+				71AAD3C02A9D73A900D133F4 /* ListingSelectorView.swift in Sources */,
 				71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */,
 				7102839D2A2A54C300010877 /* PointSliderOptions.swift in Sources */,
 				71A28E2D295237AE00EAE8EE /* Run.swift in Sources */,
@@ -2901,6 +2893,7 @@
 				71899E3A2A8952E00073158F /* LoomManifest.swift in Sources */,
 				716157D92A85C29500449EE4 /* WebView.swift in Sources */,
 				7102837D2A2A54C300010877 /* PointTrackConfiguration.swift in Sources */,
+				71AAD3BD2A9D5A4400D133F4 /* HostSelectorView.swift in Sources */,
 				710283AB2A2A54C300010877 /* ValueSlider.swift in Sources */,
 				71899E272A8952100073158F /* Loom+View.swift in Sources */,
 				71F042392A6A682C00788CDC /* Write.Create.swift in Sources */,
@@ -2917,7 +2910,6 @@
 				71F778CC2A71C5EA00C9C5C4 /* Profile.HeaderView.swift in Sources */,
 				7197FB092964B4C0005EBBA4 /* GraniteAlertViewPresentationMode.swift in Sources */,
 				71B7A1F32A691470003E6D4D /* MotionManager.swift in Sources */,
-				714B487B2A81847800AC6199 /* ResourceType.swift in Sources */,
 				71E5209D2A9345490057EA83 /* FeedHamburgerView.swift in Sources */,
 				7102839F2A2A54C300010877 /* PointSlider.swift in Sources */,
 				71C9F9002A60B9460089D7EA /* ConfigService+Center.swift in Sources */,
@@ -3009,7 +3001,6 @@
 				7197FB2B2964B4EC005EBBA4 /* ModalService.swift in Sources */,
 				71C5FF6A2A64688B00F99A84 /* Drawer+Drag.swift in Sources */,
 				710283812A2A54C300010877 /* EnvironmentValues+TrackPoint.swift in Sources */,
-				714B487E2A8188DA00AC6199 /* ResourceContext.swift in Sources */,
 				717C12A3293BF03C0060A446 /* Animations._.swift in Sources */,
 				7102838F2A2A54C300010877 /* RangeSliderOptions.swift in Sources */,
 				71FCDD032A758D92000A6309 /* Profile.InlineView.swift in Sources */,
@@ -3132,6 +3123,7 @@
 				7166E9CA2A74457A004F88D7 /* CommunitySidebarView.swift in Sources */,
 				71FF5BF92A9C056D00DD83EB /* WhatsNew.swift in Sources */,
 				71F0421E2A6A3AD100788CDC /* Globe.swift in Sources */,
+				71AAD3C12A9D73A900D133F4 /* ListingSelectorView.swift in Sources */,
 				71EB91C62A803F240091EE5B /* InstanceMetaView.swift in Sources */,
 				71CB6C342A6B742200084ECC /* Write.Import.swift in Sources */,
 				710BEAA02A86BEE00075A141 /* Write.Generate.Shaders.swift in Sources */,
@@ -3197,9 +3189,9 @@
 				7197FB142964B4C0005EBBA4 /* GraniteToastViewEvent.swift in Sources */,
 				7197FB062964B4C0005EBBA4 /* GraniteModal.swift in Sources */,
 				71AF14682A2E807300EEBD4B /* Disclaimer.swift in Sources */,
+				71AAD3BE2A9D5A4400D133F4 /* HostSelectorView.swift in Sources */,
 				713129B92A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */,
 				71899E3F2A8958F40073158F /* Loom.CardView.swift in Sources */,
-				714B487F2A8188DA00AC6199 /* ResourceContext.swift in Sources */,
 				71B7A1E42A68FE81003E6D4D /* AccountMeta.swift in Sources */,
 				7197FB082964B4C0005EBBA4 /* GraniteAlertAction.swift in Sources */,
 				71FF5BF22A9C003D00DD83EB /* FilterConfig.swift in Sources */,
@@ -3262,7 +3254,6 @@
 				71C9F9372A6116B20089D7EA /* ContentService.Boot.swift in Sources */,
 				71C9F8EF2A60B7F40089D7EA /* Settings+View.swift in Sources */,
 				715826832A889506000E4B49 /* View+Readability.swift in Sources */,
-				714B48822A81A5D600AC6199 /* Locateable.swift in Sources */,
 				71622E8E2A6E0A26006233F3 /* Image.swift in Sources */,
 				71C9F9192A60BFEA0089D7EA /* ContentService.swift in Sources */,
 				717D388C2887A44D00165D7D /* Home+View.swift in Sources */,
@@ -3279,7 +3270,6 @@
 				71C9F8FF2A60B9460089D7EA /* ConfigService.swift in Sources */,
 				71C69E272A70469900B54AD6 /* Search.swift in Sources */,
 				71F778C12A71A95300C9C5C4 /* Extension.swift in Sources */,
-				714B487C2A81847800AC6199 /* ResourceType.swift in Sources */,
 				71AB675C2A8AA9630083AB7C /* Loom.EditView.swift in Sources */,
 				7197FB122964B4C0005EBBA4 /* GraniteToastViewStyle.swift in Sources */,
 				71A28EAC29523CC200EAE8EE /* GradientView.swift in Sources */,
@@ -3893,6 +3883,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71899E4E2A8977AD0073158F /* XCRemoteSwiftPackageReference "MarbleKit" */;
 			productName = MarbleKit;
+		};
+		71AAD3B72A9D287400D133F4 /* ModerationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModerationKit;
+		};
+		71AAD3B92A9D28C300D133F4 /* ModerationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ModerationKit;
 		};
 		71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */ = {
 			isa = XCSwiftPackageProductDependency;

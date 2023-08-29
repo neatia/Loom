@@ -14,14 +14,26 @@ import LemmyKit
 //TODO: merge with SidebarCardView
 struct CommunityCardView: View {
     @Environment(\.graniteRouter) var router
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<(CommunityView, FederatedData?)> var viewCommunity
     
     
     var model: CommunityView
+    //TODO: centralize this at a higher level
+    //since this component is used for many case scenarios
+    var shouldRoute: Bool = false
     var showCounts: Bool = true
     var fullWidth: Bool = false
     var outline: Bool = false
     var style: CardStyle = .style1
+    var federatedData: FederatedData? = nil
+    
+    var peerHost: String? {
+        if federatedData?.host == LemmyKit.host {
+            return nil
+        } else {
+            return federatedData?.host
+        }
+    }
     
     var subscribers: String {
         NumberFormatter.formatAbbreviated(model.counts.subscribers)
@@ -66,19 +78,21 @@ struct CommunityCardView: View {
                     Text("!"+model.community.name)
                         .font(.subheadline)
                         .cornerRadius(4)
-                    Text("@" + model.community.actor_id.host)
+                    Text("\(peerHost ?? "")@" + model.community.actor_id.host)
                         .font(.caption2)
+                        .lineLimit(1)
                         .padding(.horizontal, .layer1)
                         .background(Color.tertiaryBackground)
                         .cornerRadius(4)
                 }
+                .padding(.top, 2)//nitpick
                 
                 
                 Spacer()
             }
             .contentShape(Rectangle())
+            .offset(y: .layer1)//nitpick
             .scrollOnOverflow()
-            .offset(y: .layer1)
             .onTapGesture {
                 routeCommunityView()
             }
@@ -131,20 +145,26 @@ struct CommunityCardView: View {
                         Spacer()
                     }//.scrollOnOverflow()
                     
-                    HStack(spacing: .layer1) {
-                        Text("!"+model.community.name)
-                            .font(.subheadline)
-                            .cornerRadius(4)
-                        Text("@" + model.community.actor_id.host)
-                            .font(.caption2)
-                            .padding(.vertical, .layer1)
-                            .padding(.horizontal, .layer1)
-                            .background(Color.tertiaryBackground)
-                            .cornerRadius(4)
+                    Group {
+                        HStack(spacing: .layer1) {
+                            Text("!"+model.community.name)
+                                .font(.subheadline)
+                                .cornerRadius(4)
+                            Text("\(peerHost ?? "")@" + model.community.actor_id.host)
+                                .font(.caption2)
+                                .lineLimit(1)
+                                .padding(.vertical, .layer1)
+                                .padding(.horizontal, .layer1)
+                                .background(Color.tertiaryBackground)
+                                .cornerRadius(4)
+                        }
                         
                         Spacer()
                     }
-                    .scrollOnOverflow()
+                }
+                .offset(y: .layer1)
+                .onTapGesture {
+                    routeCommunityView()
                 }
                 
                 if fullWidth {
@@ -167,8 +187,7 @@ struct CommunityCardView: View {
                             .sharingServices(forItems: [""]),
                                 id: \.title) { item in
                             Button(action: {
-                                print(model.community.actor_id)
-                    //                                        item.perform(withItems: [""])
+                                item.perform(withItems: [""])
                             }) {
                                 Image(nsImage: item.image)
                                 Text(item.title)
@@ -298,11 +317,12 @@ extension CommunityCardView {
     func routeCommunityView() {
         let community = model.community
         GraniteHaptic.light.invoke()
-        if Device.isExpandedLayout {
-            viewCommunity.perform(community)
+        
+        if Device.isExpandedLayout || shouldRoute == false {
+            viewCommunity.perform((model, federatedData))
         } else {
             router.push {
-                Feed(community)
+                Feed(community, federatedData: federatedData)
             }
         }
     }

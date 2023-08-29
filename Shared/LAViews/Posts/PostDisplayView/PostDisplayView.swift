@@ -23,7 +23,7 @@ struct PostDisplayView: GraniteNavigationDestination {
     @Relay(.silence) var account: AccountService
     @Relay var config: ConfigService
     
-    var model: PostView? {
+    var currentModel: PostView? {
         updatedModel ?? context.postModel
     }
     
@@ -36,17 +36,11 @@ struct PostDisplayView: GraniteNavigationDestination {
     @State var enableCommunityRoute: Bool = false
     
     @State var threadLocation: FetchType = .base
+    @State var listingType: ListingType = .all
     
     //TODO: Similar to feed's controls maybe it can be reused?
     @State var selectedSorting: Int = 0
     var sortingType: [CommentSortType] = CommentSortType.allCases
-    @State var selectedHost: String = LemmyKit.host
-    
-    var isPushed: Bool = false
-    
-    var viewableHosts: [String] {
-        context.viewbaleHosts
-    }
     
     @StateObject var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
@@ -64,9 +58,11 @@ struct PostDisplayView: GraniteNavigationDestination {
             case .style1:
                 contentHeader
                     .background(Color.background)
+                    .id(currentModel?.post.updated)
             case .style2:
                 contentHeaderStacked
                     .background(Color.background)
+                    .id(currentModel?.post.updated)
             }
             
             if hasShown || Device.isExpandedLayout {
@@ -113,17 +109,17 @@ struct PostDisplayView: GraniteNavigationDestination {
             }
             
             pager.hook { page in
-                return await Lemmy.comments(model?.post,
-                                            community: model?.community,
+                return await Lemmy.comments(currentModel?.post,
+                                            community: currentModel?.community,
                                             page: page,
-                                            type: .all,
+                                            type: listingType,
                                             sort: sortingType[selectedSorting],
                                             location: threadLocation)
             }.fetch()
         }
         .ignoresSafeArea(.keyboard)
         //This overlays
-        .graniteNavigationDestinationIf(isPushed) {
+        .graniteNavigationDestination {
             headerView
                 .padding(.leading, .layer5)
         }
@@ -134,10 +130,7 @@ struct PostDisplayView: GraniteNavigationDestination {
         if Device.isExpandedLayout {
             return .init(navBarBGColor: Color.background)
         } else {
-            return .init(fullWidth: true, navBarBGColor: Color.background) {
-                headerView
-                    .padding(.leading, .layer4)
-            }
+            return .customTrailing()
         }
     }
 }
@@ -149,10 +142,9 @@ extension PostDisplayView {
                 viewCommunity.perform(community)
             }, at: \.viewCommunity)
             .attach({
-                ModalService.shared.showEditPostModal(model) { updatedModel in
+                ModalService.shared.showEditPostModal(currentModel) { updatedModel in
                     DispatchQueue.main.async {
                         self.updatedModel = updatedModel
-                        ModalService.shared.dismissSheet()
                     }
                 }
             }, at: \.edit)
@@ -161,16 +153,16 @@ extension PostDisplayView {
     
     var contentView: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if model?.hasContent == true {
-                if model?.post.url != nil {
+            if currentModel?.hasContent == true {
+                if currentModel?.post.url != nil {
                     contentLinkPreview
                         .padding(.horizontal, .layer4)
                 }
                 
-                if model?.post.body != nil {
+                if currentModel?.post.body != nil {
                     contentBody
                         .frame(maxHeight: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenHeight * 0.3)
-                        .padding(.top, model?.post.url == nil ? .layer2 : nil)
+                        .padding(.top, currentModel?.post.url == nil ? .layer2 : nil)
                         .padding(.horizontal, .layer4)
                 }
             }
@@ -189,7 +181,7 @@ extension PostDisplayView {
                 }, at: \.replyPost)
                 .contentContext(.addPostModel(model: updatedModel, context).withStyle(.style1))
                 .padding(.horizontal, .layer4)
-                .padding(.top, model?.hasContent == true ? .layer5 : .layer2)
+                .padding(.top, currentModel?.hasContent == true ? .layer5 : .layer2)
                 .padding(.bottom, .layer5)
             
             Divider()
@@ -204,7 +196,7 @@ extension PostDisplayView {
     var contentHeader: some View {
         HStack(spacing: CGFloat.layer2) {
             VStack(alignment: .leading, spacing: 0) {
-                Text(model?.post.name ?? "")
+                Text(currentModel?.post.name ?? "")
                     .font(.title3.bold())
                     .foregroundColor(.foreground.opacity(0.9))
                     .padding(.bottom, .layer1)
@@ -212,7 +204,7 @@ extension PostDisplayView {
             
             Spacer()
             
-            if let thumbUrl = model?.post.thumbnail_url,
+            if let thumbUrl = currentModel?.post.thumbnail_url,
                let url = URL(string: thumbUrl) {
                 
                 ZStack {
@@ -233,10 +225,10 @@ extension PostDisplayView {
                 .cornerRadius(8.0)
                 .clipped()
                 .onTapGesture {
-                    guard let model else { return }
+                    guard let currentModel else { return }
                     GraniteHaptic.light.invoke()
                     ModalService.shared.presentSheet {
-                        PostContentView(postView: model)
+                        PostContentView(postView: currentModel)
                             .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
                     }
                 }
@@ -251,7 +243,7 @@ extension PostDisplayView {
     var contentHeaderStacked: some View {
         VStack(spacing: .layer2) {
             HStack {
-                Text(model?.post.name ?? "")
+                Text(currentModel?.post.name ?? "")
                     .font(.title3.bold())
                     .foregroundColor(.foreground.opacity(0.9))
                     .padding(.bottom, .layer1)
@@ -265,11 +257,11 @@ extension PostDisplayView {
     }
     var contentLinkPreview: some View {
         Group {
-            if let thumbUrl = model?.post.url,
+            if let thumbUrl = currentModel?.post.url,
                let url = URL(string: thumbUrl) {
                 HStack {
                     LinkPreview(url: url)
-                        .type(model?.post.body == nil || expandLinkPreview ? .large : .small)
+                        .type(currentModel?.post.body == nil || expandLinkPreview ? .large : .small)
                         .frame(maxWidth: Device.isMacOS ? 400 : ContainerConfig.iPhoneScreenWidth * 0.8)
                     
                     Spacer()
@@ -280,7 +272,7 @@ extension PostDisplayView {
     var contentBody: some View {
         VStack(spacing: 0) {
             ScrollView {
-                if let body = model?.post.body {
+                if let body = currentModel?.post.body {
                     MarkdownView(text: body)
                         .markdownViewRole(.editor)
                         .fontGroup(PostDisplayFontGroup())

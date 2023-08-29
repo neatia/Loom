@@ -18,6 +18,7 @@ struct BlockedPickerView: View {
     
     var modal: Bool = true
     var verticalPadding: CGFloat = .layer5
+    var trailingPadding: CGFloat = 0
     
     var users: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true, isStatic: true)
     var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true, isStatic: true)
@@ -52,7 +53,7 @@ struct BlockedPickerView: View {
                         } label: {
                             VStack {
                                 Spacer()
-                                Text("Users")
+                                Text("TITLE_USERS")
                                     .font(fontFor(.users))
                                     .opacity(opacityFor(.users))
                             }
@@ -65,7 +66,7 @@ struct BlockedPickerView: View {
                         } label: {
                             VStack {
                                 Spacer()
-                                Text("Communities")
+                                Text("TITLE_COMMUNITIES")
                                     .font(fontFor(.communities))
                                     .opacity(opacityFor(.communities))
                             }
@@ -78,6 +79,7 @@ struct BlockedPickerView: View {
                     .padding(.bottom, .layer4)
                     .padding(.horizontal, modal ? .layer4 : 0)
                     .foregroundColor(.foreground)
+                    .padding(.trailing, trailingPadding)
                     
                     Divider()
                     
@@ -101,6 +103,7 @@ struct BlockedPickerView: View {
                                     .padding(.leading, modal ? .layer3 : 0)
                             }
                         }
+                        .padding(.trailing, trailingPadding)
                         .environmentObject(users)
                         .task {
                             users.clear()
@@ -124,6 +127,7 @@ struct BlockedPickerView: View {
                                     .padding(.leading, modal ? .layer3 : 0)
                             }
                         }
+                        .padding(.trailing, trailingPadding)
                         .environmentObject(communities)
                         .task {
                             communities.clear()

@@ -13,91 +13,32 @@ import LemmyKit
 protocol AnyLoomManifest: GraniteModel {
     var id: UUID { get }
     var meta: LoomManifestMeta { get }
-    var communities: [FederatedCommunity] { get set }
-    var instances: [FederatedInstance] { get set }
+    var data: [FederatedData] { get set }
 }
 
 struct LoomManifest: AnyLoomManifest, Identifiable, Hashable {
-    static func == (lhs: LoomManifest, rhs: LoomManifest) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.communityIds == rhs.communityIds &&
-        lhs.instanceIds == rhs.instanceIds &&
-        lhs.meta == rhs.meta
-    }
-    
     var id: UUID = .init()
     
     var meta: LoomManifestMeta
-    var communities: [FederatedCommunity] = []
-    var instances: [FederatedInstance] = []
-    
-    /* these are used for equating */
-    var communityIds: Set<String> = .init()
-    var instanceIds: Set<String> = .init()
-    
-    enum CodingKeys: CodingKey {
-        case id,
-             meta,
-             lemmyCommunities,
-             lemmyInstances,
-             communityIds,
-             instanceIds
-    }
+    var data: [FederatedData] = []
     
     init(meta: LoomManifestMeta) {
         self.meta = meta
     }
     
     mutating func insert(_ fc: FederatedCommunity) {
-        self.communities.insert(fc, at: 0)
-        self.communityIds.insert(fc.id)
+        self.data.insert(.community(fc), at: 0)
     }
     
     mutating func remove(_ fc: FederatedCommunity) {
-        self.communities.removeAll(where: { $0.id == fc.id })
-        self.communityIds.remove(fc.id)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        if let lcs = communities as? [CommunityView] {
-            try container.encode(lcs, forKey: .lemmyCommunities)
-        }
-        
-        if let lci = instances as? [Instance] {
-            try container.encode(lci, forKey: .lemmyInstances)
-        }
-        
-        try container.encode(communityIds, forKey: .communityIds)
-        try container.encode(instanceIds, forKey: .instanceIds)
-        
-        try container.encode(id, forKey: .id)
-        try container.encode(meta, forKey: .meta)
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        self.id = try container.decode(UUID.self, forKey: .id)
-        self.meta = try container.decode(LoomManifestMeta.self, forKey: .meta)
-        
-        self.communityIds = try container.decode(Set<String>.self, forKey: .communityIds)
-        self.instanceIds = try container.decode(Set<String>.self, forKey: .instanceIds)
-        
-        if let lcs = try? container.decode([CommunityView].self, forKey: .lemmyCommunities) {
-            self.communities = lcs
-        }
-        
-        if let lci = try? container.decode([Instance].self, forKey: .lemmyInstances) {
-            self.instances = lci
-        }
+        let id = LemmyKit.host + (fc.id)
+        self.data.removeAll(where: { $0.idPlain == id })
     }
 }
 
 extension LoomManifest {
     var collectionNamesList: [String] {
-        communities.map { $0.displayName }
+        data.map { $0.displayName }
     }
     
     var collectionNames: String {
@@ -109,7 +50,8 @@ extension LoomManifest {
     }
     
     func contains(_ model: FederatedCommunity) -> Bool {
-        self.communities.first(where: { $0.id == model.id }) != nil
+        let id = LemmyKit.host + (model.id)
+        return self.data.first(where: { $0.idPlain == id }) != nil
     }
     
     func fetch(_ page: Int,
@@ -119,8 +61,8 @@ extension LoomManifest {
                location: FetchType = .source) async -> [PostView] {
         
         var cumulativePosts: [PostView] = []
-        for fcView in communities {
-            let posts = await Lemmy.posts(fcView.lemmy?.community,
+        for fc in data {
+            let posts = await Lemmy.posts(fc.community?.lemmy?.community,
                                           type: listing,
                                           page: page,
                                           limit: limit,

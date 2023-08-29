@@ -11,7 +11,7 @@ import Granite
 import LemmyKit
 
 struct FeedSidebar<Content: View>: View {
-    @GraniteAction<CommunityView> var pickedCommunity
+    @GraniteAction<(CommunityView, FederatedData?)> var pickedCommunity
     
     let header: () -> Content
     init(@ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
@@ -22,10 +22,11 @@ struct FeedSidebar<Content: View>: View {
         VStack(spacing: 0) {
             header()
             CommunityPickerView(modal: false,
+                                shouldRoute: true,
                                 verticalPadding: 0,
                                 sidebar: true)
-            .attach({ model in
-                pickedCommunity.perform(model)
+            .attach({ (model, federatedData) in
+                pickedCommunity.perform((model, federatedData))
             }, at: \.pickedCommunity)
         }
     }

@@ -70,11 +70,8 @@ struct LocalCommunityPreview: View {
                             .padding(.vertical, .layer3)
                         } else {
                             CommunityCardView(model: communityView,
+                                              shouldRoute: modal == false,
                                               fullWidth: true)
-                            .routeIf(modal == false,
-                                     window: .resizable(600, 500)) {
-                                Feed(communityView.community)
-                            } with : { router }
                             .onTapGesture {
                                 pickedCommunity.perform(communityView)
                             }

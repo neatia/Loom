@@ -153,7 +153,7 @@ struct HeaderCardView: View {
         } else {
             
             router.push(style: .customTrailing()) {
-                PostDisplayView(isPushed: true)
+                PostDisplayView()
                     .contentContext(.withPostModel(postView, context))
             }
             

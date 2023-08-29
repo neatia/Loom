@@ -2,6 +2,7 @@ import Granite
 import LemmyKit
 import IPFSKit
 import Foundation
+import SwiftUI
 
 extension Write {
     struct Create: GraniteReducer {
@@ -11,6 +12,7 @@ extension Write {
             var postView: PostView
         }
         
+        @Environment(\.graniteRouter) var router
         @Relay var config: ConfigService
         
         func reduce(state: inout Center.State) async {
@@ -77,8 +79,7 @@ extension Write {
                 state.createdPostView = value
                 state.showPost = true
                 
-                GraniteNavigation.push {
-                    //TODO: fix type erasure
+                router.push(style: .customTrailing()) {
                     PostDisplayView()
                         .contentContext(.init(postModel: value))
                 }

@@ -348,7 +348,8 @@ extension PostCardView {
         .routeIf(Device.isExpandedLayout == false && !shouldCensor,
                  window: .resizable(600, 500)) {
             //prevent type erasure
-            PostDisplayView(context: _context, updatedModel: model)
+            PostDisplayView(context: _context,
+                            updatedModel: model)
         } with : { router }
     }
     

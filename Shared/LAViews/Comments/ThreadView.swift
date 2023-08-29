@@ -35,10 +35,7 @@ struct ThreadView: View {
     }
     
     @State var threadLocation: FetchType = .base
-    @State var selectedHost: String = LemmyKit.host
-    var viewableHosts: [String] {
-        context.viewbaleHosts
-    }
+    @State var listingType: ListingType = .all
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -57,9 +54,17 @@ struct ThreadView: View {
                 
                 Divider()
                 
-                sortMenuView
+                ListingSelectorView(listingType: $listingType)
+                    .attach({
+                        pager.reset()
+                    }, at: \.fetch)
+                    //nitpick
+                    .offset(x: (Device.isExpandedLayout) ? -2 : 0, y: 0)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.layer4)
+//                sortMenuView
+//                    .fixedSize(horizontal: false, vertical: true)
+//                    .padding(.layer4)
             }
             
             PagerScrollView(CommentView.self,
@@ -99,7 +104,7 @@ struct ThreadView: View {
                               comment: currentModel?.comment,
                               community: context.community?.lemmy,
                               page: page,
-                              type: .all,
+                              type: listingType,
                               location: threadLocation)
                 
                 return comments.filter { $0.id != currentModel?.id }
@@ -173,41 +178,11 @@ extension ThreadView {
 extension ThreadView {
     var sortMenuView: some View {
         HStack(spacing: .layer4) {
-            Menu {
-                ForEach(0..<viewableHosts.count) { index in
-                    let isSource: Bool = index == 1 && currentModel?.isBaseResource == false
-                    let isPeer: Bool = !isSource && index > 0
-                    let imageName: String = isSource ? "globe.americas" : (isPeer ? "person.wave.2" : "house")
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        
-                        if isSource {
-                            self.threadLocation = .source
-                        } else if index > 0 {
-                            if currentModel?.isPeerResource == true {
-                                self.threadLocation = .peer(viewableHosts[index])
-                            } else if context.viewingContext.isBookmark {
-                                self.threadLocation = context.viewingContext.bookmarkLocation
-                            }
-                        } else {
-                            self.threadLocation = .base
-                        }
-                        self.selectedHost = viewableHosts[index]
-                        
-                        pager.fetch(force: true)
-                    } label: {
-                        Text(viewableHosts[index])
-                        Image(systemName: imageName)
-                    }
-                }
-            } label: {
-                Text(selectedHost)
-#if os(iOS)
-                Image(systemName: "chevron.up.chevron.down")
-#endif
-            }
-            .menuStyle(BorderlessButtonMenuStyle())
-            .frame(maxWidth: Device.isMacOS ? 100 : nil)
+            HostSelectorView(location: $threadLocation,
+                             model: currentModel)
+            .attach({
+                pager.reset()
+            }, at: \.fetch)
             
             Spacer()
         }

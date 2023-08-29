@@ -2,7 +2,7 @@
 //  LoomsPickerView.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/27/23.
+//  Created by PEXAVC on 8/27/23.
 //
 
 import Foundation
@@ -12,6 +12,9 @@ import Granite
 import GraniteUI
 
 struct LoomPickerView: View {
+    
+    //Hamburger view perfers fullwidth dividers but padded contents
+    var trailingPadding: CGFloat = 0.0
     
     @Relay var loom: LoomService
     
@@ -30,19 +33,28 @@ struct LoomPickerView: View {
     var body: some View {
         VStack(spacing: 0) {
             selectorView
+                .padding(.trailing, trailingPadding)
             Divider()
             
             if let manifest = loom.manifest(for: idPicked) {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 0) {
                         //TODO: maintain generic when fedkit is implemented
-                        ForEach(manifest.communities.compactMap { $0.lemmy }) { communityView in
-                            CommunityCardView(model: communityView, style: .style2)
+                        ForEach(manifest.data) { fd in
+                            
+                            if let communityView = fd.community?.lemmy {
+                                CommunityCardView(model: communityView,
+                                                  shouldRoute: true,
+                                                  style: .style2,
+                                                  federatedData: fd)
+                                    .padding(.bottom, .layer4)
+                            }
                         }
                     }
                 }
                 .frame(maxHeight: 300)
                 .padding(.top, .layer4)
+                .padding(.trailing, trailingPadding)
             }
             Spacer()
         }

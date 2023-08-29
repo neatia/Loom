@@ -12,7 +12,7 @@ extension LoomService {
         
         @Event var modify: Modify.Reducer
         
-        @Store(persist: "persistence.Loom.service.0007",
+        @Store(persist: "persistence.Loom.service.0008",
                autoSave: true) public var state: State
         
     }

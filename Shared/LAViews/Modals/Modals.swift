@@ -62,6 +62,9 @@ extension ModalService {
                     update?(updatedModel)
                     
                     self.dismissSheet()
+                    
+                    //TODO: localize
+                    ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "Post edited", event: .success)))
                 }, at: \.updatedPost)
                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
         }

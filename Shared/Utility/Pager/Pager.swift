@@ -13,6 +13,7 @@ import Granite
 import GraniteUI
 import LinkPresentation
 import UniformTypeIdentifiers
+import ModerationKit
 
 public protocol Pageable: Equatable, Identifiable, Hashable {
     var id: String { get }
@@ -394,6 +395,10 @@ public class Pager<Model: Pageable>: ObservableObject {
                 
                 image = GraniteImage(data: data)
             }
+        }
+        
+        if let image {
+            let isNSFW = await ModerationKit.current.check(image, for: .nsfw)
         }
         
         return .init(linkMeta: metaData, imageThumb: image)

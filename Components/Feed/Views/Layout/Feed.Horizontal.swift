@@ -32,7 +32,8 @@ extension Feed {
             FeedSidebar() {
                 headerView
             }
-            .attach({ model in
+            //TODO: the sidebar will hold looms, use fed data too
+            .attach({ (model, federatedData) in
                 DispatchQueue.main.async {
                     self._state.community.wrappedValue = model.community
                     self._state.communityView.wrappedValue = model

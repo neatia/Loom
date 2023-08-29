@@ -54,8 +54,9 @@ extension Feed {
                 }
             }, at: \.login)
             .attach({ location in
-                _state.location.wrappedValue = location
-                pager.reset()
+                fetchCommunity(state.community,
+                               location: location,
+                               reset: true)
             }, at: \.changeLocation)
             .id(account.state.meta)
     }
@@ -172,6 +173,7 @@ struct FeedHamburgerView: View {
                 }
             }
             .padding(.bottom, .layer2)
+            .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
             
             if Device.isExpandedLayout == false {
                 
@@ -202,7 +204,6 @@ struct FeedHamburgerView: View {
         .padding(.top, Device.isExpandedLayout ? .layer3 : .layer4)
         .padding(.bottom, Device.isExpandedLayout ? 0 : .layer4)
         .padding(.leading, Device.isExpandedLayout ? 0 : .layer5)
-        .padding(.trailing, Device.isExpandedLayout ? 0 : .layer4)
         .background(Device.isExpandedLayout ? Color.clear : Color.background)
     }
 }
@@ -220,6 +221,7 @@ extension FeedHamburgerView {
                     Image(systemName: "applescript")
                         .font(.title3)
                         .foregroundColor(.foreground)
+                    //TODO: localize
                     Text("Looms")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
@@ -233,7 +235,7 @@ extension FeedHamburgerView {
                 Divider()
                     .padding(.top, .layer4)
                 
-                LoomPickerView()
+                LoomPickerView(trailingPadding: .layer4)
             }
         }
     }
@@ -462,7 +464,8 @@ extension FeedHamburgerView {
                 
                 BlockedPickerView(meta: account.state.meta,
                                   modal: false,
-                                  verticalPadding: 0)
+                                  verticalPadding: 0,
+                                  trailingPadding: .layer4)
                     .graniteEvent(account.center.interact)
             }
         }

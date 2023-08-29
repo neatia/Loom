@@ -59,7 +59,10 @@ struct SearchScrollView: View {
                 } inlineBody: {
                     EmptyView()
                 } content: { model in
-                    CommunityCardView(model: model, fullWidth: true)
+                    //TODO: handle expanded layout response
+                    CommunityCardView(model: model,
+                                      shouldRoute: true,
+                                      fullWidth: true)
                         .padding(.layer4)
                 }.environmentObject(pagerCommunities)
             case .comments:
