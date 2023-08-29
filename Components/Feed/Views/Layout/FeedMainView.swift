@@ -33,7 +33,8 @@ struct FeedMainView<Content: View>: View {
     var body: some View {
         PagerScrollView(PostView.self,
                         properties: .init(alternateContentPosition: true,
-                                          performant: true),
+                                          performant: true,
+                                          hidingHeader: true),
                         header: header) {
             EmptyView()
         } content: { postView in

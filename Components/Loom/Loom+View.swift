@@ -112,7 +112,7 @@ extension Loom: View {
                             }
                         }, at: \.edit)
                 case .communities:
-                    CommunityPickerView(modal: false, verticalPadding: 0)
+                    CommunityPickerView(modal: false, shouldRoute: true, verticalPadding: 0)
                 }
             }
             
@@ -155,7 +155,9 @@ extension Loom {
             
             Divider()
             
-            CommunityPickerView(modal: false, verticalPadding: 0)
+            CommunityPickerView(modal: false,
+                                shouldRoute: true,
+                                verticalPadding: 0)
         }
     }
 }

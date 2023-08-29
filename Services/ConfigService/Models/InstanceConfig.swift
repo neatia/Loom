@@ -19,7 +19,7 @@ struct InstanceConfig: GraniteModel, Hashable {
 
 extension InstanceConfig {
     static var `default`: InstanceConfig {
-        .init(baseUrl: "https://lemmy.world")
+        .init(baseUrl: "https://neatia.xyz")
     }
 }
 

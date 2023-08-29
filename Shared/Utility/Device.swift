@@ -55,7 +55,7 @@ struct Device {
             return false
         }
         
-        if UIDevice.current.orientation.isPortrait {
+        if UIDevice.current.orientation.isPortrait || windowScene.interfaceOrientation.isPortrait  {
             return keyWindow.safeAreaInsets.bottom > 0
         } else {
             return keyWindow.safeAreaInsets.left > 0 || keyWindow.safeAreaInsets.right > 0

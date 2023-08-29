@@ -59,6 +59,7 @@ extension Feed {
                                reset: true)
             }, at: \.changeLocation)
             .id(account.state.meta)
+            .padding(.top, headerPaddingTop)
     }
 }
 

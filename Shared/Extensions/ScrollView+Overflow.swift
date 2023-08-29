@@ -23,13 +23,13 @@ extension View {
 }
 
 extension View {
-    func scrollOnOverflow() -> some View {
-        modifier(OverflowContentViewModifier())
+    func scrollOnOverflow(axis: Axis.Set = .horizontal) -> some View {
+        modifier(OverflowContentViewModifier(axisSet: axis))
     }
-    func scrollOnOverflowIf(_ condition: Bool) -> some View {
+    func scrollOnOverflowIf(_ condition: Bool, axis: Axis.Set = .horizontal) -> some View {
         Group {
             if condition {
-                self.modifier(OverflowContentViewModifier())
+                self.modifier(OverflowContentViewModifier(axisSet: axis))
             } else {
                 self
             }
@@ -40,17 +40,25 @@ extension View {
 struct OverflowContentViewModifier: ViewModifier {
     @State private var contentOverflow: Bool = false
     
+    var axisSet: Axis.Set
     func body(content: Content) -> some View {
         GeometryReader { geometry in
             content
             .background(
                 GeometryReader { contentGeometry in
                     Color.clear.onAppear {
-                        contentOverflow = contentGeometry.size.width > geometry.size.width
+                        if axisSet.contains(.horizontal) {
+                            contentOverflow = contentGeometry.size.width > geometry.size.width
+                            
+                        }
+                        
+                        if axisSet.contains(.vertical) {
+                            contentOverflow = contentGeometry.size.height > geometry.size.height || contentOverflow
+                        }
                     }
                 }
             )
-            .wrappedInScrollView(when: contentOverflow)
+            .wrappedInScrollView(when: contentOverflow, axis: axisSet)
         }
     }
 }

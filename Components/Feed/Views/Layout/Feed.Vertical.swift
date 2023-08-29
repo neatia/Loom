@@ -30,11 +30,23 @@ extension Feed {
                 }, at: \.write))
              .environmentObject(pager)
         }
-        .edgesIgnoringSafeArea(state.community != nil ? [.bottom] : [])
+        .edgesIgnoringSafeArea(edgesToIgnore)
         .sideMenuIf(state.community == nil && Device.isExpandedLayout == false,
                     isShowing: _state.isShowing) {
             accountExpandedMenuView
                 .id("\(account.state.profiles.count)\(account.state.authenticated)")
+        }
+    }
+    
+    var edgesToIgnore: Edge.Set {
+        if isCommunity {
+            if Device.isIPhone {
+                return [.bottom, .top]
+            } else {
+                return [.bottom]
+            }
+        } else {
+            return []
         }
     }
 }

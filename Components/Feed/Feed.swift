@@ -11,6 +11,9 @@ struct Feed: GraniteComponent {
     @Relay var account: AccountService
     @Relay var loom: LoomService
     
+    @Environment(\.graniteNavigationStyle) var navigationStyle
+    @Environment(\.graniteRouter) var router
+    
     /*
      Note: there is no "LayoutService" in the top level.
      Avoid redraws, as for Expanded layout manages 3 different
