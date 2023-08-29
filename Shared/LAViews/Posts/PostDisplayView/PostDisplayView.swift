@@ -46,11 +46,6 @@ struct PostDisplayView: GraniteNavigationDestination {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            if Device.isExpandedLayout {
-                headerView
-                    .padding(.horizontal, .layer3)
-                    .padding(.bottom, .layer3)
-            }
 
             Divider()
             
@@ -117,21 +112,19 @@ struct PostDisplayView: GraniteNavigationDestination {
                                             location: threadLocation)
             }.fetch()
         }
-        .ignoresSafeArea(.keyboard)
         //This overlays
-        .graniteNavigationDestination {
+        .graniteNavigationDestination(fullWidth: Device.isExpandedLayout) {
             headerView
-                .padding(.leading, .layer5)
+                .padding(.leading, Device.isExpandedLayout ? 0 : .layer5)
+                .padding(.top, Device.isExpandedLayout ? .layer4 : 0)
         }
+        .ignoresSafeArea(.keyboard)
     }
     
     //This inserts into a HStack
     var destinationStyle: GraniteNavigationDestinationStyle {
-        if Device.isExpandedLayout {
-            return .init(navBarBGColor: Color.background)
-        } else {
-            return .customTrailing()
-        }
+        return .customTrailing(fullWidth: Device.isExpandedLayout,
+                               hideLeadingView: Device.isExpandedLayout)
     }
 }
 

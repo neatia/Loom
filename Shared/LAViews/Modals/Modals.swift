@@ -202,6 +202,7 @@ extension ModalService {
                     .withStyle(.style2)
                     .viewedIn(.thread)
                 )
+                .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
     }
 }
