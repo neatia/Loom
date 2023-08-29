@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "granite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/Granite.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "63f0bfbbca409747711c9506ae32fc827c57d04e"
+      }
+    },
+    {
       "identity" : "highlightr",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/raspu/Highlightr.git",
@@ -37,6 +46,15 @@
       }
     },
     {
+      "identity" : "lemmykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/LemmyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "43cc856ce27ea098bdd0dbf8911a145eceb7dea1"
+      }
+    },
+    {
       "identity" : "marblekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MarbleKit",
@@ -52,6 +70,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
+      }
+    },
+    {
+      "identity" : "moderationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/ModerationKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "262da0a3e23b216232a6312b0d01505ce6525438"
       }
     },
     {

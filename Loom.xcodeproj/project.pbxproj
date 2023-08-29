@@ -387,12 +387,12 @@
 		71A4A1302A63326400689DF2 /* URL+Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A4A12E2A63326400689DF2 /* URL+Host.swift */; };
 		71A4A1322A6352CA00689DF2 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A4A1312A6352CA00689DF2 /* CGFloat.swift */; };
 		71A4A1332A6352CA00689DF2 /* CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A4A1312A6352CA00689DF2 /* CGFloat.swift */; };
-		71AAD3B82A9D287400D133F4 /* ModerationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71AAD3B72A9D287400D133F4 /* ModerationKit */; };
-		71AAD3BA2A9D28C300D133F4 /* ModerationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71AAD3B92A9D28C300D133F4 /* ModerationKit */; };
 		71AAD3BD2A9D5A4400D133F4 /* HostSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */; };
 		71AAD3BE2A9D5A4400D133F4 /* HostSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */; };
 		71AAD3C02A9D73A900D133F4 /* ListingSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */; };
 		71AAD3C12A9D73A900D133F4 /* ListingSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */; };
+		71AAD3C52A9DB0D500D133F4 /* ModerationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71AAD3C42A9DB0D500D133F4 /* ModerationKit */; };
+		71AAD3C72A9DB0E200D133F4 /* ModerationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71AAD3C62A9DB0E200D133F4 /* ModerationKit */; };
 		71AB675B2A8AA9630083AB7C /* Loom.EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */; };
 		71AB675C2A8AA9630083AB7C /* Loom.EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */; };
 		71AF14672A2E807300EEBD4B /* Disclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF14662A2E807300EEBD4B /* Disclaimer.swift */; };
@@ -903,11 +903,8 @@
 		71A4A1232A61C51600689DF2 /* AccountService.Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.Auth.swift; sourceTree = "<group>"; };
 		71A4A12E2A63326400689DF2 /* URL+Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Host.swift"; sourceTree = "<group>"; };
 		71A4A1312A6352CA00689DF2 /* CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloat.swift; sourceTree = "<group>"; };
-		71AAD3B62A9D1FF600D133F4 /* ModerationKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ModerationKit; path = ../../../pexavc/repositories/ModerationKit; sourceTree = "<group>"; };
-		71AAD3BB2A9D3AD400D133F4 /* LemmyKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LemmyKit; path = ../../../pexavc/repositories/LemmyKit; sourceTree = "<group>"; };
 		71AAD3BC2A9D5A4400D133F4 /* HostSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostSelectorView.swift; sourceTree = "<group>"; };
 		71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingSelectorView.swift; sourceTree = "<group>"; };
-		71AAD3C22A9D9C6B00D133F4 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loom.EditView.swift; sourceTree = "<group>"; };
 		71AF14662A2E807300EEBD4B /* Disclaimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disclaimer.swift; sourceTree = "<group>"; };
 		71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Markdown.swift; sourceTree = "<group>"; };
@@ -1095,7 +1092,7 @@
 				71C5FF722A646BE100F99A84 /* NukeUI in Frameworks */,
 				71BE94F42A958DA8004A3AC3 /* KeyboardToolbar in Frameworks */,
 				71899E522A8977C00073158F /* MarbleKit in Frameworks */,
-				71AAD3B82A9D287400D133F4 /* ModerationKit in Frameworks */,
+				71AAD3C52A9DB0D500D133F4 /* ModerationKit in Frameworks */,
 				715797702A7B833400B7FEC9 /* GraniteUI in Frameworks */,
 				71C5FF6E2A646BE100F99A84 /* Nuke in Frameworks */,
 				71C5FF702A646BE100F99A84 /* NukeExtensions in Frameworks */,
@@ -1106,7 +1103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71AAD3BA2A9D28C300D133F4 /* ModerationKit in Frameworks */,
+				71AAD3C72A9DB0E200D133F4 /* ModerationKit in Frameworks */,
 				71899E502A8977AD0073158F /* MarbleKit in Frameworks */,
 				71CB6C2C2A6AF99400084ECC /* IPFSKit in Frameworks */,
 				71EB91C32A8037D40091EE5B /* GraniteUI in Frameworks */,
@@ -1389,9 +1386,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				71AAD3C22A9D9C6B00D133F4 /* Granite */,
-				71AAD3BB2A9D3AD400D133F4 /* LemmyKit */,
-				71AAD3B62A9D1FF600D133F4 /* ModerationKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -2485,7 +2479,7 @@
 				715797782A7B843100B7FEC9 /* MarkdownView */,
 				71899E512A8977C00073158F /* MarbleKit */,
 				71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */,
-				71AAD3B72A9D287400D133F4 /* ModerationKit */,
+				71AAD3C42A9DB0D500D133F4 /* ModerationKit */,
 			);
 			productName = "PEX (iOS)";
 			productReference = 711B3F792885D43B00F3080D /* Loom.app */;
@@ -2515,7 +2509,7 @@
 				71EB91C02A8037D40091EE5B /* Granite */,
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 				71899E4F2A8977AD0073158F /* MarbleKit */,
-				71AAD3B92A9D28C300D133F4 /* ModerationKit */,
+				71AAD3C62A9DB0E200D133F4 /* ModerationKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
@@ -2627,6 +2621,7 @@
 				715797772A7B843100B7FEC9 /* XCRemoteSwiftPackageReference "MarkdownView" */,
 				71899E4E2A8977AD0073158F /* XCRemoteSwiftPackageReference "MarbleKit" */,
 				71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */,
+				71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */,
 			);
 			productRefGroup = 711B3F7A2885D43B00F3080D /* Products */;
 			projectDirPath = "";
@@ -3525,7 +3520,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.28;
+				CURRENT_PROJECT_VERSION = 2023.8.29;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3560,7 +3555,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.28;
+				CURRENT_PROJECT_VERSION = 2023.8.29;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3598,7 +3593,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2023.8.28;
+				CURRENT_PROJECT_VERSION = 2023.8.29;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3628,7 +3623,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2023.8.28;
+				CURRENT_PROJECT_VERSION = 2023.8.29;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3820,6 +3815,14 @@
 				kind = branch;
 			};
 		};
+		71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pexavc/ModerationKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pexavc/KeyboardToolbar";
@@ -3884,12 +3887,14 @@
 			package = 71899E4E2A8977AD0073158F /* XCRemoteSwiftPackageReference "MarbleKit" */;
 			productName = MarbleKit;
 		};
-		71AAD3B72A9D287400D133F4 /* ModerationKit */ = {
+		71AAD3C42A9DB0D500D133F4 /* ModerationKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */;
 			productName = ModerationKit;
 		};
-		71AAD3B92A9D28C300D133F4 /* ModerationKit */ = {
+		71AAD3C62A9DB0E200D133F4 /* ModerationKit */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */;
 			productName = ModerationKit;
 		};
 		71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */ = {

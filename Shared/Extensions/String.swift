@@ -31,11 +31,13 @@ extension String {
             .filter {
                 let range = $0.lowercased().range(of: text.lowercased())
                 
-                if let rangeCheck = range {
-                    return rangeCheck.lowerBound == $0.startIndex
-                } else {
-                    return false
-                }
+//                if let rangeCheck = range {
+//                    return rangeCheck.lowerBound == $0.startIndex
+//                } else {
+//                    return false
+//                }
+                
+                return range?.isEmpty == false
                 
             }
         

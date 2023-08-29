@@ -9,6 +9,7 @@ import SwiftUI
 import LinkPresentation
 import Granite
 import UniformTypeIdentifiers
+import ModerationKit
 
 struct ContentMetadataView: View {
     @GraniteAction<Void> var showContent
@@ -175,29 +176,41 @@ extension ContentMetadataView {
         }
         
         if imageProvider.hasItemConformingToTypeIdentifier(type) {
+            var thumb: GraniteImage? = nil
             guard let item = try? await imageProvider.loadItem(forTypeIdentifier: type) else {
-                self.image = nil
+                thumb = nil
                 return
             }
             
-            if item is GraniteImage {
-                self.image = item as? GraniteImage
-                return
+            if thumb == nil,
+               item is GraniteImage {
+                thumb = item as? GraniteImage
             }
             
-            if item is URL {
+            if thumb == nil,
+               item is URL {
                 guard let url = item as? URL,
                       let data = try? Data(contentsOf: url) else { return }
                 
-                self.image = GraniteImage(data: data)
-                return
+                thumb = GraniteImage(data: data)
             }
             
-            if item is Data {
+            if thumb == nil,
+               item is Data {
                 guard let data = item as? Data else { return }
                 
-                self.image = GraniteImage(data: data)
-                return
+                thumb = GraniteImage(data: data)
+            }
+            
+            if let thumb,
+               PagerFilter.enableForNSFWExtended {
+                let isNSFW = await ModerationKit.current.check(thumb, for: .nsfw)
+                
+                if !isNSFW {
+                    self.image = thumb
+                }
+            } else {
+                self.image = thumb
             }
         }
     }
