@@ -849,7 +849,6 @@
 		717090ED2A7EEF66009F1FB7 /* FeedExtendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedExtendedView.swift; sourceTree = "<group>"; };
 		7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ScrollView.HidingHeader.swift; sourceTree = "<group>"; };
 		7178FCC22A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraniteScrollView+Proxy.swift"; sourceTree = "<group>"; };
-		7178FCC52A9ED41000E9BA96 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		717C129E293BEF730060A446 /* AppBlurBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlurBackground.swift; sourceTree = "<group>"; };
 		717C12A2293BF03C0060A446 /* Animations._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations._.swift; sourceTree = "<group>"; };
 		717C8FB42A6F9F3D00DF6037 /* Pager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.swift; sourceTree = "<group>"; };
@@ -1393,7 +1392,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				7178FCC52A9ED41000E9BA96 /* Granite */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -3534,7 +3532,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3570,7 +3568,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3609,7 +3607,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3639,7 +3637,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
