@@ -200,15 +200,15 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
     public var body: some View {
         ScrollView(axes, showsIndicators: showsIndicators) {
             VStack(spacing: 0) {
+                GraniteScrollViewPositionIndicator(type: .moving)
+                    .frame(height: 0)
+                    .background(
+                        Reader(startDraggingOffset: $startDraggingOffset,
+                               onReachedEdge: onReachedEdge)
+                    )
+                
                 if hidingHeader {
                     header()
-                } else {
-                    GraniteScrollViewPositionIndicator(type: .moving)
-                        .frame(height: 0)
-                        .background(
-                            Reader(startDraggingOffset: $startDraggingOffset,
-                                   onReachedEdge: onReachedEdge)
-                        )
                 }
                 
                 if status != .idle {

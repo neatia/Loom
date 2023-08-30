@@ -35,7 +35,7 @@ struct ModalService : GraniteService {
     }
     
     static var toastStyle: GraniteToastViewStyle {
-        GraniteToastViewStyle(backgroundColor: Color.alternateBackground.opacity(0.8),
+        GraniteToastViewStyle(backgroundColor: Color.alternateBackground.opacity(0.9),
                               foregroundColor: Color.foreground)
     }
     

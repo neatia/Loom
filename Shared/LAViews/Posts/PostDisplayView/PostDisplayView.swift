@@ -123,7 +123,8 @@ struct PostDisplayView: GraniteNavigationDestination {
     
     //This inserts into a HStack
     var destinationStyle: GraniteNavigationDestinationStyle {
-        return .customTrailing(fullWidth: Device.isExpandedLayout,
+        return .customTrailing(Color.background,
+                               fullWidth: Device.isExpandedLayout,
                                hideLeadingView: Device.isExpandedLayout)
     }
 }

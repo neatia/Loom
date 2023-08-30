@@ -12,7 +12,6 @@ extension Write {
             var postView: PostView
         }
         
-        @Environment(\.graniteRouter) var router
         @Relay var config: ConfigService
         
         func reduce(state: inout Center.State) async {
@@ -79,7 +78,10 @@ extension Write {
                 state.createdPostView = value
                 state.showPost = true
                 
-                router.push(style: .customTrailing()) {
+                
+                GraniteNavigation
+                    .router(for: state.routerId)
+                    .push(style: .customTrailing(Color.background)) {
                     PostDisplayView()
                         .contentContext(.init(postModel: value))
                 }

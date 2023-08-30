@@ -132,6 +132,7 @@ extension Write: View {
                         
                         GraniteHaptic.light.invoke()
                         _state.isPosting.wrappedValue = true
+                        _state.routerId.wrappedValue = router.id
                         center.create.send()
                     } label: {
                         Image(systemName: state.isEditing ? "sdcard.fill" : "paperplane.fill")

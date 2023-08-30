@@ -26,6 +26,8 @@ extension Write {
             var createdPostView: PostView? = nil
             
             var isPosting: Bool = false
+            
+            var routerId: String = ""
         }
         
         @Event(debounce: 0.25) var create: Write.Create.Reducer

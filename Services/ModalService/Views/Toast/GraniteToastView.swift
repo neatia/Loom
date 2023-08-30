@@ -47,16 +47,15 @@ public struct GraniteToastView : GraniteModal {
         .background(ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(style.backgroundColor)
-                //.blur(radius: 6)
+                .blur(radius: 2)
+                .shadow(color: Color.black.opacity(0.05), radius: 8)
             RoundedRectangle(cornerRadius: 10)
                 .fill(style.color(for: event))
-                .blur(radius: 2)
-                .shadow(color: Color.black.opacity(0.05), radius: 10)
         })
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.secondaryForeground.opacity(0.3))
-        )
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 10)
+//                .stroke(Color.secondaryForeground.opacity(0.3))
+//        )
         .padding(.horizontal, .layer3)
         .padding(.top, 16)
         .transition(
