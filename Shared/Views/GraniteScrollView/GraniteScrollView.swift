@@ -141,7 +141,7 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
     @State private var progress : Double = 0
     @State private var fetchMoreProgress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
-    @ObservedObject private var directionBox: DirectionBox = .init()
+    @StateObject private var directionBox: DirectionBox = .init()
     
     private var hidingHeader: Bool
     
