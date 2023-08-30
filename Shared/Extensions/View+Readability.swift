@@ -20,10 +20,23 @@ extension View {
             }
     }
     
+    func readabilityIf(_ condition: Bool,
+                       cornerRadius: CGFloat = 8,
+                       padding: CGFloat? = nil,
+                       bgColor: Color = .secondaryBackground.opacity(0.75)) -> some View {
+        Group {
+            if condition {
+                self.readability(cornerRadius: cornerRadius, padding: padding, bgColor: bgColor)
+            } else {
+                self
+            }
+        }
+    }
     func readability(cornerRadius: CGFloat = 8,
-                     bgColor: Color = .secondaryBackground) -> some View {
+                     padding: CGFloat? = nil,
+                     bgColor: Color = .secondaryBackground.opacity(0.75)) -> some View {
         self
-            .padding(.layer3)
+            .padding(padding ?? .layer3)
             .background(bgColor)
             .cornerRadius(cornerRadius)
     }

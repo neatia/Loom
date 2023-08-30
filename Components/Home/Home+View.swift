@@ -70,7 +70,7 @@ extension Home: View {
             Color.background.fitToContainer()
             
         }, currentTab: 0) {
-            GraniteTab {
+            GraniteTab(ignoreEdges: [.top]) {
                 Feed()
             } icon: {
                 GraniteTabIcon(name: "house")
@@ -119,8 +119,7 @@ extension Home: View {
                 }
             }
         }
-        .edgesIgnoringSafeArea([.top, .bottom])
-        .padding(.top, safeAreaTop)
+        .edgesIgnoringSafeArea([.bottom])
         .graniteNavigation(backgroundColor: Color.background) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)

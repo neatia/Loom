@@ -206,9 +206,9 @@ struct CommunityCardView: View {
             }
             .padding(.layer3)
             .foregroundColor(.foreground)
+            .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
             .background(Color.secondaryBackground)
             .cornerRadius(8)
-            .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
             .outlineIf(outline)
             
             if showCounts {

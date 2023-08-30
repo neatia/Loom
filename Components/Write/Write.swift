@@ -11,6 +11,8 @@ struct Write: GraniteComponent {
     
     @GraniteAction<PostView> var updatedPost
     
+    @Environment(\.graniteRouter) var router
+    
     static var modalId: String = "loom.write.view.sheets"
     
     enum Kind {

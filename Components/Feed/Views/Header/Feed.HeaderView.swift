@@ -28,6 +28,26 @@ extension Feed {
             if Device.isExpandedLayout {
                 accountExpandedMenuView
                     .padding(.horizontal, Device.isExpandedLayout ? .layer3 : .layer4)
+            } else if isCommunity {
+                HStack(spacing: 0) {
+                    navigationStyle
+                        .leadingItem
+                        .frame(width: 24, height: 24)
+                        .readabilityIf(hasCommunityBanner, cornerRadius: 4, padding: 6)
+                        .onTapGesture {
+                            GraniteHaptic.light.invoke()
+                            router.pop()
+                        }
+                    
+                    Spacer()
+                    
+                    //readability handled inside
+                    communityInfoMenuView
+                        .readabilityIf(hasCommunityBanner, cornerRadius: 4, padding: 6)
+                }
+                .padding(.horizontal, .layer4)
+                .padding(.top, .layer3)
+                .padding(.bottom, hasCommunityBanner == false ? .layer2 : 0)
             }
             
             titleBarView
@@ -81,6 +101,7 @@ extension Feed {
             
             Divider()
         }
+        .padding(.top, headerPaddingTop)
         .background(Color.background.overlayIf(state.community != nil) {
             if let banner = state.community?.banner,
                let url = URL(string: banner) {
@@ -99,6 +120,18 @@ extension Feed {
             }
         }
         .clipped())
+    }
+    
+    var headerPaddingTop: CGFloat {
+        #if os(iOS)
+        if Device.isIPhone {
+            return UIApplication.shared.windowSafeAreaInsets.top
+        } else {
+            return 0
+        }
+        #else
+        return 0
+        #endif
     }
     
     var pagerIndicatorView: some View {

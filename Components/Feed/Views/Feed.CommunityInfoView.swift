@@ -155,7 +155,7 @@ struct FeedCommunityInfoMenuView: View {
             }
         } label: {
             Image(systemName: "ellipsis")
-                .font(Device.isExpandedLayout ? .title : .title3)
+                .font(.title2)
                 .frame(width: Device.isMacOS ? 16 : 24, height: 24)
                 .contentShape(Rectangle())
                 .foregroundColor(.foreground)

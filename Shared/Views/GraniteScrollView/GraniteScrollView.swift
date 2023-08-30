@@ -8,7 +8,7 @@ import Foundation
 
 // Heavily influenced and adopted from
 // https://github.com/globulus/swiftui-pull-to-refresh/blob/main/Sources/SwiftUIPullToRefresh/SwiftUIPullToRefresh.swift
-public struct GraniteScrollView<Content : View> : View {
+public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
    
     private enum Status {
         case idle
@@ -20,6 +20,105 @@ public struct GraniteScrollView<Content : View> : View {
     public enum Edge {
         case top
         case bottom
+    }
+    
+    enum Direction: Equatable {
+        case up(CGFloat)
+        case down(CGFloat)
+        
+        var value: CGFloat {
+            switch self {
+            case .up(let y), .down(let y):
+                return y
+            }
+        }
+        
+        var label: String {
+            switch self {
+            case .down:
+                return "down"
+            case .up:
+                return "up"
+            }
+        }
+        
+        var isUp: Bool {
+            switch self {
+            case .up:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+    
+    public class DirectionBox: ObservableObject {
+        var offset: CGPoint = .zero {
+            didSet {
+                if initialOffset == nil {
+                    initialOffset = offset
+                    update()
+                }
+                
+                if offset.y >= 0 && isResting {
+                    isResting = false
+                    update()
+                } else if offset.y <= initialOffset?.y ?? 0 && !isResting {
+                    isResting =  true
+                    update()
+                }
+                
+                let lastDirection = direction
+                if offset.y > oldValue.y {
+                    direction = .down(offset.y)
+                } else {
+                    direction = .up(offset.y)
+                }
+                
+                if direction.label != lastDirection.label {
+                    directionChangedAt = lastDirection
+                }
+                
+                let triggerArea: Bool = offset.y > abs(initialOffset?.y ?? 0) + 120
+                if isResting && isShowingAccessory {
+                    isShowingAccessory = false
+                    update()
+                } else if distance > 120 && direction.isUp != isShowingAccessory && triggerArea {
+                    isShowingAccessory = direction.isUp
+                    update()
+                }
+            }
+        }
+        
+        var initialOffset: CGPoint? = nil
+        
+        var directionChangedAt: Direction = .down(0)
+        var direction: Direction = .down(0)
+        
+        var distance: CGFloat {
+            guard directionChangedAt.label != direction.label else {
+                return 0
+            }
+            return abs(direction.value - directionChangedAt.value)
+        }
+        
+        var accessoryOffsetY: CGFloat {
+            let safeAreaTop = UIApplication.shared.windowSafeAreaInsets.top
+            
+            if isShowingAccessory {
+                return 0
+            } else {
+                return (initialOffset?.y ?? 0) + (-safeAreaTop)
+            }
+        }
+        var isResting: Bool = true
+        var isShowingAccessory: Bool = false
+        
+        func update() {
+            DispatchQueue.main.async {
+                self.objectWillChange.send()
+            }
+        }
     }
     
     public typealias ReachedEdgeHandler = (Edge) -> Void
@@ -34,6 +133,7 @@ public struct GraniteScrollView<Content : View> : View {
     private let onRefresh : RefreshHandler?
     private let onFetchMore : FetchMoreHandler?
     private let onReachedEdge : ReachedEdgeHandler?
+    private let header : () -> ContentHeader
     private let content : Content
     
     @State private var status : Status = .idle
@@ -41,6 +141,9 @@ public struct GraniteScrollView<Content : View> : View {
     @State private var progress : Double = 0
     @State private var fetchMoreProgress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
+    @ObservedObject private var directionBox: DirectionBox = .init()
+    
+    private var hidingHeader: Bool
     
     private let bgColor: Color
     
@@ -49,7 +152,9 @@ public struct GraniteScrollView<Content : View> : View {
                 onRefresh : RefreshHandler? = nil,
                 onFetchMore : FetchMoreHandler? = nil,
                 onReachedEdge : ReachedEdgeHandler? = nil,
+                hidingHeader : Bool = false,
                 bgColor: Color = .clear,
+                @ViewBuilder header: @escaping () -> ContentHeader = { EmptyView() },
                 @ViewBuilder content: () -> Content) {
         self.axes = axes
         self.showsIndicators = showsIndicators
@@ -57,6 +162,8 @@ public struct GraniteScrollView<Content : View> : View {
         self.onFetchMore = onFetchMore
         self.onReachedEdge = onReachedEdge
         self.bgColor = bgColor
+        self.header = header
+        self.hidingHeader = hidingHeader
         self.content = content()
     }
     
@@ -95,19 +202,57 @@ public struct GraniteScrollView<Content : View> : View {
             VStack(spacing: 0) {
                 GraniteScrollViewPositionIndicator(type: .moving)
                     .frame(height: 0)
-                    .overlay(
+                    .background(
                         Reader(startDraggingOffset: $startDraggingOffset,
                                onReachedEdge: onReachedEdge)
                     )
+                
+                if hidingHeader {
+                    header()
+                }
                 
                 if status != .idle {
                     Color.clear
                         .frame(height: status == .loading ? style.threshold : style.threshold * CGFloat(progress))
                 }
                 
-                content
-                    .frame(maxHeight: .infinity)
-                    .overlay(onRefresh != nil ? progressBody : nil, alignment: .top)
+                ZStack(alignment: .top) {
+                    if onRefresh != nil {
+                        progressBody
+                    }
+                    
+                    VStack(spacing: 0) {
+                        content
+                            .frame(maxHeight: .infinity)
+                    }
+                    
+                }
+                .readingScrollViewIf(hidingHeader,
+                                     from: "granite.scrollview",
+                                     into: .init(get: {
+                    return directionBox.offset
+                }, set: { value in
+                    directionBox.offset = value
+                }))
+            }
+        }
+        .coordinateSpace(name: "granite.scrollview")
+        .overlayIf(hidingHeader, alignment: .top) {
+            VStack(spacing: 0) {
+                //if directionBox.isResting == false {
+                    header()
+                        //.offset(y: directionBox.accessoryOffsetY)
+                        .opacity(directionBox.isShowingAccessory ? 1.0 : 0.0)
+                //}
+                
+                Spacer()
+            }
+            .animation(directionBox.isResting ? nil : (directionBox.isShowingAccessory ? .linear(duration: 0.6) : .easeOut(duration: 0.7)), value: directionBox.isShowingAccessory)
+            .overlay(alignment: .top) {
+                Rectangle()
+                    .frame(height: Device.statusBarHeight)
+                    .foregroundColor(bgColor.opacity(0.6))
+
             }
         }
         .background(GraniteScrollViewPositionIndicator(type: .fixed))

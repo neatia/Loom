@@ -55,7 +55,7 @@ struct Device {
             return false
         }
         
-        if UIDevice.current.orientation.isPortrait {
+        if UIDevice.current.orientation.isPortrait || windowScene.interfaceOrientation.isPortrait  {
             return keyWindow.safeAreaInsets.bottom > 0
         } else {
             return keyWindow.safeAreaInsets.left > 0 || keyWindow.safeAreaInsets.right > 0
@@ -73,6 +73,22 @@ struct Device {
         } else {
             return nil
         }
+    }
+    
+    static var statusBarHeight:  CGFloat {
+        #if os(iOS)
+        guard let windowScene = UIApplication.shared
+            .connectedScenes
+            .first as? UIWindowScene else {
+            LoomLog("Could not get connected scene", level: .error)
+            return 0
+        }
+        
+        return windowScene.statusBarManager?.statusBarFrame.height ?? 0
+        
+        #else
+        return 0
+        #endif
     }
 }
 

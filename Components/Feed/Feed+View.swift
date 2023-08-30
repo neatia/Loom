@@ -25,10 +25,11 @@ extension Feed: GraniteNavigationDestination {
             }
         }
         .background(Color.background)
-        //Careful of expanded layout
-        .graniteNavigationDestinationIf(isCommunity) {
-            communityInfoMenuView
-        }
+//        //Careful of expanded layout
+//        .graniteNavigationDestinationIf(isCommunity,
+//                                        fullWidth: true) {
+//            communityInfoMenuView
+//        }
         .task {
             guard pager.isEmpty else { return }
             
@@ -64,7 +65,6 @@ extension Feed: GraniteNavigationDestination {
     }
     
     var destinationStyle: GraniteNavigationDestinationStyle {
-        .init(navBarBGColor: Color.background,
-              isCustomTrailing: isCommunity)
+        .custom()
     }
 }

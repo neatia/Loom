@@ -267,6 +267,10 @@
 		717090EC2A7EEF0B009F1FB7 /* LayoutService+Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090E82A7EEF0B009F1FB7 /* LayoutService+Center.swift */; };
 		717090EE2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090ED2A7EEF66009F1FB7 /* FeedExtendedView.swift */; };
 		717090EF2A7EEF66009F1FB7 /* FeedExtendedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717090ED2A7EEF66009F1FB7 /* FeedExtendedView.swift */; };
+		7178FCBF2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */; };
+		7178FCC02A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */; };
+		7178FCC32A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCC22A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift */; };
+		7178FCC42A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCC22A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift */; };
 		717C129F293BEF730060A446 /* AppBlurBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717C129E293BEF730060A446 /* AppBlurBackground.swift */; };
 		717C12A0293BEF730060A446 /* AppBlurBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717C129E293BEF730060A446 /* AppBlurBackground.swift */; };
 		717C12A3293BF03C0060A446 /* Animations._.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717C12A2293BF03C0060A446 /* Animations._.swift */; };
@@ -843,6 +847,8 @@
 		717090E62A7EEF0B009F1FB7 /* LayoutService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutService.swift; sourceTree = "<group>"; };
 		717090E82A7EEF0B009F1FB7 /* LayoutService+Center.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LayoutService+Center.swift"; sourceTree = "<group>"; };
 		717090ED2A7EEF66009F1FB7 /* FeedExtendedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedExtendedView.swift; sourceTree = "<group>"; };
+		7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ScrollView.HidingHeader.swift; sourceTree = "<group>"; };
+		7178FCC22A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GraniteScrollView+Proxy.swift"; sourceTree = "<group>"; };
 		717C129E293BEF730060A446 /* AppBlurBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBlurBackground.swift; sourceTree = "<group>"; };
 		717C12A2293BF03C0060A446 /* Animations._.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animations._.swift; sourceTree = "<group>"; };
 		717C8FB42A6F9F3D00DF6037 /* Pager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.swift; sourceTree = "<group>"; };
@@ -2034,6 +2040,7 @@
 				717C8FB42A6F9F3D00DF6037 /* Pager.swift */,
 				71C8BE712A7F2BF1008694C7 /* Pager.ScrollView.swift */,
 				71FF5BFD2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift */,
+				7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */,
 				71FF5BFA2A9C0EB000DD83EB /* Pager.ScrollView.Partition.swift */,
 				71FF5BF32A9C046800DD83EB /* Pager.ListView.swift */,
 				71C8BE742A7F2BFA008694C7 /* Pager.LoadingView.swift */,
@@ -2408,6 +2415,7 @@
 				71FBA7F6296D16110090B630 /* GraniteScrollViewStyle.swift */,
 				71FBA7F3296D16110090B630 /* GranitePagingView.swift */,
 				71FBA7F5296D16110090B630 /* GraniteScrollView.swift */,
+				7178FCC22A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift */,
 				7151512E2A8FBE0D00251978 /* GraniteScrollView+macOS.swift */,
 			);
 			path = GraniteScrollView;
@@ -2747,6 +2755,7 @@
 				71F042262A6A3AD700788CDC /* Write+View.swift in Sources */,
 				71C5FF682A64688B00F99A84 /* Drawer+Modifiers.swift in Sources */,
 				717C8FB82A6FCBAD00DF6037 /* Feed.CommunityInfoView.swift in Sources */,
+				7178FCC32A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift in Sources */,
 				71FCDD062A759EBF000A6309 /* BannerView.swift in Sources */,
 				71EB91BD2A8028400091EE5B /* Numbers.swift in Sources */,
 				71071F222A660D8E003AEC62 /* PostContentView.swift in Sources */,
@@ -2941,6 +2950,7 @@
 				7166E9C92A74457A004F88D7 /* CommunitySidebarView.swift in Sources */,
 				710283872A2A54C300010877 /* RangeSliderStyleConfiguration.swift in Sources */,
 				71C8BE782A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */,
+				7178FCBF2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift in Sources */,
 				71622EA12A6E5796006233F3 /* Reply+View.swift in Sources */,
 				71C9F8FE2A60B9460089D7EA /* ConfigService.swift in Sources */,
 				71FBA7FB296D16110090B630 /* GraniteScrollViewPositionIndicator.swift in Sources */,
@@ -3037,6 +3047,7 @@
 				71C8BE792A7F2E1E008694C7 /* ContentMetadataView.swift in Sources */,
 				7102839A2A2A54C300010877 /* PointSliderStyle.swift in Sources */,
 				71F778BD2A71A95300C9C5C4 /* SfSafariView.swift in Sources */,
+				7178FCC42A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift in Sources */,
 				71C9F9452A613EA30089D7EA /* BookmarkService.Modify.swift in Sources */,
 				71EAF47A2A7DA3320034FCB9 /* ExplorerService+Center.swift in Sources */,
 				71FF5BFF2A9C118F00DD83EB /* Pager.ScrollView.Simple.swift in Sources */,
@@ -3169,6 +3180,7 @@
 				71A28D99295231E600EAE8EE /* Color.swift in Sources */,
 				712C0D7E2A7CA32500DBDCC9 /* CGPoint.swift in Sources */,
 				71A4A1172A61C39600689DF2 /* Bookmark.swift in Sources */,
+				7178FCC02A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift in Sources */,
 				71C9F8D72A60B7C10089D7EA /* Feed+Center.swift in Sources */,
 				71F042252A6A3AD700788CDC /* Write.swift in Sources */,
 				711B3FDE2885D4F000F3080D /* Home.swift in Sources */,
@@ -3520,7 +3532,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3532,6 +3544,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
@@ -3555,7 +3568,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3567,6 +3580,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
@@ -3593,7 +3607,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -3623,7 +3637,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2023.8.29;
+				CURRENT_PROJECT_VERSION = 2023.8.30;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

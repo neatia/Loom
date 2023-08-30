@@ -20,6 +20,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
         var hideLastDivider: Bool = false
         var performant: Bool = false
         var partition: Bool = false
+        var hidingHeader: Bool = false
         var lazy: Bool = true
         var cacheViews: Bool = false
         var listView: Bool = false
@@ -71,7 +72,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         .frame(maxHeight: .infinity)
                 }
             } else {
-                if properties.performant {
+                if properties.performant && properties.hidingHeader == false {
                     if Device.isExpandedLayout == false {
                         header()
                     }
@@ -80,6 +81,8 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                     partitionScrollView
                 } else if Device.isMacOS == false && properties.listView {
                     listView
+                } else if properties.hidingHeader {
+                    hidingHeaderScrollView
                 } else {
                     normalScrollView
                 }
