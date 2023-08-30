@@ -28,15 +28,15 @@ struct ModalService : GraniteService {
     
     static var alertViewStyle: GraniteAlertViewStyle {
         GraniteAlertViewStyle(backgroundColor: Color.background,
-                              foregroundColor: Color.white,
+                              foregroundColor: Color.foreground,
                               actionColor: Color.foreground,
                               overlayColor: Color.red,
                               sheetVerticalPadding: 15)
     }
     
     static var toastStyle: GraniteToastViewStyle {
-        GraniteToastViewStyle(backgroundColor: Color.background,
-                              foregroundColor: Color.white)
+        GraniteToastViewStyle(backgroundColor: Color.alternateBackground.opacity(0.8),
+                              foregroundColor: Color.foreground)
     }
     
     let modalManager = GraniteModalManager { view in

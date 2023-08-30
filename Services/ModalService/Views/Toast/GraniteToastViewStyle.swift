@@ -8,10 +8,10 @@ public struct GraniteToastViewStyle {
     public var errorBackgroundColor : Color
     public var successBackgroundColor : Color
     
-    public init(backgroundColor : Color = .black,
-                foregroundColor : Color = .white,
-                errorBackgroundColor : Color = Color.red.opacity(0.6),
-                successBackgroundColor : Color = Color.green.opacity(0.6)) {
+    public init(backgroundColor : Color = Color.alternateBackground.opacity(0.8),
+                foregroundColor : Color = Color.foreground,
+                errorBackgroundColor : Color = Color.red.opacity(0.4),
+                successBackgroundColor : Color = Color.green.opacity(0.4)) {
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.errorBackgroundColor = errorBackgroundColor

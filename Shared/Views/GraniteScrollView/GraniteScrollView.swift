@@ -57,12 +57,15 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
             didSet {
                 if initialOffset == nil {
                     initialOffset = offset
+                    update()
                 }
                 
-                if offset.y >= 0 {
+                if offset.y >= 0 && isResting {
                     isResting = false
-                } else if offset.y <= initialOffset?.y ?? 0 {
+                    update()
+                } else if offset.y <= initialOffset?.y ?? 0 && !isResting {
                     isResting =  true
+                    update()
                 }
                 
                 let lastDirection = direction
@@ -222,6 +225,7 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                         content
                             .frame(maxHeight: .infinity)
                     }
+                    
                 }
                 .readingScrollViewIf(hidingHeader,
                                      from: "granite.scrollview",
@@ -233,16 +237,22 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
             }
         }
         .coordinateSpace(name: "granite.scrollview")
-        .overlayIf(hidingHeader) {
+        .overlayIf(hidingHeader, alignment: .top) {
             VStack(spacing: 0) {
-                if directionBox.isResting == false {
+                //if directionBox.isResting == false {
                     header()
-                        .offset(y: directionBox.accessoryOffsetY)
+                        //.offset(y: directionBox.accessoryOffsetY)
                         .opacity(directionBox.isShowingAccessory ? 1.0 : 0.0)
-                        .animation(directionBox.isShowingAccessory ? .linear(duration: 0.6) : .easeOut(duration: 0.7), value: directionBox.isShowingAccessory)
-                }
-
+                //}
+                
                 Spacer()
+            }
+            .animation(directionBox.isResting ? nil : (directionBox.isShowingAccessory ? .linear(duration: 0.6) : .easeOut(duration: 0.7)), value: directionBox.isShowingAccessory)
+            .overlay(alignment: .top) {
+                Rectangle()
+                    .frame(height: Device.statusBarHeight)
+                    .foregroundColor(bgColor.opacity(0.6))
+
             }
         }
         .background(GraniteScrollViewPositionIndicator(type: .fixed))

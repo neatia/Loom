@@ -63,7 +63,6 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         .padding(.top, 0)
                 }
                 header()
-                    .scrollOnOverflow(axis: .vertical)
                 VStack(spacing: 0) {
                     if !properties.alternateContentPosition {
                         addContent()

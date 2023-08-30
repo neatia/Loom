@@ -16,6 +16,8 @@ extension View {
             ScrollView([axis], showsIndicators: false) {
                 self
             }
+            //TODO: customizable
+            .frame(minHeight: axis.contains(.vertical) ? 300 : nil)
         } else {
             self
         }

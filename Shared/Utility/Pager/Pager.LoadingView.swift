@@ -28,6 +28,15 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
     
     @State var progress: CGFloat = 0.0
     
+    //ideally the same height as the tab bar
+    var height: CGFloat {
+        if Device.hasNotch {
+            return 75
+        } else {
+            return 60
+        }
+    }
+    
     var body: some View {
         
         VStack {
@@ -47,7 +56,7 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
                     }
             }
         }
-        .frame(maxWidth: .infinity, minHeight: 60, maxHeight: 60)
+        .frame(maxWidth: .infinity, minHeight: height, maxHeight: height)
         .overlay(
             GeometryReader { proxy in
                 ZStack {

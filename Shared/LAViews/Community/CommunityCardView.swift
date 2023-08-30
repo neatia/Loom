@@ -129,42 +129,40 @@ struct CommunityCardView: View {
                 AvatarView(model.iconURL, size: .large, isCommunity: true)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    Group {
-                        HStack {
-                            Text("\(subscribers) COMMUNITY_SUBSCRIBERS")
-                                .font(.headline.bold())
-                            
-                            Spacer()
-                        }
+                    HStack {
+                        Text("\(subscribers) COMMUNITY_SUBSCRIBERS")
+                            .font(.headline.bold())
                         
-                        HStack(spacing: .layer1) {
-                            Text(model.community.title)
-                                .font(showCounts ? .headline.bold() : .footnote.bold())
-                                .lineLimit(1)
-                                .cornerRadius(4)
-                            
-                            Spacer()
-                        }//.scrollOnOverflow()
-                        
-                        Group {
-                            HStack(spacing: .layer1) {
-                                Text("!"+model.community.name)
-                                    .font(.subheadline)
-                                    .cornerRadius(4)
-                                Text("\(peerHost ?? "")@" + model.community.actor_id.host)
-                                    .font(.caption2)
-                                    .lineLimit(1)
-                                    .padding(.vertical, .layer1)
-                                    .padding(.horizontal, .layer1)
-                                    .background(Color.tertiaryBackground)
-                                    .cornerRadius(4)
-                            }
-                            
-                            Spacer()
-                        }
+                        Spacer()
                     }
-                    .offset(y: .layer1)
+                    
+                    HStack(spacing: .layer1) {
+                        Text(model.community.title)
+                            .font(showCounts ? .headline.bold() : .footnote.bold())
+                            .lineLimit(1)
+                            .cornerRadius(4)
+                        
+                        Spacer()
+                    }//.scrollOnOverflow()
+                    
+                    Group {
+                        HStack(spacing: .layer1) {
+                            Text("!"+model.community.name)
+                                .font(.subheadline)
+                                .cornerRadius(4)
+                            Text("\(peerHost ?? "")@" + model.community.actor_id.host)
+                                .font(.caption2)
+                                .lineLimit(1)
+                                .padding(.vertical, .layer1)
+                                .padding(.horizontal, .layer1)
+                                .background(Color.tertiaryBackground)
+                                .cornerRadius(4)
+                        }
+                        
+                        Spacer()
+                    }
                 }
+                .offset(y: .layer1)
                 .onTapGesture {
                     routeCommunityView()
                 }
@@ -208,9 +206,9 @@ struct CommunityCardView: View {
             }
             .padding(.layer3)
             .foregroundColor(.foreground)
+            .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
             .background(Color.secondaryBackground)
             .cornerRadius(8)
-            .frame(maxWidth: fullWidth ? .infinity : ContainerConfig.iPhoneScreenWidth * 0.9, maxHeight: 88)
             .outlineIf(outline)
             
             if showCounts {

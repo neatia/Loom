@@ -11,6 +11,11 @@ import Granite
 import UniformTypeIdentifiers
 import ModerationKit
 
+/*
+ TODO: cleanup and remove LinkPreview and related files in favor of
+       ContentMetadataView
+ */
+
 struct LinkPreviewDesign: View {
     
     let metaData: LPLinkMetadata
@@ -231,10 +236,12 @@ struct LinkPreviewDesign: View {
                                 .padding(.all, 8)
                         }
                     } else {
-                        Image(uiImage: img)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
+                        ScrollView(showsIndicators: false) {
+                            Image(uiImage: img)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipped()
+                        }
                         
                         if let icon = cachedIcon {
                             Image(uiImage: icon)
@@ -264,10 +271,12 @@ struct LinkPreviewDesign: View {
                                 .padding(.all, 8)
                         }
                     } else {
-                        Image(nsImage: img)
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .clipped()
+                        ScrollView(showsIndicators: false) {
+                            Image(nsImage: img)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .clipped()
+                        }
                         
                         if let icon = cachedIcon {
                             Image(nsImage: icon)
