@@ -1,6 +1,6 @@
 import Granite
-import LemmyKit
 import SwiftUI
+import FederationKit
 
 extension ExplorerService {
     struct Boot: GraniteReducer {
@@ -9,7 +9,7 @@ extension ExplorerService {
         func reduce(state: inout Center.State) async {
             //TODO: better logic
             
-            let fedInstances = await Lemmy.instances()
+            let fedInstances = await Federation.instances()
             
             LoomLog("globe finished | \(fedInstances?.linked.count ?? 0)")
             
@@ -28,9 +28,9 @@ extension ExplorerService {
         typealias Center = ExplorerService.Center
         
         struct Meta: GranitePayload, GraniteModel {
-            var linked: [Instance]
-            var allowed: [Instance]
-            var blocked: [Instance]
+            var linked: [FederatedInstance]
+            var allowed: [FederatedInstance]
+            var blocked: [FederatedInstance]
         }
         
         @Payload var meta: Meta?
@@ -62,7 +62,7 @@ extension ExplorerService {
 //            let instances = Array(state.linkedInstances[startIndex..<endIndex])
 //
 //            state.count += 1
-//            let mainNode: Node = .init(id: LemmyKit.host,
+//            let mainNode: Node = .init(id: FederationKit,
 //                                       group: 1,
 //                                       position: .init(0.5, 0.5),
 //                                       velocity: .zero,

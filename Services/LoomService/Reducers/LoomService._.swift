@@ -1,14 +1,14 @@
 import Granite
-import LemmyKit
+import FederationKit
 
 extension LoomService {
     struct Modify: GraniteReducer {
         typealias Center = LoomService.Center
         
         enum Intent: GranitePayload, GraniteModel {
-            case create(String, CommunityView?)
-            case add(CommunityView, LoomManifest)
-            case remove(CommunityView, LoomManifest)
+            case create(String, FederatedCommunityResource?)
+            case add(FederatedCommunityResource, LoomManifest)
+            case remove(FederatedCommunityResource, LoomManifest)
             case removeManifest(LoomManifest)
             case toggle(LoomManifest)
             case update(LoomManifest)
@@ -21,7 +21,8 @@ extension LoomService {
             guard let meta else { return }
             switch meta {
             case .create(let name, let model):
-                var manifest: LoomManifest = .init(meta: .init(title: name, name: name, author: "\(LemmyKit.current.user?.local_user_view.person.username ?? "")"))
+                let user = FederationKit.user()
+                var manifest: LoomManifest = .init(meta: .init(title: name, name: name, author: "\(user?.username ?? "")"))
                 
                 if let model {
                     manifest.insert(model)

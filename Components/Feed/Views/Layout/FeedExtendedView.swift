@@ -8,14 +8,14 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct FeedExtendedView: View {
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<FederatedCommunity> var viewCommunity
     @Relay var layout: LayoutService
     
-    let location: FetchType
-    init(location: FetchType) {
+    let location: FederatedLocationType
+    init(location: FederatedLocationType) {
         self.location = location
     }
     

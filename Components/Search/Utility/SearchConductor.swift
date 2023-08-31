@@ -10,7 +10,7 @@ import Granite
 import GraniteUI
 import SwiftUI
 import Combine
-import LemmyKit
+import FederationKit
 
 class SearchConductor: ObservableObject {
     var searchTimer: Cancellable? = nil
@@ -19,14 +19,14 @@ class SearchConductor: ObservableObject {
     @Published var isEditing: Bool = false
     //TODO: cleanup, using view @state for this
     @Published var isSearching: Bool = false
-    @Published var response: SearchResponse? = nil
+    @Published var response: FederatedSearchResult? = nil
     var lastQuery: String = ""
     
     var isEmpty: Bool {
         response == nil
     }
     
-    private var handler: ((String) async -> SearchResponse?)?
+    private var handler: ((String) async -> FederatedSearchResult?)?
     
     internal var cancellables: Set<AnyCancellable> = .init()
     
@@ -35,7 +35,7 @@ class SearchConductor: ObservableObject {
     }
     
     @discardableResult
-    func hook(_ commit: @escaping ((String) async -> SearchResponse?)) -> Self {
+    func hook(_ commit: @escaping ((String) async -> FederatedSearchResult?)) -> Self {
         self.handler = commit
         return self
     }

@@ -9,9 +9,9 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
 import Nuke
 import NukeUI
+import FederationKit
 
 struct PostCardView: View {
     @Environment(\.contentContext) var context
@@ -19,13 +19,13 @@ struct PostCardView: View {
     @Environment(\.graniteEvent) var interact //account.center.interact
     @Environment(\.pagerMetadata) var contentMetadata
     
-    @GraniteAction<PostView> var reply
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<FederatedPostResource> var reply
+    @GraniteAction<FederatedCommunity> var viewCommunity
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
     
-    @State var model: PostView?
+    @State var model: FederatedPostResource?
     
     var topPadding: CGFloat = .layer6
     var bottomPadding: CGFloat = .layer6
@@ -304,7 +304,7 @@ extension PostCardView {
     }
     
     var contentMetaBody: some View {
-        let model: PostView? = self.model ?? context.postModel
+        let model: FederatedPostResource? = self.model ?? context.postModel
         return VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text(model?.post.name ?? "")

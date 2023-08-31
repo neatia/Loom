@@ -9,17 +9,17 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct HostSelectorView: View {
     @Environment(\.contentContext) var context
     @GraniteAction<Void> var fetch
     
-    @Binding var location: FetchType
+    @Binding var location: FederatedLocationType
     
-    var model: LemmyResource? = nil
+    var model: FederatedResource? = nil
     
-    var currentModel: LemmyResource? {
+    var currentModel: FederatedResource? {
         model ?? (context.commentModel ?? context.postModel)
     }
     

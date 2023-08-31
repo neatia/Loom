@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import LemmyKit
 import SwiftUI
 import Granite
 import GraniteUI
+import FederationKit
 
 struct BlockedPickerView: View {
     @Environment(\.graniteEvent) var interact
@@ -20,16 +20,16 @@ struct BlockedPickerView: View {
     var verticalPadding: CGFloat = .layer5
     var trailingPadding: CGFloat = 0
     
-    var users: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true, isStatic: true)
-    var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true, isStatic: true)
+    var users: Pager<FederatedPersonResource> = .init(emptyText: "EMPTY_STATE_NO_USERS", showBlocked: true, isStatic: true)
+    var communities: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", showBlocked: true, isStatic: true)
     
-    @State var page: SearchType = .users
+    @State var page: FederatedSearchType = .users
     
-    func opacityFor(_ page: SearchType) -> CGFloat {
+    func opacityFor(_ page: FederatedSearchType) -> CGFloat {
         return self.page == page ? 1.0 : 0.6
     }
     
-    func fontFor(_ page: SearchType) -> Font {
+    func fontFor(_ page: FederatedSearchType) -> Font {
         return self.page == page ? .title2.bold() : .title3.bold()
     }
     
@@ -85,13 +85,13 @@ struct BlockedPickerView: View {
                     
                     switch page {
                     case .users:
-                        PagerScrollView(PersonView.self) {
+                        PagerScrollView(FederatedPersonResource.self) {
                             EmptyView()
                         } inlineBody: {
                             EmptyView()
                         } content: { model in
                             UserCardView(model: model,
-                                         isBlocked: meta?.info.person_blocks.filter { $0.target.equals(model.person) == true }.isNotEmpty == true,
+                                         isBlocked: meta?.resource.person_blocks.filter { $0.target.equals(model.person) == true }.isNotEmpty == true,
                                          fullWidth: true,
                                          showCounts: true)
                                 .graniteEvent(interact)
@@ -107,11 +107,11 @@ struct BlockedPickerView: View {
                         .environmentObject(users)
                         .task {
                             users.clear()
-                            users.add(meta?.info.person_blocks.map { $0.target.asView() } ?? [])
+                            users.add(meta?.resource.person_blocks.map { $0.target.asView() } ?? [])
                         }
                         .id(meta)
                     default:
-                        PagerScrollView(CommunityView.self) {
+                        PagerScrollView(FederatedCommunityResource.self) {
                             EmptyView()
                         } inlineBody: {
                             EmptyView()
@@ -131,7 +131,7 @@ struct BlockedPickerView: View {
                         .environmentObject(communities)
                         .task {
                             communities.clear()
-                            communities.add(meta?.info.community_blocks.map { $0.community.asView(isBlocked: true) } ?? [])
+                            communities.add(meta?.resource.community_blocks.map { $0.community.asView(isBlocked: true) } ?? [])
                         }
                         .id(meta)
                     }

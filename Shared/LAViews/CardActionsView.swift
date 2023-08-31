@@ -9,7 +9,7 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct CardActionsView: View {
     @Environment(\.graniteEvent) var interact
@@ -17,8 +17,8 @@ struct CardActionsView: View {
     
     @Binding var enableCommunityRoute: Bool
     
-    var community: Community?
-    var person: Person?
+    var community: FederatedCommunity?
+    var person: FederatedPerson?
     var isBlocked: Bool = false
     var canRemoveFromProfiles: Bool = false
     

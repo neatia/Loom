@@ -7,10 +7,10 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import Granite
 import GraniteUI
 import Combine
+import FederationKit
 
 struct HeaderCardView: View {
     @Environment(\.contentContext) var context
@@ -18,13 +18,13 @@ struct HeaderCardView: View {
     
     @Relay var layout: LayoutService
     
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<FederatedCommunity> var viewCommunity
     @GraniteAction<Void> var tapped
     @GraniteAction<Void> var edit
     @GraniteAction<Void> var goToThread
     @GraniteAction<Void> var replyToContent
     
-    @State var postView: PostView? = nil
+    @State var postView: FederatedPostResource? = nil
     
     var shouldRouteCommunity: Bool
     var shouldRoutePost: Bool
@@ -34,10 +34,10 @@ struct HeaderCardView: View {
     
     let isCompact: Bool
     
-    typealias Crumb = (Int, Person)
+    typealias Crumb = (Int, FederatedPerson)
     let crumbs: [Crumb]
     
-    init(crumbs: [CommentView] = [],
+    init(crumbs: [FederatedCommentResource] = [],
          shouldRouteCommunity: Bool = true,
          shouldRoutePost: Bool = true,
          shouldCollapse: Bool = false,
@@ -99,16 +99,16 @@ struct HeaderCardView: View {
                 
                 VStack(alignment: .trailing, spacing: 0) {
                     PostActionsView(enableCommunityRoute: shouldRouteCommunity,
-                                    community: shouldRouteCommunity ? context.community?.lemmy : nil,
+                                    community: shouldRouteCommunity ? context.community : nil,
                                     postView: (shouldRoutePost || !isCompact) ? postView : nil,
-                                    person: context.person?.lemmy,
+                                    person: context.person,
                                     bookmarkKind: context.bookmarkKind,
                                     isCompact: isCompact)
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
                         .attach({
-                            self.fetchPostView()
+                            self.fetchFederatedPostResource()
                         }, at: \.goToPost)
                         .attach({
                             goToThread.perform()
@@ -128,7 +128,7 @@ struct HeaderCardView: View {
         .offset(y: shouldCollapse ? 0 : -4)//offset
     }
     
-    func fetchPostView() {
+    func fetchFederatedPostResource() {
         if let postView {
             self.route(postView)
             return
@@ -137,7 +137,9 @@ struct HeaderCardView: View {
         guard let commentView = context.commentModel else { return }
         
         Task { @MainActor in
-            guard let postView = await ContentUpdater.fetchPostView(commentView.post, commentModel: commentView.comment) else {
+            guard let postView = await ContentUpdater
+                .fetchFederatedPostResource(commentView.post,
+                                            commentModel: commentView.comment) else {
                 return
             }
             
@@ -147,7 +149,7 @@ struct HeaderCardView: View {
         }
     }
     
-    func route(_ postView: PostView) {
+    func route(_ postView: FederatedPostResource) {
         if Device.isExpandedLayout {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {

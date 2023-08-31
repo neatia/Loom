@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct LoomCreateView: View {
-    var communityView: CommunityView?
+    var communityView: FederatedCommunityResource?
     
     @State var name: String = ""
     @State var invalidName: Bool = false

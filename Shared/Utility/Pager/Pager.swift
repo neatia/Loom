@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-import LemmyKit
+import FederationKit
 import SwiftUI
 import Granite
 import GraniteUI
@@ -20,7 +20,7 @@ public protocol Pageable: Equatable, Identifiable, Hashable {
     var date: Date { get }
     var blocked: Bool { get }
     var shouldHide: Bool { get }
-    var person: Person { get }
+    var person: FederatedPerson { get }
     var thumbURL: URL? { get }
     var postURL: URL? { get }
 }
@@ -451,7 +451,7 @@ extension Pager {
         }
     }
     
-    func updateBlockFromPerson(item: Person) {
+    func updateBlockFromPerson(item: FederatedPerson) {
         blockedItemMap.keys.forEach { [weak self] key in
             if itemMap[key]?.person.equals(item) == true {
                 self?.blockedItemMap[key] = self?.blockedItemMap[key] == true ? false : true

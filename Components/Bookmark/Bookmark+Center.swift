@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Bookmark {
     struct Center: GraniteCenter {
@@ -42,7 +42,7 @@ extension Bookmark {
         }
     }
     
-    var postViews: [PostView] {
+    var postViews: [FederatedPostResource] {
         guard let values = service.state.posts[state.selectedBookmarkPostKey]?.values else {
             return []
         }
@@ -55,7 +55,7 @@ extension Bookmark {
         }).sorted(by: { service.state.datesPosts[($0.creator.domain ?? "")+$0.id]?.compare(service.state.datesPosts[($1.creator.domain ?? "")+$1.id] ?? .init()) == .orderedDescending })
     }
     
-    var commentViews: [CommentView] {
+    var commentViews: [FederatedCommentResource] {
         guard let values = service.state.comments[state.selectedBookmarkCommentKey]?.values else {
             return []
         }
@@ -69,7 +69,7 @@ extension Bookmark {
         }).sorted(by: { service.state.datesComments[($0.creator.domain ?? "")+$0.id]?.compare(service.state.datesComments[($1.creator.domain ?? "")+$1.id] ?? .init()) == .orderedDescending })
     }
     
-    func postForComment(_ commentView: CommentView) -> PostView? {
+    func postForComment(_ commentView: FederatedCommentResource) -> FederatedPostResource? {
         guard let domain = commentView.creator.domain else {
             return nil
         }

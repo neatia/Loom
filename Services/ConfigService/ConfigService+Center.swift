@@ -1,13 +1,13 @@
 import Granite
 import SwiftUI
-import LemmyKit
 import IPFSKit
 import MarbleKit
+import FederationKit
 
 extension ConfigService {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var config: InstanceConfig = .default
+            var server: FederationServer = .default
             
             
             //Feed
@@ -34,8 +34,8 @@ extension ConfigService {
             }
             var showScores: Bool = false
             var showBotAccounts: Bool = false
-            var sortType: SortType = .hot
-            var listingType: ListingType = .all
+            var sortType: FederatedSortType = .hot
+            var listingType: FederatedListingType = .all
             
             //Filter
             var extendedNSFWFilterEnabled: Bool = false {

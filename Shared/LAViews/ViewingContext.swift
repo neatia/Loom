@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 
 enum ViewingContext: Equatable {
     case base
@@ -50,7 +50,7 @@ extension ViewingContext {
         }
     }
     
-    var bookmarkLocation: FetchType {
+    var bookmarkLocation: FederatedLocationType {
         switch self {
         case .bookmark(let host), .bookmarkExpanded(let host):
             return .peer(host)

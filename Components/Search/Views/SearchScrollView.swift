@@ -10,28 +10,28 @@ import Granite
 import GraniteUI
 import SwiftUI
 import Combine
-import LemmyKit
+import FederationKit
 
 struct SearchScrollView: View {
     var query: String
-    @Binding var response: SearchResponse?
+    @Binding var response: FederatedSearchResult?
     
-    @StateObject var pagerPosts: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
-    @StateObject var pagerComments: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
-    @StateObject var pagerUsers: Pager<PersonView> = .init(emptyText: "EMPTY_STATE_NO_USERS")
-    @StateObject var pagerCommunities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    @StateObject var pagerPosts: Pager<FederatedPostResource> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    @StateObject var pagerComments: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    @StateObject var pagerUsers: Pager<FederatedPersonResource> = .init(emptyText: "EMPTY_STATE_NO_USERS")
+    @StateObject var pagerCommunities: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
     
-    var searchType: SearchType
-    var community: Community?
+    var searchType: FederatedSearchType
+    var community: FederatedCommunity?
     
-    var selectedSort: SortType
-    var selectedListing: ListingType
+    var selectedSort: FederatedSortType
+    var selectedListing: FederatedListingType
     
-    init(_ searchType: SearchType,
-         community: Community?,
-         sortType: SortType,
-         listingType: ListingType,
-         response: Binding<SearchResponse?>,
+    init(_ searchType: FederatedSearchType,
+         community: FederatedCommunity?,
+         sortType: FederatedSortType,
+         listingType: FederatedListingType,
+         response: Binding<FederatedSearchResult?>,
          query: String) {
         self.searchType = searchType
         self.community = community
@@ -45,7 +45,7 @@ struct SearchScrollView: View {
         VStack(spacing: 0) {
             switch searchType {
             case .posts:
-                PagerScrollView(PostView.self) {
+                PagerScrollView(FederatedPostResource.self) {
                     headerView
                 } inlineBody: {
                     EmptyView()
@@ -54,7 +54,7 @@ struct SearchScrollView: View {
                         .contentContext(.init(postModel: model))
                 }.environmentObject(pagerPosts)
             case .communities:
-                PagerScrollView(CommunityView.self) {
+                PagerScrollView(FederatedCommunityResource.self) {
                     headerView
                 } inlineBody: {
                     EmptyView()
@@ -66,7 +66,7 @@ struct SearchScrollView: View {
                         .padding(.layer4)
                 }.environmentObject(pagerCommunities)
             case .comments:
-                PagerScrollView(CommentView.self) {
+                PagerScrollView(FederatedCommentResource.self) {
                     headerView
                 } inlineBody: {
                     EmptyView()
@@ -75,7 +75,7 @@ struct SearchScrollView: View {
                         .contentContext(.init(commentModel: model))
                 }.environmentObject(pagerComments)
             case .users:
-                PagerScrollView(PersonView.self) {
+                PagerScrollView(FederatedPersonResource.self) {
                     headerView
                 } inlineBody: {
                     EmptyView()
@@ -129,17 +129,17 @@ struct SearchScrollView: View {
         pagerCommunities.add(response?.communities ?? [], pageIndex: pageIndexCommunities, initialFetch: false)
     }
     
-    func search(_ page: Int?) async -> SearchResponse? {
+    func search(_ page: Int?) async -> FederatedSearchResult? {
         LoomLog("🔎 requesting new page: \(page ?? -1) 🔎", level: .debug)
-        return  await Lemmy.search(query,
-                                   type_: searchType,
-                                   communityId: nil,
-                                   communityName: community?.name,
-                                   creatorId: nil,
-                                   sort: selectedSort,
-                                   listingType: selectedListing,
-                                   page: page,
-                                   limit: ConfigService.Preferences.pageLimit)
+        return  await Federation.search(query,
+                                        type_: searchType,
+                                        communityId: nil,
+                                        communityName: community?.name,
+                                        creatorId: nil,
+                                        sort: selectedSort,
+                                        listingType: selectedListing,
+                                        page: page,
+                                        limit: ConfigService.Preferences.pageLimit)
     }
     
     var headerView: some View {
@@ -160,7 +160,7 @@ struct SearchScrollView: View {
     }
 }
 
-extension SearchType {
+extension FederatedSearchType {
     var isFocusedContent: Bool {
         switch self {
         case .users, .comments, .communities, .posts:

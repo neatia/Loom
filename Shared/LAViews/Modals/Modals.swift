@@ -8,12 +8,12 @@
 import Foundation
 import SwiftUI
 import Granite
-import LemmyKit
+import FederationKit
 
 //MARK: Expand
 extension ModalService {
     @MainActor
-    func expand(_ postView: PostView?) {
+    func expand(_ postView: FederatedPostResource?) {
         guard let content = postView?.post.body else { return }
         presentSheet(detents: [.medium, .large]) {
             GenericPreview(content: content)
@@ -37,7 +37,7 @@ extension ModalService {
 extension ModalService {
     
     @MainActor
-    func showWriteModal(_ model: CommunityView?) {
+    func showWriteModal(_ model: FederatedCommunityResource?) {
         presentSheet(detents: [.medium, .large]) {
             Write(communityView: model)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
@@ -49,8 +49,8 @@ extension ModalService {
 extension ModalService {
     
     @MainActor
-    func showEditPostModal(_ model: PostView?,
-                           _ update: ((PostView) -> Void)? = nil) {
+    func showEditPostModal(_ model: FederatedPostResource?,
+                           _ update: ((FederatedPostResource) -> Void)? = nil) {
         guard let model else {
             //TODO: error toast
             return
@@ -71,9 +71,9 @@ extension ModalService {
     }
     
     @MainActor
-    func showEditCommentModal(_ commentView: CommentView?,
-                              postView: PostView? = nil,
-                              _ update: ((CommentView) -> Void)? = nil) {
+    func showEditCommentModal(_ commentView: FederatedCommentResource?,
+                              postView: FederatedPostResource? = nil,
+                              _ update: ((FederatedCommentResource) -> Void)? = nil) {
         
         guard let commentView else {
             return
@@ -102,8 +102,8 @@ extension ModalService {
 extension ModalService {
     
     @MainActor
-    func showReplyPostModal(model: PostView?,
-                            _ update: ((CommentView) -> Void)? = nil) {
+    func showReplyPostModal(model: FederatedPostResource?,
+                            _ update: ((FederatedCommentResource) -> Void)? = nil) {
         guard let model else {
             return
         }
@@ -113,9 +113,18 @@ extension ModalService {
                 .attachAndClear({ (model, modelView) in
                     update?(modelView)
                     
-                    ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success)))
+                    ModalService
+                        .shared
+                        .presentModal(
+                            GraniteToastView(
+                            StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                     message: "ALERT_COMMENT_SUCCESS",
+                                                     event: .success)
+                            )
+                        )
                     
                     ModalService.shared.dismissSheet()
+                    
                 }, at: \.updatePost)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -123,8 +132,8 @@ extension ModalService {
     
     @MainActor
     func showReplyCommentModal(isEditing: Bool,
-                               model: CommentView?,
-                               _ update: ((CommentView, CommentView?) -> Void)? = nil) {
+                               model: FederatedCommentResource?,
+                               _ update: ((FederatedCommentResource, FederatedCommentResource?) -> Void)? = nil) {
         guard let model else {
             return
         }
@@ -152,7 +161,7 @@ extension ModalService {
 extension ModalService {
     
     @MainActor
-    func showShareCommentModal(_ model: CommentView?) {
+    func showShareCommentModal(_ model: FederatedCommentResource?) {
         presentSheet {
             GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
                 ShareModal(urlString: model?.comment.ap_id) {
@@ -167,7 +176,7 @@ extension ModalService {
     }
     
     @MainActor
-    func showSharePostModal(_ model: PostView?,
+    func showSharePostModal(_ model: FederatedPostResource?,
                             metadata: PageableMetadata?) {
         presentSheet {
             GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
@@ -189,7 +198,7 @@ extension ModalService {
 
 extension ModalService {
     @MainActor
-    func showThreadDrawer(commentView: CommentView?,
+    func showThreadDrawer(commentView: FederatedCommentResource?,
                           context: ContentContext) {
         presentSheet {
             ThreadView()

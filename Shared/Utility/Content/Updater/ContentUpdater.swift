@@ -6,15 +6,15 @@
 //
 
 import Foundation
-import LemmyKit
 import SwiftUI
+import FederationKit
 
 struct ContentUpdater {
     @MainActor
-    static func fetchPostView(_ model: Post?,
-                              commentModel: Comment? = nil) async -> PostView? {
-        guard let postView = await Lemmy.post(model?.id,
-                                              comment: commentModel) else {
+    static func fetchFederatedPostResource(_ model: FederatedPost?,
+                              commentModel: FederatedComment? = nil) async -> FederatedPostResource? {
+        guard let postView = await Federation.post(model?.id,
+                                                   comment: commentModel) else {
             return nil
         }
         
@@ -27,18 +27,18 @@ struct ContentUpdater {
 extension ContentUpdater {
     
     @MainActor
-    static func deletePost(_ model: PostView?) async -> PostView? {
+    static func deletePost(_ model: FederatedPostResource?) async -> FederatedPostResource? {
         guard let model else { return nil }
-        let response = await Lemmy.deletePost(model.post, deleted: model.post.deleted)
+        let response = await Federation.deletePost(model.post, deleted: model.post.deleted)
         
-        if response?.post_view.post.deleted == true {
+        if response?.post.deleted == true {
             ModalService
                 .shared
                 .presentModal(GraniteToastView(title: "MISC_SUCCESS",
                                                //TODO: localize
                                                message: "Post deleted",
                                                event: .success))
-        } else if response?.post_view != nil {
+        } else if response != nil {
             ModalService
                 .shared
                 .presentModal(GraniteToastView(title: "MISC_SUCCESS",
@@ -46,23 +46,23 @@ extension ContentUpdater {
                                                event: .success))
         }
         
-        return response?.post_view
+        return response
     }
     
     @MainActor
-    static func deleteComment(_ model: CommentView?) async -> CommentView? {
+    static func deleteComment(_ model: FederatedCommentResource?) async -> FederatedCommentResource? {
         guard let model else { return nil }
-        let response = await Lemmy.deleteComment(model.comment,
+        let response = await Federation.deleteComment(model.comment,
                                                  deleted: model.comment.deleted)
         
-        if response?.comment_view.comment.deleted == true {
+        if response?.comment.deleted == true {
             ModalService
                 .shared
                 .presentModal(GraniteToastView(title: "MISC_SUCCESS",
                                                //TODO: localize
                                                message: "Post deleted",
                                                event: .success))
-        } else if response?.comment_view != nil {
+        } else if response != nil {
             ModalService
                 .shared
                 .presentModal(GraniteToastView(title: "MISC_SUCCESS",
@@ -70,6 +70,6 @@ extension ContentUpdater {
                                                event: .success))
         }
         
-        return response?.comment_view
+        return response
     }
 }

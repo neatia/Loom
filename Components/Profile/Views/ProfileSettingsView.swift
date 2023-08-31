@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
 import NukeUI
+import FederationKit
 
 #if os(macOS)
 import AppKit
@@ -35,16 +35,16 @@ protocol StandardMotify: GranitePayload, Equatable {
     var showNSFW: Bool { get set }
     var showScores: Bool { get set }
     var showBotAccounts: Bool { get set }
-    var sortType: SortType? { get set }
-    var listingType: ListingType? { get set }
+    var sortType: FederatedSortType? { get set }
+    var listingType: FederatedListingType? { get set }
 }
 
 struct LocalModifyMeta: StandardMotify {
     var showNSFW: Bool
     var showScores: Bool
     var showBotAccounts: Bool
-    var sortType: SortType?
-    var listingType: ListingType?
+    var sortType: FederatedSortType?
+    var listingType: FederatedListingType?
     
     static func ==(lhs: LocalModifyMeta, rhs: LocalModifyMeta) -> Bool {
         lhs.showNSFW == rhs.showNSFW &&
@@ -59,16 +59,16 @@ struct AccountModifyMeta: StandardMotify {
     var showNSFW: Bool
     var showScores: Bool
     var showBotAccounts: Bool
-    var sortType: SortType?
-    var listingType: ListingType?
+    var sortType: FederatedSortType?
+    var listingType: FederatedListingType?
     var avatar: String?
     var banner: String?
     var displayName: String?
     var bio: String?
     var lastUpdated: String?
     
-    static func fromLocal(_ user: LocalUserView) -> AccountModifyMeta {
-        .init(showNSFW: user.local_user.show_nsfw, showScores: user.local_user.show_scores, showBotAccounts: user.local_user.show_bot_accounts, sortType: user.local_user.default_sort_type, listingType: user.local_user.default_listing_type, avatar: user.person.avatar, banner: user.person.banner, displayName: user.person.display_name, bio: user.person.bio, lastUpdated: user.person.updated)
+    static func fromLocal(_ user: UserInfo) -> AccountModifyMeta {
+        .init(showNSFW: user.metadata.show_nsfw, showScores: user.metadata.show_scores, showBotAccounts: user.metadata.show_bot_accounts, sortType: user.metadata.default_sort_type, listingType: user.metadata.default_listing_type, avatar: user.person.avatar, banner: user.person.banner, displayName: user.person.display_name, bio: user.person.bio, lastUpdated: user.person.updated)
     }
     
     static func ==(lhs: AccountModifyMeta, rhs: AccountModifyMeta) -> Bool {
@@ -97,8 +97,8 @@ struct ProfileSettingsView: View {
     @State var showScores: Bool = true
     @State var showBotAccounts: Bool = true
     
-    @State var sortType: SortType? = nil
-    @State var listingType: ListingType? = nil
+    @State var sortType: FederatedSortType? = nil
+    @State var listingType: FederatedListingType? = nil
     
     @State var imageDataAvatar: Data? = nil
     @State var imageDataBanner: Data? = nil
@@ -134,7 +134,7 @@ struct ProfileSettingsView: View {
     }
     
     var model: AccountModifyMeta? {
-        if let localUserView = account.state.meta?.info.local_user_view {
+        if let localUserView = account.state.meta?.resource.user {
             return .fromLocal(localUserView)
         } else {
             return nil
@@ -487,8 +487,8 @@ extension ProfileSettingsView {
                         GraniteHaptic.light.invoke()
                         
                         _ = Task.detached(priority: .userInitiated) { @MainActor in
-                            let result = await Lemmy.deleteImage(avatarUserContent.imageFile)
-                                
+                            let result = await Federation.deleteImage(avatarUserContent.media)
+                            //TODO: check
                             self.avatarUserContent = nil
                             self.imageDataAvatar = nil
                             self.avatar = ""
@@ -542,7 +542,7 @@ extension ProfileSettingsView {
                         GraniteHaptic.light.invoke()
                         
                         _ = Task.detached(priority: .userInitiated) { @MainActor in
-                            let result = await Lemmy.deleteImage(bannerUserContent.imageFile)
+                            let result = await Federation.deleteImage(bannerUserContent.media)
                             
                             self.bannerUserContent = nil
                             self.imageDataBanner = nil
@@ -575,13 +575,13 @@ extension ProfileSettingsView {
 
 extension ProfileSettingsView {
     func getUserContent(_ data: Data) async -> UserContent? {
-        let response = await Lemmy.uploadImage(data)
+        let response = await Federation.uploadImage(data)
         
-        guard let file = response?.files.first else {
+        guard let response else {
             return nil
         }
         
-        return .init(imageFile: file)
+        return .init(media: response)
     }
 }
 

@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension LayoutService {
     struct Center: GraniteCenter {
@@ -44,7 +44,7 @@ extension LayoutService {
     }
     
     enum FeedContext: GraniteModel, Hashable {
-        case viewPost(PostView)
+        case viewPost(FederatedPostResource)
         case idle
         
         func hash(into hasher: inout Hasher) {
@@ -58,8 +58,8 @@ extension LayoutService {
     }
     
     enum FeedCommunityContext: GraniteModel {
-        case viewCommunityView(CommunityView)
-        case viewCommunity(Community)
+        case viewCommunityView(FederatedCommunityResource)
+        case viewCommunity(FederatedCommunity)
         case idle
     }
     

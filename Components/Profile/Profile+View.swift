@@ -1,7 +1,7 @@
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Profile: GraniteNavigationDestination {
     public var view: some View {
@@ -33,7 +33,7 @@ extension Profile: GraniteNavigationDestination {
             pager.hook { page in
                 switch state.viewingDataType {
                 case .overview:
-                    let details = await Lemmy.person(state.person,
+                    let details = await Federation.person(state.person,
                                                       sort: .new,
                                                       page: page,
                                                       limit: ConfigService.Preferences.pageLimit,
@@ -45,23 +45,23 @@ extension Profile: GraniteNavigationDestination {
                     models = models.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
                     
                     let overview = models.map {
-                        PersonDetailsPageable(commentView: $0 as? CommentView, postView: $0 as? PostView, isMention: false, isReply: false)
+                        PersonDetailsPageable(commentView: $0 as? FederatedCommentResource, postView: $0 as? FederatedPostResource, isMention: false, isReply: false)
                     }
                     return overview
                 case .mentions:
                     
-                    let mentionDetails = await Lemmy.mentions(sort: .new, page: page, limit: ConfigService.Preferences.pageLimit, unreadOnly: nil)
+                    let mentionDetails = await Federation.mentions(sort: .new, page: page, limit: ConfigService.Preferences.pageLimit, unreadOnly: nil)
                     
                     let mentions = mentionDetails?.mentions.compactMap {
-                        PersonDetailsPageable(commentView: $0.asCommentView, postView: nil, isMention: true, isReply: false)
+                        PersonDetailsPageable(commentView: $0.asCommentResource, postView: nil, isMention: true, isReply: false)
                     } ?? []
                     
                     return mentions
                 case .replies:
-                    let replyDetails = await Lemmy.replies(sort: .new, page: page, limit: ConfigService.Preferences.pageLimit, unreadOnly: nil)
+                    let replyDetails = await Federation.replies(sort: .new, page: page, limit: ConfigService.Preferences.pageLimit, unreadOnly: nil)
                     
                     let replies = replyDetails?.replies.compactMap {
-                        PersonDetailsPageable(commentView: $0.asCommentView, postView: nil, isMention: false, isReply: true)
+                        PersonDetailsPageable(commentView: $0.asCommentResource, postView: nil, isMention: false, isReply: true)
                     } ?? []
                     
                     return replies

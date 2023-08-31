@@ -7,9 +7,9 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import NukeUI
 import Granite
+import FederationKit
 
 struct BannerView: View {
     static var containerPadding: CGFloat = 5
@@ -64,7 +64,7 @@ struct BannerView: View {
     let bannerUrl: URL?
     let size: Size
     let isCommunity: Bool
-    let person: Person?
+    let person: FederatedPerson?
     
     init(_ url: URL?, size: Size = .small, isCommunity: Bool = false) {
         self.bannerUrl = url
@@ -73,7 +73,7 @@ struct BannerView: View {
         self.person = nil
     }
     
-    init(_ person: Person?, size: Size = .small) {
+    init(_ person: FederatedPerson?, size: Size = .small) {
         self.bannerUrl = person?.avatarURL
         self.size = size
         self.isCommunity = false

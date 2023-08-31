@@ -107,6 +107,7 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                 manager.models[self.id]?.content
                     .graniteSheetDismissable(shouldPreventDismissal: manager.shouldPreventDismissal)
                     .zIndex(7)
+                    .padding(.top, .layer2)
 #else
                 
                 manager.models[self.id]?.content
@@ -255,7 +256,6 @@ fileprivate extension View {
                             
                             Divider()
                                 .padding(.top, .layer4)
-                                .padding(.bottom, .layer2)
                             
                             content()
                                 .adaptsToKeyboard(safeAreaAware: true)

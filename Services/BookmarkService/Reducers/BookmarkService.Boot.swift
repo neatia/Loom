@@ -8,7 +8,7 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension BookmarkService {
     struct Boot: GraniteReducer {
@@ -21,7 +21,7 @@ extension BookmarkService {
                 return
             }
             
-            let posts = await Lemmy.posts(type: .all, saved_only: true)
+            let posts = await Federation.posts(type: .all, saved_only: true)
             
             for model in posts {
                 guard let domain = model.creator.domain else {
@@ -50,7 +50,7 @@ extension BookmarkService {
             LoomLog("📖 synced \(posts.count) posts 📖", level: .debug)
             
             
-            let comments = await Lemmy.comments(type: .all, saved_only: true)
+            let comments = await Federation.comments(type: .all, saved_only: true)
             
             for model in comments {
                 guard let domain = model.creator.domain else {

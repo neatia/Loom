@@ -9,14 +9,12 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
 
 #if os(iOS)
 import UIKit
 #else
 import AppKit
 #endif
-
 
 public struct ScreenshotView<Content: View> : GenericViewRepresentable {
     

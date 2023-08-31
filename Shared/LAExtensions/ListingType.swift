@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 import SwiftUI
 
-extension ListingType {
+extension FederatedListingType {
     var abbreviated: String {
         switch self {
         case .subscribed:

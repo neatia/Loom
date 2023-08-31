@@ -7,8 +7,8 @@
 
 import Foundation
 import Granite
-import LemmyKit
 import IPFSKit
+import FederationKit
 
 extension AccountService {
     struct Update: GraniteReducer {
@@ -18,7 +18,7 @@ extension AccountService {
         
         struct ResponseMeta: GranitePayload {
             var notification: StandardNotificationMeta
-            var person: Person
+            var person: FederatedPerson
         }
         
         func reduce(state: inout Center.State) async {
@@ -26,9 +26,10 @@ extension AccountService {
             
             let username = state.meta?.username
             let host = state.meta?.host
-            guard let auth = LemmyKit.auth, let host else { return }
+            guard let auth = FederationKit.auth(),
+                  let host else { return }
             
-            let client = Lemmy(apiUrl: host)
+            let client = Federation(.init(.lemmy, host: host))
             
             let info = await client.saveUserSettings(show_nsfw: meta.showNSFW,
                                                     show_scores: meta.showScores,
@@ -54,7 +55,7 @@ extension AccountService {
 //                                                        open_links_in_new_tab: Bool? = nil
                                                     )
             
-            guard let data = info?.jwt?.data(using: .utf8),
+            guard let data = info?.data(using: .utf8),
                   let username else {
                 broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_UPDATE_SETTINGS_FAILED", event: .error))
                 return
@@ -69,9 +70,14 @@ extension AccountService {
             }
             
         
-            if let user = client.user {
+            if let resource = client.user()?.resource {
                 
-                broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_UPDATE_SETTINGS_SUCCESS", event: .success), person: user.local_user_view.person))
+                broadcast.send(
+                    ResponseMeta(notification:
+                                    StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                             message: "ALERT_UPDATE_SETTINGS_SUCCESS",
+                                                             event: .success),
+                                 person: resource.user.person))
                 
                 guard let host = state.meta?.host else {
                     LoomLog("no user found", level: .debug)
@@ -79,8 +85,9 @@ extension AccountService {
                     return
                 }
                 
-                let newMeta: AccountMeta = .init(info: user, host: host)
-                LoomLog("updated user data after updating settings: \(newMeta.info.local_user_view.local_user.show_nsfw == state.meta?.info.local_user_view.local_user.show_nsfw)")
+                let newMeta: AccountMeta = .init(resource: resource, host: host)
+                
+                LoomLog("updated user data after updating settings: \(newMeta.resource.user.metadata.show_nsfw == state.meta?.resource.user.metadata.show_nsfw)")
                 state.meta = newMeta
             }
         }

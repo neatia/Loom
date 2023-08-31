@@ -7,8 +7,8 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import Granite
+import FederationKit
 
 struct ContentContextKey: EnvironmentKey {
     static var defaultValue: ContentContext = .init()
@@ -22,8 +22,8 @@ extension EnvironmentValues {
 }
 
 struct ContentContext {
-    var postModel: PostView?
-    var commentModel: CommentView?
+    var postModel: FederatedPostResource?
+    var commentModel: FederatedCommentResource?
     var feedStyle: FeedStyle = .style2
     var layoutStyle: LayoutService.Style = .compact
     var viewingContext: ViewingContext = .base
@@ -33,19 +33,19 @@ struct ContentContext {
         return "\(viewingContext)\(contentId)"
     }
     
-    var community: FederatedCommunityCompact? {
+    var community: FederatedCommunity? {
         commentModel?.community ?? postModel?.community
     }
     
-    var location: FetchType {
+    var location: FederatedLocationType {
         if viewingContext.isBookmark {
             return viewingContext.bookmarkLocation
         } else {
-            return ((customLocation) ?? (postModel?.post.location ?? commentModel?.comment.location)) ?? .base
+            return ((customLocation) ?? .base)//(postModel?.post.location ?? commentModel?.comment.location)) ?? .base
         }
     }
     
-    var customLocation: FetchType?
+    var customLocation: FederatedLocationType?
     
     var preferredStyle: FeedStyle {
         switch viewingContext {
@@ -93,21 +93,21 @@ struct ContentContext {
         return nil
     }
     
-    static func addPostModel(model: PostView?, _ context: ContentContext) -> Self {
+    static func addPostModel(model: FederatedPostResource?, _ context: ContentContext) -> Self {
         return .init(postModel: model ?? context.postModel,
                      commentModel: context.commentModel,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext)
     }
     
-    static func addCommentModel(model: CommentView?, _ context: ContentContext) -> Self {
+    static func addCommentModel(model: FederatedCommentResource?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: model ?? context.commentModel,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext)
     }
     
-    static func withPostModel(_ model: PostView?, _ context: ContentContext) -> Self {
+    static func withPostModel(_ model: FederatedPostResource?, _ context: ContentContext) -> Self {
         return .init(postModel: model,
                      commentModel: nil,
                      feedStyle: context.feedStyle,
@@ -138,14 +138,14 @@ struct ContentContext {
         return ContentContext.viewedIn(viewingContext, self)
     }
     
-    static func updateLocation(_ customLocation: FetchType, _ context: ContentContext) -> Self {
+    static func updateLocation(_ customLocation: FederatedLocationType, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext,
                      customLocation: customLocation)
     }
-    func updateLocation(_ customLocation: FetchType) -> Self {
+    func updateLocation(_ customLocation: FederatedLocationType) -> Self {
         return ContentContext.updateLocation(customLocation, self)
     }
 }
@@ -176,54 +176,5 @@ extension ContentContext {
 extension View {
     func contentContext(_ context: ContentContext) -> some View {
         self.environment(\.contentContext, context)
-    }
-}
-
-
-/* FederationKit */
-
-protocol FederatedPerson {
-    var id: String { get }
-    var name: String { get }
-    var display_name: String? { get }
-    var avatar: String? { get }
-    var banned: Bool { get }
-    var published: String { get }
-    var updated: String? { get }
-    var actor_id: String { get }
-    var bio: String? { get }
-    var local: Bool { get }
-    var banner: String? { get }
-    var deleted: Bool { get }
-    var inbox_url: String? { get }
-    var matrix_user_id: String? { get }
-    var admin: Bool { get }
-    var bot_account: Bool { get }
-    var ban_expires: String? { get }
-    //var instance_id: InstanceId { get }
-    
-    var instanceType: FederatedInstanceType { get }
-}
-
-extension FederatedPerson {
-    var avatarURL: URL? {
-        if let urlString = avatar {
-            return URL(string: urlString)
-        }
-        return nil
-    }
-    
-    var lemmy: Person? {
-        self as? Person
-    }
-}
-
-extension Person : FederatedPerson {
-    var id: String {
-        self.actor_id + self.username
-    }
-    
-    var instanceType: FederatedInstanceType {
-        .lemmy
     }
 }

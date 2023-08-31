@@ -41,7 +41,7 @@ struct LoomCardView: View {
                         HStack(spacing: .layer3) {
                             ForEach(manifest.data) { fd in
                                 Group {
-                                    if let lemmyView = fd.community?.lemmy {
+                                    if let lemmyView = fd.community {
                                         CommunityCardView(model: lemmyView,
                                                           showCounts: false,
                                                           federatedData: fd)
@@ -113,14 +113,3 @@ struct LoomCardView: View {
         .outline()
     }
 }
-
-#if DEBUG
-struct LoomCardView_Previews: PreviewProvider {
-    static var previews: some View {
-        InstanceCardView(.init(id: 0,
-                               domain: "https://lemmy.world",
-                               published: Date.now.asString))
-        .padding(.layer2)
-    }
-}
-#endif

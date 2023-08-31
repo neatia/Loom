@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-import LemmyKit
+
 import SwiftUI
 import Granite
 import GraniteUI

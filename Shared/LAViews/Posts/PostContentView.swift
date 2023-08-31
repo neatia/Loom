@@ -10,7 +10,7 @@ import Granite
 import GraniteUI
 import SwiftUI
 import NukeUI
-import LemmyKit
+import FederationKit
 
 enum PostContentKind {
     case webPage(URL)
@@ -52,7 +52,7 @@ enum PostContentKind {
 struct PostContentView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    var postView: PostView?
+    var postView: FederatedPostResource?
     
     @Environment(\.openURL) var openURL
     
@@ -62,7 +62,7 @@ struct PostContentView: View {
     
     var fullPage: Bool = false
     
-    init(postView: PostView) {
+    init(postView: FederatedPostResource) {
         self.postView = postView
         _contentKind = .init(initialValue: PostContentKind.from(urlString: postView.post.url))
     }

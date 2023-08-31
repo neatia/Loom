@@ -6,15 +6,15 @@
 //
 
 import Foundation
-import LemmyKit
 import SwiftUI
 import Granite
 import GraniteUI
+import FederationKit
 
 struct CommunityPickerView: View {
     @Environment(\.graniteRouter) var router
     
-    @GraniteAction<(CommunityView, FederatedData?)> var pickedCommunity
+    @GraniteAction<(FederatedCommunityResource, FederatedData?)> var pickedCommunity
     
     var modal: Bool = true
     var shouldRoute: Bool = false
@@ -23,21 +23,21 @@ struct CommunityPickerView: View {
     
     @State var bookmarksSelected: Bool = false
     
-    @StateObject var subscribed: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
-    @StateObject var local: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
-    @StateObject var all: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    @StateObject var subscribed: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    @StateObject var local: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    @StateObject var all: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
     
-    @State var page: ListingType = .subscribed
+    @State var page: FederatedListingType = .subscribed
     
-    func opacityFor(_ page: ListingType) -> CGFloat {
+    func opacityFor(_ page: FederatedListingType) -> CGFloat {
         return self.page == page ? 1.0 : 0.6
     }
     
-    func fontFor(_ page: ListingType) -> Font {
+    func fontFor(_ page: FederatedListingType) -> Font {
         return self.page == page ? .title2.bold() : .title3.bold()
     }
     
-    var currentPager: Pager<CommunityView> {
+    var currentPager: Pager<FederatedCommunityResource> {
         switch page {
         case .all:
             return all
@@ -73,7 +73,7 @@ struct CommunityPickerView: View {
                     if bookmarksSelected {
                         Bookmark(showHeader: false)
                     } else {
-                        PagerScrollView(CommunityView.self,
+                        PagerScrollView(FederatedCommunityResource.self,
                                         properties: .init(hideDivider: true, performant: Device.isMacOS == false)) { communityView in
                             
                             if sidebar {
@@ -115,13 +115,13 @@ struct CommunityPickerView: View {
         .padding(.bottom, modal ? 0 : verticalPadding)
         .task {
             all.hook { page in
-                await Lemmy.communities(.all, page: page)
+                await Federation.communities(.all, page: page)
             }
             local.hook { page in
-                await Lemmy.communities(.local, page: page)
+                await Federation.communities(.local, page: page)
             }
             subscribed.hook { page in
-                let communities = await Lemmy.communities(.subscribed, page: page)
+                let communities = await Federation.communities(.subscribed, page: page)
                 
                 LoomLog("👥 fetched: \(communities.count) subscribed communities", level: .debug)
                 
@@ -141,7 +141,7 @@ extension CommunityPickerView {
                     page = .all
                     all.fetch()
                 } label: {
-                    Text(ListingType.all.displayString)
+                    Text(FederatedListingType.all.displayString)
                     Image(systemName: "arrow.down.right.circle")
                 }
                 Button {
@@ -149,7 +149,7 @@ extension CommunityPickerView {
                     page = .local
                     local.fetch()
                 } label: {
-                    Text(ListingType.local.displayString)
+                    Text(FederatedListingType.local.displayString)
                     Image(systemName: "arrow.down.right.circle")
                 }
                 Button {
@@ -157,7 +157,7 @@ extension CommunityPickerView {
                     page = .subscribed
                     subscribed.fetch()
                 } label: {
-                    Text(ListingType.subscribed.displayString)
+                    Text(FederatedListingType.subscribed.displayString)
                     Image(systemName: "arrow.down.right.circle")
                 }
             } label: {

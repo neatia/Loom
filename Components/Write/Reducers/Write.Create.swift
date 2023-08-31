@@ -1,15 +1,15 @@
 import Granite
-import LemmyKit
 import IPFSKit
 import Foundation
 import SwiftUI
+import FederationKit
 
 extension Write {
     struct Create: GraniteReducer {
         typealias Center = Write.Center
         
         struct ResponseMeta: GranitePayload {
-            var postView: PostView
+            var postView: FederatedPostResource
         }
         
         @Relay var config: ConfigService
@@ -47,11 +47,11 @@ extension Write {
                 url = postURL
             }
             
-            let value: PostView?
+            let value: FederatedPostResource?
             //TODO: nsfw and languageid options
             
-            if let id = state.editingPostView?.post.id {
-                value = await Lemmy.editPost(id,
+            if let id = state.editingFederatedPostResource?.post.id {
+                value = await Federation.editPost(id,
                                              title: title,
                                              url: url?.isEmpty == true ? nil : url,
                                              body: includeBody ? (content + subcontent) : nil)
@@ -64,7 +64,7 @@ extension Write {
                 }
             } else if let community = postCommunity?.community {
                 
-                value = await Lemmy.createPost(title,
+                value = await Federation.createPost(title,
                                                content: content,
                                                url: url?.isEmpty == true ? nil : url,
                                                body: includeBody ? (content + subcontent) : nil,
@@ -75,7 +75,7 @@ extension Write {
                     return
                 }
                 
-                state.createdPostView = value
+                state.createdFederatedPostResource = value
                 state.showPost = true
                 
                 
@@ -112,16 +112,9 @@ extension Write {
                 image_url = "https://stoic-static-files.s3.us-west-1.amazonaws.com/neatia/neatia.png"
             }
             
-            let user = LemmyKit.current.user?.local_user_view.person.name ?? ""
-            let actorUrl = (LemmyKit.current.user?.local_user_view.person.actor_id ?? "")
-            
-            //<p>Water <em></em></p>
-            //1483605673
-            //309689082
-            //621271593
-            //622435653
-            //724784662
-            //1278332455
+            let currentUser = FederationKit.user()?.resource.user.person
+            let user = currentUser?.name ?? ""
+            let actorUrl = currentUser?.actor_id ?? ""
             
             var subcontent: String = ""
             

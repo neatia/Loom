@@ -3,8 +3,8 @@ import SwiftUI
 //import NukeUI
 import Granite
 import GraniteUI
-import LemmyKit
 import MarkdownView
+import FederationKit
 
 struct ThreadView: View {
     @Environment(\.contentContext) var context
@@ -13,11 +13,11 @@ struct ThreadView: View {
     @Environment(\.graniteRouter) var router
     
     @GraniteAction<Void> var closeDrawer
-    @GraniteAction<CommentView> var showDrawer
-    @GraniteAction<(CommentView, ((CommentView) -> Void))> var reply
-    @GraniteAction<(CommentView, ((CommentView) -> Void))> var edit
+    @GraniteAction<FederatedCommentResource> var showDrawer
+    @GraniteAction<(FederatedCommentResource, ((FederatedCommentResource) -> Void))> var reply
+    @GraniteAction<(FederatedCommentResource, ((FederatedCommentResource) -> Void))> var edit
     
-    @State var updatedParentModel: CommentView?
+    @State var updatedParentModel: FederatedCommentResource?
     
     //drawer
     var isModal: Bool = true
@@ -26,16 +26,16 @@ struct ThreadView: View {
     
     @Relay var config: ConfigService
     
-    @State var breadCrumbs: [CommentView] = []
+    @State var breadCrumbs: [FederatedCommentResource] = []
     
-    var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    var pager: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
-    var currentModel: CommentView? {
+    var currentModel: FederatedCommentResource? {
         breadCrumbs.last ?? (updatedParentModel ?? context.commentModel)
     }
     
-    @State var threadLocation: FetchType = .base
-    @State var listingType: ListingType = .all
+    @State var threadLocation: FederatedLocationType = .base
+    @State var listingType: FederatedListingType = .all
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -67,7 +67,7 @@ struct ThreadView: View {
 //                    .padding(.layer4)
             }
             
-            PagerScrollView(CommentView.self,
+            PagerScrollView(FederatedCommentResource.self,
                             properties: .init(hideLastDivider: true,
                                               showFetchMore: false)) { commentView in
                 CommentCardView(parentModel: currentModel,
@@ -99,20 +99,19 @@ struct ThreadView: View {
             self.threadLocation = context.location
             
             pager.hook { page in
-                let comments = await Lemmy
-                    .comments(currentModel?.post,
-                              comment: currentModel?.comment,
-                              community: context.community?.lemmy,
-                              page: page,
-                              type: listingType,
-                              location: threadLocation)
+                let comments = await Federation.comments(currentModel?.post,
+                                                         comment: currentModel?.comment,
+                                                         community: context.community,
+                                                         page: page,
+                                                         type: listingType,
+                                                         location: threadLocation)
                 
                 return comments.filter { $0.id != currentModel?.id }
             }.fetch()
         }
     }
     
-    func viewReplies(_ id: CommentId) {
+    func viewReplies(_ id: Int) {
         if let index = breadCrumbs.firstIndex(where: { $0.comment.id == id }) {
             breadCrumbs = Array(breadCrumbs.prefix(index + 1))
         } else {

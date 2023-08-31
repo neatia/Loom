@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 import Granite
-import LemmyKit
+import FederationKit
 
 extension ConfigService {
     struct Restart: GraniteReducer {
@@ -33,18 +33,36 @@ extension ConfigService {
                 guard let lowercasedHost = meta.host?.lowercased(),
                       lowercasedHost.contains("local") == false,
                       lowercasedHost.contains("127.0") == false else {
-                    broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "MISC_ERROR_2", event: .error))
+                    broadcast.send(
+                        StandardErrorMeta(title: "MISC_ERROR",
+                                          message: "MISC_ERROR_2",
+                                          event: .error))
                     return
                 }
             }
             
+            let server: FederationServer?
             if let host = meta.host {
-                LemmyKit.baseUrl = host
-                state.config = .init(baseUrl: host)
+                server = .init(.lemmy, host: host)
             } else if let accountMeta = meta.accountMeta {
-                LemmyKit.baseUrl = accountMeta.host
-                state.config = .init(baseUrl: accountMeta.host)
-                
+                server = .init(.lemmy, host: accountMeta.host)
+            } else {
+                server = nil
+            }
+            
+            guard let server else {
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "MISC_ERROR_2",
+                                      event: .error))
+                return
+            }
+            
+            FederationKit.initialize(server)
+            state.server = server
+            
+            //if switched via profiles/accounts
+            if let accountMeta = meta.accountMeta {
                 account.center.boot.send(AccountService.Boot.Meta(accountMeta: accountMeta))
             }
                 
@@ -56,7 +74,10 @@ extension ConfigService {
             content.center.boot.send()
             
             if meta.accountMeta == nil {
-                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(host)", event: .normal))
+                broadcast.send(
+                    StandardNotificationMeta(title: "MISC_CONNECTED",
+                                             message: "ALERT_CONNECTED_SUCCESS \(host)",
+                                             event: .normal))
             } else {
                 //This will notify Feed's receivers to reset the content
                 //But will avoid stacking toasts on Globe's receiver

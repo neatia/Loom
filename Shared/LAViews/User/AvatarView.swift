@@ -7,9 +7,9 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import NukeUI
 import Granite
+import FederationKit
 
 struct AvatarView: View {
     @Environment(\.graniteRouter) var router
@@ -66,7 +66,7 @@ struct AvatarView: View {
     let avatarURL: URL?
     let size: Size
     let isCommunity: Bool
-    let person: Person?
+    let person: FederatedPerson?
     
     init(_ url: URL?, size: Size = .small, isCommunity: Bool = false) {
         self.avatarURL = url
@@ -75,21 +75,21 @@ struct AvatarView: View {
         self.person = nil
     }
     
-    init(_ person: Person?, size: Size = .small) {
+    init(_ person: FederatedPerson?, size: Size = .small) {
         self.avatarURL = person?.avatarURL
         self.size = size
         self.isCommunity = false
         self.person = person
     }
     
-    init(_ model: PostView, size: Size = .small) {
+    init(_ model: FederatedPostResource, size: Size = .small) {
         self.avatarURL = model.avatarURL
         self.size = size
         self.isCommunity = false
         self.person = model.creator
     }
     
-    init(_ model: CommentView, size: Size = .small) {
+    init(_ model: FederatedCommentResource, size: Size = .small) {
         self.avatarURL = model.avatarURL
         self.size = size
         self.isCommunity = false

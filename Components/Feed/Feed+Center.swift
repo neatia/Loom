@@ -1,22 +1,22 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Feed {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var community: Community? = nil
-            var communityView: CommunityView? = nil
+            var community: FederatedCommunity? = nil
+            var communityView: FederatedCommunityResource? = nil
             
             var selectedTimeCategory: Int = 0
             //Listing type localizatin used for abbreviation: "All Time"
             var sortingTimeType: [String] = ["LISTING_TYPE_ALL", "SORT_TYPE_TODAY"]
             
             var selectedSorting: Int = 0
-            var sortingType: [SortType] = SortType.categoryGeneral
+            var sortingType: [FederatedSortType] = FederatedSortType.categoryGeneral
             
             var selectedListing: Int = 0
-            var listingType: [ListingType] = ListingType.allCases
+            var listingType: [FederatedListingType] = FederatedListingType.allCases
             
             var socialViewOptions: Int = 0
             
@@ -24,8 +24,8 @@ extension Feed {
                 selectedListing + selectedSorting + selectedTimeCategory
             }
             
-            var location: FetchType = .base
-            var peerLocation: FetchType? = nil
+            var location: FederatedLocationType = .base
+            var peerLocation: FederatedLocationType? = nil
             
             var isShowing: Bool = false
             
@@ -38,7 +38,7 @@ extension Feed {
         @Store public var state: State
     }
     
-    var selectedSort: SortType {
+    var selectedSort: FederatedSortType {
         switch state.sortingType[state.selectedSorting] {
         case .topAll:
             switch state.sortingTimeType[state.selectedTimeCategory].lowercased() {
@@ -54,7 +54,7 @@ extension Feed {
         }
     }
     
-    var selectedListing: ListingType {
+    var selectedListing: FederatedListingType {
         state.listingType[state.selectedListing]
     }
     
@@ -79,14 +79,14 @@ extension Feed {
             case .source:
                 return community.actor_id.host
             case .base:
-                if LemmyKit.host == state.community?.actor_id.host {
-                    return LemmyKit.host
+                if FederationKit.host == state.community?.actor_id.host {
+                    return FederationKit.host
                 } else {
-                    return LemmyKit.host+"@"+community.actor_id.host
+                    return FederationKit.host+"@"+community.actor_id.host
                 }
             }
         } else {
-            return LemmyKit.host
+            return FederationKit.host
         }
     }
     
@@ -98,21 +98,21 @@ extension Feed {
         isCommunity && state.community?.banner != nil
     }
     
-    func fetchCommunity(_ model: Community? = nil,
-                        location: FetchType? = nil,
+    func fetchCommunity(_ model: FederatedCommunity? = nil,
+                        location: FederatedLocationType? = nil,
                         reset: Bool = false) {
         let feedLocation = location ?? state.location
-        let community: Community? = model ?? state.community
+        let community: FederatedCommunity? = model ?? state.community
         
         guard let community else { return }
         
         _ = Task.detached {
-            let communityView = await Lemmy.community(community: community,
-                                                      location: feedLocation)
+            let communityResource = await Federation.community(community: community,
+                                                               location: feedLocation)
             
             DispatchQueue.main.async {
                 self._state.community.wrappedValue = model
-                self._state.communityView.wrappedValue = communityView
+                self._state.communityView.wrappedValue = communityResource
                 if let location {
                     self._state.location.wrappedValue = location
                 }

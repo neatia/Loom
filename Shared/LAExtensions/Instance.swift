@@ -6,17 +6,18 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 
-extension Instance: GlobeNode {
+extension FederatedInstance: GlobeNode {
     public var nodeId: String {
         self.domain
     }
     
-    public static var base: Instance {
-        .init(id: LemmyKit.current.instanceId ?? -1,
-              domain: LemmyKit.host,
-              published: LemmyKit.current.metadata?.site.published ?? "")
+    public static var base: FederatedInstance {
+        .init(FederationKit.currentInstanceType,
+              id: FederationKit.metadata()?.site.instance_id ?? -1,
+              domain: FederationKit.host,
+              published: FederationKit.metadata()?.site.published ?? "")
     }
 }
 

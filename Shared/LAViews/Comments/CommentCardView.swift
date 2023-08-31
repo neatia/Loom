@@ -1,26 +1,26 @@
 import Foundation
 import SwiftUI
-import LemmyKit
 import Granite
 import GraniteUI
 import MarkdownView
+import FederationKit
 
 struct CommentCardView: View {
     @Environment(\.contentContext) var context
     @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<FederatedCommunity> var viewCommunity
     
-    @GraniteAction<CommentView> var showDrawer
+    @GraniteAction<FederatedCommentResource> var showDrawer
     
     @Relay var config: ConfigService
     @Relay var layout: LayoutService
     @Relay(.silence) var content: ContentService
     
-    @State var model: CommentView?
-    @State var postView: PostView? = nil
+    @State var model: FederatedCommentResource?
+    @State var postView: FederatedPostResource? = nil
     
-    var currentModel: CommentView? {
+    var currentModel: FederatedCommentResource? {
         model ?? context.commentModel
     }
     
@@ -30,7 +30,7 @@ struct CommentCardView: View {
     @State var refreshThread: Bool = false
     
     //TODO: env. props?
-    var parentModel: CommentView? = nil
+    var parentModel: FederatedCommentResource? = nil
     var shouldRouteCommunity: Bool = true
     var shouldLinkToPost: Bool = true
     var isInline: Bool = false
@@ -300,7 +300,7 @@ extension CommentCardView {
             }
             
             Task.detached { @MainActor in
-                guard let postView = await ContentUpdater.fetchPostView(context.commentModel?.post) else {
+                guard let postView = await ContentUpdater.fetchFederatedPostResource(context.commentModel?.post) else {
                     return
                 }
                 
@@ -340,7 +340,7 @@ extension CommentCardView {
 }
 
 extension CommentCardView {
-    func showThreadDrawer(_ model: CommentView?) {
+    func showThreadDrawer(_ model: FederatedCommentResource?) {
         if parentModel == nil {
             ModalService
                 .shared

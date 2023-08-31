@@ -1,6 +1,6 @@
 import Granite
-import LemmyKit
 import IPFSKit
+import FederationKit
 
 extension ConfigService {
     struct Boot: GraniteReducer {
@@ -12,9 +12,8 @@ extension ConfigService {
         @Relay var loom: LoomService
         
         func reduce(state: inout Center.State) async {
-            LemmyKit.baseUrl = state.config.baseUrl
+            FederationKit.initialize(state.server)
             ConfigService.configureIPFS(state.ipfsGatewayUrl)
-            
             
             account.restore(wait: true)
             account.center.boot.send()

@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 
-extension PostView: Pageable {
+extension FederatedPostResource: Pageable {
     public var id: String {
         "\(post.id)\(creator.actor_id)\(creator.name)\(post.ap_id)\(post.updated ?? "")"
     }
@@ -23,7 +23,7 @@ extension PostView: Pageable {
         creator_blocked
     }
     
-    public var person: Person {
+    public var person: FederatedPerson {
         self.creator
     }
     
@@ -37,31 +37,32 @@ extension PostView: Pageable {
     }
 }
 
-extension PostView {
-    func updateBlock(_ blocked: Bool, personView: PersonView) -> PostView {
+//TODO: clean and normalize all init cases
+extension FederatedPostResource {
+    func updateBlock(_ blocked: Bool, personView: FederatedPersonResource) -> FederatedPostResource {
         .init(post: self.post, creator: personView.person, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: blocked, unread_comments: self.unread_comments)
     }
     
-    func updateRemoved() -> PostView {
+    func updateRemoved() -> FederatedPostResource {
         .init(post: self.post.updateRemoved(), creator: self.creator, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: self.creator_blocked, unread_comments: self.unread_comments)
     }
     
-    func updateDeleted() -> PostView {
+    func updateDeleted() -> FederatedPostResource {
         .init(post: self.post.updateDeleted(), creator: self.creator, community: self.community, creator_banned_from_community: self.creator_banned_from_community, counts: self.counts, subscribed: self.subscribed, saved: self.saved, read: self.read, creator_blocked: self.creator_blocked, unread_comments: self.unread_comments)
     }
 }
 
-extension Post {
-    func updateRemoved() -> Post {
+extension FederatedPost {
+    func updateRemoved() -> FederatedPost {
         .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: !self.removed, locked: self.locked, published: self.published, deleted: self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local)
     }
     
-    func updateDeleted() -> Post {
+    func updateDeleted() -> FederatedPost {
         .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: self.removed, locked: self.locked, published: self.published, deleted: !self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local)
     }
 }
 
-extension PostView {
+extension FederatedPostResource {
     var upvoteCount: Int {
         counts.upvotes
     }

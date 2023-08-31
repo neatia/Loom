@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import LemmyKit
 import SwiftUI
 import Granite
 import GraniteUI
+import FederationKit
 
 struct LoomPickerView: View {
     
@@ -18,7 +18,7 @@ struct LoomPickerView: View {
     
     @Relay var loom: LoomService
     
-    var communities: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", isStatic: true)
+    var communities: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES", isStatic: true)
     
     @State var idPicked: String = ""
     
@@ -42,7 +42,7 @@ struct LoomPickerView: View {
                         //TODO: maintain generic when fedkit is implemented
                         ForEach(manifest.data) { fd in
                             
-                            if let communityView = fd.community?.lemmy {
+                            if let communityView = fd.community {
                                 CommunityCardView(model: communityView,
                                                   shouldRoute: true,
                                                   style: .style2,

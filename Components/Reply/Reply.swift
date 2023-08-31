@@ -1,5 +1,5 @@
 import Granite
-import LemmyKit
+import FederationKit
 
 /*
  Either this modal needs to be renamed aptly
@@ -11,8 +11,8 @@ struct Reply: GraniteComponent {
     @Command var center: Center
     @Relay var content: ContentService
     
-    @GraniteAction<(Comment, CommentView)> var updatePost
-    @GraniteAction<(CommentView, CommentView?)> var updateComment
+    @GraniteAction<(FederatedComment, FederatedCommentResource)> var updatePost
+    @GraniteAction<(FederatedCommentResource, FederatedCommentResource?)> var updateComment
     
     var listeners: Void {
         content
@@ -23,7 +23,7 @@ struct Reply: GraniteComponent {
                     
                     switch response.kind {
                     case .replyPostSubmit(let comment, let model):
-                        guard let user = LemmyKit.current.user?.local_user_view.person else {
+                        guard let user = FederationKit.user()?.resource.user.person else {
                             return
                         }
                         updatePost.perform((comment, comment.asView(creator: user, postView: model)))

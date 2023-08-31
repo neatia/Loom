@@ -7,7 +7,7 @@
 
 import Foundation
 import Granite
-import LemmyKit
+import FederationKit
 
 extension ContentService {
     struct Interact: GraniteReducer {
@@ -15,22 +15,22 @@ extension ContentService {
         
         //TODO: remove post/remove comment
         enum Kind {
-            case upvotePost(PostView)
-            case downvotePost(PostView)
-            case upvoteComment(CommentView)
-            case downvoteComment(CommentView)
-            case savePost(PostView)
-            case unsavePost(PostView)
-            case saveComment(CommentView)
-            case unsaveComment(CommentView)
-            case replyPost(PostView, String)
-            case replyPostSubmit(Comment, PostView)
-            case replyComment(CommentView, String)
+            case upvotePost(FederatedPostResource)
+            case downvotePost(FederatedPostResource)
+            case upvoteComment(FederatedCommentResource)
+            case downvoteComment(FederatedCommentResource)
+            case savePost(FederatedPostResource)
+            case unsavePost(FederatedPostResource)
+            case saveComment(FederatedCommentResource)
+            case unsaveComment(FederatedCommentResource)
+            case replyPost(FederatedPostResource, String)
+            case replyPostSubmit(FederatedComment, FederatedPostResource)
+            case replyComment(FederatedCommentResource, String)
             //Target, Reply
-            case replyCommentSubmit(CommentView, CommentView)
-            case editComment(CommentView, PostView?)
-            case editCommentSubmit(CommentView, String)
-            case editPostSubmit(PostView)
+            case replyCommentSubmit(FederatedCommentResource, FederatedCommentResource)
+            case editComment(FederatedCommentResource, FederatedPostResource?)
+            case editCommentSubmit(FederatedCommentResource, String)
+            case editPostSubmit(FederatedPostResource)
         }
         
         struct Meta: GranitePayload {
@@ -47,7 +47,7 @@ extension ContentService {
         func reduce(state: inout Center.State) async {
             guard let meta else { return }
             
-            guard LemmyKit.auth != nil else {
+            guard FederationKit.isAuthenticated() else {
                 //TODO: localize
                 broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
                 return
@@ -69,8 +69,8 @@ extension ContentService {
                 }
                 
                 let post = postView.post
-                let result = await Lemmy.upvotePost(post,
-                                                    score: myVote)
+                let result = await Federation.upvotePost(post,
+                                                         score: myVote)
                 
                 guard let result else { return }
                 
@@ -91,8 +91,8 @@ extension ContentService {
                 }
                 
                 let post = postView.post
-                let result = await Lemmy.upvotePost(post,
-                                                    score: myVote)
+                let result = await Federation.upvotePost(post,
+                                                         score: myVote)
                 
                 guard let result else { return }
                 
@@ -112,8 +112,8 @@ extension ContentService {
                 }
                 
                 let comment = commentView.comment
-                let result = await Lemmy.upvoteComment(comment,
-                                                       score: myVote)
+                let result = await Federation.upvoteComment(comment,
+                                                            score: myVote)
                 
                 guard let result else { return }
                 state.allComments[result.id] = result
@@ -132,36 +132,51 @@ extension ContentService {
                 }
                 
                 let comment = commentView.comment
-                let result = await Lemmy.upvoteComment(comment,
-                                                       score: myVote)
+                let result = await Federation.upvoteComment(comment,
+                                                            score: myVote)
                 
                 guard let result else { return }
                 state.allComments[result.id] = result
             case .replyPost(let model, let content):
-                let result = await Lemmy.createComment(content, post: model.post)
+                let result = await Federation.createComment(content,
+                                                            post: model.post)
 
                 guard let result else { return }
                 
-                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_COMMENT_SUCCESS", event: .success), kind: .replyPostSubmit(result, model)))
+                broadcast.send(
+                    ResponseMeta(notification: .init(title: "MISC_SUCCESS",
+                                                     message: "ALERT_COMMENT_SUCCESS",
+                                                     event: .success),
+                                 kind: .replyPostSubmit(result, model)))
                 
             case .replyComment(let model, let content):
-                let result = await Lemmy.createComment(content, post: model.post, parent: model.comment)
+                let result = await Federation.createComment(content,
+                                                            post: model.post,
+                                                            parent: model.comment)
 
                 guard let result else { return }
                 
-                guard let user = LemmyKit.current.user?.local_user_view.person else {
+                guard let user = FederationKit.user()?.resource.user.person else {
                     return
                 }
                 
-                broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)", event: .success), kind: .replyCommentSubmit(result.asView(with: model), result.asView(creator: user, post: model.post, community: model.community))))
+                broadcast.send(
+                    ResponseMeta(notification:
+                            .init(title: "MISC_SUCCESS",
+                                  message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.person.name)",
+                                  event: .success),
+                                 kind: .replyCommentSubmit(result.asView(with: model),
+                                                           result.asView(creator: user,
+                                                                         post: model.post,
+                                                                         community: model.community))))
             case .savePost(let model):
-                _ = await Lemmy.savePost(model.post, save: true)
+                _ = await Federation.savePost(model.post, save: true)
             case .unsavePost(let model):
-                _ = await Lemmy.savePost(model.post, save: false)
+                _ = await Federation.savePost(model.post, save: false)
             case .saveComment(let model):
-                _ = await Lemmy.saveComment(model.comment, save: true)
+                _ = await Federation.saveComment(model.comment, save: true)
             case .unsaveComment(let model):
-                _ = await Lemmy.saveComment(model.comment, save: false)
+                _ = await Federation.saveComment(model.comment, save: false)
                 
             /*
              TODO: the concept behind using reducers as proxies
@@ -173,12 +188,14 @@ extension ContentService {
                 broadcast.send(meta)
                 
             case .editCommentSubmit(let model, let content):
-                guard let updatedModel = await Lemmy.editComment(model.comment.id, content: content) else {
+                guard let updatedModel = await Federation.editComment(model.comment.id,
+                                                                      content: content) else {
                     //TODO: error  toast
                     return
                 }
                 
-                broadcast.send(Meta(kind: .editCommentSubmit(updatedModel.asView(with: model), content)))
+                broadcast.send(Meta(kind: .editCommentSubmit(updatedModel.asView(with: model),
+                                                             content)))
                 
             case .editPostSubmit:
                 broadcast.send(meta)

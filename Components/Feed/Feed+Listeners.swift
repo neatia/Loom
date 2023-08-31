@@ -7,7 +7,7 @@
 
 import Foundation
 import Granite
-import LemmyKit
+
 import SwiftUI
 
 extension Feed {

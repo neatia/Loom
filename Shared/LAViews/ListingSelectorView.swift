@@ -9,13 +9,13 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct ListingSelectorView: View {
     @Environment(\.contentContext) var context
     @GraniteAction<Void> var fetch
     
-    @Binding var listingType: ListingType
+    @Binding var listingType: FederatedListingType
     
     var body: some View {
         Menu {
@@ -27,7 +27,7 @@ struct ListingSelectorView: View {
                 
                 fetch.perform()
             } label: {
-                Text(ListingType.all.displayString)
+                Text(FederatedListingType.all.displayString)
                 Image(systemName: "arrow.down.right.circle")
             }
             
@@ -39,7 +39,7 @@ struct ListingSelectorView: View {
                 
                 fetch.perform()
             } label: {
-                Text(ListingType.local.displayString)
+                Text(FederatedListingType.local.displayString)
                 Image(systemName: "arrow.down.right.circle")
             }
         } label: {

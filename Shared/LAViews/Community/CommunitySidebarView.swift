@@ -8,16 +8,16 @@
 import Foundation
 import SwiftUI
 import Granite
-import LemmyKit
 import MarkdownView
+import FederationKit
 
 struct CommunitySidebarView: View {
-    var communityView: CommunityView
+    var communityView: FederatedCommunityResource?
     
-    var community: Community {
-        communityView.community
+    var community: FederatedCommunity? {
+        communityView?.community
     }
-    //@State var communityView: CommunityView? = nil
+    //@State var communityView: FederatedCommunityResource? = nil
     
     var body: some View {
         GraniteStandardModalView(maxHeight: nil,
@@ -32,7 +32,7 @@ struct CommunitySidebarView: View {
         } content: {
             VStack(spacing: .layer2) {
 //                //TODO: admin list
-//                if let communityView {
+//                if let FederatedCommunityResource{
 //                    HStack(spacing: .layer4) {
 //                        VStack {
 //                            Spacer()
@@ -46,7 +46,7 @@ struct CommunitySidebarView: View {
 //                }
                 
                 ScrollView(showsIndicators: false) {
-                    if let description = community.description {
+                    if let description = community?.description {
                         MarkdownView(text: description)
                             .markdownViewRole(.editor)
                             .padding(.layer3)
@@ -58,8 +58,8 @@ struct CommunitySidebarView: View {
             }
         }
 //        .task {
-//            let communityView = await Lemmy.community(community: community)
-//            self.communityView = communityView
+//            let FederatedCommunityResource= await Lemmy.community(community: community)
+//            self.FederatedCommunityResource= communityView
 //        }
     }
 }

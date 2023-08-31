@@ -11,10 +11,10 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct CommunitySidebarCardView: View {
-    var model: CommunityView
+    var model: FederatedCommunityResource
     var showCounts: Bool = true
     var fullWidth: Bool = true
     

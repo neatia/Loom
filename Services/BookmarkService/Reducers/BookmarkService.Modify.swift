@@ -8,7 +8,7 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+
 
 extension BookmarkService {
     struct Modify: GraniteReducer {

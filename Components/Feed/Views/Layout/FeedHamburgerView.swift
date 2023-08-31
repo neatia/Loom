@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 import Granite
-import LemmyKit
 import GraniteUI
+import FederationKit
 
 extension Feed {
     var accountExpandedMenuView: some View {
@@ -80,7 +80,7 @@ struct FeedHamburgerView: View {
     @Relay var account: AccountService
     
     //ExpandedView Only
-    @GraniteAction<FetchType> var changeLocation
+    @GraniteAction<FederatedLocationType> var changeLocation
     
     //Conditional views
     @State var loomsIsActive: Bool = false
@@ -89,10 +89,10 @@ struct FeedHamburgerView: View {
     @State var settingsIsActive: Bool = false
     
     //FeedMeta
-    var community: Community?
-    var communityView: CommunityView?
-    var location: FetchType
-    var peerLocation: FetchType?
+    var community: FederatedCommunity?
+    var communityView: FederatedCommunityResource?
+    var location: FederatedLocationType
+    var peerLocation: FederatedLocationType?
     var hasCommunityBanner: Bool {
         communityView?.community.banner != nil
     }
@@ -114,8 +114,8 @@ struct FeedHamburgerView: View {
         accountMeta?.person.actor_id
     }
     
-    var aggregates: PersonAggregates? {
-        LemmyKit.current.user?.local_user_view.counts
+    var aggregates: FederatedPersonAggregates? {
+        FederationKit.user()?.resource.user.counts
     }
     
     var postScore: String? {

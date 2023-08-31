@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct LoomEditView: View {
     @State var manifest: LoomManifest
@@ -97,7 +97,7 @@ struct LoomEditView: View {
                             ForEach(manifest.data) { fd in
                                 let isRemoving: Bool = removeCommunities.contains(where: { $0.id == fd.id })
                                 ZStack {
-                                    if let lemmyView = fd.community?.lemmy {
+                                    if let lemmyView = fd.community {
                                         CommunityCardView(model: lemmyView, showCounts: false)
                                     }
                                     

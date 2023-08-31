@@ -6,24 +6,24 @@
 //
 
 import Foundation
-import LemmyKit
 import SwiftUI
 import Granite
 import GraniteUI
+import FederationKit
 
 struct LocalCommunityPreview: View {
     @Environment(\.graniteRouter) var router
-    @GraniteAction<CommunityView> var pickedCommunity
+    @GraniteAction<FederatedCommunityResource> var pickedCommunity
     
     let url: String
-    var client: Lemmy {
-        .init(apiUrl: url)
+    var client: Federation {
+        .init(.init(.lemmy, host: url))
     }
     var modal: Bool = false
     var verticalPadding: CGFloat = .layer5
     var sidebar: Bool = false
     
-    @StateObject var local: Pager<CommunityView> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
+    @StateObject var local: Pager<FederatedCommunityResource> = .init(emptyText: "EMPTY_STATE_NO_COMMUNITIES")
     
     var body: some View {
         VStack {
@@ -56,7 +56,7 @@ struct LocalCommunityPreview: View {
                     
                     Divider()
                     
-                    PagerScrollView(CommunityView.self,
+                    PagerScrollView(FederatedCommunityResource.self,
                                     properties: .init(hideDivider: true)) { communityView in
                         
                         if sidebar {

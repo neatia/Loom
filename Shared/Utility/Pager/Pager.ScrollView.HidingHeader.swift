@@ -2,7 +2,7 @@
 //  Pager.ScrollView.HidingHeader.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 8/29/23.
+//  Created by PEXAVC on 8/29/23.
 //
 
 import Foundation

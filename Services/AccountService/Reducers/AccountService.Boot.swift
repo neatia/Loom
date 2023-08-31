@@ -7,7 +7,7 @@
 
 import Granite
 import Foundation
-import LemmyKit
+import FederationKit
 
 extension AccountService {
     struct Boot: GraniteReducer {
@@ -30,25 +30,30 @@ extension AccountService {
             
             guard let token = try? AccountService.getToken(identifier: accountMeta.username, service: accountMeta.host) else {
                 
-                Lemmy.getSite()
+                Federation.getSite()
                 state.authenticated = false
                 state.meta = nil
                 
-                LoomLog("[No Account Found] id: \(AccountService.keychainAuthToken + accountMeta.username), service: \(AccountService.keychainService + LemmyKit.baseUrl)", level: .debug)
-                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(accountMeta.host)", event: .normal))
+                LoomLog("[No Account Found] id: \(AccountService.keychainAuthToken + accountMeta.username), service: \(AccountService.keychainService + FederationKit.host)", level: .debug)
+                broadcast.send(
+                    StandardNotificationMeta(title: "MISC_CONNECTED",
+                                             message: "ALERT_CONNECTED_SUCCESS \(accountMeta.host)",
+                                             event: .normal))
                 return
             }
             
-            LemmyKit.auth = token
+            FederationKit.setAuth(token: token)
             
-            let result = await Lemmy.site()
+            let result = await Federation.site()
             
             guard let result else {
-                broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "MISC_ERROR_2", event: .error))
+                broadcast.send(StandardNotificationMeta(title: "MISC_ERROR",
+                                                        message: "MISC_ERROR_2",
+                                                        event: .error))
                 return
             }
             
-            guard let user = result.my_user else {
+            guard let resource = result.my_user else {
                 print("[AccountService] No user found")
                 state.meta = nil
                 return
@@ -56,11 +61,14 @@ extension AccountService {
             
             LoomLog("[Account Restored] - connected", level: .debug)
             
-            broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \(accountMeta.host + " @\(accountMeta.username)")", event: .success))
+            broadcast.send(
+                StandardNotificationMeta(title: "MISC_CONNECTED",
+                                         message: "ALERT_CONNECTED_SUCCESS \(accountMeta.host + " @\(accountMeta.username)")",
+                                         event: .success))
             
-            state.meta = .init(info: user, host: accountMeta.host)
+            state.meta = .init(resource: resource, host: accountMeta.host)
             state.addToProfiles = false
-            state.authenticated = LemmyKit.auth != nil
+            state.authenticated = FederationKit.isAuthenticated()
             
             bookmark.preload()
             bookmark.center.boot.send()

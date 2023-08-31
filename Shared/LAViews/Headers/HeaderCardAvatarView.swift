@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct HeaderCardAvatarView: View {
     @Environment(\.contentContext) var context
@@ -17,15 +17,15 @@ struct HeaderCardAvatarView: View {
     @GraniteAction<Void> var tappedThreadLine
     @GraniteAction<Void> var longPressThreadLine
     
-    var postView: PostView? {
+    var postView: FederatedPostResource? {
         context.postModel
     }
     
-    var commentView: CommentView? {
+    var commentView: FederatedCommentResource? {
         context.commentModel
     }
     
-    typealias Crumb = (Int, Person)
+    typealias Crumb = (Int, FederatedPerson)
     let crumbs: [Crumb]
     
     let showAvatar: Bool
@@ -66,7 +66,7 @@ struct HeaderCardAvatarView: View {
         isAdmin || isOP
     }
     
-    init(crumbs: [CommentView] = [],
+    init(crumbs: [FederatedCommentResource] = [],
          showAvatar: Bool = true,
          size: AvatarView.Size = .small,
          showThreadLine: Bool = true,
@@ -81,7 +81,7 @@ struct HeaderCardAvatarView: View {
     var body: some View {
         VStack(spacing: .layer3) {
             if showAvatar {
-                AvatarView(context.person?.lemmy,
+                AvatarView(context.person,
                            size: size)
                     .overlay(Circle()
                     .stroke(avatarBorderColor, lineWidth: 1.0))

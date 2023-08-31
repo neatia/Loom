@@ -8,10 +8,10 @@
 import Foundation
 import SwiftUI
 import Granite
-import LemmyKit
+import FederationKit
 
 struct FeedSidebar<Content: View>: View {
-    @GraniteAction<(CommunityView, FederatedData?)> var pickedCommunity
+    @GraniteAction<(FederatedCommunityResource, FederatedData?)> var pickedCommunity
     
     let header: () -> Content
     init(@ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {

@@ -1,7 +1,7 @@
 import Granite
 import SwiftUI
-import LemmyKit
 import GraniteUI
+import FederationKit
 
 extension Search: View {
     public var view: some View {
@@ -85,15 +85,15 @@ extension Search: View {
         .background(Color.background)
         .task {
             conductor.hook { query in
-                await Lemmy.search(query,
-                                   type_: selectedSearch,
-                                   communityId: nil,
-                                   communityName: community?.name,
-                                   creatorId: nil,
-                                   sort: selectedSort,
-                                   listingType: selectedListing,
-                                   page: 1,
-                                   limit: ConfigService.Preferences.pageLimit)
+                await Federation.search(query,
+                                        type_: selectedSearch,
+                                        communityId: nil,
+                                        communityName: community?.name,
+                                        creatorId: nil,
+                                        sort: selectedSort,
+                                        listingType: selectedListing,
+                                        page: 1,
+                                        limit: ConfigService.Preferences.pageLimit)
             }
             
             guard conductor.response == nil else { return }
