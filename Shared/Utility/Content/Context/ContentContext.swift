@@ -29,7 +29,7 @@ struct ContentContext {
     var viewingContext: ViewingContext = .base
     
     var id: String {
-        let contentId = (commentModel?.comment.id ?? postModel?.post.id) ?? -1
+        let contentId = (commentModel?.comment.id ?? postModel?.post.id) ?? "-1"
         return "\(viewingContext)\(contentId)"
     }
     

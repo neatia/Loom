@@ -242,7 +242,7 @@ struct UserCardView: View {
 #if DEBUG
 struct UserCard_Previews : PreviewProvider {
     static var previews: some View {
-        UserCardView(model: .init(person: .mock, counts: .init(id: 0, person_id: 0, post_count: 0, post_score: 0, comment_count: 0, comment_score: 0)))
+        UserCardView(model: .init(person: .mock, counts: .init(id: "0", person_id: "0", post_count: 0, post_score: 0, comment_count: 0, comment_score: 0)))
             .frame(width: 120, height: 80)
     }
 }

@@ -183,7 +183,7 @@ struct FeedHamburgerView: View {
                 }
                 
                 //General menu items
-                VStack(spacing: .layer5) {
+                VStack(spacing: .layer5 + 2) {
                     if account.isLoggedIn {
                         profileView
                         loomsView
@@ -226,6 +226,7 @@ extension FeedHamburgerView {
                     Text("Looms")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
+                        .padding(.leading, 2)
                 }
                 .buttonStyle(.plain)
                 
@@ -410,6 +411,7 @@ extension FeedHamburgerView {
                     Text("AUTH_LOGIN")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
+                        .padding(.leading, 2)
                 }
                 .buttonStyle(.plain)
                 
@@ -429,6 +431,7 @@ extension FeedHamburgerView {
                     Text("Profile")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
+                        .padding(.leading, 2)
                 }
                 .routeButton(window: .resizable(600, 500)) {
                     Profile(account.state.meta?.person)

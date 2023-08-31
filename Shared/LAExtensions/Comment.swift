@@ -80,16 +80,16 @@ extension FederatedComment {
     }
     
     func updateRemoved() -> FederatedComment {
-        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: !self.removed, published: self.published, deleted: self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id)
+        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: !self.removed, published: self.published, deleted: self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id, instanceType: self.instanceType)
     }
     
     func updateDeleted() -> FederatedComment {
-        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: self.removed, published: self.published, deleted: !self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id)
+        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: self.removed, published: self.published, deleted: !self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id, instanceType: self.instanceType)
     }
 }
 
 extension FederatedCommentAggregates {
-    static func new(id: Int = 0, commentId: Int, published: String) -> FederatedCommentAggregates {
+    static func new(id: String = "-1", commentId: String, published: String) -> FederatedCommentAggregates {
         .init(id: id, comment_id: commentId, score: 1, upvotes: 1, downvotes: 0, published: published, child_count: 0, hot_rank: 0)
     }
     

@@ -232,8 +232,8 @@ struct InstanceCardView: View {
 struct InstanceCardView_Previews: PreviewProvider {
     static var previews: some View {
         InstanceCardView(.init(.lemmy,
-                               id: 0,
-                               domain: "https://lemmy.world",
+                               id: "0",
+                               domain: "https://neatia.xyz",
                                published: Date.now.asString))
         .padding(.layer2)
     }

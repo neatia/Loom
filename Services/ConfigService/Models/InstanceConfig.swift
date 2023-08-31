@@ -12,7 +12,7 @@ import FederationKit
 
 extension FederationServer {
     static var `default`: FederationServer {
-        .init(.lemmy, host: "https://lemm.ee")
+        .init(.lemmy, host: "https://lemmy.world")
     }
 }
 

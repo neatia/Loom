@@ -25,7 +25,7 @@ struct HeaderCardAvatarView: View {
         context.commentModel
     }
     
-    typealias Crumb = (Int, FederatedPerson)
+    typealias Crumb = (String, FederatedPerson)
     let crumbs: [Crumb]
     
     let showAvatar: Bool

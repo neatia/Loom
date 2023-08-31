@@ -34,7 +34,7 @@ struct HeaderCardView: View {
     
     let isCompact: Bool
     
-    typealias Crumb = (Int, FederatedPerson)
+    typealias Crumb = (String, FederatedPerson)
     let crumbs: [Crumb]
     
     init(crumbs: [FederatedCommentResource] = [],

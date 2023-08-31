@@ -28,7 +28,10 @@ extension FederatedPostResource: Pageable {
     }
     
     public var shouldHide: Bool {
-        self.post.nsfw == true || self.community.nsfw == true
+        let shouldHideNSFW: Bool = (self.post.nsfw == true || self.community.nsfw == true) && PagerFilter.enable
+        let shouldHideBot: Bool = self.creator.bot_account == true && PagerFilter.enableForBots
+            
+        return shouldHideNSFW || shouldHideBot
     }
     
     public var md5: String {
@@ -54,11 +57,11 @@ extension FederatedPostResource {
 
 extension FederatedPost {
     func updateRemoved() -> FederatedPost {
-        .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: !self.removed, locked: self.locked, published: self.published, deleted: self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local)
+        .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: !self.removed, locked: self.locked, published: self.published, deleted: self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local, instanceType: self.instanceType)
     }
     
     func updateDeleted() -> FederatedPost {
-        .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: self.removed, locked: self.locked, published: self.published, deleted: !self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local)
+        .init(id: self.id, name: self.name, creator_id: self.creator_id, community_id: self.community_id, removed: self.removed, locked: self.locked, published: self.published, deleted: !self.deleted, nsfw: self.nsfw, ap_id: self.ap_id, local: self.local, language_id: self.language_id, featured_community: self.featured_community, featured_local: self.featured_local, instanceType: self.instanceType)
     }
 }
 

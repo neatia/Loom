@@ -15,7 +15,7 @@ extension FederatedInstance: GlobeNode {
     
     public static var base: FederatedInstance {
         .init(FederationKit.currentInstanceType,
-              id: FederationKit.metadata()?.site.instance_id ?? -1,
+              id: (FederationKit.metadata()?.site.instance_id ?? -1).asString,
               domain: FederationKit.host,
               published: FederationKit.metadata()?.site.published ?? "")
     }

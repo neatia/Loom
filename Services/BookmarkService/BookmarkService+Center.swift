@@ -88,7 +88,7 @@ class BookmarkComments: Equatable, Codable {
     var map: CommentMap
     
     //PostId:
-    var postMap: [Int: FederatedPostResource]
+    var postMap: [String: FederatedPostResource]
     
     init(_ domain: String) {
         self.domain = domain

@@ -474,6 +474,17 @@ extension FooterView {
                         .font(.caption)
                         .foregroundColor(.yellow.opacity(0.8))
                 }
+                
+                if postView.post.instanceType == .mastodon {
+                    Text("•")
+                        .font(.footnote)
+                        .padding(.horizontal, .layer2)
+                        .foregroundColor(.foreground.opacity(0.5))
+                    
+                    Text("mastodon")
+                        .font(.caption)
+                        .foregroundColor(Brand.Colors.purple.opacity(0.8))
+                }
             }
         }
     }

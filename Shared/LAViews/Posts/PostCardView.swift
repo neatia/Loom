@@ -306,14 +306,17 @@ extension PostCardView {
     var contentMetaBody: some View {
         let model: FederatedPostResource? = self.model ?? context.postModel
         return VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text(model?.post.name ?? "")
-                    .font(.body)
-                    .multilineTextAlignment(.leading)
-                    .foregroundColor(.foreground.opacity(0.9))
-                Spacer()
+            if let name = model?.post.name,
+               name.isNotEmpty {
+                HStack {
+                    Text(name)
+                        .font(.body)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.foreground.opacity(0.9))
+                    Spacer()
+                }
+                .padding(.bottom, !context.hasBody && !context.hasURL ? .layer5 : 0)
             }
-            .padding(.bottom, !context.hasBody && !context.hasURL ? .layer5 : 0)
             
             /*
              contentMetadata can be nil if showing bookmarks

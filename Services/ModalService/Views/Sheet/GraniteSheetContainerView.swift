@@ -107,7 +107,6 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
                 manager.models[self.id]?.content
                     .graniteSheetDismissable(shouldPreventDismissal: manager.shouldPreventDismissal)
                     .zIndex(7)
-                    .padding(.top, .layer2)
 #else
                 
                 manager.models[self.id]?.content

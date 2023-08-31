@@ -33,7 +33,11 @@ extension ConfigService {
                 }
             }
             var showScores: Bool = false
-            var showBotAccounts: Bool = false
+            var showBotAccounts: Bool = false {
+                didSet {
+                    PagerFilter.enableForBots = showBotAccounts == false
+                }
+            }
             var sortType: FederatedSortType = .hot
             var listingType: FederatedListingType = .all
             
@@ -62,6 +66,12 @@ extension ConfigService {
                 }
             }
             var marblePlaybackControls: Bool = false
+            
+            //Sharing
+            var enableWatermark: Bool = true
+            
+            //Federation
+            var allowAutomaticFinding: Bool = true
         }
         
         @Event var boot: Boot.Reducer

@@ -39,8 +39,8 @@ struct HeaderView: View {
     @Relay var layout: LayoutService
     
     @GraniteAction<FederatedCommunity> var viewCommunity
-    @GraniteAction<Int> var tappedDetail
-    @GraniteAction<Int> var tappedCrumb
+    @GraniteAction<String> var tappedDetail
+    @GraniteAction<String> var tappedCrumb
     @GraniteAction<Void> var edit
     @GraniteAction<Void> var goToThread
     
@@ -64,7 +64,7 @@ struct HeaderView: View {
     //Not used currently
     let badge: Badge
     
-    typealias Crumb = (Int, FederatedPerson)
+    typealias Crumb = (String, FederatedPerson)
     let crumbs: [Crumb]
     
     init(crumbs: [FederatedCommentResource] = [],

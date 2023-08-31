@@ -43,7 +43,11 @@ extension ConfigService {
             
             let server: FederationServer?
             if let host = meta.host {
-                server = .init(.lemmy, host: host)
+                if state.allowAutomaticFinding {
+                    server = .init(host: host)
+                } else {//Default to lemmy
+                    server = .init(.lemmy, host: host)
+                }
             } else if let accountMeta = meta.accountMeta {
                 server = .init(.lemmy, host: accountMeta.host)
             } else {

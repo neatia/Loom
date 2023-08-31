@@ -111,7 +111,7 @@ struct ThreadView: View {
         }
     }
     
-    func viewReplies(_ id: Int) {
+    func viewReplies(_ id: String) {
         if let index = breadCrumbs.firstIndex(where: { $0.comment.id == id }) {
             breadCrumbs = Array(breadCrumbs.prefix(index + 1))
         } else {

@@ -336,7 +336,7 @@ struct CommunityCard_Previews : PreviewProvider {
      active day/week/month/halfyear
      */
     static var previews: some View {
-        CommunityCardView(model: .init(community: .mock, subscribed: .notSubscribed, blocked: false, counts: .init(id: 0, community_id: 0, subscribers: 0, posts: 0, comments: 0, published: "", users_active_day: 0, users_active_week: 0, users_active_month: 0, users_active_half_year: 0, hot_rank: 0)))
+        CommunityCardView(model: .init(community: .mock, subscribed: .notSubscribed, blocked: false, counts: .init(id: "0", community_id: 0, subscribers: 0, posts: 0, comments: 0, published: "", users_active_day: 0, users_active_week: 0, users_active_month: 0, users_active_half_year: 0, hot_rank: 0)))
     }
 }
 #endif
