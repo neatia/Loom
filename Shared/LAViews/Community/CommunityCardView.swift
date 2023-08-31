@@ -9,15 +9,15 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 //TODO: merge with SidebarCardView
 struct CommunityCardView: View {
     @Environment(\.graniteRouter) var router
-    @GraniteAction<(CommunityView, FederatedData?)> var viewCommunity
+    @GraniteAction<(FederatedCommunityResource, FederatedData?)> var viewCommunity
     
     
-    var model: CommunityView
+    var model: FederatedCommunityResource
     //TODO: centralize this at a higher level
     //since this component is used for many case scenarios
     var shouldRoute: Bool = false
@@ -28,7 +28,7 @@ struct CommunityCardView: View {
     var federatedData: FederatedData? = nil
     
     var peerHost: String? {
-        if federatedData?.host == LemmyKit.host {
+        if federatedData?.host == FederationKit.host {
             return nil
         } else {
             return federatedData?.host
@@ -94,12 +94,12 @@ struct CommunityCardView: View {
             .offset(y: .layer1)//nitpick
             .scrollOnOverflow()
             .onTapGesture {
-                routeCommunityView()
+                routeFederatedCommunityResource()
             }
             
             Menu {
                 Button {
-                    routeCommunityView()
+                    routeFederatedCommunityResource()
                 } label: {
                     Text("!\(model.community.name)")
                     Image(systemName: "arrow.right.circle")
@@ -164,7 +164,7 @@ struct CommunityCardView: View {
                 }
                 .offset(y: .layer1)
                 .onTapGesture {
-                    routeCommunityView()
+                    routeFederatedCommunityResource()
                 }
                 
                 if fullWidth {
@@ -314,7 +314,7 @@ struct CommunityCardView: View {
 //MARK: Actions
 
 extension CommunityCardView {
-    func routeCommunityView() {
+    func routeFederatedCommunityResource() {
         let community = model.community
         GraniteHaptic.light.invoke()
         
@@ -336,7 +336,7 @@ struct CommunityCard_Previews : PreviewProvider {
      active day/week/month/halfyear
      */
     static var previews: some View {
-        CommunityCardView(model: .init(community: .mock, subscribed: .notSubscribed, blocked: false, counts: .init(id: 0, community_id: 0, subscribers: 0, posts: 0, comments: 0, published: "", users_active_day: 0, users_active_week: 0, users_active_month: 0, users_active_half_year: 0, hot_rank: 0)))
+        CommunityCardView(model: .init(community: .mock, subscribed: .notSubscribed, blocked: false, counts: .init(id: "0", community_id: 0, subscribers: 0, posts: 0, comments: 0, published: "", users_active_day: 0, users_active_week: 0, users_active_month: 0, users_active_half_year: 0, hot_rank: 0)))
     }
 }
 #endif

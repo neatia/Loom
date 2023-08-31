@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct Search: GraniteComponent {
     @Command var center: Center
@@ -11,10 +11,10 @@ struct Search: GraniteComponent {
     
     @StateObject var conductor: SearchConductor = .init()
     
-    let community: Community?
+    let community: FederatedCommunity?
     let isModal: Bool
     
-    init(_ community: Community? = nil, isModal: Bool = false) {
+    init(_ community: FederatedCommunity? = nil, isModal: Bool = false) {
         self.community = community
         self.isModal = isModal
     }

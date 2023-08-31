@@ -8,21 +8,21 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct FeedMainView<Content: View>: View {
-    @GraniteAction<Community> var viewCommunity
-    @GraniteAction<PostView> var showContent
+    @GraniteAction<FederatedCommunity> var viewCommunity
+    @GraniteAction<FederatedPostResource> var showContent
     
-    @EnvironmentObject var pager: Pager<PostView>
+    @EnvironmentObject var pager: Pager<FederatedPostResource>
     @Environment(\.graniteEvent) var interact
     
-    let location: FetchType
+    let location: FederatedLocationType
     let header: () -> Content
     let isViewingCommunity: Bool
-    let communityView: CommunityView?
-    init(location: FetchType,
-         communityView: CommunityView? = nil,
+    let communityView: FederatedCommunityResource?
+    init(location: FederatedLocationType,
+         communityView: FederatedCommunityResource? = nil,
          @ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
         self.location = location
         self.header = header
@@ -31,7 +31,7 @@ struct FeedMainView<Content: View>: View {
     }
     
     var body: some View {
-        PagerScrollView(PostView.self,
+        PagerScrollView(FederatedPostResource.self,
                         properties: .init(alternateContentPosition: true,
                                           performant: true,
                                           hidingHeader: true,

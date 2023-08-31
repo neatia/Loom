@@ -7,8 +7,8 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import Granite
+import FederationKit
 
 class LayoutEnvironment: ObservableObject {
     enum Style: GraniteModel {
@@ -17,13 +17,13 @@ class LayoutEnvironment: ObservableObject {
     }
     
     enum FeedContext: GraniteModel {
-        case viewPost(PostView)
+        case viewPost(FederatedPostResource)
         case idle
     }
     
     enum FeedCommunityContext: GraniteModel {
-        case viewCommunityView(CommunityView)
-        case viewCommunity(Community)
+        case viewCommunityView(FederatedCommunityResource)
+        case viewCommunity(FederatedCommunity)
         case idle
     }
     

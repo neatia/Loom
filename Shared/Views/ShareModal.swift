@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+
 
 #if os(macOS)
 import AppKit

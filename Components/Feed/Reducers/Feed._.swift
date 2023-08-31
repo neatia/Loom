@@ -6,7 +6,6 @@
 //
 
 import Granite
-import LemmyKit
 
 extension Feed {
     struct GoHome: GraniteReducer {

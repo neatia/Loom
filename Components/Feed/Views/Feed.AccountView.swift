@@ -8,7 +8,7 @@
 import Granite
 import SwiftUI
 import Foundation
-import LemmyKit
+
 
 struct AccountView: View {
     @Environment(\.graniteRouter) var router

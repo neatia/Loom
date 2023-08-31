@@ -7,8 +7,8 @@
 
 import Foundation
 import Granite
-import LemmyKit
 import SwiftUI
+import FederationKit
 
 extension Profile {
     var listeners: Void {

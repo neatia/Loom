@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LemmyKit
+
 import SwiftUI
 import Granite
 import GraniteUI

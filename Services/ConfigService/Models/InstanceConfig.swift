@@ -8,18 +8,11 @@
 import Granite
 import Foundation
 import IPFSKit
+import FederationKit
 
-struct InstanceConfig: GraniteModel, Hashable {
-    var baseUrl: String
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(baseUrl)
-    }
-}
-
-extension InstanceConfig {
-    static var `default`: InstanceConfig {
-        .init(baseUrl: "https://neatia.xyz")
+extension FederationServer {
+    static var `default`: FederationServer {
+        .init(.lemmy, host: "https://lemmy.world")
     }
 }
 

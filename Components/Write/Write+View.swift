@@ -1,7 +1,7 @@
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Write: View {
     public var view: some View {
@@ -40,15 +40,15 @@ extension Write: View {
                     guard let data, config.state.enableIPFS == false else { return }
                     
                     _ = Task.detached {
-                        let response = await Lemmy.uploadImage(data)
+                        let response = await Federation.uploadImage(data)
                         
-                        guard let file = response?.files.first else {
+                        guard let response else {
                             //Most likely file too big
                             //TODO: error toast
                             return
                         }
                         
-                        let userContent: UserContent = .init(imageFile: file)
+                        let userContent: UserContent = .init(media: response)
                         _state.imageContent.wrappedValue = userContent
                         if state.postURL.isEmpty {
                             _state.postURL.wrappedValue = userContent.contentURL
@@ -63,7 +63,7 @@ extension Write: View {
                         _ = Task.detached {
                             
                             if let content = state.imageContent {
-                                let response = await Lemmy.deleteImage(content.imageFile)
+                                let response = await Federation.deleteImage(content.media)
                             }
                             
                             _state.imageData.wrappedValue = nil
@@ -179,7 +179,7 @@ extension Write: View {
                                 
                                 _ = Task.detached {
                                     
-                                    let response = await Lemmy.deleteImage(content.imageFile)
+                                    let response = await Federation.deleteImage(content.media)
                                     
                                     _state.imageData.wrappedValue = nil
                                     _state.imageContent.wrappedValue = nil

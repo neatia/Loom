@@ -6,10 +6,16 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 
-extension MyUserInfo {
-    func updateBlocks(_ blocks: [PersonBlockView]) -> MyUserInfo {
-        .init(local_user_view: self.local_user_view, follows: self.follows, moderates: self.moderates, community_blocks: self.community_blocks, person_blocks: blocks, discussion_languages: self.discussion_languages)
+extension UserResource {
+    func updateBlocks(_ blocks: [PersonRelationshipModel]) -> UserResource {
+        .init(user: self.user,
+              follows: self.follows,
+              moderates: self.moderates,
+              community_blocks: self.community_blocks,
+              person_blocks: blocks,
+              discussion_languages: self.discussion_languages,
+              instanceType: self.instanceType)
     }
 }

@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension ContentService {
     struct Center: GraniteCenter {
@@ -23,16 +23,16 @@ extension ContentService {
 }
 
 struct Posts {
-    var listingType: ListingType
+    var listingType: FederatedListingType
 }
 
 //TODO: not instance agnostic
-typealias PostMap = [String:PostView]
+typealias PostMap = [String:FederatedPostResource]
 
-typealias CommunityMap = [String:Community]
+typealias CommunityMap = [String:FederatedCommunity]
 
 struct UserContent: GraniteModel {
-    var imageFile: ImageFile
+    var media: FederatedMedia
     var date: Date = .init()
     
     var isIPFS: Bool = false
@@ -44,11 +44,8 @@ struct UserContent: GraniteModel {
 
 extension UserContent {
     var contentURL: String {
-        if isIPFS {
-            return self.imageFile.file
-        } else {
-            return LemmyKit.current.contentURL + "/" + self.imageFile.file
-        }
+        //TODO: return nil
+        self.media.filePath ?? ""
     }
 }
 

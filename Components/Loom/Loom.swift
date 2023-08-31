@@ -1,13 +1,13 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct Loom: GraniteComponent {
     @Command var center: Center
     
     @Relay var service: LoomService
     
-    let communityView: CommunityView?
+    let communityView: FederatedCommunityResource?
     
     var listeners: Void {
         service
@@ -20,7 +20,7 @@ struct Loom: GraniteComponent {
             }
     }
     
-    init(communityView: CommunityView? = nil) {
+    init(communityView: FederatedCommunityResource? = nil) {
         self.communityView = communityView
         service.preload()
     }

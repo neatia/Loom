@@ -1,7 +1,7 @@
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+
 
 extension Globe: View {
     public var view: some View {

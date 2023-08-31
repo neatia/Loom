@@ -9,16 +9,14 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct PostActionsView: View {
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<FederatedCommunity> var viewCommunity
     @GraniteAction<Void> var goToPost
     @GraniteAction<Void> var goToThread
     @GraniteAction<Void> var edit
     @GraniteAction<Void> var replyToContent
-    
-    @GraniteAction<ContentInteraction.Kind> var interact
     //A view needs updating outside of this view's potential hierarchy
     @Environment(\.graniteEvent) var accountInteract
     
@@ -30,10 +28,10 @@ struct PostActionsView: View {
     var enableCommunityRoute: Bool
     var shouldRouteToPost: Bool = true
     
-    var community: Community?
-    var postView: PostView?
+    var community: FederatedCommunity?
+    var postView: FederatedPostResource?
     
-    var person: Person?
+    var person: FederatedPerson?
     
     var bookmarkKind: BookmarkService.Kind?
     
@@ -151,7 +149,7 @@ extension PostActionsView {
                 Button {
                     GraniteHaptic.light.invoke()
                     
-                    let community: Community? = community ?? postView?.community
+                    let community: FederatedCommunity? = community ?? postView?.community
                     
                     guard let community else { return }
                     

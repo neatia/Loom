@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 
 extension Write.Generate {
     static func htmlReader(title: String, author: String, content: [String], urlString: String, image_url: String, songId: String? = nil) -> String {
@@ -19,8 +19,9 @@ extension Write.Generate {
     }
     
     static func createQuote(_ value: String? = nil) -> String {
-        let user = LemmyKit.current.user?.local_user_view.person.name ?? ""
-        let url = (LemmyKit.current.user?.local_user_view.person.actor_id ?? "")
+        let person = FederationKit.user()?.resource.user.person
+        let user = person?.name ?? ""
+        let url = person?.actor_id ?? ""
         
         var quoteBody: String = ""
         if let value {

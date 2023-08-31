@@ -1,6 +1,6 @@
 import Granite
-import LemmyKit
 import SwiftUI
+import FederationKit
 
 struct Profile: GraniteComponent {
     @Command var center: Center
@@ -14,9 +14,9 @@ struct Profile: GraniteComponent {
     
     let isMe: Bool
     
-    init(_ person: Person? = nil) {
+    init(_ person: FederatedPerson? = nil) {
         isMe = person?.isMe == true
-        _center = .init(.init(person: person ?? LemmyKit.current.user?.local_user_view.person))
+        _center = .init(.init(person: person ?? FederationKit.user()?.resource.user.person))
         content.silence(viewUpdatesOnly: true)
         
         LoomLog("profile init")
@@ -41,14 +41,14 @@ public struct PersonDetailsPageable: Pageable {
         commentView?.blocked == true || postView?.blocked == true
     }
     
-    public var person: Person {
+    public var person: FederatedPerson {
         (
             commentView?.creator ?? postView?.creator
         ) ?? .mock
     }
     
-    let commentView: CommentView?
-    let postView: PostView?
+    let commentView: FederatedCommentResource?
+    let postView: FederatedPostResource?
     
     var isMention: Bool
     var isReply: Bool

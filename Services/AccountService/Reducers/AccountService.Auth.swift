@@ -1,8 +1,8 @@
 import Granite
 import Foundation
 import SwiftUI
-import LemmyKit
 import Security
+import FederationKit
 
 extension AccountService {
     enum AuthIntent {
@@ -29,9 +29,9 @@ extension AccountService {
             let addToProfiles: Bool = meta?.addToProfiles ?? false
             switch intent {
             case .login(let username, let password, let token2FA):
-                let info = await Lemmy.login(username: username,
-                                             password: password,
-                                             token2FA: token2FA)
+                let info = await Federation.login(username: username,
+                                                  password: password,
+                                                  token2FA: token2FA)
                 
                 guard info != nil else {
                     beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
@@ -40,21 +40,29 @@ extension AccountService {
                 }
                 
                 guard setup(username, jwt: info, addToProfiles: addToProfiles),
-                      let user = LemmyKit.current.user else {
+                      let user = FederationKit.user() else {
                     return
                 }
                 
                 ModalService.shared.dismissSheet()
                 
-                broadcast.send(StandardNotificationMeta(title: "MISC_CONNECTED", message: "ALERT_CONNECTED_SUCCESS \("@"+username)", event: .success))
+                broadcast.send(
+                    StandardNotificationMeta(title: "MISC_CONNECTED",
+                                             message: "ALERT_CONNECTED_SUCCESS \("@"+username)",
+                                             event: .success))
                 
-                state.meta = .init(info: user, host: LemmyKit.host)
+                state.meta = .init(user)
                 state.addToProfiles = false
-                state.authenticated = LemmyKit.auth != nil
+                state.authenticated = FederationKit.isAuthenticated()
                 bookmark.center.boot.send()
                 
             case .register(let username, let password, let captchaUUID, let captchaAnswer):
-                let info = await Lemmy.register(username: username, password: password, password_verify: password, show_nsfw: false, captcha_uuid: captchaUUID, captcha_answer: captchaAnswer)
+                let info = await Federation.register(username: username,
+                                                     password: password,
+                                                     password_verify: password,
+                                                     show_nsfw: false,
+                                                     captcha_uuid: captchaUUID,
+                                                     captcha_answer: captchaAnswer)
                 
                 guard info != nil else {
                     beam.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
@@ -63,13 +71,13 @@ extension AccountService {
                 }
                 
                 guard setup(username, jwt: info, addToProfiles: addToProfiles),
-                      let user = LemmyKit.current.user else {
+                      let user = FederationKit.user() else {
                     return
                 }
                 
-                state.meta = .init(info: user, host: LemmyKit.host)
+                state.meta = .init(user)
                 state.addToProfiles = false
-                state.authenticated = LemmyKit.auth != nil
+                state.authenticated = FederationKit.isAuthenticated()
             }
         }
         
@@ -82,8 +90,8 @@ extension AccountService {
             do {
                 try AccountService.insertToken(data,
                                                identifier: username,
-                                               service: LemmyKit.host)
-                LoomLog("Auth | Boot | inserted into \(LemmyKit.host) keychain", level: .debug)
+                                               service: FederationKit.host)
+                LoomLog("Auth | Boot | inserted into \(FederationKit.host) keychain", level: .debug)
                 return true
             } catch let error {
                 LoomLog("Auth | Boot | Error \(error.localizedDescription)", level: .error)
@@ -101,8 +109,8 @@ extension AccountService {
         
         func reduce(state: inout Center.State) {
             state.meta = nil
-            LemmyKit.auth = nil
             state.authenticated = false
+            FederationKit.logout()
         }
     }
 }

@@ -9,20 +9,20 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct ReportView: View {
     @GraniteAction<Void> var cancel
     @GraniteAction<Void> var add
     
     enum Kind {
-        case post(PostView)
-        case comment(CommentView)
+        case post(FederatedPostResource)
+        case comment(FederatedCommentResource)
     }
     
     struct Submit: GraniteModel {
         var reason: String
-        var model: PostView
+        var model: FederatedPostResource
     }
     
     var kind: Kind

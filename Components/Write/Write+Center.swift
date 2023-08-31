@@ -1,14 +1,14 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Write {
     struct Center: GraniteCenter {
         struct State: GraniteState {
             var isEditing: Bool {
-                editingPostView != nil
+                editingFederatedPostResource != nil
             }
-            var editingPostView: PostView? = nil
+            var editingFederatedPostResource: FederatedPostResource? = nil
             
             var title: String = ""
             var content: String = ""
@@ -20,10 +20,10 @@ extension Write {
             var enableMDPreview: Bool = false
             var enableImagePreview: Bool = true
             
-            var postCommunity: CommunityView? = nil
+            var postCommunity: FederatedCommunityResource? = nil
             
             var showPost: Bool = false
-            var createdPostView: PostView? = nil
+            var createdFederatedPostResource: FederatedPostResource? = nil
             
             var isPosting: Bool = false
             

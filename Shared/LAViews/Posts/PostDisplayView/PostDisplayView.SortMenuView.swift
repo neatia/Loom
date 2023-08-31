@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 extension PostDisplayView {
     var sortMenuView: some View {
@@ -52,7 +52,7 @@ extension PostDisplayView {
     }
 }
 
-extension CommentSortType {
+extension FederatedCommentSortType {
     var displayString: LocalizedStringKey {
         switch self {
         case .top:

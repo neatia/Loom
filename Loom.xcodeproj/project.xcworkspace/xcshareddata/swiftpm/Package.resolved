@@ -51,7 +51,7 @@
       "location" : "https://github.com/pexavc/LemmyKit",
       "state" : {
         "branch" : "main",
-        "revision" : "43cc856ce27ea098bdd0dbf8911a145eceb7dea1"
+        "revision" : "f493b32d93d8f8c9927bc5f2dfbd8f7baecaae2c"
       }
     },
     {
@@ -70,6 +70,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
+      }
+    },
+    {
+      "identity" : "mastodonkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MastodonKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "b21dfbf6ae4c510d440d069b02bc9b07e627ed95"
       }
     },
     {

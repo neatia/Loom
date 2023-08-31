@@ -9,14 +9,14 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
-import MarkdownView
 import NukeUI
+import MarkdownView
+import FederationKit
 
 struct InstanceMetaView: View {
     @Environment(\.graniteEvent) var restart
     
-    var instance: Instance
+    var instance: FederatedInstance
     
     var name: String? {
         if isBase {
@@ -43,7 +43,7 @@ struct InstanceMetaView: View {
     }
     
     var isBase: Bool {
-        instance.domain == LemmyKit.host
+        instance.domain == FederationKit.host
     }
     
     var iconURL: URL? {
@@ -68,15 +68,15 @@ struct InstanceMetaView: View {
         "https://" + title
     }
     
-    @State var metadata: Lemmy.Metadata?
-    @State var siteMetaData: SiteMetadata?
+    @State var metadata: FederationMetadata?
+    @State var siteMetaData: FederatedSiteMetadata?
     @State var task: Task<Void, Error>? = nil
     
-    init(_ instance: Instance) {
+    init(_ instance: FederatedInstance) {
         self.instance = instance
         
         if isBase {
-            metadata = LemmyKit.current.metadata
+            metadata = FederationKit.metadata()
         }
     }
     
@@ -156,12 +156,8 @@ struct InstanceMetaView: View {
     }
     
     func getMetadata() async {
-        if isBase {
-            metadata = LemmyKit.current.metadata
-        } else {
-            guard let response = await Lemmy.metadata(url: host) else { return }
-            self.siteMetaData = response.metadata
-        }
+        guard let response = await Federation.metadata(url: host) else { return }
+        self.siteMetaData = response
     }
     
     var connectView: some View {
@@ -184,7 +180,7 @@ struct InstanceMetaView: View {
 }
 
 struct InstanceMetaDetailsView: View {
-    var meta: Lemmy.Metadata
+    var meta: FederationMetadata
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -199,13 +195,6 @@ struct InstanceMetaDetailsView: View {
                 Spacer()
             }
         }
-    }
-}
-
-extension Lemmy.Metadata: Equatable {
-    public static func == (lhs: Lemmy.Metadata,
-                           rhs: Lemmy.Metadata) -> Bool {
-        lhs.site.id == rhs.site.id
     }
 }
 

@@ -7,10 +7,10 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import Granite
 import GraniteUI
 import Combine
+import FederationKit
 
 class Colors {
     static var map: [String: Color] = [:]
@@ -27,7 +27,7 @@ struct HeaderView: View {
     enum Badge {
         case community(String)
         case host(String)
-        case post(PostView)
+        case post(FederatedPostResource)
         case local
         case noBadge
         case none
@@ -38,13 +38,13 @@ struct HeaderView: View {
     
     @Relay var layout: LayoutService
     
-    @GraniteAction<Community> var viewCommunity
-    @GraniteAction<Int> var tappedDetail
-    @GraniteAction<Int> var tappedCrumb
+    @GraniteAction<FederatedCommunity> var viewCommunity
+    @GraniteAction<String> var tappedDetail
+    @GraniteAction<String> var tappedCrumb
     @GraniteAction<Void> var edit
     @GraniteAction<Void> var goToThread
     
-    @State var postView: PostView? = nil
+    @State var postView: FederatedPostResource? = nil
     
     var shouldRouteCommunity: Bool = false
     var shouldRoutePost: Bool = false
@@ -64,10 +64,10 @@ struct HeaderView: View {
     //Not used currently
     let badge: Badge
     
-    typealias Crumb = (Int, Person)
+    typealias Crumb = (String, FederatedPerson)
     let crumbs: [Crumb]
     
-    init(crumbs: [CommentView] = [],
+    init(crumbs: [FederatedCommentResource] = [],
          shouldRouteCommunity: Bool = true,
          shouldRoutePost: Bool = true,
          showPostActions: Bool = true,
@@ -130,7 +130,7 @@ struct HeaderView: View {
                 }
                 .frame(maxHeight: AvatarView.Size.small.frame)
             } else {
-                AvatarView(context.person?.lemmy)
+                AvatarView(context.person)
                     .overlay(Circle()
                         .stroke(avatarBorderColor, lineWidth: 1.0))
                 
@@ -167,15 +167,15 @@ struct HeaderView: View {
             if showPostActions {
                 PostActionsView(enableCommunityRoute: shouldRouteCommunity,
                                 shouldRouteToPost: shouldRoutePost,
-                                community: shouldRouteCommunity ? context.community?.lemmy : nil,
+                                community: shouldRouteCommunity ? context.community : nil,
                                 postView: shouldRoutePost ? context.postModel : nil,
-                                person: context.person?.lemmy,
+                                person: context.person,
                                 bookmarkKind: context.bookmarkKind)
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
                 .attach({
-                    self.fetchPostView()
+                    self.fetchFederatedPostResource()
                 }, at: \.goToPost)
                 .attach({
                     goToThread.perform()
@@ -188,7 +188,7 @@ struct HeaderView: View {
         .frame(minHeight: AvatarView.Size.small.frame)
     }
     
-    func crumbColor(_ model: Person) -> Color {
+    func crumbColor(_ model: FederatedPerson) -> Color {
         if context.postModel?.creator.equals(model) == true {
             return .blue.opacity(0.8)
         } else if model.admin {
@@ -199,7 +199,7 @@ struct HeaderView: View {
     }
     
     //TODO: duplicate with HeaderCardView, make reusable
-    func fetchPostView() {
+    func fetchFederatedPostResource() {
         if let postView {
             self.route(postView)
             return
@@ -209,7 +209,7 @@ struct HeaderView: View {
         guard let post else { return }
         
         Task.detached { @MainActor in
-            guard let postView = await ContentUpdater.fetchPostView(post) else {
+            guard let postView = await ContentUpdater.fetchFederatedPostResource(post) else {
                 return
             }
             
@@ -220,7 +220,7 @@ struct HeaderView: View {
     }
     
     @MainActor
-    func route(_ postView: PostView) {
+    func route(_ postView: FederatedPostResource) {
         if Device.isExpandedLayout {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {

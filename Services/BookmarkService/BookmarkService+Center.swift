@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension BookmarkService {
     struct Center: GraniteCenter {
@@ -42,10 +42,10 @@ extension BookmarkService {
     }
     
     enum Kind {
-        case post(PostView)
-        case comment(CommentView, PostView?)
+        case post(FederatedPostResource)
+        case comment(FederatedCommentResource, FederatedPostResource?)
         
-        var postViewModel: PostView? {
+        var postViewModel: FederatedPostResource? {
             switch self {
             case .post(let postView):
                 return postView
@@ -86,7 +86,9 @@ class BookmarkComments: Equatable, Codable {
     
     let domain: String
     var map: CommentMap
-    var postMap: [PostId: PostView]
+    
+    //PostId:
+    var postMap: [String: FederatedPostResource]
     
     init(_ domain: String) {
         self.domain = domain
@@ -118,16 +120,16 @@ struct BookmarkKey: GraniteModel, CustomStringConvertible, Hashable, Identifiabl
     }
     
     public static var local: BookmarkKey {
-        .init(host: LemmyKit.host, name: "", isLocal: true)
+        .init(host: FederationKit.host, name: "", isLocal: true)
     }
     
     public static var current: BookmarkKey? {
-        if let name = LemmyKit.current.user?.local_user_view.person.name {
-            return .init(host: LemmyKit.host, name: name, isLocal: false)
+        if let name = FederationKit.user()?.name {
+            return .init(host: FederationKit.host, name: name, isLocal: false)
         } else {
             return nil
         }
     }
 }
 
-typealias CommentMap = [String:CommentView]
+typealias CommentMap = [String:FederatedCommentResource]

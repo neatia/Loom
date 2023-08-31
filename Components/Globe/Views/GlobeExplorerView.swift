@@ -9,20 +9,20 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct GlobeExplorerView: View {
     @Environment(\.graniteEvent) var restart
     
-    @State var instances: [String: Instance] = [:]
-    @State var globeInstances: [Instance] = []
-    @State var searchedInstances: [Instance] = []
-    @State var randomSelection: [Instance] = []
+    @State var instances: [String: FederatedInstance] = [:]
+    @State var globeInstances: [FederatedInstance] = []
+    @State var searchedInstances: [FederatedInstance] = []
+    @State var randomSelection: [FederatedInstance] = []
     
     @State var searchBox: BasicKeySearchBox = .init(keys: [])
     @State var isReady: Bool = false
     
-    @State var connected: Instance = .base
+    @State var connected: FederatedInstance = .base
     
     @Relay var explorer: ExplorerService
     
@@ -55,7 +55,7 @@ struct GlobeExplorerView: View {
         //self.instances = [Instance.base] + explorer.state.linkedInstances
         DispatchQueue.global(qos: .background).async {
             var keys: [String] = []
-            var instancesToUpdate: [String: Instance] = [:]
+            var instancesToUpdate: [String: FederatedInstance] = [:]
             
             explorer.state.linkedInstances.forEach { instance in
                 keys.append(instance.domain)
@@ -78,7 +78,7 @@ struct GlobeExplorerView: View {
             let randomIndex: Int = min(max(count - 2, 0), 2.randomBetween(count - 36))
             let randomLimit: Int = min(max(count - 1, 0), randomIndex + 12.randomBetween(36))
             
-            let randomInstances: [Instance] = Array(explorer.state.linkedInstances[randomIndex..<randomLimit])
+            let randomInstances: [FederatedInstance] = Array(explorer.state.linkedInstances[randomIndex..<randomLimit])
             
             DispatchQueue.main.async {
                 self.randomSelection = randomInstances
@@ -249,7 +249,7 @@ extension GlobeExplorerView {
 
 fileprivate extension View {
     func showDrawer(_ condition: Bool,
-                    instance: Instance?,
+                    instance: FederatedInstance?,
                     event: EventExecutable? = nil) -> some View {
         self.overlayIf(condition && instance != nil, alignment: .top) {
             Group {

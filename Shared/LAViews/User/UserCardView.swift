@@ -9,7 +9,7 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct UserCardView: View {
     @Environment(\.graniteEvent) var interact
@@ -17,7 +17,7 @@ struct UserCardView: View {
     //To register menu touches effectively
     @GraniteAction<Void> var tapped
     
-    var model: PersonView
+    var model: FederatedPersonResource
     var meta: AccountMeta?
     
     var isBlocked: Bool = false
@@ -28,35 +28,35 @@ struct UserCardView: View {
     var style: CardStyle = .style1
     
     var totalScore: String {
-        if let totalScore = meta?.info.local_user_view.counts.totalScore {
+        if let totalScore = meta?.resource.user.counts.totalScore {
             return totalScore.abbreviated
         }
         return model.counts.totalScore.abbreviated
     }
     
     var posts: String {
-        if let posts = meta?.info.local_user_view.counts.post_count {
+        if let posts = meta?.resource.user.counts.post_count {
             return posts.abbreviated
         }
         return model.counts.post_count.abbreviated
     }
     
     var comments: String {
-        if let comments = meta?.info.local_user_view.counts.comment_count {
+        if let comments = meta?.resource.user.counts.comment_count {
             return comments.abbreviated
         }
         return model.counts.comment_count.abbreviated
     }
     
     var postScore: String {
-        if let post_score = meta?.info.local_user_view.counts.post_score {
+        if let post_score = meta?.resource.user.counts.post_score {
             return post_score.abbreviated
         }
         return model.counts.post_score.abbreviated
     }
     
     var commentScore: String {
-        if let comment_score = meta?.info.local_user_view.counts.comment_score {
+        if let comment_score = meta?.resource.user.counts.comment_score {
             return comment_score.abbreviated
         }
         return model.counts.comment_score.abbreviated
@@ -242,7 +242,7 @@ struct UserCardView: View {
 #if DEBUG
 struct UserCard_Previews : PreviewProvider {
     static var previews: some View {
-        UserCardView(model: .init(person: .mock, counts: .init(id: 0, person_id: 0, post_count: 0, post_score: 0, comment_count: 0, comment_score: 0)))
+        UserCardView(model: .init(person: .mock, counts: .init(id: "0", person_id: "0", post_count: 0, post_score: 0, comment_count: 0, comment_score: 0)))
             .frame(width: 120, height: 80)
     }
 }

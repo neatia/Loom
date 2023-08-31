@@ -9,13 +9,13 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct SearchAllView: View {
     @Environment(\.graniteRouter) var router
     
-    @GraniteAction<CommentView> var showDrawer
-    var model: SearchResponse
+    @GraniteAction<FederatedCommentResource> var showDrawer
+    var model: FederatedSearchResult
     
     @Relay var account: AccountService
     

@@ -1,6 +1,6 @@
 import Granite
-import LemmyKit
 import SwiftUI
+import FederationKit
 
 struct Write: GraniteComponent {
     @Command var center: Center
@@ -9,7 +9,7 @@ struct Write: GraniteComponent {
     
     @Relay var modal: ModalService
     
-    @GraniteAction<PostView> var updatedPost
+    @GraniteAction<FederatedPostResource> var updatedPost
     
     @Environment(\.graniteRouter) var router
     
@@ -18,10 +18,10 @@ struct Write: GraniteComponent {
     enum Kind {
         case compact
         case full
-        case replyPost(PostView)
-        case editReplyPost(CommentView, PostView)
-        case replyComment(CommentView)
-        case editReplyComment(CommentView)
+        case replyPost(FederatedPostResource)
+        case editReplyPost(FederatedCommentResource, FederatedPostResource)
+        case replyComment(FederatedCommentResource)
+        case editReplyComment(FederatedCommentResource)
         
         var isEditingReply: Bool {
             switch self {
@@ -47,8 +47,10 @@ struct Write: GraniteComponent {
     
     var kind: Kind
     
-    init(kind: Write.Kind? = nil, communityView: CommunityView? = nil, postView: PostView? = nil) {
-        _center = .init(.init(editingPostView: postView,
+    init(kind: Write.Kind? = nil,
+         communityView: FederatedCommunityResource? = nil,
+         postView: FederatedPostResource? = nil) {
+        _center = .init(.init(editingFederatedPostResource: postView,
                               title: postView?.post.name ?? "",
                               content: postView?.post.body ?? "",
                               postURL: postView?.post.url ?? "",

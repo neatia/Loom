@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LemmyKit
+import FederationKit
 
 extension ContentContext {
     var display: Display {
@@ -59,9 +59,9 @@ extension ContentContext {
     
     var viewingContextHost: String {
         if viewingContext.isBookmark {
-            return viewingContext.bookmarkLocation.host ?? LemmyKit.host
+            return viewingContext.bookmarkLocation.host ?? FederationKit.host
         } else {
-            return LemmyKit.host
+            return FederationKit.host
         }
     }
     
@@ -116,20 +116,4 @@ extension ContentContext.Display {
             self.person = context.person
         }
     }
-}
-
-/* FederationKit */
-
-protocol FederatedCommunityCompact {
-    
-}
-
-extension FederatedCommunityCompact {
-    var lemmy: Community? {
-        self as? Community
-    }
-}
-
-extension Community: FederatedCommunityCompact {
-    
 }

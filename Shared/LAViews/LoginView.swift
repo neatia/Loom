@@ -9,7 +9,7 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 struct LoginView: View {
     @GraniteAction<Void> var cancel
@@ -21,7 +21,7 @@ struct LoginView: View {
     @State var password: String = ""
     @State var token2FA: String = ""
     @State var captcha: String = ""
-    @State var captchaResponse: CaptchaResponse? = nil
+    //@State var captchaResponse: CaptchaResponse? = nil
     @State var host: String = ""
     
     @Relay var account: AccountService
@@ -59,7 +59,7 @@ struct LoginView: View {
                     switch kind {
                     case .login:
                         Text("AUTH_LOGIN")
-                            .font(.title.bold()) + Text("   @") + Text(LemmyKit.host)
+                            .font(.title.bold()) + Text("   @") + Text(FederationKit.host)
                             .font(.subheadline)
                     case .signup:
                         Text("AUTH_SIGNUP")
@@ -239,56 +239,57 @@ extension LoginView {
                     .padding(.bottom, .layer5)
                 #endif
             } else {
-                HStack {
-                    if let captchaResponse,
-                       let imageData = Data(base64Encoded: captchaResponse.png, options: .ignoreUnknownCharacters),
-                       let image = GraniteImage(data: imageData) {
-                        
-                        PhotoView(image: image)
-                            .clipped()
-                            .cornerRadius(8)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .foregroundColor(Color.tertiaryBackground)
-                            )
-                            .padding(.trailing, .layer2)
-                    } else {
-                        #if os(macOS)
-                        ProgressView()
-                            .scaleEffect(0.6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .foregroundColor(Color.tertiaryBackground)
-                            )
-                            .padding(.trailing, .layer2)
-                        #else
-                        ProgressView()
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .foregroundColor(Color.tertiaryBackground)
-                            )
-                            .padding(.trailing, .layer2)
-                        #endif
-                    }
-                    
-                    TextField("", text: $captcha)
-                        .textFieldStyle(.plain)
-                        .correctionDisabled()
-                        .frame(height: 60)
-                        .padding(.horizontal, .layer4)
-                        .font(.title3.bold())
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .foregroundColor(Color.tertiaryBackground)
-                        )
-                }
-                .frame(height: 60)
-                .padding(.bottom, .layer4)
-                .task {
-                    guard captchaResponse == nil else { return }
-                    let captcha = await Lemmy.captcha()
-                    captchaResponse = captcha?.ok
-                }
+//                HStack {
+//                    if let captchaResponse,
+//                       let imageData = Data(base64Encoded: captchaResponse.png, options: .ignoreUnknownCharacters),
+//                       let image = GraniteImage(data: imageData) {
+//
+//                        PhotoView(image: image)
+//                            .clipped()
+//                            .cornerRadius(8)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 8)
+//                                    .foregroundColor(Color.tertiaryBackground)
+//                            )
+//                            .padding(.trailing, .layer2)
+//                    } else {
+//                        #if os(macOS)
+//                        ProgressView()
+//                            .scaleEffect(0.6)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 8)
+//                                    .foregroundColor(Color.tertiaryBackground)
+//                            )
+//                            .padding(.trailing, .layer2)
+//                        #else
+//                        ProgressView()
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 8)
+//                                    .foregroundColor(Color.tertiaryBackground)
+//                            )
+//                            .padding(.trailing, .layer2)
+//                        #endif
+//                    }
+//
+//                    TextField("", text: $captcha)
+//                        .textFieldStyle(.plain)
+//                        .correctionDisabled()
+//                        .frame(height: 60)
+//                        .padding(.horizontal, .layer4)
+//                        .font(.title3.bold())
+//                        .background(
+//                            RoundedRectangle(cornerRadius: 8)
+//                                .foregroundColor(Color.tertiaryBackground)
+//                        )
+//                }
+//                .frame(height: 60)
+//                .padding(.bottom, .layer4)
+//                .task {
+//                    guard captchaResponse == nil else { return }
+//                    let captcha = await Lemmy.captcha()
+//                    captchaResponse = captcha?.ok
+//                }
+                EmptyView()
             }
             
             HStack(spacing: .layer2) {
@@ -330,7 +331,7 @@ extension LoginView {
                                 .Auth
                                 .Meta(intent: .register(self.username,
                                                         self.password,
-                                                        self.captchaResponse?.uuid,
+                                                        nil,//self.captchaResponse?.uuid,
                                                         self.captcha.isEmpty ? nil : self.captcha),
                                       addToProfiles: self.addToProfiles))
                     }

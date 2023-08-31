@@ -8,7 +8,7 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension AccountService {
     struct AddProfile: GraniteReducer {
@@ -27,7 +27,7 @@ extension AccountService {
             
             guard let meta else { return }
 
-            let client = Lemmy(apiUrl: meta.host)
+            let client = Federation(.lemmy, baseUrl: meta.host)
             let username = meta.username
             let password = meta.password
             let token2fa = meta.token2FA
@@ -37,8 +37,11 @@ extension AccountService {
                                               token2FA: token2fa)
 
             guard let data = token?.data(using: .utf8),
-                  let info = client.user else {
-                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "ALERT_LOGIN_FAILED", event: .error))
+                  let user = client.user() else {
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "ALERT_LOGIN_FAILED",
+                                      event: .error))
                 return
             }
             
@@ -47,13 +50,21 @@ extension AccountService {
                                                identifier: meta.username,
                                                service: meta.host)
                 
-                broadcast.send(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_ADD_ACCOUNT_SUCCESS \(meta.username)", event: .success))
+                broadcast.send(
+                    StandardNotificationMeta(title: "MISC_SUCCESS",
+                                             message: "ALERT_ADD_ACCOUNT_SUCCESS \(meta.username)",
+                                             event: .success))
                 
-                state.profiles.append(.init(info: info, host: meta.host))
+                state.profiles.append(.init(user))
+                //Moves the user from the instanced client into the global static
+                FederationKit.addUser(user)
             } catch let error {
                 
                 #if DEBUG
-                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "Could not save into keychain", event: .error))
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "Could not save into keychain",
+                                      event: .error))
                 #endif
                 
                 LoomLog("keychain: \(error)", level: .error)

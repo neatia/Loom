@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
 
 extension Feed {
     var verticalLayout: some View {

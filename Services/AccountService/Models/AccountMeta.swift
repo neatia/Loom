@@ -7,15 +7,25 @@
 
 import Granite
 import Foundation
-import LemmyKit
+import FederationKit
 
 struct AccountMeta: GranitePayload, GraniteModel, Identifiable, Hashable {
     static func ==(lhs: AccountMeta, rhs: AccountMeta) -> Bool {
-        AccountModifyMeta.fromLocal(lhs.info.local_user_view) == AccountModifyMeta.fromLocal(rhs.info.local_user_view) && lhs.id == rhs.id
+        AccountModifyMeta.fromLocal(lhs.resource.user) == AccountModifyMeta.fromLocal(rhs.resource.user) && lhs.id == rhs.id
     }
     
-    var info: MyUserInfo
+    var resource: UserResource
     var host: String
+    
+    init(resource: UserResource, host: String) {
+        self.resource = resource
+        self.host = host
+    }
+    
+    init(_ federationUser: FederationUser) {
+        resource = federationUser.resource
+        host = federationUser.host
+    }
     
     var id: String {
         username + host
@@ -27,8 +37,8 @@ struct AccountMeta: GranitePayload, GraniteModel, Identifiable, Hashable {
 }
 
 extension AccountMeta {
-    var person: Person {
-        info.local_user_view.person
+    var person: FederatedPerson {
+        resource.user.person
     }
     
     var username: String {
@@ -46,8 +56,4 @@ extension AccountMeta {
             .replacingOccurrences(of: "www.", with: "")
             .components(separatedBy: "/").first ?? ""
     }
-}
-
-extension MyUserInfo: GraniteModel {
-    
 }

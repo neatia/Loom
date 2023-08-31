@@ -7,14 +7,14 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
+import FederationKit
 
-extension SortType {
-    static var categoryGeneral: [SortType] {
+extension FederatedSortType {
+    static var categoryGeneral: [FederatedSortType] {
         [.hot, .active, .topAll, .new,]
     }
     
-    static var categoryTime: [SortType] {
+    static var categoryTime: [FederatedSortType] {
         [.topAll, .topYear, .topDay]
     }
     

@@ -7,7 +7,7 @@
 
 import Granite
 import SwiftUI
-import LemmyKit
+
 
 extension Search {
     var listeners: Void {

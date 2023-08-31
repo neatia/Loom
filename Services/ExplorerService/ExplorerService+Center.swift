@@ -1,15 +1,15 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension ExplorerService {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var linkedInstances: [Instance] = []
-            var allowedInstances: [Instance] = []
-            var blockedInstances: [Instance] = []
+            var linkedInstances: [FederatedInstance] = []
+            var allowedInstances: [FederatedInstance] = []
+            var blockedInstances: [FederatedInstance] = []
             
-            var favorites: [String: Instance] = [:]
+            var favorites: [String: FederatedInstance] = [:]
             
             var lastUpdate: Date? = nil
         }

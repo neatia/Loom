@@ -1,6 +1,5 @@
 import Granite
 import GraniteUI
-
 import SwiftUI
 import Foundation
 

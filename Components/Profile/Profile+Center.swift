@@ -1,11 +1,11 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Profile {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var person: Person? = nil
+            var person: FederatedPerson? = nil
             
             var viewingDataType: ProfilePickerView.Kind = .overview
             

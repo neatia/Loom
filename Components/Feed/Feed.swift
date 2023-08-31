@@ -1,7 +1,7 @@
 import Granite
-import LemmyKit
 import SwiftUI
 import Combine
+import FederationKit
 
 struct Feed: GraniteComponent {
     @Command var center: Center
@@ -22,16 +22,16 @@ struct Feed: GraniteComponent {
      Instead use a reducer to reset with the relay initialized within
      */
     
-    @StateObject var pager: Pager<PostView> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    @StateObject var pager: Pager<FederatedPostResource> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
     
     let isCommunity: Bool
     
-    init(_ community: Community? = nil, federatedData: FederatedData? = nil) {
+    init(_ community: FederatedCommunity? = nil, federatedData: FederatedData? = nil) {
         self.isCommunity = community != nil
         
-        let location: FetchType?
+        let location: FederatedLocationType?
         
-        if let federatedData, federatedData.host != LemmyKit.host {
+        if let federatedData, federatedData.host != FederationKit.host {
             location = .peer(federatedData.host)
         } else {
             location = nil

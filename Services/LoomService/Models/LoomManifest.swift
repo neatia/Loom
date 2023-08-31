@@ -8,7 +8,7 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 protocol AnyLoomManifest: GraniteModel {
     var id: UUID { get }
@@ -26,12 +26,12 @@ struct LoomManifest: AnyLoomManifest, Identifiable, Hashable {
         self.meta = meta
     }
     
-    mutating func insert(_ fc: FederatedCommunity) {
+    mutating func insert(_ fc: FederatedCommunityResource) {
         self.data.insert(.community(fc), at: 0)
     }
     
-    mutating func remove(_ fc: FederatedCommunity) {
-        let id = LemmyKit.host + (fc.id)
+    mutating func remove(_ fc: FederatedCommunityResource) {
+        let id = FederationKit.host + (fc.id)
         self.data.removeAll(where: { $0.idPlain == id })
     }
 }
@@ -49,20 +49,20 @@ extension LoomManifest {
         hasher.combine(id)
     }
     
-    func contains(_ model: FederatedCommunity) -> Bool {
-        let id = LemmyKit.host + (model.id)
+    func contains(_ model: FederatedCommunityResource) -> Bool {
+        let id = FederationKit.host + (model.id)
         return self.data.first(where: { $0.idPlain == id }) != nil
     }
     
     func fetch(_ page: Int,
                limit: Int = 5,
-               listing: ListingType,
-               sorting: SortType,
-               location: FetchType = .source) async -> [PostView] {
+               listing: FederatedListingType,
+               sorting: FederatedSortType,
+               location: FederatedLocationType = .source) async -> [FederatedPostResource] {
         
-        var cumulativePosts: [PostView] = []
+        var cumulativePosts: [FederatedPostResource] = []
         for fc in data {
-            let posts = await Lemmy.posts(fc.community?.lemmy?.community,
+            let posts = await Federation.posts(fc.community?.community,
                                           type: listing,
                                           page: page,
                                           limit: limit,

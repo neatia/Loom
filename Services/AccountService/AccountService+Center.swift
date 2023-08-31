@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension AccountService {
     struct Center: GraniteCenter {
@@ -26,12 +26,12 @@ extension AccountService {
                preload: true) public var state: State
     }
     
-    var blockedUsers: [PersonBlockView] {
-        state.meta?.info.person_blocks ?? []
+    var blockedUsers: [PersonRelationshipModel] {
+        state.meta?.resource.person_blocks ?? []
     }
     
-    var blockedCommunities: [CommunityBlockView] {
-        state.meta?.info.community_blocks ?? []
+    var blockedCommunities: [CommunityRelationshipModel] {
+        state.meta?.resource.community_blocks ?? []
     }
     
     var hasBlocked: Bool {

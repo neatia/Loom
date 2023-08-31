@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-import LemmyKit
+import FederationKit
 import SwiftUI
 import Granite
 import GraniteUI
@@ -20,7 +20,7 @@ public protocol Pageable: Equatable, Identifiable, Hashable {
     var date: Date { get }
     var blocked: Bool { get }
     var shouldHide: Bool { get }
-    var person: Person { get }
+    var person: FederatedPerson { get }
     var thumbURL: URL? { get }
     var postURL: URL? { get }
 }
@@ -44,6 +44,8 @@ extension Pageable {
 }
 
 struct PageableMetadata: Hashable {
+    static var fetchTimeout: Double = 5
+    
     var linkMeta: LPLinkMetadata?
     var imageThumb: GraniteImage?
 }
@@ -51,8 +53,13 @@ struct PageableMetadata: Hashable {
 public class PagerFilter {
     //hides models to appear that have shouldHide set to true
     static var enable: Bool = false
+    static var enableForBots: Bool = false
     static var enableForNSFWExtended: Bool = false
     static var enableForKeywords: Bool = false
+    
+    static var isEnabled: Bool {
+        enable || enableForBots
+    }
 }
 
 public class Pager<Model: Pageable>: ObservableObject {
@@ -242,7 +249,7 @@ public class Pager<Model: Pageable>: ObservableObject {
             
             let models: [Model]
             
-            if PagerFilter.enable {
+            if PagerFilter.isEnabled {
                 models = results.filter { $0.shouldHide == false }
             } else {
                 models = results
@@ -285,9 +292,18 @@ public class Pager<Model: Pageable>: ObservableObject {
                         
                         let time = CFAbsoluteTimeGetCurrent()
                         
-                        if isThumb,
-                           let data = try? Data(contentsOf: url),
+                        let urlRequest: URLRequest?
+                        
+                        if isThumb {
+                            urlRequest = .init(url: url, timeoutInterval: PageableMetadata.fetchTimeout)
+                        } else {
+                            urlRequest = nil
+                        }
+                        
+                        if let urlRequest,
+                           let (data, _) = try? await URLSession.shared.data(for: urlRequest),
                            let image = GraniteImage(data: data) {
+                            
                             this.itemMetadatas[id] = .init(linkMeta: nil, imageThumb: image)
                         } else {
                             this.itemMetadatas[id] = await this.getLPMetadata(url: url)
@@ -378,8 +394,8 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     @MainActor
     func getLPMetadata(url: URL) async -> PageableMetadata? {
-        var provider = LPMetadataProvider()
-        provider.timeout = 5
+        let provider = LPMetadataProvider()
+        provider.timeout = PageableMetadata.fetchTimeout
         
         let metaData = try? await provider.startFetchingMetadata(for: url)
         let type = String(describing: UTType.image)
@@ -451,7 +467,7 @@ extension Pager {
         }
     }
     
-    func updateBlockFromPerson(item: Person) {
+    func updateBlockFromPerson(item: FederatedPerson) {
         blockedItemMap.keys.forEach { [weak self] key in
             if itemMap[key]?.person.equals(item) == true {
                 self?.blockedItemMap[key] = self?.blockedItemMap[key] == true ? false : true

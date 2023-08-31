@@ -10,8 +10,8 @@ import Granite
 import GraniteUI
 import SwiftUI
 import NukeUI
-import LemmyKit
 import MarkdownView
+import FederationKit
 
 //TODO: A caching service for any type of data
 //should incorporate link previews, images in other views etc
@@ -19,21 +19,21 @@ import MarkdownView
 class InstanceDetailsCache {
     static var shared: InstanceDetailsCache = .init()
     
-    var cache: [String : SiteView] = [:]
+    var cache: [String : FederatedSiteResource] = [:]
 }
 
 struct InstanceCardView: View {
     @Environment(\.graniteEvent) var restart
     
-    @GraniteAction<Instance> var connect
-    @GraniteAction<Instance> var favorite
+    @GraniteAction<FederatedInstance> var connect
+    @GraniteAction<FederatedInstance> var favorite
     
-    @State var metadata: Lemmy.Metadata?
-    @State var siteMetaData: SiteMetadata?
+    @State var metadata: FederationMetadata?
+    @State var siteMetaData: FederatedSiteMetadata?
     @State var ping: TimeInterval? = nil
     
-    let instance: Instance
-    let client: Lemmy
+    let instance: FederatedInstance
+    let client: Federation
     
     var host: String {
         "https://" + instance.domain
@@ -52,7 +52,7 @@ struct InstanceCardView: View {
     }
     
     var isBase: Bool {
-        instance.domain == LemmyKit.host
+        instance.domain == FederationKit.host
     }
     
     var iconURL: URL? {
@@ -80,11 +80,11 @@ struct InstanceCardView: View {
     var isConnected: Bool
     var isFavorite: Bool
     
-    init(_ instance: Instance, isConnected: Bool = false, isFavorite: Bool = false) {
+    init(_ instance: FederatedInstance, isConnected: Bool = false, isFavorite: Bool = false) {
         self.instance = instance
         self.isConnected = isConnected
         self.isFavorite = isFavorite
-        self.client = .init(apiUrl: instance.domain)
+        self.client = .init(.lemmy, baseUrl: instance.domain)
     }
     
     var body: some View {
@@ -212,8 +212,9 @@ struct InstanceCardView: View {
     }
                     
     func getMetadata() async {
-        if isBase, LemmyKit.current.metadata != nil {
-            metadata = LemmyKit.current.metadata
+        if isBase,
+           let currentMetadata = FederationKit.metadata() {
+            metadata = currentMetadata
         } else {
             if let siteView = InstanceDetailsCache.shared.cache[host] {
                 metadata = .init(siteView: siteView)
@@ -230,8 +231,9 @@ struct InstanceCardView: View {
 #if DEBUG
 struct InstanceCardView_Previews: PreviewProvider {
     static var previews: some View {
-        InstanceCardView(.init(id: 0,
-                               domain: "https://lemmy.world",
+        InstanceCardView(.init(.lemmy,
+                               id: "0",
+                               domain: "https://neatia.xyz",
                                published: Date.now.asString))
         .padding(.layer2)
     }

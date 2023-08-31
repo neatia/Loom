@@ -9,12 +9,12 @@ import Foundation
 import SwiftUI
 import Granite
 import GraniteUI
-import LemmyKit
+import FederationKit
 
 struct LoomSymbolView: View {
     @Binding var displayKind: Loom.DisplayKind
     @Binding var intent: Loom.Intent
-    var communityView: CommunityView?
+    var communityView: FederatedCommunityResource?
     
     var isViewingCommunity: Bool {
         communityView != nil

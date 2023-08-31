@@ -9,7 +9,7 @@ import Foundation
 import GraniteUI
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Feed {
     var communityInfoMenuView: some View {
@@ -39,15 +39,15 @@ extension Feed {
 
 struct FeedCommunityInfoMenuView: View {
     @GraniteAction<AccountService.Interact.Intent> var interact
-    @GraniteAction<FetchType> var changeLocation
+    @GraniteAction<FederatedLocationType> var changeLocation
     
     //@Relay var account: AccountService
     @Relay var loom: LoomService
     
-    let community: Community?
-    let communityView: CommunityView?
-    let location: FetchType
-    let peerLocation: FetchType?
+    let community: FederatedCommunity?
+    let communityView: FederatedCommunityResource?
+    let location: FederatedLocationType
+    let peerLocation: FederatedLocationType?
     
     var body: some View {
         Menu {
@@ -88,7 +88,7 @@ struct FeedCommunityInfoMenuView: View {
                 }
             }
             
-            if (location == .base && LemmyKit.host != communityView?.community.ap_id?.host) || (location.isPeer) {
+            if (location == .base && FederationKit.host != communityView?.community.ap_id?.host) || (location.isPeer) {
                 Button {
                     changeLocation.perform(.source)
                 } label: {

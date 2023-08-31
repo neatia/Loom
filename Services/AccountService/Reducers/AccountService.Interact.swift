@@ -8,7 +8,7 @@
 import Foundation
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension AccountService {
     struct Interact: GraniteReducer {
@@ -43,21 +43,20 @@ extension AccountService {
          */
         
         enum Intent {
-            case blockPerson(Person)
-            case blockPersonFromPost(PostView)
-            case blockPersonFromComment(CommentView)
-            case blockCommunity(CommunityView)
-            case updatePersonBlockStatus(BlockPersonResponse)
-            case reportPost(PostView)
+            case blockPerson(FederatedPerson)
+            case blockPersonFromPost(FederatedPostResource)
+            case blockPersonFromComment(FederatedCommentResource)
+            case blockCommunity(FederatedCommunityResource)
+            case reportPost(FederatedPostResource)
             case reportPostSubmit(ReportView.Submit)
-            case reportComment(CommentView)
-//            case removePost(PostView)
-//            case removeComment(CommentView)
-            case deletePost(PostView)
-            case deleteComment(CommentView)
-            case subscribe(CommunityView)
-            case editPost(PostView)
-            case removeFromProfiles(Person?)
+            case reportComment(FederatedCommentResource)
+//            case removePost(FederatedPostResource)
+//            case removeComment(FederatedCommentResource)
+            case deletePost(FederatedPostResource)
+            case deleteComment(FederatedCommentResource)
+            case subscribe(FederatedCommunityResource)
+            case editPost(FederatedPostResource)
+            case removeFromProfiles(FederatedPerson?)
         }
         
         struct Meta: GranitePayload {
@@ -77,7 +76,7 @@ extension AccountService {
             }
             
             
-            guard LemmyKit.auth != nil else {
+            guard FederationKit.isAuthenticated() else {
                 //TODO: localize
                 broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
                 return
@@ -92,10 +91,10 @@ extension AccountService {
             //MARK: Blocks
             case .blockPerson(let model):
                 
-                let personBlocks = state.meta?.info.person_blocks ?? []
+                let personBlocks = state.meta?.resource.person_blocks ?? []
                 let blocked: Bool = personBlocks.first(where: { $0.target.equals(model) == true }) != nil
                 
-                let result = await Lemmy.block(person: model, block: blocked ? false : true)
+                let result = await Federation.block(person: model, block: blocked ? false : true)
                 
                 guard let result else { return }
                 
@@ -105,18 +104,30 @@ extension AccountService {
                 }
                 
                 //TODO: reuse block logics
-                broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPerson(result.person_view.person)))
+                broadcast.send(
+                    ResponseMeta(
+                        notification: StandardNotificationMeta(
+                            title: "MISC_SUCCESS",
+                            message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person.name, formatted: true)), event: .success),
+                        intent: .blockPerson(result.person)))
                 
-                let personView: PersonBlockView = .init(person: accountMeta.person, target: result.person_view.person)
-                state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(result.person_view.person) == false } + (result.blocked ? [personView] : [])),
+                let personView: PersonRelationshipModel = .init(person: accountMeta.person,
+                                                                target: result.person)
+                
+                state.meta? = .init(resource: accountMeta
+                    .resource
+                    .updateBlocks(accountMeta.resource.person_blocks.filter {
+                        $0.target.equals(result.person) == false
+                        
+                    } + (result.blocked ? [personView] : [])),
                                     host: accountMeta.host)
-            case .blockPersonFromPost(let model):
                 
-                let personBlocks = state.meta?.info.person_blocks ?? []
+            case .blockPersonFromPost(let model):
+                let personBlocks = state.meta?.resource.person_blocks ?? []
                 
                 let blocked: Bool = personBlocks.first(where: { $0.target.equals(model.creator) == true }) != nil
                 
-                let result = await Lemmy.block(person: model.creator, block: blocked ? false : true)
+                let result = await Federation.block(person: model.creator, block: blocked ? false : true)
                 
                 guard let result else { return }
                 
@@ -125,17 +136,34 @@ extension AccountService {
                     return
                 }
                 
-                broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent: .blockPersonFromPost(model.updateBlock(result.blocked, personView: result.person_view))))
+                broadcast.send(
+                    ResponseMeta(
+                        notification: StandardNotificationMeta(
+                            title: "MISC_SUCCESS",
+                            message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person.name, formatted: true)), event: .success),
+                        intent: .blockPersonFromPost(model.updateBlock(result.blocked,
+                                                                       personView: result))
+                    )
+                )
                 
-                let personView: PersonBlockView = .init(person: accountMeta.person, target: result.person_view.person)
-                state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(result.person_view.person) == false } + (result.blocked ? [personView] : [])),
+                let personView: PersonRelationshipModel = .init(person: accountMeta.person,
+                                                                target: result.person)
+                
+                state.meta? = .init(resource: accountMeta
+                    .resource
+                    .updateBlocks(
+                        accountMeta
+                            .resource
+                            .person_blocks.filter {
+                                $0.target.equals(result.person) == false
+                            } + (result.blocked ? [personView] : [])),
                                     host: accountMeta.host)
             case .blockPersonFromComment(let model):
-                let personBlocks = state.meta?.info.person_blocks ?? []
+                let personBlocks = state.meta?.resource.person_blocks ?? []
                 
                 let blocked: Bool = personBlocks.first(where: { $0.target.equals(model.creator) == true }) != nil
                 
-                let result = await Lemmy.block(person: model.creator, block: blocked ? false : true)
+                let result = await Federation.block(person: model.creator, block: blocked ? false : true)
                 
                 guard let result else { return }
                 
@@ -144,25 +172,41 @@ extension AccountService {
                     return
                 }
                 
-                broadcast.send(ResponseMeta.init(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person_view.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person_view.person.name, formatted: true)), event: .success), intent:  .blockPersonFromComment(model.updateBlock(result.blocked, personView: result.person_view))))
+                broadcast.send(
+                    ResponseMeta(
+                        notification: StandardNotificationMeta(
+                            title: "MISC_SUCCESS",
+                            message: result.blocked ? .init("MISC_BLOCKED".localized("@"+result.person.name, formatted: true)) : .init("MISC_UNBLOCKED".localized("@"+result.person.name, formatted: true)), event: .success),
+                        intent:  .blockPersonFromComment(model.updateBlock(result.blocked,
+                                                                           personView: result))))
                 
-                let personView: PersonBlockView = .init(person: accountMeta.person, target: result.person_view.person)
-                state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(result.person_view.person) == false } + (result.blocked ? [personView] : [])),
+                let personView: PersonRelationshipModel = .init(person: accountMeta.person,
+                                                                target: result.person)
+                state.meta? = .init(resource: accountMeta
+                    .resource
+                    .updateBlocks(accountMeta.resource.person_blocks.filter {
+                        $0.target.equals(result.person) == false
+                    } + (result.blocked ? [personView] : [])),
                                     host: accountMeta.host)
             case .blockCommunity(let model):
                 _ = Task.detached {
-                    let result = await Lemmy.block(community: model.community, block: model.blocked == true ? false : true)
+                    let result = await Federation.block(community: model.community, block: model.blocked == true ? false : true)
                     
                 }
                 
             //MARK: Community
             case .subscribe(let model):
                 _ = Task.detached {
-                    let result = await Lemmy.follow(community: model.community, follow: model.subscribed == .subscribed ? false : true)
+                    let result = await Federation.follow(community: model.community,
+                                                         follow: model.subscribed == .subscribed ? false : true)
                     
                     guard let result else { return }
                     
-                    broadcast.send(ResponseMeta(notification: .init(title: "MISC_SUCCESS", message: "ALERT_SUBSCRIBED_SUCCESS \(model.community.title)", event: .success), intent: .subscribe(result.community_view)))
+                    broadcast.send(
+                        ResponseMeta(notification: .init(title: "MISC_SUCCESS",
+                                                         message: "ALERT_SUBSCRIBED_SUCCESS \(model.community.title)",
+                                                         event: .success),
+                                     intent: .subscribe(result)))
                     
 //                    response.send(InteractResponse.Meta(kind: .community(result.community_view)))
                 }
@@ -186,39 +230,69 @@ extension AccountService {
 //                }
             //MARK: Delete
             case .deletePost(let model):
-                let result = await Lemmy.deletePost(model.post, deleted: model.post.deleted == true ? false : true)
+                let result = await Federation.deletePost(model.post,
+                                                         deleted: model.post.deleted == true ? false : true)
                 if let result, let meta {
-                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.post.deleted ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS", event: .success), intent: .deletePost(result.post_view)))
+                    broadcast.send(
+                        ResponseMeta(notification:
+                                        StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                                 message: model.post.deleted ? "ALERT_POST_RESTORED_SUCCESS" : "ALERT_POST_REMOVE_SUCCESS",
+                                                                 event: .success),
+                                     intent: .deletePost(result)))
                 } else {
-                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REMOVE", event: .error))
+                    broadcast.send(
+                        StandardNotificationMeta(title: "MISC_ERROR",
+                                                 message: "ALERT_POST_FAILED_TO_REMOVE",
+                                                 event: .error))
                 }
             case .deleteComment(let model):
-                let result = await Lemmy.deleteComment(model.comment, deleted: model.comment.deleted == true ? false : true)
+                let result = await Federation.deleteComment(model.comment,
+                                                            deleted: model.comment.deleted == true ? false : true)
                 
                 if let result, let meta {
-                    broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: model.comment.deleted ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS", event: .success), intent: .deleteComment(result.comment_view)))
+                    broadcast.send(
+                        ResponseMeta(notification:
+                                        StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                                 message: model.comment.deleted ? "ALERT_COMMENT_RESTORED_SUCCESS" : "ALERT_COMMENT_REMOVE_SUCCESS",
+                                                                 event: .success),
+                                     intent: .deleteComment(result)))
                     
                 } else {
-                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_COMMENT_FAILED_TO_REMOVE", event: .error))
+                    broadcast.send(
+                        StandardNotificationMeta(title: "MISC_ERROR",
+                                                 message: "ALERT_COMMENT_FAILED_TO_REMOVE",
+                                                 event: .error))
                 }
             case .reportPost:
                 beam.send(meta)
             case .reportComment:
                 beam.send(meta)
             case .reportPostSubmit(let form):
-                let result = await Lemmy.report(post: form.model.post, reason: form.reason)
+                let result = await Federation.report(post: form.model.post,
+                                                     reason: form.reason)
                 
                 guard let result, let meta else {
-                    broadcast.send(StandardNotificationMeta(title: "MISC_ERROR", message: "ALERT_POST_FAILED_TO_REPORT", event: .error))
+                    broadcast.send(
+                        StandardNotificationMeta(title: "MISC_ERROR",
+                                                 message: "ALERT_POST_FAILED_TO_REPORT",
+                                                 event: .error))
                     return
                 }
                 
-                broadcast.send(ResponseMeta(notification: StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_POST_REPORT_SUCCESS", event: .success), intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
+                broadcast.send(
+                    ResponseMeta(notification:
+                                    StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                             message: "ALERT_POST_REPORT_SUCCESS",
+                                                             event: .success),
+                                 intent: .reportPostSubmit(.init(reason: form.reason, model: form.model))))
             case .removeFromProfiles(let person):
                 guard let person else { return }
+                
                 state.profiles.removeAll(where: { $0.person.equals(person)})
-                try? AccountService.deleteToken(identifier: AccountService.keychainAuthToken + person.username,
-                                           service: AccountService.keychainService + person.actor_id.host)
+                
+                try? AccountService
+                    .deleteToken(identifier: AccountService.keychainAuthToken + person.username,
+                                 service: AccountService.keychainService + person.actor_id.host)
             default:
                 break
             }
@@ -230,33 +304,6 @@ extension AccountService {
         
         var behavior: GraniteReducerBehavior {
             .task(.userInitiated)
-        }
-    }
-    
-    struct InteractResponse: GraniteReducer {
-        typealias Center = AccountService.Center
-        
-        struct Meta: GranitePayload {
-            var postResponse: PostResponse?
-            var commentResponse: CommentResponse?
-            var intent: Interact.Intent
-        }
-        
-        @Payload var meta: Meta?
-        
-        func reduce(state: inout Center.State) {
-            guard let meta else { return }
-            
-            switch meta.intent {
-            case .updatePersonBlockStatus(let response):
-                if let accountMeta = state.meta {
-                    let personView: PersonBlockView = .init(person: accountMeta.person, target: response.person_view.person)
-                    state.meta? = .init(info: accountMeta.info.updateBlocks(accountMeta.info.person_blocks.filter { $0.target.equals(response.person_view.person) == false } + (response.blocked ? [personView] : [])),
-                                        host: accountMeta.host)
-                }
-            default:
-                break
-            }
         }
     }
 }

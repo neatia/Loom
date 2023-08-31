@@ -1,5 +1,5 @@
 //
-//  PostView.swift
+//  FederatedPostResource.swift
 //  Loom
 //
 //  Created by PEXAVC on 7/13/23.
@@ -9,40 +9,40 @@ import Foundation
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
 import NukeUI
 import Combine
 import MarkdownView
+import FederationKit
 
 struct PostDisplayView: GraniteNavigationDestination {
     @Environment(\.contentContext) var context
     @Environment(\.graniteNavigationShowingKey) var hasShown
     
-    @GraniteAction<Community> var viewCommunity
+    @GraniteAction<FederatedCommunity> var viewCommunity
     
     @Relay(.silence) var account: AccountService
     @Relay var config: ConfigService
     
-    var currentModel: PostView? {
+    var currentModel: FederatedPostResource? {
         updatedModel ?? context.postModel
     }
     
-    @State var updatedModel: PostView?
+    @State var updatedModel: FederatedPostResource?
     
     @State var showDrawer: Bool = false
-    @State var commentModel: CommentView? = nil
+    @State var commentModel: FederatedCommentResource? = nil
     
     @State var expandLinkPreview: Bool = false
     @State var enableCommunityRoute: Bool = false
     
-    @State var threadLocation: FetchType = .base
-    @State var listingType: ListingType = .all
+    @State var threadLocation: FederatedLocationType = .base
+    @State var listingType: FederatedListingType = .all
     
     //TODO: Similar to feed's controls maybe it can be reused?
     @State var selectedSorting: Int = 0
-    var sortingType: [CommentSortType] = CommentSortType.allCases
+    var sortingType: [FederatedCommentSortType] = FederatedCommentSortType.allCases
     
-    @StateObject var pager: Pager<CommentView> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    @StateObject var pager: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -61,7 +61,7 @@ struct PostDisplayView: GraniteNavigationDestination {
             }
             
             if hasShown || Device.isExpandedLayout {
-                PagerScrollView(CommentView.self,
+                PagerScrollView(FederatedCommentResource.self,
                                 properties: .init(performant: false,
                                                   partition: Device.isMacOS == false,
                                                   lazy: true,
@@ -99,12 +99,12 @@ struct PostDisplayView: GraniteNavigationDestination {
                  - Updating your own post from a post card will update right away
                  */
                 let postId = context.postModel?.post.id ?? context.commentModel?.post.id
-                let postView = await Lemmy.post(postId)
+                let postView = await Federation.post(postId)
                 self.updatedModel = postView
             }
             
             pager.hook { page in
-                return await Lemmy.comments(currentModel?.post,
+                return await Federation.comments(currentModel?.post,
                                             community: currentModel?.community,
                                             page: page,
                                             type: listingType,

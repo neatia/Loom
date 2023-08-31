@@ -1,6 +1,6 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Loom {
     struct Center: GraniteCenter {
@@ -17,7 +17,7 @@ extension Loom {
     }
     
     enum Intent: GraniteModel {
-        case adding(CommunityView)
+        case adding(FederatedCommunityResource)
         case edit(LoomManifest)
         case creating
         case idle

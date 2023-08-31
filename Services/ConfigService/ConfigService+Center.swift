@@ -1,13 +1,13 @@
 import Granite
 import SwiftUI
-import LemmyKit
 import IPFSKit
 import MarbleKit
+import FederationKit
 
 extension ConfigService {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var config: InstanceConfig = .default
+            var server: FederationServer = .default
             
             
             //Feed
@@ -33,9 +33,13 @@ extension ConfigService {
                 }
             }
             var showScores: Bool = false
-            var showBotAccounts: Bool = false
-            var sortType: SortType = .hot
-            var listingType: ListingType = .all
+            var showBotAccounts: Bool = false {
+                didSet {
+                    PagerFilter.enableForBots = showBotAccounts == false
+                }
+            }
+            var sortType: FederatedSortType = .hot
+            var listingType: FederatedListingType = .all
             
             //Filter
             var extendedNSFWFilterEnabled: Bool = false {
@@ -62,6 +66,12 @@ extension ConfigService {
                 }
             }
             var marblePlaybackControls: Bool = false
+            
+            //Sharing
+            var enableWatermark: Bool = true
+            
+            //Federation
+            var allowAutomaticFinding: Bool = true
         }
         
         @Event var boot: Boot.Reducer

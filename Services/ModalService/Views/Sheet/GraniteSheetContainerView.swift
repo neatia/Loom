@@ -255,7 +255,6 @@ fileprivate extension View {
                             
                             Divider()
                                 .padding(.top, .layer4)
-                                .padding(.bottom, .layer2)
                             
                             content()
                                 .adaptsToKeyboard(safeAreaAware: true)

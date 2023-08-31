@@ -1,35 +1,35 @@
 import Granite
 import SwiftUI
-import LemmyKit
+import FederationKit
 
 extension Search {
     struct Center: GraniteCenter {
         struct State: GraniteState {
-            var postView: PostView? = nil
-            var commentView: CommentView? = nil
+            var postView: FederatedPostResource? = nil
+            var commentView: FederatedCommentResource? = nil
             var showDrawer: Bool = false
             
             var selectedSearchType: Int = 0
-            var searchType: [SearchType] = SearchType.allCases
+            var searchType: [FederatedSearchType] = FederatedSearchType.allCases
             
             var selectedTimeCategory: Int = 0
             var sortingTimeType: [String] = ["All Time", "Today"]
             
             var selectedSorting: Int = 0
-            var sortingType: [SortType] = SortType.categoryGeneral
+            var sortingType: [FederatedSortType] = FederatedSortType.categoryGeneral
             
             var selectedListing: Int = 0
-            var listingType: [ListingType] = ListingType.allCases
+            var listingType: [FederatedListingType] = FederatedListingType.allCases
         }
         
         @Store public var state: State
     }
     
-    var selectedSearch: SearchType {
+    var selectedSearch: FederatedSearchType {
         state.searchType[state.selectedSearchType]
     }
     
-    var selectedSort: SortType {
+    var selectedSort: FederatedSortType {
         switch state.sortingType[state.selectedSorting] {
         case .topAll:
             switch state.sortingTimeType[state.selectedTimeCategory].lowercased() {
@@ -45,12 +45,12 @@ extension Search {
         }
     }
     
-    var selectedListing: ListingType {
+    var selectedListing: FederatedListingType {
         state.listingType[state.selectedListing]
     }
 }
 
-extension SearchType {
+extension FederatedSearchType {
     var displayString: String {
         "\(self.rawValue)"
     }

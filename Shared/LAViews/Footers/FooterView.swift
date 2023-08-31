@@ -7,18 +7,18 @@
 
 import Foundation
 import SwiftUI
-import LemmyKit
 import Granite
 import GraniteUI
+import FederationKit
 
 struct FooterView: View {
     @Environment(\.contentContext) var context
     @Environment(\.graniteRouter) var router
     @Environment(\.pagerMetadata) var metadata
     
-    @GraniteAction<CommentId> var showComments
-    @GraniteAction<PostView> var replyPost
-    @GraniteAction<CommentView> var replyComment
+    @GraniteAction<Int> var showComments
+    @GraniteAction<FederatedPostResource> var replyPost
+    @GraniteAction<FederatedCommentResource> var replyComment
     
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
@@ -473,6 +473,17 @@ extension FooterView {
                     Image(systemName: "lock")
                         .font(.caption)
                         .foregroundColor(.yellow.opacity(0.8))
+                }
+                
+                if postView.post.instanceType == .mastodon {
+                    Text("•")
+                        .font(.footnote)
+                        .padding(.horizontal, .layer2)
+                        .foregroundColor(.foreground.opacity(0.5))
+                    
+                    Text("mastodon")
+                        .font(.caption)
+                        .foregroundColor(Brand.Colors.purple.opacity(0.8))
                 }
             }
         }

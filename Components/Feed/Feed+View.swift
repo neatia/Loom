@@ -1,8 +1,8 @@
 import Granite
 import GraniteUI
 import SwiftUI
-import LemmyKit
 import Nuke
+import FederationKit
 
 extension Feed: GraniteNavigationDestination {
     var safeAreaTop: CGFloat {
@@ -41,7 +41,7 @@ extension Feed: GraniteNavigationDestination {
                                                 listing: selectedListing,
                                                 sorting: selectedSort)
                 } else {
-                    let posts = await Lemmy.posts(state.community,
+                    let posts = await Federation.posts(state.community,
                                                   type: selectedListing,
                                                   page: page,
                                                   limit: ConfigService.Preferences.pageLimit,
