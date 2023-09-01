@@ -23,22 +23,6 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     
     public init(_ wrapper : @escaping ((GraniteModalContainerView) -> AnyView) = { view in AnyView(view) }) {
         
-        sheetManager
-            .$models
-            .throttle(for: .seconds(0.2),
-                      scheduler: RunLoop.main,
-                      latest: true)
-            .sink {[weak self] value in
-                #if os(iOS)
-                guard self?.presenters.isEmpty == true else { return }
-                //self?.window?.isUserInteractionEnabled = value.keys.isEmpty == false
-                #else
-                DispatchQueue.main.async { [weak self] in
-                    self?.centerWindow()
-                }
-                #endif
-            }.store(in: &cancellables)
-        
 #if os(iOS)
         DispatchQueue.main.async {
             self.attachWindow(wrapper)
@@ -64,7 +48,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             withAnimation {
                 self?.presenters.append(modal)
             }
-            //self?.window?.isUserInteractionEnabled = true
+            self?.window?.isUserInteractionEnabled = true
 #else
             self?.centerWindow()
             withAnimation {
@@ -76,6 +60,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     
     public func dismiss() {
         guard presenters.count > 0 else {
+            window?.isUserInteractionEnabled = sheetManager.hasContent
             return
         }
         
@@ -101,6 +86,14 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     public func destroy() {
         self.window = nil
         sheetManager.destroy()
+    }
+    
+    public func enableWindow() {
+        self.window?.isUserInteractionEnabled = true
+    }
+    
+    public func disableWindow() {
+        self.window?.isUserInteractionEnabled = false
     }
 }
 
@@ -135,7 +128,8 @@ extension GraniteModalManager {
             .addGraniteSheet(sheetManager,
                              background: Color.clear))
         window.rootViewController = alertController
-        //window.isUserInteractionEnabled = false
+        //can get initialized on sheet call
+        window.isUserInteractionEnabled = sheetManager.hasContent
         window.backgroundColor = UIColor.clear
         window.rootViewController?.view.backgroundColor = .clear
         

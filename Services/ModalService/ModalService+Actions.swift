@@ -79,8 +79,8 @@ extension ModalService {
                                       detents: [Detent] = [],
                                       style : GraniteSheetPresentationStyle = .sheet,
                                       @ViewBuilder content : () -> Content) {
-        
         sheetManager.present(id: id, detents: detents, content: content, style: style)
+        self.modalManager.enableWindow()
     }
     
     @MainActor
@@ -99,6 +99,7 @@ extension ModalService {
     
     func dismissSheet(id: String = GraniteSheetManager.defaultId) {
         sheetManager.dismiss(id: id)
+        self.modalManager.disableWindow()
     }
     
 }
