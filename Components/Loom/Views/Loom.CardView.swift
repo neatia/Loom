@@ -43,6 +43,7 @@ struct LoomCardView: View {
                                 Group {
                                     if let lemmyView = fd.community {
                                         CommunityCardView(model: lemmyView,
+                                                          shouldRoute: true,
                                                           showCounts: false,
                                                           federatedData: fd)
                                         .frame(minWidth: 240)
