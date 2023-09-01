@@ -15,7 +15,10 @@ struct FilterConfig: GraniteModel {
         case title
         case body
         case link
+        case communityName
         case creator
+        case creatorLink
+        case all
     }
     
     struct Keyword: GraniteModel {

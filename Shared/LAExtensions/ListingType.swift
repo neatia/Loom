@@ -29,4 +29,15 @@ extension FederatedListingType {
             return "LISTING_TYPE_SUBSCRIBED"
         }
     }
+    
+    var systemImageName: String {
+        switch self {
+        case .all:
+            return "globe.americas"
+        case .local:
+            return "house"
+        case .subscribed:
+            return "book.closed"
+        }
+    }
 }

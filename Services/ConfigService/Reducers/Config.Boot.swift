@@ -49,7 +49,7 @@ extension ConfigService {
             
             //Pager Filter
             //TODO: a reducer meant for all content filteration needs. This could site in ContentService
-            PagerFilter.enable = state.showNSFW == false
+            PagerFilter.enableForNSFW = state.showNSFW == false
             PagerFilter.enableForBots = state.showBotAccounts == false
             PagerFilter.enableForNSFWExtended = state.extendedNSFWFilterEnabled
             PagerFilter.enableForKeywords = state.keywordsFilterEnabled

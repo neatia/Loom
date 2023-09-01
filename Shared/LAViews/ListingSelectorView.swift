@@ -28,7 +28,7 @@ struct ListingSelectorView: View {
                 fetch.perform()
             } label: {
                 Text(FederatedListingType.all.displayString)
-                Image(systemName: "arrow.down.right.circle")
+                Image(systemName: FederatedListingType.all.systemImageName)
             }
             
             Button {
@@ -40,7 +40,7 @@ struct ListingSelectorView: View {
                 fetch.perform()
             } label: {
                 Text(FederatedListingType.local.displayString)
-                Image(systemName: "arrow.down.right.circle")
+                Image(systemName: FederatedListingType.local.systemImageName)
             }
         } label: {
             Text(listingType.displayString)

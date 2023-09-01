@@ -9,7 +9,6 @@ extension ConfigService {
         struct State: GraniteState {
             var server: FederationServer = .default
             
-            
             //Feed
             var linkPreviewMetaData: Bool = false
             
@@ -29,7 +28,7 @@ extension ConfigService {
             //Account
             var showNSFW: Bool = false {
                 didSet {
-                    PagerFilter.enable = showNSFW == false
+                    PagerFilter.enableForNSFW = showNSFW == false
                 }
             }
             var showScores: Bool = false
@@ -51,6 +50,7 @@ extension ConfigService {
             var keywordsFilterEnabled: Bool = false {
                 didSet {
                     PagerFilter.enableForKeywords = keywordsFilterEnabled
+                    PagerFilter.filterKeywords = keywordsFilter
                 }
             }
             

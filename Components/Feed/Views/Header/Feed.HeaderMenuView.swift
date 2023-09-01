@@ -102,7 +102,7 @@ extension Feed {
                             pager.reset()
                         } label: {
                             Text(state.listingType[index].displayString)
-                            Image(systemName: "arrow.down.right.circle")
+                            Image(systemName: state.listingType[index].systemImageName)
                         }
                     }
                 } label: {

@@ -29,7 +29,6 @@ struct InstanceCardView: View {
     @GraniteAction<FederatedInstance> var favorite
     
     @State var metadata: FederationMetadata?
-    @State var siteMetaData: FederatedSiteMetadata?
     @State var ping: TimeInterval? = nil
     
     let instance: FederatedInstance
@@ -65,8 +64,6 @@ struct InstanceCardView: View {
     
     var bannerURL: URL? {
         if let metadata, let banner = metadata.site.banner {
-            return .init(string: banner)
-        } else if let banner = siteMetaData?.image {
             return .init(string: banner)
         } else {
             return nil

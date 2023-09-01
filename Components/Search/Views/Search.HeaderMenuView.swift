@@ -96,12 +96,12 @@ extension Search {
                         _state.selectedListing.wrappedValue = index
                         //pager.fetch(force: true)
                     } label: {
-                        Text(state.listingType[index].rawValue.capitalized)
-                        Image(systemName: "arrow.down.right.circle")
+                        Text(state.listingType[index].displayString)
+                        Image(systemName: state.listingType[index].systemImageName)
                     }
                 }
             } label: {
-                Text(selectedListing.rawValue.capitalized)
+                Text(selectedListing.displayString)
 #if os(iOS)
                 Image(systemName: "chevron.up.chevron.down")
 #endif

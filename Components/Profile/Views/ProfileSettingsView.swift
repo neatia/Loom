@@ -354,52 +354,8 @@ struct ProfileSettingsView: View {
                     .font(.title3.bold())
                     .padding(.bottom, .layer2)
                 
-#if os(iOS)
-                TextToolView(text: $bio)
-                    .padding(.horizontal, .layer3)
-                    .frame(height: 160)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .foregroundColor(Color.secondaryBackground)
-                    )
+                StandardTextView(text: $bio)
                     .padding(.bottom, .layer4)
-#else
-                
-                if #available(macOS 13.0, iOS 16.0, *) {
-                    TextEditor(text: $bio)
-                        .textFieldStyle(.plain)
-                        .frame(height: 160)
-                        .font(.title3.bold())
-                        .scrollContentBackground(.hidden)
-                        .padding(.layer3)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .foregroundColor(Color.secondaryBackground)
-                        )
-                        .padding(.bottom, .layer4)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                StandardToolbarView()
-                            }
-                        }
-                } else {
-                    TextEditor(text: $bio)
-                        .textFieldStyle(.plain)
-                        .font(.title3.bold())
-                        .frame(height: 160)
-                        .padding(.layer3)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .foregroundColor(Color.secondaryBackground)
-                        )
-                        .padding(.bottom, .layer4)
-                        .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                StandardToolbarView()
-                            }
-                        }
-                }
-                #endif
                 
                 Text("PROFILE_DISPLAY_NAME")
                     .font(.title3.bold())

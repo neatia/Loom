@@ -16,6 +16,6 @@ extension ExplorerService {
         
         @Event var boot: Boot.Reducer
         
-        @Store(persist: "persistence.Loom.explorer.0016", autoSave: true) public var state: State
+        @Store(persist: "persistence.Loom.explorer.0017", autoSave: true) public var state: State
     }
 }

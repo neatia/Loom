@@ -28,7 +28,25 @@ extension FederatedCommentResource: Pageable {
     }
     
     public var shouldHide: Bool {
-        self.post.nsfw == true || self.community.nsfw == true
+        let shouldHideNSFW: Bool = (self.post.nsfw == true || self.community.nsfw == true) && PagerFilter.enableForNSFW
+        
+        let shouldHideKeywords: Bool
+        if PagerFilter.enableForKeywords {
+            let values: [String] = PagerFilter.filterKeywords.keywords.map { $0.value }
+            let title: String = self.post.name
+            let body: String = self.post.body ?? ""
+            let url: String = self.post.url ?? ""
+            let creator: String = self.creator.name
+            let creatorUrl: String = self.creator.actor_id
+            
+            let compiled: String = [title, body, url, creator, creatorUrl].joined(separator: " ")
+            
+            shouldHideKeywords = compiled.includes(values)
+        } else {
+            shouldHideKeywords = false
+        }
+        
+        return shouldHideNSFW || shouldHideKeywords
     }
 }
 

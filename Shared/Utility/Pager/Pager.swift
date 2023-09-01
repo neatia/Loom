@@ -52,13 +52,14 @@ struct PageableMetadata: Hashable {
 
 public class PagerFilter {
     //hides models to appear that have shouldHide set to true
-    static var enable: Bool = false
+    static var enableForNSFW: Bool = false
     static var enableForBots: Bool = false
     static var enableForNSFWExtended: Bool = false
     static var enableForKeywords: Bool = false
+    static var filterKeywords: FilterConfig = .empty
     
     static var isEnabled: Bool {
-        enable || enableForBots
+        enableForNSFW || enableForBots || enableForKeywords
     }
 }
 

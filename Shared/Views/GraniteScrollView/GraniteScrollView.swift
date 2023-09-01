@@ -79,11 +79,13 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                     directionChangedAt = lastDirection
                 }
                 
-                let triggerArea: Bool = offset.y > abs(initialOffset?.y ?? 0) + 120
+                let threshold: CGFloat = direction.isUp ? ContainerConfig.iPhoneScreenHeight / 1.5 : 120
+                
+                let triggerArea: Bool = offset.y > abs(initialOffset?.y ?? 0) + threshold
                 if isResting && isShowingAccessory {
                     isShowingAccessory = false
                     update()
-                } else if distance > 120 && direction.isUp != isShowingAccessory && triggerArea {
+                } else if distance > threshold && direction.isUp != isShowingAccessory && triggerArea {
                     isShowingAccessory = direction.isUp
                     update()
                 }
@@ -182,21 +184,6 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
         }
     }
     
-    var progressFetchBody: some View {
-        ZStack {
-            if status == .loading {
-                ActivityIndicator()
-                    .offset(y: style.fetchMoreOffset)
-            }
-            else if status != .idle {
-                PullIndicator()
-                    .rotationEffect(.degrees(180 * fetchMoreProgress))
-                    .opacity(fetchMoreProgress)
-                    .offset(y: style.fetchMoreOffset)
-            }
-        }
-    }
-    
     public var body: some View {
         ScrollView(axes, showsIndicators: showsIndicators) {
             VStack(spacing: 0) {
@@ -209,6 +196,8 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                 
                 if hidingHeader {
                     header()
+                        .background(bgColor)
+                        .zIndex(1)
                 }
                 
                 if status != .idle {
@@ -219,6 +208,7 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                 ZStack(alignment: .top) {
                     if onRefresh != nil {
                         progressBody
+                            .zIndex(0)
                     }
                     
                     VStack(spacing: 0) {

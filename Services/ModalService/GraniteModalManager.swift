@@ -31,7 +31,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             .sink {[weak self] value in
                 #if os(iOS)
                 guard self?.presenters.isEmpty == true else { return }
-                self?.window?.isUserInteractionEnabled = value.keys.isEmpty == false
+                //self?.window?.isUserInteractionEnabled = value.keys.isEmpty == false
                 #else
                 DispatchQueue.main.async { [weak self] in
                     self?.centerWindow()
@@ -64,7 +64,7 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
             withAnimation {
                 self?.presenters.append(modal)
             }
-            self?.window?.isUserInteractionEnabled = true
+            //self?.window?.isUserInteractionEnabled = true
 #else
             self?.centerWindow()
             withAnimation {

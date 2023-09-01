@@ -48,7 +48,7 @@ public struct GraniteToastView : GraniteModal {
             RoundedRectangle(cornerRadius: 10)
                 .fill(style.backgroundColor)
                 .blur(radius: 2)
-                .shadow(color: Color.black.opacity(0.05), radius: 8)
+                //.shadow(color: Color.black.opacity(0.05), radius: 8)
             RoundedRectangle(cornerRadius: 10)
                 .fill(style.color(for: event))
         })

@@ -89,7 +89,7 @@ extension LoomPickerView {
             }
         }
         .frame(height: 36)
-        .padding(.bottom, .layer4)
+        .padding(.bottom, .layer3)
         .foregroundColor(.foreground)
     }
 }

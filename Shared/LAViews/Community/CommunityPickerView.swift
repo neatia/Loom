@@ -264,7 +264,7 @@ extension CommunityPickerView {
             Spacer()
         }
         .frame(height: 36)
-        .padding(.bottom, .layer4)
+        .padding(.bottom, .layer3)
         .padding(.leading, .layer4)
         .padding(.trailing, .layer4)
         .foregroundColor(.foreground)
