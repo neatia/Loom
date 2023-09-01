@@ -89,11 +89,15 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     }
     
     public func enableWindow() {
-        self.window?.isUserInteractionEnabled = true
+        DispatchQueue.main.async { [weak self] in
+            self?.window?.isUserInteractionEnabled = true
+        }
     }
     
     public func disableWindow() {
-        self.window?.isUserInteractionEnabled = false
+        DispatchQueue.main.async { [weak self] in
+            self?.window?.isUserInteractionEnabled = false
+        }
     }
 }
 
