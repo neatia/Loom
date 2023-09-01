@@ -44,6 +44,22 @@ extension String {
         return suggestions
     }
     
+    func includes(_ options: [String]) -> Bool {
+        guard self.count > 1 else  { return false }
+        
+        let text = self
+        
+        let suggestions: [String] = options
+            .filter {
+                let range = text.lowercased().range(of: $0.lowercased())
+                
+                return range?.isEmpty == false
+                
+            }
+        
+        return suggestions.isNotEmpty
+    }
+    
 }
 
 extension Int {

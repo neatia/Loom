@@ -91,6 +91,8 @@
 		710283CE2A2A54C300010877 /* DefaultThumb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710283712A2A54C300010877 /* DefaultThumb.swift */; };
 		710283CF2A2A54C400010877 /* AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710283722A2A54C300010877 /* AccentColor.swift */; };
 		710283D02A2A54C400010877 /* AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710283722A2A54C300010877 /* AccentColor.swift */; };
+		7103C6042AA16CC800F5C4FE /* StandardTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7103C6032AA16CC800F5C4FE /* StandardTextView.swift */; };
+		7103C6052AA16CC800F5C4FE /* StandardTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7103C6032AA16CC800F5C4FE /* StandardTextView.swift */; };
 		710540722A91427100B9DC8A /* View+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540712A91427100B9DC8A /* View+Size.swift */; };
 		710540732A91427100B9DC8A /* View+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710540712A91427100B9DC8A /* View+Size.swift */; };
 		710540802A91967200B9DC8A /* MarkdownFontGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */; };
@@ -748,6 +750,7 @@
 		710283702A2A54C300010877 /* DefaultHorizontalValueView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultHorizontalValueView.swift; sourceTree = "<group>"; };
 		710283712A2A54C300010877 /* DefaultThumb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultThumb.swift; sourceTree = "<group>"; };
 		710283722A2A54C300010877 /* AccentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccentColor.swift; sourceTree = "<group>"; };
+		7103C6032AA16CC800F5C4FE /* StandardTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardTextView.swift; sourceTree = "<group>"; };
 		710540712A91427100B9DC8A /* View+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Size.swift"; sourceTree = "<group>"; };
 		7105407F2A91967200B9DC8A /* MarkdownFontGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownFontGroup.swift; sourceTree = "<group>"; };
 		710540832A91D9CA00B9DC8A /* Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshot.swift; sourceTree = "<group>"; };
@@ -1796,13 +1799,14 @@
 				71FBA7F1296D16110090B630 /* GraniteScrollView */,
 				71A28EA929523CC200EAE8EE /* GradientView */,
 				71F778B72A71A95300C9C5C4 /* LinkPreview */,
-				714B48842A8238A400AC6199 /* Globe */,
-				71B7A1EB2A691460003E6D4D /* Shiny */,
+				712BEB5829074CFB00D257B7 /* Camera */,
 				71C5FF612A64688A00F99A84 /* Drawer */,
 				710283312A2A54C300010877 /* Sliders */,
-				712BEB5829074CFB00D257B7 /* Camera */,
+				714B48842A8238A400AC6199 /* Globe */,
+				71B7A1EB2A691460003E6D4D /* Shiny */,
 				71B21B802A6C791E005B3BFB /* GraniteStandardModalView.swift */,
 				71BE94F52A958EC2004A3AC3 /* KeyboardToolbarTextView.swift */,
+				7103C6032AA16CC800F5C4FE /* StandardTextView.swift */,
 				716CCAD12A8ACCC2009F9413 /* StandardToolbarView.swift */,
 				717C129E293BEF730060A446 /* AppBlurBackground.swift */,
 				71622E8F2A6E3DED006233F3 /* AdaptsToKeyboard.swift */,
@@ -2954,6 +2958,7 @@
 				71DF106D28CC697600559DBC /* DictionaryDecoder.swift in Sources */,
 				71F778C02A71A95300C9C5C4 /* Extension.swift in Sources */,
 				7158267F2A886752000E4B49 /* Marble.swift in Sources */,
+				7103C6042AA16CC800F5C4FE /* StandardTextView.swift in Sources */,
 				71C9F9302A6107D20089D7EA /* HeaderView.swift in Sources */,
 				71C8BE6E2A7F1C79008694C7 /* View+OnLoad.swift in Sources */,
 				710283AF2A2A54C300010877 /* EnvironmentValues+ValueSliderStyle.swift in Sources */,
@@ -3295,6 +3300,7 @@
 				71A4A1302A63326400689DF2 /* URL+Host.swift in Sources */,
 				71FBA7FA296D16110090B630 /* GranitePagingView.swift in Sources */,
 				71C69E522A7064AE00B54AD6 /* UserCardView.swift in Sources */,
+				7103C6052AA16CC800F5C4FE /* StandardTextView.swift in Sources */,
 				71F778D02A71C99900C9C5C4 /* Profile.TitleBarView.swift in Sources */,
 				71DF107428CC697600559DBC /* DictionaryErrors.swift in Sources */,
 				710283B82A2A54C300010877 /* ValueSliderOptions.swift in Sources */,

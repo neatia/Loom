@@ -41,7 +41,7 @@ extension Settings: View {
                                 .font(.title2.bold())
                         }
                         //TODO: Localize
-                        .addInfoIcon(text: "Filter content via various offline inferencing strategies and/or keywords.")
+                        .addInfoIcon(text: "Filter content via various offline inference strategies and/or keywords.")
                         
                         Spacer()
                     }
@@ -67,6 +67,47 @@ extension Settings: View {
 #endif
                     }
                     .padding(.horizontal, .layer4)
+                    
+                    HStack {
+                        Group {
+                            //TODO: Localize
+                            Text("Keywords")
+                                .font(.body)
+                        }
+                        //TODO: Localize
+                        .addInfoIcon(text: "Blocks posts or comments with these keywords. Seperate them via commas \",\".")
+                        
+                        Spacer()
+                        
+                        if state.oldKeywordsFilter != state.keywordsFilter {
+                            Button {
+                                GraniteHaptic.light.invoke()
+                                
+                                var keywords: [FilterConfig.Keyword] = []
+                                for keyword in state.keywordsFilter.components(separatedBy: ",") {
+                                    let trimmed = keyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                                    keywords.append(.init(value: trimmed, attribute: .all))
+                                }
+                                
+                                //update
+                                config._state.keywordsFilter.wrappedValue = .init(keywords: keywords)
+                                //reset changed
+                                _state.oldKeywordsFilter.wrappedValue = state.keywordsFilter
+                            } label: {
+                                Text("MISC_UPDATE")
+                                    .foregroundColor(Device.isMacOS ? .white : .accentColor)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        } else {
+                            Toggle(isOn: config._state.keywordsFilterEnabled) { EmptyView() }
+                        }
+                    }
+                    .padding(.vertical, .layer2)
+                    .padding(.horizontal, .layer4)
+                    
+                    StandardTextView(text: _state.keywordsFilter,
+                                     height: 80)
+                        .padding(.horizontal, .layer4)
                 }
                 .padding(.bottom, .layer4)
                 
@@ -330,6 +371,11 @@ extension Settings: View {
         }
         .background(Color.background)
         .padding(.top, Device.isMacOS ? ContainerConfig.generalViewTopPadding : 0)
+        .onAppear {
+            let value = config.state.keywordsFilter.keywords.map { $0.value }.joined(separator: ", ")
+            _state.oldKeywordsFilter.wrappedValue = value
+            _state.keywordsFilter.wrappedValue = value
+        }
     }
     
 }

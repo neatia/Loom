@@ -28,10 +28,26 @@ extension FederatedPostResource: Pageable {
     }
     
     public var shouldHide: Bool {
-        let shouldHideNSFW: Bool = (self.post.nsfw == true || self.community.nsfw == true) && PagerFilter.enable
+        let shouldHideNSFW: Bool = (self.post.nsfw == true || self.community.nsfw == true) && PagerFilter.enableForNSFW
         let shouldHideBot: Bool = self.creator.bot_account == true && PagerFilter.enableForBots
             
-        return shouldHideNSFW || shouldHideBot
+        let shouldHideKeywords: Bool
+        if PagerFilter.enableForKeywords {
+            let values: [String] = PagerFilter.filterKeywords.keywords.map { $0.value }
+            let title: String = self.post.name
+            let body: String = self.post.body ?? ""
+            let url: String = self.post.url ?? ""
+            let creator: String = self.creator.name
+            let creatorUrl: String = self.creator.actor_id
+            
+            let compiled: String = [title, body, url, creator, creatorUrl].joined(separator: " ")
+            
+            shouldHideKeywords = compiled.includes(values)
+        } else {
+            shouldHideKeywords = false
+        }
+        
+        return shouldHideNSFW || shouldHideBot || shouldHideKeywords
     }
     
     public var md5: String {

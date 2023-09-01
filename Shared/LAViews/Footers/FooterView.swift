@@ -453,7 +453,7 @@ extension FooterView {
             if context.isPost,
                let postView = context.postModel {
                 
-                if postView.post.featured_community || postView.post.featured_local {
+                if postView.post.featured_community {
                     Text("•")
                         .font(.footnote)
                         .padding(.horizontal, .layer2)
@@ -462,6 +462,17 @@ extension FooterView {
                     Image(systemName: "pin")
                         .font(.caption)
                         .foregroundColor(.green.opacity(0.8))
+                }
+                
+                if postView.post.featured_local {
+                    Text("•")
+                        .font(.footnote)
+                        .padding(.horizontal, .layer2)
+                        .foregroundColor(.foreground.opacity(0.5))
+                    
+                    Image(systemName: "pin")
+                        .font(.caption)
+                        .foregroundColor(.yellow.opacity(0.8))
                 }
                 
                 if postView.post.locked {

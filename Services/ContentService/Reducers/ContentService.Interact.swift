@@ -31,6 +31,18 @@ extension ContentService {
             case editComment(FederatedCommentResource, FederatedPostResource?)
             case editCommentSubmit(FederatedCommentResource, String)
             case editPostSubmit(FederatedPostResource)
+            
+            var isSaving: Bool {
+                switch self {
+                case .savePost,
+                        .unsavePost,
+                        .saveComment,
+                        .unsaveComment:
+                    return true
+                default:
+                    return false
+                }
+            }
         }
         
         struct Meta: GranitePayload {
@@ -48,6 +60,8 @@ extension ContentService {
             guard let meta else { return }
             
             guard FederationKit.isAuthenticated() else {
+                //Saving works offline as well
+                guard meta.kind.isSaving == false else { return }
                 //TODO: localize
                 broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
                 return
