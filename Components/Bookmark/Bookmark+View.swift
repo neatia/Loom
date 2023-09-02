@@ -159,11 +159,11 @@ extension Bookmark: View {
     func commentCardViews() -> some View {
         LazyVStack(spacing: 0) {
             ForEach(commentViews) { commentView in
-                CommentCardView(shouldLinkToPost: true)
-                    .contentContext(.init(postModel: postForComment(commentView),
-                                          commentModel: commentView,
-                                          feedStyle: .style2,
-                                          viewingContext: .bookmark(state.selectedBookmarkCommentKey.host)))
+                CommentCardView(context: .init(postModel: postForComment(commentView),
+                                               commentModel: commentView,
+                                               feedStyle: .style2,
+                                               viewingContext: .bookmark(state.selectedBookmarkCommentKey.host)),
+                                shouldLinkToPost: true)
                 
                 if commentView.id != commentViews.last?.id {
                     Divider()

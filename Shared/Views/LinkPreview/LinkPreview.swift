@@ -147,14 +147,14 @@ public struct LinkPreview: View {
             else {
                 HStack {
                     HStack(spacing: 10){
-#if os(iOS)
+                        #if os(iOS)
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: secondaryFontColor))
-#else
+                        #else
                         ProgressView()
                             .scaleEffect(0.6)
                             .progressViewStyle(CircularProgressViewStyle(tint: secondaryFontColor))
-#endif
+                        #endif
                         
                         Text(url.host ?? "")
                             .font(.caption)

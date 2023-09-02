@@ -6,9 +6,18 @@ import MarkdownView
 import FederationKit
 
 struct CommentCardView: View {
-    @Environment(\.contentContext) var context
     @Environment(\.graniteRouter) var router
     @Environment(\.graniteEvent) var interact
+    
+    /*
+     Due to the nature of threads having unlimited
+     nested comment cards. We do not want to environment
+     the context. Since they all have the potential
+     of accessing the same key/value leading to
+     unforeseen crashes/malloc issues
+     */
+    var context: ContentContext
+    
     @GraniteAction<FederatedCommunity> var viewCommunity
     
     @GraniteAction<FederatedCommentResource> var showDrawer
@@ -17,12 +26,8 @@ struct CommentCardView: View {
     @Relay var layout: LayoutService
     @Relay(.silence) var content: ContentService
     
-    @State var model: FederatedCommentResource?
+    @State var currentModel: FederatedCommentResource?
     @State var postView: FederatedPostResource? = nil
-    
-    var currentModel: FederatedCommentResource? {
-        model ?? context.commentModel
-    }
     
     //Viewing kind
     @State var collapseView: Bool = false
@@ -91,13 +96,13 @@ struct CommentCardView: View {
                         editModel()
                     }, at: \.edit)
                     .attach({
-                        showThreadDrawer(model)
+                        showThreadDrawer(currentModel)
                     }, at: \.goToThread)
-                    .contentContext(.addCommentModel(model: model, context))
+                    .contentContext(.addCommentModel(model: currentModel, context))
                     .padding(.trailing, padding.trailing)
                     .padding(.bottom, .layer3)
                 
-                if model != nil {
+                if currentModel != nil {
                     contentView
                         .padding(.trailing, padding.trailing)
                         .padding(.bottom, .layer3)
@@ -105,6 +110,7 @@ struct CommentCardView: View {
             case .style2:
                 HStack(spacing: .layer3) {
                     HeaderCardAvatarView(showAvatar: showAvatar,
+                                         showThreadLine: (currentModel?.replyCount ?? 0) > 0,
                                          shouldCollapse: collapseView)
                         .attach({
                             guard let currentModel,
@@ -128,7 +134,7 @@ struct CommentCardView: View {
                                 replyModel()
                             }, at: \.replyToContent)
                             .attach({
-                                showThreadDrawer(model)
+                                showThreadDrawer(currentModel)
                             }, at: \.goToThread)
                             .attach({
                                 editModel()
@@ -139,11 +145,8 @@ struct CommentCardView: View {
                                 collapseView.toggle()
                             }, at: \.tapped)
                             .graniteEvent(interact)
-                            //Since the model could get updated (removal/deletion)
-//                            .contentContext(.addCommentModel(model: currentModel, context))
                         
-                        if !collapseView,
-                           model != nil {
+                        if !collapseView {
                             contentView
                         }
                     }
@@ -156,7 +159,13 @@ struct CommentCardView: View {
                 Divider()
                     .padding(.top, .layer5)
                 
-                ThreadView(updatedParentModel: currentModel,
+                /*
+                 This can be an environmentValue, but there was an odd mem
+                 acess issue. safer to pass as value for now, and then apply
+                 the environment of the passed in context to the commentcards
+                 spawned within
+                 */
+                ThreadView(context: context,
                            isModal: false,
                            isInline: true)
                     .attach({ model in
@@ -165,6 +174,8 @@ struct CommentCardView: View {
                     .id(refreshThread)
             }
         }
+        .contentContext(.addCommentModel(model: currentModel,
+                                         context))
         .padding(.top, padding.top)
         .padding(.bottom, padding.bottom)
         .padding(.leading, padding.leading)
@@ -177,22 +188,20 @@ struct CommentCardView: View {
             replyModel()
         }
         .task {
-            self.model = context.commentModel
-            self.postView = context.postModel
-            
-            //Experiment
-            interact?
-                .listen(.bubble(context.id)) { value in
-                    if let interact = value as? AccountService.Interact.Meta {
-                        switch interact.intent {
-                        case .deleteComment(let model):
-                            guard model.id == context.commentModel?.id else { return }
-                            self.model = model.updateDeleted()
-                        default:
-                            break
-                        }
-                    }
-                }
+            currentModel = context.commentModel
+        }
+        /*
+         A listener
+         
+         update view states with actions
+         executed by nested subviews
+         
+         Pros:
+         - no need to pass down - Clean
+         - no need for the parent view to re-draw - Performant
+         */
+        .onChange(of: currentModel) { _ in
+            setupListeners()
         }
     }
     
@@ -221,30 +230,13 @@ struct CommentCardView: View {
     }
     
     func editModel() {
-        //This entire logic needs to be revised
-        switch context.viewingContext {
-        case .base,
-             .bookmark,
-             .bookmarkExpanded:
-            
-            //The function name doesn't seem to make sense
-            ModalService
-                .shared
-                .showReplyCommentModal(isEditing: true,
-                                       model: model) { (updatedModel, replyModel) in
-                
-                DispatchQueue.main.async {
-                    self.model = updatedModel
-                }
+        ModalService
+            .shared
+            .showEditCommentModal(currentModel,
+                                  postView: context.postModel) { updatedModel in
+                self.currentModel = updatedModel
+                self.expandReplies = false
             }
-        default:
-            ModalService
-                .shared
-                .showEditCommentModal(model,
-                                      postView: postView) { updatedModel in
-                    self.model = updatedModel
-                }
-        }
     }
     
     func replyModel() {
@@ -252,11 +244,10 @@ struct CommentCardView: View {
         
         ModalService
             .shared
-            .showReplyCommentModal(isEditing: false,
-                                   model: currentModel) { (updatedModel, replyModel) in
+            .showReplyCommentModal(model: currentModel) { (updatedModel, replyModel) in
             
             DispatchQueue.main.async {
-                self.model = self.model?.incrementReplyCount()
+                self.currentModel = self.currentModel?.incrementReplyCount()
                 if expandReplies == false {
                     expandReplies = true
                 } else {
@@ -265,77 +256,54 @@ struct CommentCardView: View {
             }
         }
     }
+    
+    func setupListeners() {
+        interact?
+            .listen(.bubble(context.id)) { value in
+                if let interact = value as? AccountService.Interact.Meta {
+                    switch interact.intent {
+                    case .deleteComment(let model):
+                        guard model.id == currentModel?.id else {
+                            LoomLog("failed to update deleted state for bubbled event: \(model.id) != \(currentModel?.id) ", level: .debug)
+                            return
+                        }
+                        LoomLog("Updating deleted state for bubbled event for deleted comment", level: .debug)
+                        self.currentModel = model.updateDeleted()
+                        expandReplies = false
+                    default:
+                        break
+                    }
+                }
+            }
+    }
 }
 
 extension CommentCardView {
     var contentView: some View {
         VStack(alignment: .leading, spacing: .layer3) {
-            #if os(macOS)
-            contentBody
-                .onTapGesture {
-                    guard context.isPreview == false, model?.replyCount ?? 0 > 0 else { return }
-                    GraniteHaptic.light.invoke()
-                    expandReplies.toggle()
-                }
-            #else
-            contentBody
-            #endif
+            if Device.isMacOS {
+                contentBody
+                    .onTapGesture {
+                        guard context.isPreview == false, currentModel?.replyCount ?? 0 > 0 else { return }
+                        GraniteHaptic.light.invoke()
+                        expandReplies.toggle()
+                    }
+            } else {
+                contentBody
+            }
+            
             FooterView(showScores: config.state.showScores)
-                .attach({ model in
-                    replyModel()
-                }, at: \.replyComment)
+//                .attachAndClear({ model in
+//                    replyModel()
+//                }, at: \.replyComment)
         }
         .censor(shouldCensor, kind: censorKind, isComment: true)
-        .onTapIf(Device.isExpandedLayout || shouldCensor) {
-            guard context.isPreview else {
-                if shouldCensor {
-                    expandReplies.toggle()
-                }
-                return
-            }
-            
-            guard layout.state.style == .expanded else {
-                GraniteHaptic.light.invoke()
-                return
-            }
-            
-            Task.detached { @MainActor in
-                guard let postView = await ContentUpdater.fetchFederatedPostResource(context.commentModel?.post) else {
-                    return
-                }
-                
-                layout._state.wrappedValue.feedContext = .viewPost(postView)
-            }
-        }
-        .routeIf(Device.isExpandedLayout == false && context.isPreview,
-                 window: .resizable(600, 500)) {
-            //prevent type erasure
-            PostDisplayView(context: _context)
-        } with : { router }
     }
     
     var contentBody: some View {
-        Group {
-            if let currentModel {
-                if context.isPreview {
-                    ScrollView(showsIndicators: false) {
-                        MarkdownView(text: currentModel.comment.content)
-                            .fontGroup(CommentFontGroup())
-                            .markdownViewRole(.editor)
-                    }
-                    .frame(height: 120)
-                    .padding(.bottom, .layer3)
-                } else {
-                    MarkdownView(text: currentModel.comment.content)
-                        .fontGroup(CommentFontGroup())
-                        .markdownViewRole(.editor)
-                        .padding(.bottom, .layer3)
-
-                }
-            } else {
-                EmptyView()
-            }
-        }
+        MarkdownContainerView(text: currentModel?.comment.content,
+                              isPreview: context.isPreview,
+                              kind: .comment)
     }
 }
 

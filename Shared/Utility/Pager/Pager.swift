@@ -44,7 +44,7 @@ extension Pageable {
 }
 
 struct PageableMetadata: Hashable {
-    static var fetchTimeout: Double = 5
+    static var fetchTimeout: Double = 5.0
     
     var linkMeta: LPLinkMetadata?
     var imageThumb: GraniteImage?
@@ -61,6 +61,10 @@ public class PagerFilter {
     static var isEnabled: Bool {
         enableForNSFW || enableForBots || enableForKeywords
     }
+}
+
+public class PagerConfig {
+    static var manuallyFetchMoreContent: Bool = false
 }
 
 public class Pager<Model: Pageable>: ObservableObject {
@@ -125,6 +129,9 @@ public class Pager<Model: Pageable>: ObservableObject {
     //states
     var fetchMoreTimedOut: Bool = false
     var hasMore: Bool = true
+    var canAutoFetch: Bool {
+        (hasMore && currentItems.isNotEmpty) && PagerConfig.manuallyFetchMoreContent == false
+    }
     
     @Published var isFetching: Bool = false
     
@@ -194,7 +201,10 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     func refresh(_ handler: GraniteScrollView.CompletionHandler?) {
         self.onRefreshHandler = handler
-        self.fetch(force: true)
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.fetch(force: true)
+        }
     }
     
     @discardableResult
@@ -203,6 +213,7 @@ public class Pager<Model: Pageable>: ObservableObject {
         return self
     }
     
+    @MainActor
     func fetch(force: Bool = false) {
         guard hasMore || force else { return }
         
@@ -222,9 +233,7 @@ public class Pager<Model: Pageable>: ObservableObject {
             return
         }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.isFetching = true
-        }
+        self.isFetching = true
         
         self.timerCancellable = Timer.publish(every: 10,
                                               on: .main,
@@ -547,7 +556,11 @@ extension Pager{
     
     func tryAgain() {
         clean()
-        fetch()
+        self.hasMore = true
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.fetch()
+        }
     }
     
     func clean() {

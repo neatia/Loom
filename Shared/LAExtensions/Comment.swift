@@ -32,16 +32,7 @@ extension FederatedCommentResource: Pageable {
         
         let shouldHideKeywords: Bool
         if PagerFilter.enableForKeywords {
-            let values: [String] = PagerFilter.filterKeywords.keywords.map { $0.value }
-            let title: String = self.post.name
-            let body: String = self.post.body ?? ""
-            let url: String = self.post.url ?? ""
-            let creator: String = self.creator.name
-            let creatorUrl: String = self.creator.actor_id
-            
-            let compiled: String = [title, body, url, creator, creatorUrl].joined(separator: " ")
-            
-            shouldHideKeywords = compiled.includes(values)
+            shouldHideKeywords = PagerFilter.filterKeywords.check(comment: self)
         } else {
             shouldHideKeywords = false
         }
@@ -60,7 +51,16 @@ extension FederatedCommentResource {
     }
     
     func updateDeleted() -> FederatedCommentResource {
-        .init(comment: self.comment.updateDeleted(), creator: self.person, post: self.post, community: self.community, counts: self.counts, creator_banned_from_community: self.creator_banned_from_community, subscribed: self.subscribed, saved: self.saved, creator_blocked: blocked)
+        .init(comment: self.comment.updateDeleted(),
+              creator: self.person,
+              post: self.post,
+              community: self.community,
+              counts: self.counts,
+              creator_banned_from_community: self.creator_banned_from_community,
+              subscribed: self.subscribed,
+              saved: self.saved,
+              creator_blocked: self.blocked,
+              my_vote: self.my_vote)
     }
 }
 
@@ -98,11 +98,37 @@ extension FederatedComment {
     }
     
     func updateRemoved() -> FederatedComment {
-        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: !self.removed, published: self.published, deleted: self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id, instanceType: self.instanceType)
+        .init(id: self.id,
+              creator_id: self.creator_id,
+              post_id: self.post_id,
+              content: self.content,
+              removed: !self.removed,
+              published: self.published,
+              updated: self.updated,
+              deleted: self.deleted,
+              ap_id: self.ap_id,
+              local: self.local,
+              path: self.path,
+              distinguished: self.distinguished,
+              language_id: self.language_id,
+              instanceType: self.instanceType)
     }
     
     func updateDeleted() -> FederatedComment {
-        .init(id: self.id, creator_id: self.creator_id, post_id: self.post_id, content: self.content, removed: self.removed, published: self.published, deleted: !self.deleted, ap_id: self.ap_id, local: self.local, path: self.path, distinguished: self.distinguished, language_id: self.language_id, instanceType: self.instanceType)
+        .init(id: self.id,
+              creator_id: self.creator_id,
+              post_id: self.post_id,
+              content: self.content,
+              removed: self.removed,
+              published: self.published,
+              updated: self.updated,
+              deleted: !self.deleted,
+              ap_id: self.ap_id,
+              local: self.local,
+              path: self.path,
+              distinguished: self.distinguished,
+              language_id: self.language_id,
+              instanceType: self.instanceType)
     }
 }
 

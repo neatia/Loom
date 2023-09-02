@@ -150,7 +150,6 @@ extension WriteView {
                 .overlayIf(content.isEmpty && isFocused == false) {
                     placeholderView
                 }
-                .id(id)
 #else
                 
                 if #available(macOS 13.0, iOS 16.0, *) {
@@ -266,9 +265,7 @@ struct KeyboardToolbarSView: View {
             Button {
                 GraniteHaptic.light.invoke()
                 
-                #if os(iOS)
-                hideKeyboard()
-                #endif
+                UIApplication.hideKeyboard()
             } label : {
                 if #available(macOS 13.0, iOS 16.0, *) {
                     Image(systemName: "keyboard.chevron.compact.down.fill")

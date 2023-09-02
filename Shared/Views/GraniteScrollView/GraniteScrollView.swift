@@ -116,6 +116,8 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
         var isResting: Bool = true
         var isShowingAccessory: Bool = false
         
+        var reachedBottom: Bool = false
+        
         func update() {
             DispatchQueue.main.async {
                 self.objectWillChange.send()
@@ -143,6 +145,7 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
     @State private var progress : Double = 0
     @State private var fetchMoreProgress : Double = 0
     @State private var startDraggingOffset : CGPoint = .zero
+    @State private var frameHeight: CGFloat = 0
     @StateObject private var directionBox: DirectionBox = .init()
     
     private var hidingHeader: Bool
@@ -187,12 +190,12 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
     public var body: some View {
         ScrollView(axes, showsIndicators: showsIndicators) {
             VStack(spacing: 0) {
-                GraniteScrollViewPositionIndicator(type: .moving)
-                    .frame(height: 0)
-                    .background(
-                        Reader(startDraggingOffset: $startDraggingOffset,
-                               onReachedEdge: onReachedEdge)
-                    )
+//                GraniteScrollViewPositionIndicator(type: .moving)
+//                    .frame(height: 0)
+//                    .background(
+//                        Reader(startDraggingOffset: $startDraggingOffset,
+//                               onReachedEdge: onReachedEdge)
+//                    )
                 
                 if hidingHeader {
                     header()
@@ -220,9 +223,17 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                 .readingScrollViewIf(hidingHeader,
                                      from: "granite.scrollview",
                                      into: .init(get: {
-                    return directionBox.offset
+                    return .init(directionBox.offset)
                 }, set: { value in
-                    directionBox.offset = value
+                    directionBox.offset = value.offset
+                    
+                    let lastState = directionBox.reachedBottom
+                    directionBox.reachedBottom = value.contentHeight <= frameHeight
+                    //reached bottom, fire once
+                    if lastState != directionBox.reachedBottom,
+                       directionBox.reachedBottom {
+                        onReachedEdge?(.bottom)
+                    }
                 }))
             }
         }
@@ -250,7 +261,11 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
             guard status != .loading, onRefresh != nil else {
                 return
             }
-           
+            
+            DispatchQueue.main.async {
+                frameHeight = values.first?.frame.height ?? frameHeight
+            }
+            
             guard startDraggingOffset == .zero else {
                 status = .idle
                 return
@@ -307,7 +322,7 @@ private struct ActivityIndicator: UIViewRepresentable {
 }
 #else
 import SwiftUI
-public struct GraniteScrollView<Content : View> : View {
+public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
    
     private enum Status {
         case idle
@@ -343,7 +358,9 @@ public struct GraniteScrollView<Content : View> : View {
                 showsIndicators: Bool = false,
                 onRefresh : RefreshHandler? = nil,
                 onReachedEdge : ReachedEdgeHandler? = nil,
+                hidingHeader : Bool = false,
                 bgColor: Color = .clear,
+                @ViewBuilder header: @escaping () -> ContentHeader = { EmptyView() },
                 @ViewBuilder content: @escaping () -> Content) {
         self.axes = axes
         self.showsIndicators = showsIndicators
@@ -356,14 +373,8 @@ public struct GraniteScrollView<Content : View> : View {
     var progressBody: some View {
         ZStack {
             if status == .loading {
-                #if os(iOS)
-                ProgressView()
+                StandardProgressView()
                     .offset(y: -style.progressOffset)
-                #else
-                ProgressView()
-                    .scaleEffect(0.6)
-                    .offset(y: -style.progressOffset)
-                #endif
             }
             else if status != .idle {
                 PullIndicator()

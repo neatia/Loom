@@ -31,6 +31,15 @@ struct Write: GraniteComponent {
                 return false
             }
         }
+        
+        var isPost: Bool {
+            switch self {
+            case .replyPost, .editReplyPost:
+                return true
+            default:
+                return false
+            }
+        }
     }
     
     var listeners: Void {

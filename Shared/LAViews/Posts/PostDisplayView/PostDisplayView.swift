@@ -71,14 +71,13 @@ struct PostDisplayView: GraniteNavigationDestination {
                 } inlineBody: {
                     contentView
                 } content: { commentView in
-                    CommentCardView()
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
-                        .contentContext(
+                    CommentCardView(context:
                             .addCommentModel(model: commentView, context)
                             .viewedIn(.postDisplay)
                             .updateLocation(threadLocation))
+                        .attach({ community in
+                            viewCommunity.perform(community)
+                        }, at: \.viewCommunity)
                         .graniteEvent(account.center.interact)
                         .background(Color.alternateBackground)
                 }
@@ -118,7 +117,6 @@ struct PostDisplayView: GraniteNavigationDestination {
                 .padding(.leading, Device.isExpandedLayout ? 0 : .layer5)
                 .padding(.top, Device.isExpandedLayout ? .layer4 : 0)
         }
-        .ignoresSafeArea(.keyboard)
     }
     
     //This inserts into a HStack
@@ -265,14 +263,8 @@ extension PostDisplayView {
     }
     var contentBody: some View {
         VStack(spacing: 0) {
-            ScrollView {
-                if let body = currentModel?.post.body {
-                    MarkdownView(text: body)
-                        .markdownViewRole(.editor)
-                        .fontGroup(PostDisplayFontGroup())
-                        .padding(.bottom, .layer2)
-                }
-            }
+            MarkdownContainerView(text: currentModel?.post.body,
+                                  kind: .postDisplay)
         }
     }
 }

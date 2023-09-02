@@ -11,6 +11,11 @@ extension ConfigService {
             
             //Feed
             var linkPreviewMetaData: Bool = false
+            var manuallyFetchMoreContent: Bool = false {
+                didSet {
+                    PagerConfig.manuallyFetchMoreContent = manuallyFetchMoreContent
+                }
+            }
             
             //Write
             var enableIPFS: Bool = false {

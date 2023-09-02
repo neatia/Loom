@@ -23,33 +23,9 @@ struct FooterView: View {
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
     
-    var upvoteCount: Int {
-        if let commentView = context.commentModel {
-            return content.state.allComments[commentView.id]?.counts.upvotes ?? commentView.counts.upvotes
-        } else if let postView = context.postModel {
-            return content.state.allPosts[postView.id]?.counts.upvotes ?? postView.counts.upvotes
-        } else {
-            return 0
-        }
-    }
-    var downvoteCount: Int {
-        if let commentView = context.commentModel {
-            return content.state.allComments[commentView.id]?.counts.downvotes ?? commentView.counts.downvotes
-        } else if let postView = context.postModel {
-            return content.state.allPosts[postView.id]?.counts.downvotes ?? postView.counts.downvotes
-        } else {
-            return 0
-        }
-    }
-    var myVote: Int {
-        if let commentView = context.commentModel {
-            return content.state.allComments[commentView.id]?.my_vote ?? (commentView.my_vote ?? 0)
-        } else if let postView = context.postModel {
-            return content.state.allPosts[postView.id]?.my_vote ?? (postView.my_vote ?? 0)
-        } else {
-            return 0
-        }
-    }
+    @State var upvoteCount: Int = 0
+    @State var downvoteCount: Int = 0
+    @State var myVote: Int = 0
     
     var routeTitle: String? {
         context.postModel?.post.name
@@ -87,6 +63,31 @@ struct FooterView: View {
                 stacked
             }
         }
+        .task {
+            if let commentView = context.commentModel {
+                upvoteCount = content.state.allComments[commentView.id]?.counts.upvotes ?? commentView.counts.upvotes
+            } else if let postView = context.postModel {
+                upvoteCount = content.state.allPosts[postView.id]?.counts.upvotes ?? postView.counts.upvotes
+            } else {
+                upvoteCount = 0
+            }
+            
+            if let commentView = context.commentModel {
+                downvoteCount = content.state.allComments[commentView.id]?.counts.downvotes ?? commentView.counts.downvotes
+            } else if let postView = context.postModel {
+                downvoteCount = content.state.allPosts[postView.id]?.counts.downvotes ?? postView.counts.downvotes
+            } else {
+                downvoteCount = 0
+            }
+            
+            if let commentView = context.commentModel {
+                myVote = content.state.allComments[commentView.id]?.my_vote ?? (commentView.my_vote ?? 0)
+            } else if let postView = context.postModel {
+                myVote = content.state.allPosts[postView.id]?.my_vote ?? (postView.my_vote ?? 0)
+            } else {
+                myVote = 0
+            }
+        }
     }
 }
 
@@ -108,6 +109,28 @@ extension FooterView {
             }
         }
         bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
+    }
+    
+    func upvote() {
+        let didUpvote: Bool = myVote == 1
+        let didDownvote: Bool = myVote == -1
+        myVote = myVote <= 0 ? 1 : 0
+        
+        upvoteCount += didUpvote ? -1 : 1
+        downvoteCount += didDownvote ? -1 : 0
+        
+        LoomLog("myVote: \(myVote)", level: .debug)
+    }
+    
+    func downvote() {
+        let didUpvote: Bool = myVote == 1
+        let didDownvote: Bool = myVote == -1
+        myVote = myVote >= 0 ? -1 : 0
+        
+        upvoteCount += didUpvote ? -1 : 0
+        downvoteCount += didDownvote ? -1 : 1
+        
+        LoomLog("myVote: \(myVote)", level: .debug)
     }
 }
 
@@ -192,6 +215,8 @@ extension FooterView {
                 case .comment(let commentView, _):
                     content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
                 }
+                
+                upvote()
             } label : {
                 HStack(spacing: .layer1) {
                     Image(systemName: "arrow.up")
@@ -210,6 +235,8 @@ extension FooterView {
                 case .comment(let commentView, _):
                     content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView)))
                 }
+                
+                downvote()
             } label : {
                 HStack(spacing: .layer1) {
                     Image(systemName: "arrow.down")
@@ -281,6 +308,7 @@ extension FooterView {
                     content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
                 }
                 
+                upvote()
             } label : {
                 HStack(spacing: .layer2) {
                     Image(systemName: "arrow.up")
@@ -304,6 +332,8 @@ extension FooterView {
                 } else if let postView = context.postModel {
                     content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView)))
                 }
+                
+                downvote()
             } label : {
                 HStack(spacing: .layer2) {
                     Image(systemName: "arrow.down")

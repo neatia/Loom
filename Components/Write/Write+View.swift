@@ -90,12 +90,7 @@ extension Write: View {
                 Spacer()
                 
                 if state.isPosting {
-                    #if os(iOS)
-                    ProgressView()
-                    #else
-                    ProgressView()
-                        .scaleEffect(0.6)
-                    #endif
+                    StandardProgressView()
                 } else {
                     
                     if state.isPosting == false && state.isEditing == false {
@@ -117,6 +112,7 @@ extension Write: View {
                             } else {
                                 Image(systemName: "globe")
                                     .font(.title3)
+                                    .contentShape(Rectangle())
                             }
                         }
                         .buttonStyle(PlainButtonStyle())
@@ -137,6 +133,7 @@ extension Write: View {
                     } label: {
                         Image(systemName: state.isEditing ? "sdcard.fill" : "paperplane.fill")
                             .font(state.isEditing ? .title3 : .headline)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(PlainButtonStyle())
                 }
@@ -220,11 +217,3 @@ extension Write: View {
         }
     }
 }
-
-#if canImport(UIKit)
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-}
-#endif

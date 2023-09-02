@@ -27,6 +27,10 @@ struct PostCardView: View {
     
     @State var model: FederatedPostResource?
     
+    var currentModel: FederatedPostResource? {
+        model ?? context.postModel
+    }
+    
     var topPadding: CGFloat = .layer6
     var bottomPadding: CGFloat = .layer6
     
@@ -49,7 +53,7 @@ struct PostCardView: View {
     }
     //TODO: differentiate between removed
     var censorDeleted: Bool {
-        model?.post.deleted ?? context.isRemoved
+        model?.post.deleted ?? context.isDeleted
     }
     
     var shouldCensor: Bool {
@@ -116,7 +120,23 @@ struct PostCardView: View {
             case .style2:
                 HStack(spacing: .layer3) {
                     if isCompact == false {
-                        HeaderCardAvatarView(showAvatar: showAvatar)
+                        HeaderCardAvatarView(showAvatar: showAvatar,
+                                             showThreadLine: (currentModel?.commentCount ?? 0) > 0)
+                        .attach({
+                            guard !shouldCensor,
+                                  let currentModel else { return }
+                            
+                            if Device.isExpandedLayout {
+                                layout._state.wrappedValue.feedContext = .viewPost(currentModel)
+                            } else {
+                                GraniteHaptic.light.invoke()
+                                router.push {
+                                    PostDisplayView(context: _context,
+                                                    updatedModel: currentModel)
+                                }
+                            }
+                            
+                        }, at: \.tappedThreadLine)
                     }
                     VStack(alignment: .leading, spacing: 0) {
                         HeaderCardView(badge: .noBadge, isCompact: isCompact)
@@ -135,6 +155,7 @@ struct PostCardView: View {
                                 }
                             }, at: \.replyToContent)
                             .graniteEvent(interact)
+                            .contentContext(.addPostModel(model: currentModel, context))
                         
                         content
                     }

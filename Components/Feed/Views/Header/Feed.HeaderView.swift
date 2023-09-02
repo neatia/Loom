@@ -155,17 +155,16 @@ extension Feed {
                 .padding(.trailing, Device.isExpandedLayout ? 0 : .layer3)
             } else {
                 if Device.isExpandedLayout {
-                    ProgressView()
+                    StandardProgressView()
                         .padding(.horizontal, hasCommunityBanner ? 4 : 0)
                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
                         .backgroundIf(hasCommunityBanner) {
                             Color.background.opacity(0.75)
                                 .cornerRadius(6)
                         }
-                        .scaleEffect(Device.isMacOS ? 0.6 : 1.0)
                         .offset(x: .layer1)
                 } else {
-                    ProgressView()
+                    StandardProgressView()
                         .padding(.horizontal, hasCommunityBanner ? 6 : 0)
                         .padding(.vertical, hasCommunityBanner ? 4 : 0)
                         .backgroundIf(hasCommunityBanner) {

@@ -87,7 +87,7 @@ struct HeaderCardAvatarView: View {
                     .stroke(avatarBorderColor, lineWidth: 1.0))
             }
             
-            if !shouldCollapse {
+            if !shouldCollapse && showThreadLine {
                 GeometryReader { proxy in
                     HStack(spacing: 0) {
                         Spacer()
@@ -117,6 +117,15 @@ struct HeaderCardAvatarView: View {
                     }, longPressAction: {
                         longPressThreadLine.perform()
                     }))
+                }
+            } else if !showThreadLine {
+                Spacer()
+                
+                if isBot {
+                    Text("🤖")
+                        .font(.title2)
+                        .padding(.top, .layer3)
+                        .offset(y: 2)
                 }
             }
         }

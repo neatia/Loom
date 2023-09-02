@@ -10,6 +10,8 @@ extension Reply: View {
                 headerView
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer4)
+                    //Odd visual bug, with the header simply not appearing
+                    .frame(minHeight: 1)
             }
             
             Divider()
@@ -57,12 +59,7 @@ extension Reply: View {
                 Spacer()
                 
                 if state.isReplying {
-                    #if os(macOS)
-                    ProgressView()
-                        .scaleEffect(0.6)
-                    #else
-                    ProgressView()
-                    #endif
+                    StandardProgressView()
                 } else {
                     Button {
                         GraniteHaptic.light.invoke()
@@ -81,6 +78,8 @@ extension Reply: View {
                     } label: {
                         Image(systemName: kind.isEditingReply ? "sdcard.fill" : "paperplane.fill")
                             .font(.headline)
+                            .frame(width: 24, height: 24)
+                            .contentShape(Rectangle())
                     }
                     .buttonStyle(PlainButtonStyle())
                 }

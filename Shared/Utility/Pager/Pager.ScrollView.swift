@@ -72,7 +72,7 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                         .frame(maxHeight: .infinity)
                 }
             } else {
-                if properties.performant && properties.hidingHeader == false {
+                if properties.performant && (properties.hidingHeader == false || Device.isMacOS) {
                     if Device.isExpandedLayout == false {
                         header()
                     }

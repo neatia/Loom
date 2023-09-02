@@ -8,7 +8,6 @@ struct Profile: GraniteComponent {
     @Environment(\.graniteRouter) var router
     
     @Relay var account: AccountService
-    @Relay var content: ContentService
     
     @StateObject var pager: Pager<PersonDetailsPageable> = .init(emptyText: "EMPTY_STATE_MISC")
     
@@ -17,7 +16,6 @@ struct Profile: GraniteComponent {
     init(_ person: FederatedPerson? = nil) {
         isMe = person?.isMe == true
         _center = .init(.init(person: person ?? FederationKit.user()?.resource.user.person))
-        content.silence(viewUpdatesOnly: true)
         
         LoomLog("profile init")
     }

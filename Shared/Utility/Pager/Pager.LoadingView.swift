@@ -41,12 +41,7 @@ struct PagerFooterLoadingView<Model: Pageable>: View {
         
         VStack {
             if pager.isFetching && !pager.fetchMoreTimedOut {
-                #if os(iOS)
-                ProgressView()
-                #else
-                ProgressView()
-                    .scaleEffect(0.6)
-                #endif
+                StandardProgressView()
             } else {
                 Image(systemName: "arrow.counterclockwise")
                     .font(.headline.bold())
@@ -96,12 +91,7 @@ struct PagerLoadingView<Model: Pageable>: View {
             HStack {
                 Spacer()
                 if pager.isFetching || pager.initialFetch {
-                    #if os(iOS)
-                    ProgressView()
-                    #else
-                    ProgressView()
-                        .scaleEffect(0.6)
-                    #endif
+                    StandardProgressView()
                 } else {
                     VStack(spacing: .layer3) {
                         Text(label)
