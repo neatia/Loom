@@ -7,7 +7,7 @@ struct Feed: GraniteComponent {
     @Command var center: Center
     
     @Relay var config: ConfigService
-    @Relay var content: ContentService
+    @Relay(.silenceViewUpdates) var content: ContentService
     @Relay var account: AccountService
     @Relay var loom: LoomService
     
@@ -42,7 +42,6 @@ struct Feed: GraniteComponent {
                               peerLocation: location))
         
         content.preload()
-        content.silence(viewUpdatesOnly: true)
         loom.silence(viewUpdatesOnly: true)
     }
 }

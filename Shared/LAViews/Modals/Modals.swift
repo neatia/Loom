@@ -64,7 +64,14 @@ extension ModalService {
                     self.dismissSheet()
                     
                     //TODO: localize
-                    ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "Post edited", event: .success)))
+                    ModalService
+                        .shared
+                        .presentModal(
+                            GraniteToastView(
+                                StandardNotificationMeta(
+                                    title: "MISC_SUCCESS",
+                                    message: "Post edited",
+                                    event: .success)))
                 }, at: \.updatedPost)
                 .frame(width: Device.isMacOS ? 700 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -79,19 +86,29 @@ extension ModalService {
             return
         }
         
-        let replyKind: Write.Kind
+        let editKind: Write.Kind
         
         if let postView {
-            replyKind = .editReplyPost(commentView, postView)
+            editKind = .editReplyPost(commentView, postView)
         } else {
-            replyKind = .editReplyComment(commentView)
+            editKind = .editReplyComment(commentView)
         }
         
         presentSheet {
-            Reply(kind: replyKind)
+            Reply(kind: editKind)
                 .attachAndClear({ (updatedModel, replyModel) in
                     update?(updatedModel)
                     self.dismissSheet()
+                    
+                    //TODO: localize
+                    ModalService
+                        .shared
+                        .presentModal(
+                            GraniteToastView(
+                                StandardNotificationMeta(
+                                    title: "MISC_SUCCESS",
+                                    message: "Comment edited",
+                                    event: .success)))
                 }, at: \.updateComment)
                 .frame(width: Device.isMacOS ? 500 : nil, height: Device.isMacOS ? 400 : nil)
         }
@@ -131,25 +148,26 @@ extension ModalService {
     }
     
     @MainActor
-    func showReplyCommentModal(isEditing: Bool,
-                               model: FederatedCommentResource?,
+    func showReplyCommentModal(model: FederatedCommentResource?,
                                _ update: ((FederatedCommentResource, FederatedCommentResource?) -> Void)? = nil) {
         guard let model else {
             return
         }
         
         presentSheet {
-            Reply(kind: isEditing ? .editReplyComment(model) : .replyComment(model))
+            Reply(kind: .replyComment(model))
                 .attachAndClear({ (updatedModel, replyModel) in
                     update?(updatedModel, replyModel)
                     
-                    if isEditing {
-                        //TODO: edit success modal
-                    } else {
-                        ModalService.shared.presentModal(GraniteToastView(StandardNotificationMeta(title: "MISC_SUCCESS", message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)", event: .success)))
-                    }
-                    
                     ModalService.shared.dismissSheet()
+                    
+                    ModalService
+                        .shared
+                        .presentModal(
+                            GraniteToastView(
+                                StandardNotificationMeta(title: "MISC_SUCCESS",
+                                                         message: "ALERT_REPLY_COMMENT_SUCCESS \("@"+model.creator.name)",
+                                                         event: .success)))
                 }, at: \.updateComment)
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
@@ -163,13 +181,10 @@ extension ModalService {
     @MainActor
     func showShareCommentModal(_ model: FederatedCommentResource?) {
         presentSheet {
-            GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
-                ShareModal(urlString: model?.comment.ap_id) {
-                    CommentCardView()
-                        .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
-                        .contentContext(.init(commentModel: model,
-                                              viewingContext: .screenshot))
-                }
+            ShareModal(urlString: model?.comment.ap_id) {
+                CommentCardView(context: .init(commentModel: model,
+                                               viewingContext: .screenshot))
+                    .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
             }
             .frame(width: Device.isMacOS ? 600 : nil)
         }
@@ -179,15 +194,13 @@ extension ModalService {
     func showSharePostModal(_ model: FederatedPostResource?,
                             metadata: PageableMetadata?) {
         presentSheet {
-            GraniteStandardModalView(title: "MISC_SHARE", fullWidth: Device.isMacOS) {
-                ShareModal(urlString: model?.post.ap_id) {
-                    PostCardView()
-                        .background(Color.background)
-                        .environment(\.pagerMetadata, metadata)
-                        .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
-                        .contentContext(.init(postModel: model,
-                                              viewingContext: .screenshot))
-                }
+            ShareModal(urlString: model?.post.ap_id) {
+                PostCardView()
+                    .background(Color.background)
+                    .environment(\.pagerMetadata, metadata)
+                    .frame(width: ContainerConfig.iPhoneScreenWidth * 0.9)
+                    .contentContext(.init(postModel: model,
+                                          viewingContext: .screenshot))
             }
             .frame(width: Device.isMacOS ? 600 : nil)
         }
@@ -201,16 +214,13 @@ extension ModalService {
     func showThreadDrawer(commentView: FederatedCommentResource?,
                           context: ContentContext) {
         presentSheet {
-            ThreadView()
+            ThreadView(context: .addCommentModel(model: commentView,
+                                                 context)
+                                .withStyle(.style2)
+                                .viewedIn(.thread))
                 .attach({
                     ModalService.shared.dismissSheet()
                 }, at: \.closeDrawer)
-                .contentContext(
-                    .addCommentModel(model: commentView,
-                                     context)
-                    .withStyle(.style2)
-                    .viewedIn(.thread)
-                )
                 .frame(width: Device.isMacOS ? 600 : nil, height: Device.isMacOS ? 500 : nil)
         }
     }

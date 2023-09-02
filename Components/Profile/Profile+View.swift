@@ -14,10 +14,9 @@ extension Profile: GraniteNavigationDestination {
             } content: { details in
                 if let model = details.commentView,
                    !filterOverviewPosts {
-                    CommentCardView()
+                    CommentCardView(context: .init(commentModel: model,
+                                                   viewingContext: details.isReply || details.isMention ? .base : .profile))
                         .graniteEvent(account.center.interact)
-                        .contentContext(.init(commentModel: model,
-                                              viewingContext: details.isReply || details.isMention ? .base : .profile))
                 } else if let model = details.postView,
                           !filterOverviewComments {
                     PostCardView()

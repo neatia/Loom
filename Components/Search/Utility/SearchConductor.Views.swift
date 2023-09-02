@@ -94,13 +94,12 @@ struct SearchBar: View {
                         HStack(spacing: .layer1) {
                             #if os(iOS)
                             if isSearching && offline == false {
-                                ProgressView()
+                                StandardProgressView()
                                     .padding(.trailing, .layer4)
                             }
                             #else
                             if lastQuery != textDebouncer.query && offline == false {
-                                ProgressView()
-                                    .scaleEffect(0.6)
+                                StandardProgressView()
                             }
                             #endif
                             
@@ -111,9 +110,7 @@ struct SearchBar: View {
                                     resetView()
                                     $textDebouncer.text.wrappedValue = ""
 
-                                    #if os(iOS)
-                                    hideKeyboard()
-                                    #endif
+                                    UIApplication.hideKeyboard()
                                 }) {
                                     Text("MISC_CANCEL")
                                         .font(.footnote.bold())
@@ -131,9 +128,7 @@ struct SearchBar: View {
     }
     
     func resetView() {
-#if canImport(UIKit)
-        self.hideKeyboard()
-#endif
+        UIApplication.hideKeyboard()
         clean.perform()
     }
 }
@@ -143,12 +138,7 @@ struct StandardLoadingView: View {
             Spacer()
             HStack {
                 Spacer()
-                #if os(iOS)
-                ProgressView()
-                #else
-                ProgressView()
-                    .scaleEffect(0.6)
-                #endif
+                StandardProgressView()
                 Spacer()
             }
             
@@ -167,9 +157,7 @@ struct StandardSearchToolbarView: View {
             Button {
                 GraniteHaptic.light.invoke()
                 
-                #if os(iOS)
-                hideKeyboard()
-                #endif
+                UIApplication.hideKeyboard()
             } label : {
                 if #available(macOS 13.0, iOS 16.0, *) {
                     Image(systemName: "keyboard.chevron.compact.down.fill")

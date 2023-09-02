@@ -7,10 +7,11 @@ import MarkdownView
 import FederationKit
 
 struct ThreadView: View {
-    @Environment(\.contentContext) var context
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.graniteEvent) var interact
     @Environment(\.graniteRouter) var router
+    
+    var context: ContentContext
     
     @GraniteAction<Void> var closeDrawer
     @GraniteAction<FederatedCommentResource> var showDrawer
@@ -70,7 +71,9 @@ struct ThreadView: View {
             PagerScrollView(FederatedCommentResource.self,
                             properties: .init(hideLastDivider: true,
                                               showFetchMore: false)) { commentView in
-                CommentCardView(parentModel: currentModel,
+                CommentCardView(context: .addCommentModel(model: commentView,
+                                                          context).withStyle(.style2),
+                                parentModel: currentModel,
                                 isInline: isInline)
                     .attach({ model in
                         if isModal {
@@ -83,11 +86,6 @@ struct ThreadView: View {
                                                   context: context)
                         }
                     }, at: \.showDrawer)
-                    .contentContext(
-                        .addCommentModel(model: commentView,
-                                         context)
-                        .withStyle(.style2)
-                    )
                     .graniteEvent(interact)
             }
             .environmentObject(pager)

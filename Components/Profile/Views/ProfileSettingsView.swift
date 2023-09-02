@@ -182,12 +182,7 @@ struct ProfileSettingsView: View {
                         Spacer()
                         if changesMade {
                             if isUpdating {
-                                #if os(iOS)
-                                ProgressView()
-                                #else
-                                ProgressView()
-                                    .scaleEffect(0.6)
-                                #endif
+                                StandardProgressView()
                             } else {
                                 Button {
                                     GraniteHaptic.light.invoke()

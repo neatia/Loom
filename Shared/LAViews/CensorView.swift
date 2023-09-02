@@ -43,7 +43,8 @@ struct CensorView: View {
     
     var body: some View {
         VStack {
-            AppBlurView(size: .init(width: 0, height: height)) {
+            AppBlurView(size: .init(width: 0, height: height),
+                        cornerRadius: 8) {
                 switch kind {
                 case .nsfw:
                     VStack(spacing: .layer4) {
@@ -139,11 +140,13 @@ struct CensorView: View {
 extension View {
     func censor(_ condition: Bool,
                 kind: CensorView.Kind = .nsfw,
+                paddingTop: CGFloat = .layer2,
                 isComment: Bool = false) -> some View {
         return Group {
             if condition {
                 CensorView(kind: kind, isComment: isComment)
                     .frame(maxWidth: Device.isExpandedLayout ? ContainerConfig.iPhoneScreenWidth : nil)
+                    .padding(.top, paddingTop)
             } else {
                 self
             }

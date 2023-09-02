@@ -78,6 +78,7 @@ extension ConfigService {
             content.center.boot.send()
             
             if meta.accountMeta == nil {
+                //Globe has the listener to present the connected toast
                 broadcast.send(
                     StandardNotificationMeta(title: "MISC_CONNECTED",
                                              message: "ALERT_CONNECTED_SUCCESS \(host)",

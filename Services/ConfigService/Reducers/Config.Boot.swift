@@ -53,6 +53,8 @@ extension ConfigService {
             PagerFilter.enableForBots = state.showBotAccounts == false
             PagerFilter.enableForNSFWExtended = state.extendedNSFWFilterEnabled
             PagerFilter.enableForKeywords = state.keywordsFilterEnabled
+            
+            PagerConfig.manuallyFetchMoreContent = state.manuallyFetchMoreContent
         }
         
         var behavior: GraniteReducerBehavior {

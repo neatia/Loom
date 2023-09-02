@@ -66,6 +66,7 @@ final public class GraniteSheetManager : ObservableObject {
                 self?.models[id] = nil
                 self?.shouldPreventDismissal = false
             } else {
+                UIApplication.hideKeyboard()
                 withAnimation(.easeOut.speed(1.2)) {
                     self?.detentsMap[id] = nil
                     self?.models[id] = nil

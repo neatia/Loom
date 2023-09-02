@@ -26,6 +26,8 @@ struct LoginView: View {
     
     @Relay var account: AccountService
     
+    @State var isWorking: Bool = false
+    
     enum Kind {
         case login
         case signup

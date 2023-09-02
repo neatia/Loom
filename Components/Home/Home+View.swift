@@ -118,12 +118,20 @@ extension Home: View {
                 }
             }
         }
-        .edgesIgnoringSafeArea([.bottom])
+        .edgesIgnoringSafeArea(edgesToEdgesToIgnore)
         .graniteNavigation(backgroundColor: Color.background) {
             Image(systemName: "chevron.backward")
                 .renderingMode(.template)
                 .font(.title2)
                 .contentShape(Rectangle())
+        }
+    }
+    
+    var edgesToEdgesToIgnore: Edge.Set {
+        if Device.isExpandedLayout {
+            return [.top, .bottom]
+        } else {
+            return [.bottom]
         }
     }
 }

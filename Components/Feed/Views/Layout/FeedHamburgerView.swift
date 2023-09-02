@@ -226,7 +226,7 @@ extension FeedHamburgerView {
                     Text("Looms")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)
+                        .padding(.leading, .layer1)
                 }
                 .buttonStyle(.plain)
                 
@@ -411,7 +411,7 @@ extension FeedHamburgerView {
                     Text("AUTH_LOGIN")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)
+                        .padding(.leading, .layer1)
                 }
                 .buttonStyle(.plain)
                 
@@ -431,7 +431,7 @@ extension FeedHamburgerView {
                     Text("Profile")
                         .font(.title3.bold())
                         .foregroundColor(.foreground)
-                        .padding(.leading, 2)
+                        .padding(.leading, .layer1)
                 }
                 .routeButton(window: .resizable(600, 500)) {
                     Profile(account.state.meta?.person)

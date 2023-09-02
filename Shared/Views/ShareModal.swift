@@ -33,24 +33,15 @@ public struct ShareModal<Content: View>: View {
     }
     
     public var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ScreenshotView($isScreenshotting,
-                                   encodeMessage: urlString) {
-                        content()
-                    }
-                    .frame(maxWidth: Device.isExpandedLayout ? (ContainerConfig.iPhoneScreenWidth * 0.9) : nil)
-                    .cornerRadius(12)
-                }
-            }
-            .frame(maxHeight: 400)
-            
-            Spacer()
-            
-            HStack(spacing: .layer6) {
+        GraniteStandardModalView(fullWidth: Device.isMacOS) {
+            HStack(spacing: .layer4) {
+                Text("MISC_SHARE")
+                    .font(.title.bold())
+                
                 Spacer()
+                
 
+                #if os(iOS)
                 Button {
                     GraniteHaptic.light.invoke()
                     isScreenshotting = true
@@ -59,8 +50,8 @@ public struct ShareModal<Content: View>: View {
                         .font(.title2)
                 }
                 .buttonStyle(.plain)
-
-                #if os(iOS)
+                .padding(.trailing, .layer1)
+                
                 if let urlString {
                     Button {
                         GraniteHaptic.light.invoke()
@@ -72,15 +63,41 @@ public struct ShareModal<Content: View>: View {
                     }
                     .buttonStyle(.plain)
                 }
-                #else
-                sharingOptions
                 #endif
+                
+            }
+        } content: {
+            shareMainView
+        }
+    }
+    var shareMainView: some View {
+        VStack(spacing: 0) {
+            ScrollView {
+                VStack(spacing: 0) {
+                    ScreenshotView($isScreenshotting,
+                                   encodeMessage: urlString) {
+                        content()
+                    }
+                    .frame(maxWidth: Device.isExpandedLayout ? (ContainerConfig.iPhoneScreenWidth * 0.9) : nil)
+                    .cornerRadius(12)
+                }
+            }
+            .frame(maxHeight: Device.isExpandedLayout ? 400 : nil)
+            
+            
+            #if os(macOS)
+            Spacer()
+            HStack(spacing: 0) {
+                Spacer()
+                
+                sharingOptions
 
                 Spacer()
             }
             .padding(.top, Device.isMacOS ? .layer5 : 0)
-            
             Spacer()
+            #endif
+            
         }
     }
     

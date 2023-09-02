@@ -1,37 +1,60 @@
 import SwiftUI
 
 struct ScrollViewOffsetPreferenceKey: PreferenceKey {
-    static var defaultValue: CGPoint = .zero
+    static var defaultValue: ScrollViewData = .empty
     
-    static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
+    static func reduce(value: inout ScrollViewData, nextValue: () -> ScrollViewData) {
         value = nextValue()
     }
     
-    typealias Value = CGPoint
+    typealias Value = ScrollViewData
+}
 
+struct ScrollViewData: Equatable {
+    var offset: CGPoint
+    var contentHeight: CGFloat
+    
+    init(_ offset: CGPoint, contentHeight: CGFloat = 0) {
+        self.offset = offset
+        self.contentHeight = contentHeight
+    }
+    
+    static var empty: ScrollViewData {
+        .init(.zero)
+    }
 }
 
 struct ScrollViewOffsetModifier: ViewModifier {
     let coordinateSpace: String
-    @Binding var offset: CGPoint
+    @Binding var offset: ScrollViewData
     
     func body(content: Content) -> some View {
         ZStack {
             content
             GeometryReader { proxy in
-                let x = proxy.frame(in: .named(coordinateSpace)).minX
-                let y = proxy.frame(in: .named(coordinateSpace)).minY
-                Color.clear.preference(key: ScrollViewOffsetPreferenceKey.self, value: CGPoint(x: x * -1, y: y * -1))
+                let frame = proxy.frame(in: .named(coordinateSpace))
+                let x = frame.minX
+                let y = frame.minY
+                
+                let contentHeight = frame.height - abs(y)
+                
+                Color
+                    .clear
+                    .preference(key: ScrollViewOffsetPreferenceKey.self,
+                                value: .init(CGPoint(x: x * -1, y: y * -1),
+                                             contentHeight: contentHeight))
             }
         }
         .onPreferenceChange(ScrollViewOffsetPreferenceKey.self) { value in
-            offset = value
+            DispatchQueue.main.async {
+                offset = value
+            }
         }
     }
 }
 
 extension View {
-    func readingScrollViewIf(_ condition: Bool, from coordinateSpace: String, into binding: Binding<CGPoint>) -> some View {
+    func readingScrollViewIf(_ condition: Bool, from coordinateSpace: String, into binding: Binding<ScrollViewData>) -> some View {
         Group {
             if condition {
                 self.modifier(ScrollViewOffsetModifier(coordinateSpace: coordinateSpace, offset: binding))
@@ -40,7 +63,7 @@ extension View {
             }
         }
     }
-    func readingScrollView(from coordinateSpace: String, into binding: Binding<CGPoint>) -> some View {
+    func readingScrollView(from coordinateSpace: String, into binding: Binding<ScrollViewData>) -> some View {
         modifier(ScrollViewOffsetModifier(coordinateSpace: coordinateSpace, offset: binding))
     }
 }

@@ -42,7 +42,7 @@ extension AccountService {
                 return
             }
             
-            FederationKit.setAuth(token: token)
+            FederationKit.setAuth(token: token, user: accountMeta.resource)
             
             let result = await Federation.site()
             
@@ -70,7 +70,7 @@ extension AccountService {
             state.addToProfiles = false
             state.authenticated = FederationKit.isAuthenticated()
             
-            bookmark.preload()
+            bookmark.restore(wait: true)
             bookmark.center.boot.send()
         }
         

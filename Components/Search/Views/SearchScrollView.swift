@@ -71,8 +71,7 @@ struct SearchScrollView: View {
                 } inlineBody: {
                     EmptyView()
                 } content: { model in
-                    CommentCardView()
-                        .contentContext(.init(commentModel: model))
+                    CommentCardView(context: .init(commentModel: model))
                 }.environmentObject(pagerComments)
             case .users:
                 PagerScrollView(FederatedPersonResource.self) {

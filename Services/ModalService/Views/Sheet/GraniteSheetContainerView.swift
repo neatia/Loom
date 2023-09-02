@@ -32,8 +32,6 @@ struct GraniteSheetContainerView<Content : View, Background : View> : View {
     
     @EnvironmentObject var manager : GraniteSheetManager
     
-    
-    
     let id: String
     let content : Content
     let modalManager: GraniteModalManager?

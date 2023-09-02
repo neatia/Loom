@@ -21,7 +21,7 @@ struct StandardToolbarView: View {
                 GraniteHaptic.light.invoke()
                 
                 #if os(iOS)
-                hideKeyboard()
+                UIApplication.hideKeyboard()
                 #endif
             } label : {
                 if #available(macOS 13.0, iOS 16.0, *) {

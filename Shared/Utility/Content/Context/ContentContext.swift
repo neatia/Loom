@@ -97,56 +97,57 @@ struct ContentContext {
         return .init(postModel: model ?? context.postModel,
                      commentModel: context.commentModel,
                      feedStyle: context.feedStyle,
-                     viewingContext: context.viewingContext)
+                     viewingContext: context.viewingContext,
+                     customLocation: context.customLocation)
     }
     
     static func addCommentModel(model: FederatedCommentResource?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: model ?? context.commentModel,
                      feedStyle: context.feedStyle,
-                     viewingContext: context.viewingContext)
+                     viewingContext: context.viewingContext,
+                     customLocation: context.customLocation)
     }
     
     static func withPostModel(_ model: FederatedPostResource?, _ context: ContentContext) -> Self {
         return .init(postModel: model,
                      commentModel: nil,
                      feedStyle: context.feedStyle,
-                     viewingContext: context.viewingContext)
+                     viewingContext: context.viewingContext,
+                     customLocation: context.customLocation)
     }
     
     func withStyle(_ style: FeedStyle) -> Self {
-        return .init(postModel: self.postModel,
-                     commentModel: self.commentModel,
-                     feedStyle: style,
-                     viewingContext: self.viewingContext)
+        return .withStyle(style, self)
     }
-    
     static func withStyle(_ style: FeedStyle, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
                      feedStyle: style,
-                     viewingContext: context.viewingContext)
+                     viewingContext: context.viewingContext,
+                     customLocation: context.customLocation)
     }
     
+    func viewedIn(_ viewingContext: ViewingContext) -> ContentContext {
+        return .viewedIn(viewingContext, self)
+    }
     static func viewedIn(_ viewingContext: ViewingContext, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
                      feedStyle: context.feedStyle,
-                     viewingContext: viewingContext)
-    }
-    func viewedIn(_ viewingContext: ViewingContext) -> ContentContext {
-        return ContentContext.viewedIn(viewingContext, self)
+                     viewingContext: viewingContext,
+                     customLocation: context.customLocation)
     }
     
+    func updateLocation(_ customLocation: FederatedLocationType) -> Self {
+        return .updateLocation(customLocation, self)
+    }
     static func updateLocation(_ customLocation: FederatedLocationType, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
                      feedStyle: context.feedStyle,
                      viewingContext: context.viewingContext,
                      customLocation: customLocation)
-    }
-    func updateLocation(_ customLocation: FederatedLocationType) -> Self {
-        return ContentContext.updateLocation(customLocation, self)
     }
 }
 

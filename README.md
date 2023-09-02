@@ -29,7 +29,7 @@
 - *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
 - *and much more…*
 
-### [Changelog // Developer updates](https://neatia.xyz/c/loom)
+### [Changelog // Developer updates](https://loom.nyc/post/1)
 
 ## Component Previews
 
@@ -114,19 +114,9 @@ Mostly because of *Relays* and project organization. I'd say testing too, but on
 ## Discussion
 
 - [@lemmy.world](https://lemmy.world/c/loom)
-- [@neatia.xyz](https://neatia.xyz/c/loom)
+- [@loom.nyc](https://loom.nyc/c/meta)
 
 ### Contact
 
 - [Twitter @pexavc](https://twitter.com/pexavc)
 - Discord: @pexavc
-- Matrix: @pexavc:matrix.org
-
-
-### Support
-
-The goal is to eventually have this be community driven. Until then, if you like my work and think these contributions are truly beneficial, feel free to support future updates and similar endeavors! 
-
-**ETH:** 0x9223F7F36cA5F052044fe1edE65E23C9F7dEB655 
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/pexavc)

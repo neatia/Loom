@@ -33,16 +33,7 @@ extension FederatedPostResource: Pageable {
             
         let shouldHideKeywords: Bool
         if PagerFilter.enableForKeywords {
-            let values: [String] = PagerFilter.filterKeywords.keywords.map { $0.value }
-            let title: String = self.post.name
-            let body: String = self.post.body ?? ""
-            let url: String = self.post.url ?? ""
-            let creator: String = self.creator.name
-            let creatorUrl: String = self.creator.actor_id
-            
-            let compiled: String = [title, body, url, creator, creatorUrl].joined(separator: " ")
-            
-            shouldHideKeywords = compiled.includes(values)
+            shouldHideKeywords = PagerFilter.filterKeywords.check(post: self)
         } else {
             shouldHideKeywords = false
         }

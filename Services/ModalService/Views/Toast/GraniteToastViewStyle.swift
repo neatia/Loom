@@ -8,7 +8,7 @@ public struct GraniteToastViewStyle {
     public var errorBackgroundColor : Color
     public var successBackgroundColor : Color
     
-    public init(backgroundColor : Color = Color.alternateBackground.opacity(0.8),
+    public init(backgroundColor : Color = Color.alternateBackground.opacity(0.95),
                 foregroundColor : Color = Color.foreground,
                 errorBackgroundColor : Color = Color.red.opacity(0.4),
                 successBackgroundColor : Color = Color.green.opacity(0.4)) {

@@ -47,8 +47,8 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
 #if os(iOS)
             withAnimation {
                 self?.presenters.append(modal)
+                self?.window?.isUserInteractionEnabled = true
             }
-            self?.window?.isUserInteractionEnabled = true
 #else
             self?.centerWindow()
             withAnimation {
@@ -60,7 +60,9 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     
     public func dismiss() {
         guard presenters.count > 0 else {
+            #if os(iOS)
             window?.isUserInteractionEnabled = sheetManager.hasContent
+            #endif
             return
         }
         
@@ -89,11 +91,20 @@ final public class GraniteModalManager : ObservableObject, GraniteWindowDelegate
     }
     
     public func enableWindow() {
-        self.window?.isUserInteractionEnabled = true
+        DispatchQueue.main.async { [weak self] in
+            #if os(iOS)
+            self?.window?.isUserInteractionEnabled = true
+            #endif
+        }
     }
     
     public func disableWindow() {
-        self.window?.isUserInteractionEnabled = false
+        guard presenters.isEmpty else { return }
+        DispatchQueue.main.async { [weak self] in
+            #if os(iOS)
+            self?.window?.isUserInteractionEnabled = false
+            #endif
+        }
     }
 }
 

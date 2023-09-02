@@ -53,6 +53,8 @@ struct DebugSettingsView: View {
                 Button {
                     GraniteHaptic.light.invoke()
                     Nuke.ImageCache.shared.removeAll()
+                    URLSession.shared.invalidateAndCancel()
+                    URLSession.shared.configuration.urlCache?.removeAllCachedResponses()
                 } label: {
                     Text("Clear Image Cache")
                         .font(.headline.bold())

@@ -15,6 +15,17 @@ extension PagerScrollView {
     var hidingHeaderScrollView: some View {
         GraniteScrollView(showsIndicators: false,
                           onRefresh: pager.refresh(_:),
+                          onReachedEdge: { edge in
+            
+            switch edge {
+            case .bottom:
+                guard pager.canAutoFetch else { return }
+                LoomLog("Pager is fetching automatically", level: .debug)
+                pager.fetch()
+            default:
+                break
+            }
+        },
                           hidingHeader: properties.hidingHeader,
                           bgColor: properties.backgroundColor,
                           header: header) {

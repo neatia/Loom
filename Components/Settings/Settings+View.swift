@@ -74,42 +74,103 @@ extension Settings: View {
                             Text("Keywords")
                                 .font(.body)
                         }
-                        //TODO: Localize
-                        .addInfoIcon(text: "Blocks posts or comments with these keywords. Seperate them via commas \",\".")
-                        
+#if os(iOS)
                         Spacer()
+#endif
                         
-                        if state.oldKeywordsFilter != state.keywordsFilter {
-                            Button {
-                                GraniteHaptic.light.invoke()
-                                
-                                var keywords: [FilterConfig.Keyword] = []
-                                for keyword in state.keywordsFilter.components(separatedBy: ",") {
-                                    let trimmed = keyword.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                                    keywords.append(.init(value: trimmed, attribute: .all))
-                                }
-                                
-                                //update
-                                config._state.keywordsFilter.wrappedValue = .init(keywords: keywords)
-                                //reset changed
-                                _state.oldKeywordsFilter.wrappedValue = state.keywordsFilter
-                            } label: {
-                                Text("MISC_UPDATE")
-                                    .foregroundColor(Device.isMacOS ? .white : .accentColor)
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        } else {
-                            Toggle(isOn: config._state.keywordsFilterEnabled) { EmptyView() }
-                        }
+                        Toggle(isOn: config._state.keywordsFilterEnabled) { EmptyView() }
+                        
+#if os(macOS)
+                        Spacer()
+#endif
                     }
                     .padding(.vertical, .layer2)
                     .padding(.horizontal, .layer4)
                     
-                    StandardTextView(text: _state.keywordsFilter,
-                                     height: 80)
+//                    StandardTextView(text: _state.keywordsFilter,
+//                                     height: 80)
+//                        .padding(.horizontal, .layer4)
+                    
+                    FilterKeywordCollectionView(config: config.state.keywordsFilter)
+                        .attach({ keywordToEdit in
+                            ModalService
+                                .shared
+                                .presentSheet {
+                                
+                                FilterKeywordView(keywordToEdit: keywordToEdit)
+                                        .attach({ keyword in
+                                            var keywords: [FilterConfig.Keyword] = config.state.keywordsFilter.keywords
+                                            keywords.removeAll(where: { $0.value.lowercased() == keyword.value.lowercased() })
+                                            
+                                            let filterConfig: FilterConfig = .init(keywords: keywords)
+                                            config._state.keywordsFilter.wrappedValue = filterConfig
+                                            if config.state.keywordsFilterEnabled {
+                                                PagerFilter.filterKeywords = filterConfig
+                                            }
+                                            DispatchQueue.main.async {
+                                                ModalService.shared.dismissSheet()
+                                            }
+                                        }, at: \.remove)
+                                        .attachAndClear({ keyword in
+                                            var keywords: [FilterConfig.Keyword] = config.state.keywordsFilter.keywords
+                                            
+                                            if let index = keywords.firstIndex(where: { $0.value.lowercased() == keyword.value.lowercased() }) {
+                                                keywords[index] = keyword
+                                            } else {
+                                                keywords.insert(keyword, at: 0)
+                                            }
+                                            
+                                            let filterConfig: FilterConfig = .init(keywords: keywords)
+                                            
+                                            config._state.keywordsFilter.wrappedValue = filterConfig
+                                            if config.state.keywordsFilterEnabled {
+                                                PagerFilter.filterKeywords = filterConfig
+                                            }
+                                            DispatchQueue.main.async {
+                                                ModalService.shared.dismissSheet()
+                                            }
+                                        }, at: \.save)
+                            }
+                        }, at: \.addKeyword)
                         .padding(.horizontal, .layer4)
+                        .padding(.top, .layer2)
                 }
                 .padding(.bottom, .layer4)
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    Spacer()
+                    HStack {
+                        Group {
+                            //TODO: Localize
+                            Text("Feed")
+                                .font(.title2.bold())
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.vertical, .layer4)
+                    .padding(.horizontal, .layer4)
+                    
+                    Divider()
+                        .padding(.bottom, .layer2)
+                        .padding(.leading, .layer4)
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Toggle(isOn: config._state.manuallyFetchMoreContent) {
+                                //TODO: localize
+                                Text("Manually fetch more content")
+                                    .font(.body)
+                                    .offset(x: 0, y: Device.isMacOS ? -1 : 0)
+                            }
+                        }.padding(.vertical, .layer3)
+                        
+    #if os(macOS)
+                        Spacer()
+    #endif
+                    }
+                    .padding(.horizontal, .layer4)
+                }
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer()
@@ -371,11 +432,6 @@ extension Settings: View {
         }
         .background(Color.background)
         .padding(.top, Device.isMacOS ? ContainerConfig.generalViewTopPadding : 0)
-        .onAppear {
-            let value = config.state.keywordsFilter.keywords.map { $0.value }.joined(separator: ", ")
-            _state.oldKeywordsFilter.wrappedValue = value
-            _state.keywordsFilter.wrappedValue = value
-        }
     }
     
 }

@@ -402,6 +402,15 @@
 		71AB675C2A8AA9630083AB7C /* Loom.EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */; };
 		71AF14672A2E807300EEBD4B /* Disclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF14662A2E807300EEBD4B /* Disclaimer.swift */; };
 		71AF14682A2E807300EEBD4B /* Disclaimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AF14662A2E807300EEBD4B /* Disclaimer.swift */; };
+		71B0A66D2AA249530091972D /* FilterKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A66C2AA249530091972D /* FilterKeywordView.swift */; };
+		71B0A66E2AA249530091972D /* FilterKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A66C2AA249530091972D /* FilterKeywordView.swift */; };
+		71B0A6712AA24B910091972D /* FilterKeywordCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */; };
+		71B0A6722AA24B910091972D /* FilterKeywordCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */; };
+		71B0A6742AA26B270091972D /* FederationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71B0A6732AA26B270091972D /* FederationKit */; };
+		71B0A6772AA275600091972D /* StandardProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6762AA275600091972D /* StandardProgressView.swift */; };
+		71B0A6782AA275600091972D /* StandardProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6762AA275600091972D /* StandardProgressView.swift */; };
+		71B0A67A2AA2BB320091972D /* MarkdownContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6792AA2BB320091972D /* MarkdownContainerView.swift */; };
+		71B0A67B2AA2BB320091972D /* MarkdownContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6792AA2BB320091972D /* MarkdownContainerView.swift */; };
 		71B21B5D2A6C4D96005B3BFB /* Write.Generate.Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */; };
 		71B21B5E2A6C4D96005B3BFB /* Write.Generate.Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */; };
 		71B21B602A6C5743005B3BFB /* Write.Generate.Passage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B21B5F2A6C5743005B3BFB /* Write.Generate.Passage.swift */; };
@@ -912,6 +921,11 @@
 		71AAD3BF2A9D73A900D133F4 /* ListingSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListingSelectorView.swift; sourceTree = "<group>"; };
 		71AB675A2A8AA9630083AB7C /* Loom.EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loom.EditView.swift; sourceTree = "<group>"; };
 		71AF14662A2E807300EEBD4B /* Disclaimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disclaimer.swift; sourceTree = "<group>"; };
+		71B0A66C2AA249530091972D /* FilterKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterKeywordView.swift; sourceTree = "<group>"; };
+		71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterKeywordCollectionView.swift; sourceTree = "<group>"; };
+		71B0A6752AA26FE60091972D /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
+		71B0A6762AA275600091972D /* StandardProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardProgressView.swift; sourceTree = "<group>"; };
+		71B0A6792AA2BB320091972D /* MarkdownContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownContainerView.swift; sourceTree = "<group>"; };
 		71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Markdown.swift; sourceTree = "<group>"; };
 		71B21B5F2A6C5743005B3BFB /* Write.Generate.Passage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Passage.swift; sourceTree = "<group>"; };
 		71B21B802A6C791E005B3BFB /* GraniteStandardModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraniteStandardModalView.swift; sourceTree = "<group>"; };
@@ -1114,6 +1128,7 @@
 				71C1776F2A64A0C800A11B03 /* NukeVideo in Frameworks */,
 				712C0D742A7C46F600DBDCC9 /* MarkdownView in Frameworks */,
 				71C1776D2A64A0C800A11B03 /* NukeUI in Frameworks */,
+				71B0A6742AA26B270091972D /* FederationKit in Frameworks */,
 				71C177692A64A0C800A11B03 /* Nuke in Frameworks */,
 				71C1776B2A64A0C800A11B03 /* NukeExtensions in Frameworks */,
 			);
@@ -1388,6 +1403,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71B0A6752AA26FE60091972D /* Granite */,
 				7141BC722A9FA72B00F8A2B8 /* FederationKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
@@ -1812,9 +1828,11 @@
 				71622E8F2A6E3DED006233F3 /* AdaptsToKeyboard.swift */,
 				71BE94FC2A95DF74004A3AC3 /* GenericPreview.swift */,
 				71E5F3C12A73244500299558 /* LazyScrollView.swift */,
+				71B0A6792AA2BB320091972D /* MarkdownContainerView.swift */,
 				714FA06129FF11E1002E4A7C /* InfoIconView.swift */,
 				710540F52A920E8200B9DC8A /* ShareModal.swift */,
 				7151511E2A8F6D0B00251978 /* SideMenu.swift */,
+				71B0A6762AA275600091972D /* StandardProgressView.swift */,
 				711849482A8EC5D5000F5A67 /* LogoView.swift */,
 				716157D82A85C29500449EE4 /* WebView.swift */,
 			);
@@ -1963,6 +1981,15 @@
 				71B7A1E52A68FEA8003E6D4D /* AccountService.Boot.swift */,
 			);
 			path = Reducers;
+			sourceTree = "<group>";
+		};
+		71B0A66F2AA24B810091972D /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				71B0A66C2AA249530091972D /* FilterKeywordView.swift */,
+				71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		71B7A1D42A68DE8D003E6D4D /* Views */ = {
@@ -2124,6 +2151,7 @@
 		71C9F9102A60BCFF0089D7EA /* LAViews */ = {
 			isa = PBXGroup;
 			children = (
+				71B0A66F2AA24B810091972D /* Filter */,
 				71E5F3C92A739E7800299558 /* Community */,
 				71E5F3C62A739E3D00299558 /* Comments */,
 				711D39272A8413E100CF2DB2 /* Instances */,
@@ -2505,6 +2533,7 @@
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 				71899E4F2A8977AD0073158F /* MarbleKit */,
 				71AAD3C62A9DB0E200D133F4 /* ModerationKit */,
+				71B0A6732AA26B270091972D /* FederationKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
@@ -2716,12 +2745,14 @@
 				713129B82A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */,
 				713129B22A82BEF700C6B31D /* GlobeScene.swift in Sources */,
 				71C8BE7B2A7F3F14008694C7 /* FeedMainView.swift in Sources */,
+				71B0A6712AA24B910091972D /* FilterKeywordCollectionView.swift in Sources */,
 				71FBA7FD296D16110090B630 /* GraniteScrollView.swift in Sources */,
 				710283C92A2A54C300010877 /* LinearRangeMath.swift in Sources */,
 				717090AB2A7ED7DC009F1FB7 /* Gap.swift in Sources */,
 				710283B72A2A54C300010877 /* ValueSliderOptions.swift in Sources */,
 				7197FB0D2964B4C0005EBBA4 /* GraniteAlertView.swift in Sources */,
 				710283B52A2A54C300010877 /* HorizontalValueSliderStyle.swift in Sources */,
+				71B0A67A2AA2BB320091972D /* MarkdownContainerView.swift in Sources */,
 				711849502A8F079E000F5A67 /* Feed.SetInstanceURL.swift in Sources */,
 				7166E9CF2A7472E3004F88D7 /* AccountService.Interact.swift in Sources */,
 				710283B32A2A54C300010877 /* AnyValueSliderStyle.swift in Sources */,
@@ -2802,6 +2833,7 @@
 				71F778B22A719C6A00C9C5C4 /* HeaderCardView.swift in Sources */,
 				710BEAA52A86E87B0075A141 /* SortType.swift in Sources */,
 				710BEAA22A86E56B0075A141 /* Feed.AccountInfoExpandedView.swift in Sources */,
+				71B0A66D2AA249530091972D /* FilterKeywordView.swift in Sources */,
 				71FCDD102A75EC9B000A6309 /* Feed.Horizontal.swift in Sources */,
 				71A28D9A295231E600EAE8EE /* Array.swift in Sources */,
 				71DF107728CC697600559DBC /* NumberFormatter.swift in Sources */,
@@ -2988,6 +3020,7 @@
 				7197FB0B2964B4C0005EBBA4 /* GraniteAlertViewStyle.swift in Sources */,
 				7161D2FB29540AD00070FE59 /* View+Overlay.swift in Sources */,
 				7102839B2A2A54C300010877 /* RectangularPointSliderStyle.swift in Sources */,
+				71B0A6772AA275600091972D /* StandardProgressView.swift in Sources */,
 				7197FB2B2964B4EC005EBBA4 /* ModalService.swift in Sources */,
 				71C5FF6A2A64688B00F99A84 /* Drawer+Drag.swift in Sources */,
 				710283812A2A54C300010877 /* EnvironmentValues+TrackPoint.swift in Sources */,
@@ -3016,6 +3049,7 @@
 				713129B32A82BEF700C6B31D /* GlobeScene.swift in Sources */,
 				710283A22A2A54C300010877 /* RangeTrackConfiguration.swift in Sources */,
 				71A28E03295233A300EAE8EE /* Brand.swift in Sources */,
+				71B0A67B2AA2BB320091972D /* MarkdownContainerView.swift in Sources */,
 				71C9F9252A60ECEF0089D7EA /* ThreadView.swift in Sources */,
 				7166E9D62A748C7F004F88D7 /* PostActionsView.swift in Sources */,
 				715826792A881DD8000E4B49 /* ViewingContext.swift in Sources */,
@@ -3039,6 +3073,7 @@
 				715151272A8F720300251978 /* ContentContext.swift in Sources */,
 				71C9F9402A613E750089D7EA /* BookmarkService+Center.swift in Sources */,
 				710283AC2A2A54C300010877 /* ValueSlider.swift in Sources */,
+				71B0A6722AA24B910091972D /* FilterKeywordCollectionView.swift in Sources */,
 				71B7A1E72A68FEA8003E6D4D /* AccountService.Boot.swift in Sources */,
 				71A28E24295237AE00EAE8EE /* TapAndLongPressModifier.swift in Sources */,
 				7102839C2A2A54C300010877 /* RectangularPointSliderStyle.swift in Sources */,
@@ -3073,6 +3108,7 @@
 				71A4A1132A61C39600689DF2 /* Bookmark+Center.swift in Sources */,
 				71EB15972A9C6C9F0098AD5B /* DebugOverlay.swift in Sources */,
 				71C9F9422A613E750089D7EA /* BookmarkService.swift in Sources */,
+				71B0A6782AA275600091972D /* StandardProgressView.swift in Sources */,
 				7166E9DA2A74A2B2004F88D7 /* Person.swift in Sources */,
 				71F042272A6A3AD700788CDC /* Write+View.swift in Sources */,
 				7197FB1C2964B4C0005EBBA4 /* GraniteSheetManager.swift in Sources */,
@@ -3223,6 +3259,7 @@
 				71E5209E2A9345490057EA83 /* FeedHamburgerView.swift in Sources */,
 				7197FB162964B4C0005EBBA4 /* GraniteModalContainerView.swift in Sources */,
 				71C9F8E72A60B7E10089D7EA /* Profile+View.swift in Sources */,
+				71B0A66E2AA249530091972D /* FilterKeywordView.swift in Sources */,
 				710283CE2A2A54C300010877 /* DefaultThumb.swift in Sources */,
 				7197FB2C2964B4EC005EBBA4 /* ModalService.swift in Sources */,
 				710283B62A2A54C300010877 /* HorizontalValueSliderStyle.swift in Sources */,
@@ -3516,7 +3553,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.9.1.1;
+				CURRENT_PROJECT_VERSION = 2023.9.2;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3552,7 +3589,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2023.9.1.1;
+				CURRENT_PROJECT_VERSION = 2023.9.2;
 				DEVELOPMENT_TEAM = CV8LAA8JAP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3880,6 +3917,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */;
 			productName = ModerationKit;
+		};
+		71B0A6732AA26B270091972D /* FederationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FederationKit;
 		};
 		71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -93,6 +93,7 @@ struct HeaderView: View {
                                 AvatarView(URL(string: crumb.1.avatar ?? ""))
                                     .overlay(Circle()
                                         .stroke(crumbColor(crumb.1), lineWidth: 1.0))
+                                    .padding(.horizontal, 1)
                                 Text(crumb.1.name)
                                     .font(.headline)
                                     .lineLimit(1)
@@ -128,11 +129,12 @@ struct HeaderView: View {
                         }
                     }
                 }
-                .frame(maxHeight: AvatarView.Size.small.frame)
+                .frame(maxHeight: AvatarView.Size.small.frame + 2)
             } else {
                 AvatarView(context.person)
                     .overlay(Circle()
                         .stroke(avatarBorderColor, lineWidth: 1.0))
+                    .padding(1)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Text(context.display.author.headline)

@@ -14,6 +14,7 @@ struct LoomCardView: View {
     @GraniteAction<LoomManifest> var toggle
     @GraniteAction<LoomManifest> var edit
     @GraniteAction<LoomManifest> var add
+    
     var isActive: Bool = false
     var manifest: LoomManifest
     

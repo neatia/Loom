@@ -51,6 +51,8 @@ public struct GraniteToastView : GraniteModal {
                 //.shadow(color: Color.black.opacity(0.05), radius: 8)
             RoundedRectangle(cornerRadius: 10)
                 .fill(style.color(for: event))
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
         })
 //        .overlay(
 //            RoundedRectangle(cornerRadius: 10)
