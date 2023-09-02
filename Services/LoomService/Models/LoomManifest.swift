@@ -31,7 +31,7 @@ struct LoomManifest: AnyLoomManifest, Identifiable, Hashable {
     }
     
     mutating func remove(_ fc: FederatedCommunityResource) {
-        let id = FederationKit.host + (fc.id)
+        let id = fc.community.actor_id.host + (fc.id)
         self.data.removeAll(where: { $0.idPlain == id })
     }
 }
