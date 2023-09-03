@@ -310,6 +310,8 @@
 		71899E602A89D68E0073158F /* Loom.CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E5E2A89D68E0073158F /* Loom.CollectionsView.swift */; };
 		71899E622A89D6A30073158F /* Loom.CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E612A89D6A30073158F /* Loom.CreateView.swift */; };
 		71899E632A89D6A30073158F /* Loom.CreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71899E612A89D6A30073158F /* Loom.CreateView.swift */; };
+		718D6D132AA3CD5600F621C5 /* HeaderCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718D6D122AA3CD5600F621C5 /* HeaderCardContainerView.swift */; };
+		718D6D142AA3CD5600F621C5 /* HeaderCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718D6D122AA3CD5600F621C5 /* HeaderCardContainerView.swift */; };
 		7195B4922A9A9C8E0026A6E9 /* ContentContext.Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195B4912A9A9C8E0026A6E9 /* ContentContext.Helpers.swift */; };
 		7195B4932A9A9C8E0026A6E9 /* ContentContext.Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195B4912A9A9C8E0026A6E9 /* ContentContext.Helpers.swift */; };
 		7195B4952A9AA5380026A6E9 /* Search+Listeners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7195B4942A9AA5380026A6E9 /* Search+Listeners.swift */; };
@@ -875,6 +877,7 @@
 		71899E5B2A89D66D0073158F /* Loom.SymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loom.SymbolView.swift; sourceTree = "<group>"; };
 		71899E5E2A89D68E0073158F /* Loom.CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loom.CollectionsView.swift; sourceTree = "<group>"; };
 		71899E612A89D6A30073158F /* Loom.CreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loom.CreateView.swift; sourceTree = "<group>"; };
+		718D6D122AA3CD5600F621C5 /* HeaderCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCardContainerView.swift; sourceTree = "<group>"; };
 		7195B4912A9A9C8E0026A6E9 /* ContentContext.Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentContext.Helpers.swift; sourceTree = "<group>"; };
 		7195B4942A9AA5380026A6E9 /* Search+Listeners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Search+Listeners.swift"; sourceTree = "<group>"; };
 		7195B4982A9AD4E40026A6E9 /* Reply.HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reply.HeaderView.swift; sourceTree = "<group>"; };
@@ -1801,6 +1804,16 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		718D6D102AA3CCDF00F621C5 /* HeaderCard */ = {
+			isa = PBXGroup;
+			children = (
+				71F778B12A719C6A00C9C5C4 /* HeaderCardView.swift */,
+				71F778B42A719D4400C9C5C4 /* HeaderCardAvatarView.swift */,
+				718D6D122AA3CD5600F621C5 /* HeaderCardContainerView.swift */,
+			);
+			path = HeaderCard;
+			sourceTree = "<group>";
+		};
 		7195B4972A9AD4D10026A6E9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2294,8 +2307,7 @@
 		71E5F3C72A739E5200299558 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				71F778B42A719D4400C9C5C4 /* HeaderCardAvatarView.swift */,
-				71F778B12A719C6A00C9C5C4 /* HeaderCardView.swift */,
+				718D6D102AA3CCDF00F621C5 /* HeaderCard */,
 				71C9F92F2A6107D20089D7EA /* HeaderView.swift */,
 			);
 			path = Headers;
@@ -2945,6 +2957,7 @@
 				71B7A1E92A690327003E6D4D /* AccountService.Details.swift in Sources */,
 				711B3F9A2885D43B00F3080D /* PEXApp.swift in Sources */,
 				7197FB152964B4C0005EBBA4 /* GraniteModalContainerView.swift in Sources */,
+				718D6D132AA3CD5600F621C5 /* HeaderCardContainerView.swift in Sources */,
 				71B7A1E32A68FE81003E6D4D /* AccountMeta.swift in Sources */,
 				717D388B2887A44D00165D7D /* Home+View.swift in Sources */,
 				71F778BC2A71A95300C9C5C4 /* SfSafariView.swift in Sources */,
@@ -3177,6 +3190,7 @@
 				711D39232A8408CF00CF2DB2 /* SearchConductor.Views.swift in Sources */,
 				71EB159D2A9C771A0098AD5B /* LoomPickerView.swift in Sources */,
 				7102838C2A2A54C300010877 /* EnvironmentValues+RangeSliderStyle.swift in Sources */,
+				718D6D142AA3CD5600F621C5 /* HeaderCardContainerView.swift in Sources */,
 				71EAF46E2A7D99C30034FCB9 /* GlobeExplorerView.swift in Sources */,
 				71A28D97295231E600EAE8EE /* Double.swift in Sources */,
 				710283BA2A2A54C300010877 /* VerticalValueSliderStyle.swift in Sources */,

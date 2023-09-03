@@ -69,16 +69,12 @@ extension Settings: View {
                     .padding(.horizontal, .layer4)
                     
                     HStack {
-                        Group {
-                            //TODO: Localize
+                        Toggle(isOn: config._state.keywordsFilterEnabled) {
+                            //TODO: localize
                             Text("Keywords")
                                 .font(.body)
+                                .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                         }
-#if os(iOS)
-                        Spacer()
-#endif
-                        
-                        Toggle(isOn: config._state.keywordsFilterEnabled) { EmptyView() }
                         
 #if os(macOS)
                         Spacer()
@@ -86,10 +82,6 @@ extension Settings: View {
                     }
                     .padding(.vertical, .layer2)
                     .padding(.horizontal, .layer4)
-                    
-//                    StandardTextView(text: _state.keywordsFilter,
-//                                     height: 80)
-//                        .padding(.horizontal, .layer4)
                     
                     FilterKeywordCollectionView(config: config.state.keywordsFilter)
                         .attach({ keywordToEdit in

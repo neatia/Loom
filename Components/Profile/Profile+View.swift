@@ -7,7 +7,9 @@ extension Profile: GraniteNavigationDestination {
     public var view: some View {
         VStack(spacing: 0) {
             PagerScrollView(PersonDetailsPageable.self,
-                            properties: .init(alternateContentPosition: true)) {
+                            properties: .init(alternateContentPosition: true,
+                                              partition: Device.isMacOS == false,
+                                              lazy: false)) {
                 inlineView
             } inlineBody: {
                 titleBarView
@@ -38,15 +40,17 @@ extension Profile: GraniteNavigationDestination {
                                                       limit: ConfigService.Preferences.pageLimit,
                                                       community: nil,
                                                       saved_only: nil,
-                                                      location: state.person?.isMe == true ? .source : .base)
+                                                      //Probably why a community is accepted to target that actor_id when fetching person details instead of the person actor id
+                                                      //Should this just be always the source?
+                                                      location: profileFetchLocation)
                     
                     var models: [any Pageable] = (details?.comments ?? []) + (details?.posts ?? [])
-                    models = models.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
                     
                     let overview = models.map {
                         PersonDetailsPageable(commentView: $0 as? FederatedCommentResource, postView: $0 as? FederatedPostResource, isMention: false, isReply: false)
                     }
-                    return overview
+                    
+                    return overview.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
                 case .mentions:
                     
                     let mentionDetails = await Federation.mentions(sort: .new, page: page, limit: ConfigService.Preferences.pageLimit, unreadOnly: nil)

@@ -10,7 +10,7 @@ import FederationKit
 
 extension FederatedCommentResource: Pageable {
     public var date: Date {
-        (
+        return (
             self.comment.updated ?? self.comment.published
         ).serverTimeAsDate ?? Date()
     }

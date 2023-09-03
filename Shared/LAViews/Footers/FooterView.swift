@@ -23,9 +23,49 @@ struct FooterView: View {
     @Relay var content: ContentService
     @Relay var bookmark: BookmarkService
     
-    @State var upvoteCount: Int = 0
-    @State var downvoteCount: Int = 0
-    @State var myVote: Int = 0
+    var upvoteCount: Int {
+        if let commentView = context.commentModel {
+            return content.state.allComments[commentView.id]?.counts.upvotes ?? commentView.counts.upvotes
+        } else if let postView = context.postModel {
+            return content.state.allPosts[postView.id]?.counts.upvotes ?? postView.counts.upvotes
+        } else {
+            return 0
+        }
+    }
+    var immediateUpvoteCount: Int {
+        upvoteCount + immediateUpvote
+    }
+    var downvoteCount: Int {
+        if let commentView = context.commentModel {
+            return content.state.allComments[commentView.id]?.counts.downvotes ?? commentView.counts.downvotes
+        } else if let postView = context.postModel {
+            return content.state.allPosts[postView.id]?.counts.downvotes ?? postView.counts.downvotes
+        } else {
+            return 0
+        }
+    }
+    var immediateDownvoteCount: Int {
+        downvoteCount + immediateDownvote
+    }
+    var myVote: Int {
+        if let commentView = context.commentModel {
+            return content.state.allComments[commentView.id]?.my_vote ?? (commentView.my_vote ?? 0)
+        } else if let postView = context.postModel {
+            return content.state.allPosts[postView.id]?.my_vote ?? (postView.my_vote ?? 0)
+        } else {
+            return 0
+        }
+    }
+    @State var immediateUpvote: Int = 0
+    @State var immediateDownvote: Int = 0
+    
+    var isUpvoted: Bool {
+        myVote == 1 || immediateUpvote == 1
+    }
+    
+    var isDownvoted: Bool {
+        myVote == -1 || immediateDownvote == 1
+    }
     
     var routeTitle: String? {
         context.postModel?.post.name
@@ -40,10 +80,12 @@ struct FooterView: View {
     let secondaryFont: Font
     var showScores: Bool
     var isComposable: Bool
+    let shouldLinkToPost: Bool
     
     init(isHeader: Bool = false,
          showScores: Bool = true,
-         isComposable: Bool = false) {
+         isComposable: Bool = false,
+         shouldLinkToPost: Bool = true) {
         
         self.isHeader = isHeader
         
@@ -52,6 +94,7 @@ struct FooterView: View {
         
         self.showScores = showScores
         self.isComposable = isComposable
+        self.shouldLinkToPost = shouldLinkToPost
     }
     
     var body: some View {
@@ -61,31 +104,6 @@ struct FooterView: View {
                 fullInline
             case .style2:
                 stacked
-            }
-        }
-        .task {
-            if let commentView = context.commentModel {
-                upvoteCount = content.state.allComments[commentView.id]?.counts.upvotes ?? commentView.counts.upvotes
-            } else if let postView = context.postModel {
-                upvoteCount = content.state.allPosts[postView.id]?.counts.upvotes ?? postView.counts.upvotes
-            } else {
-                upvoteCount = 0
-            }
-            
-            if let commentView = context.commentModel {
-                downvoteCount = content.state.allComments[commentView.id]?.counts.downvotes ?? commentView.counts.downvotes
-            } else if let postView = context.postModel {
-                downvoteCount = content.state.allPosts[postView.id]?.counts.downvotes ?? postView.counts.downvotes
-            } else {
-                downvoteCount = 0
-            }
-            
-            if let commentView = context.commentModel {
-                myVote = content.state.allComments[commentView.id]?.my_vote ?? (commentView.my_vote ?? 0)
-            } else if let postView = context.postModel {
-                myVote = content.state.allPosts[postView.id]?.my_vote ?? (postView.my_vote ?? 0)
-            } else {
-                myVote = 0
             }
         }
     }
@@ -112,25 +130,13 @@ extension FooterView {
     }
     
     func upvote() {
-        let didUpvote: Bool = myVote == 1
-        let didDownvote: Bool = myVote == -1
-        myVote = myVote <= 0 ? 1 : 0
-        
-        upvoteCount += didUpvote ? -1 : 1
-        downvoteCount += didDownvote ? -1 : 0
-        
-        LoomLog("myVote: \(myVote)", level: .debug)
+        immediateUpvote = immediateUpvote == 1 ? 0 : 1
+        immediateDownvote = 0
     }
-    
+
     func downvote() {
-        let didUpvote: Bool = myVote == 1
-        let didDownvote: Bool = myVote == -1
-        myVote = myVote >= 0 ? -1 : 0
-        
-        upvoteCount += didUpvote ? -1 : 0
-        downvoteCount += didDownvote ? -1 : 1
-        
-        LoomLog("myVote: \(myVote)", level: .debug)
+        immediateDownvote = immediateDownvote == 1 ? 0 : 1
+        immediateUpvote = 0
     }
 }
 
@@ -144,11 +150,11 @@ extension FooterView {
             HStack(spacing: 0) {
                 HStack(spacing: 0) {
                     if showScores {
-                        Text("\(NumberFormatter.formatAbbreviated(upvoteCount)) LABEL_UPVOTE")
+                        Text("\(NumberFormatter.formatAbbreviated(immediateUpvoteCount)) LABEL_UPVOTE")
                             .font(font.smaller)
                             .padding(.trailing, .layer4)
                         
-                        Text("\(NumberFormatter.formatAbbreviated(downvoteCount)) LABEL_DOWNVOTE")
+                        Text("\(NumberFormatter.formatAbbreviated(immediateDownvoteCount)) LABEL_DOWNVOTE")
                             .font(font.smaller)
                         
                         Text("•")
@@ -222,7 +228,7 @@ extension FooterView {
                     Image(systemName: "arrow.up")
                         .font(font.bold())
                 }
-                .foregroundColor(myVote == 1 ? .orange : .foreground)
+                .foregroundColor(isUpvoted ? .orange : .foreground)
                 .contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
             
@@ -242,7 +248,7 @@ extension FooterView {
                     Image(systemName: "arrow.down")
                         .font(font.bold())
                 }
-                .foregroundColor(myVote == -1 ? .blue : .foreground)
+                .foregroundColor(isDownvoted ? .blue : .foreground)
                 .contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
             
@@ -252,7 +258,8 @@ extension FooterView {
                         .font(font)
                 }
                 .foregroundColor(.foreground)
-                .route(window: .resizable(600, 500)) {
+                .routeIf(shouldLinkToPost,
+                         window: .resizable(600, 500)) {
                     PostDisplayView(context: _context)
                 } with : { router }
             }
@@ -315,12 +322,12 @@ extension FooterView {
                         .font(font.bold())
                     
                     if showScores {
-                        Text("\(upvoteCount)")
+                        Text("\(immediateUpvoteCount)")
                             .font(font.smaller)
                     }
                 }
                 .padding(.trailing, .layer4)
-                .foregroundColor(myVote == 1 ? .orange : .foreground)
+                .foregroundColor(isUpvoted ? .orange : .foreground)
                 .contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
             
@@ -340,12 +347,12 @@ extension FooterView {
                         .font(font.bold())
                     
                     if showScores {
-                        Text("\(downvoteCount)")
+                        Text("\(immediateDownvoteCount)")
                             .font(font.smaller)
                     }
                 }
                 .padding(.trailing, .layer4)
-                .foregroundColor(myVote == -1 ? .blue : .foreground)
+                .foregroundColor(isDownvoted ? .blue : .foreground)
                 .contentShape(Rectangle())
             }.buttonStyle(PlainButtonStyle())
             
@@ -382,7 +389,7 @@ extension FooterView {
                 }
                 .textCase(.lowercase)
                 .foregroundColor(.foreground)
-                .routeIf(context.isPostAvailable,
+                .routeIf(context.isPostAvailable && shouldLinkToPost,
                          title: routeTitle ?? "",
                          window: .resizable(600, 500)) {
                     //This won't be able to pull in an edited model from the card view

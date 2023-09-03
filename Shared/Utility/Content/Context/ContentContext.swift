@@ -38,10 +38,15 @@ struct ContentContext {
     }
     
     var location: FederatedLocationType {
-        if viewingContext.isBookmark {
+        switch viewingContext {
+        case .bookmark, .bookmarkExpanded:
             return viewingContext.bookmarkLocation
-        } else {
-            return ((customLocation) ?? .base)//(postModel?.post.location ?? commentModel?.comment.location)) ?? .base
+        case .thread(let location):
+            return location
+        case .profile:
+            return .source
+        default:
+            return ((customLocation) ?? .base)
         }
     }
     

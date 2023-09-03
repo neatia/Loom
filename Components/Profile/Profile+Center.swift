@@ -6,6 +6,7 @@ extension Profile {
     struct Center: GraniteCenter {
         struct State: GraniteState {
             var person: FederatedPerson? = nil
+            var location: FederatedLocationType? = nil
             
             var viewingDataType: ProfilePickerView.Kind = .overview
             
@@ -34,5 +35,15 @@ extension Profile {
     
     var filterOverviewPosts: Bool {
         state.viewingDataType == .overview && state.overviewType == 1
+    }
+    
+    var profileFetchLocation: FederatedLocationType {
+        if let location = state.location {
+            return location
+        } else if state.person?.isMe == true {
+            return .source
+        } else {
+            return .base
+        }
     }
 }

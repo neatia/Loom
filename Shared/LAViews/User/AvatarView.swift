@@ -12,6 +12,7 @@ import Granite
 import FederationKit
 
 struct AvatarView: View {
+    @Environment(\.contentContext) var context
     @Environment(\.graniteRouter) var router
     
     static var containerPadding: CGFloat = 5
@@ -124,7 +125,7 @@ struct AvatarView: View {
         .cornerRadius(size.frame / 2)
         .clipped()
         .routeIf(person != nil, window: .resizable(600, 500)) {
-            Profile(person)
+            Profile(person, location: context.location)
         } with : { router }
     }
 }

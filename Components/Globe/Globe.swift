@@ -40,8 +40,4 @@ struct Globe: GraniteComponent {
                 }
             }
     }
-    
-    init() {
-        config.silence(viewUpdatesOnly: true)
-    }
 }
