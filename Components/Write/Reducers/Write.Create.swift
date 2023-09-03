@@ -65,10 +65,9 @@ extension Write {
             } else if let community = postCommunity?.community {
                 
                 value = await Federation.createPost(title,
-                                               content: content,
-                                               url: url?.isEmpty == true ? nil : url,
-                                               body: includeBody ? (content + subcontent) : nil,
-                                               community: community)
+                                                    url: url?.isEmpty == true ? nil : url,
+                                                    body: includeBody ? (content + subcontent) : nil,
+                                                    community: community)
                 
                 guard let value else {
                     beam.send(StandardNotificationMeta(title: "MISC_ERROR_2", message: "ALERT_CREATE_POST_FAILED \("!"+community.name)", event: .error))

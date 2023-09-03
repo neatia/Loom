@@ -204,25 +204,13 @@ extension ContentService {
                                                                          post: model.post,
                                                                          community: model.community))))
             case .savePost(let model):
-                guard let _ = await Federation.savePost(model.post, save: true) else {
-                    showNotHomeError(model.post.ap_id, context: meta.context)
-                    return
-                }
+                let _ = await Federation.savePost(model.post, save: true)
             case .unsavePost(let model):
-                guard let _ = await Federation.savePost(model.post, save: false) else {
-                    showNotHomeError(model.post.ap_id, context: meta.context)
-                    return
-                }
+                let _ = await Federation.savePost(model.post, save: false)
             case .saveComment(let model):
-                guard let _ = await Federation.saveComment(model.comment, save: true) else {
-                    showNotHomeError(model.comment.ap_id, context: meta.context)
-                    return
-                }
+                let _ = await Federation.saveComment(model.comment, save: true)
             case .unsaveComment(let model):
-                guard let _ = await Federation.saveComment(model.comment, save: false) else {
-                    showNotHomeError(model.comment.ap_id, context: meta.context)
-                    return
-                }
+                let _ = await Federation.saveComment(model.comment, save: false)
                 
             /*
              TODO: the concept behind using reducers as proxies
