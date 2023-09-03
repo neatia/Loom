@@ -50,7 +50,9 @@ extension AccountService {
                 broadcast.send(StandardNotificationMeta(title: "MISC_ERROR",
                                                         message: "MISC_ERROR_2",
                                                         event: .error))
+                
                 print("[AccountService] No user found")
+                FederationKit.logout()
                 state.meta = nil
                 return
             }

@@ -229,7 +229,7 @@ struct HeaderView: View {
             self.postView = postView
             
             router.push(style: .customTrailing(Color.background)) {
-                PostDisplayView()
+                PostDisplayView(updatedModel: postView)
                     .contentContext(.withPostModel(postView, context))
             }
         }

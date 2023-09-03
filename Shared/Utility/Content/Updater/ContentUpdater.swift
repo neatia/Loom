@@ -13,7 +13,7 @@ struct ContentUpdater {
     @MainActor
     static func fetchFederatedPostResource(_ model: FederatedPost?,
                               commentModel: FederatedComment? = nil) async -> FederatedPostResource? {
-        guard let postView = await Federation.post(model?.id,
+        guard let postView = await Federation.post(model,
                                                    comment: commentModel) else {
             return nil
         }

@@ -97,8 +97,8 @@ struct PostDisplayView: GraniteNavigationDestination {
                  - Comment cards from search won't have postViews
                  - Updating your own post from a post card will update right away
                  */
-                let postId = context.postModel?.post.id ?? context.commentModel?.post.id
-                let postView = await Federation.post(postId)
+                let post = context.postModel?.post ?? context.commentModel?.post
+                let postView = await Federation.post(post)
                 self.updatedModel = postView
             }
             

@@ -106,6 +106,9 @@ struct FooterView: View {
                 stacked
             }
         }
+        .task {
+            
+        }
     }
 }
 
@@ -130,13 +133,13 @@ extension FooterView {
     }
     
     func upvote() {
-        immediateUpvote = immediateUpvote == 1 ? 0 : 1
-        immediateDownvote = 0
+        //immediateUpvote = immediateUpvote == 1 ? 0 : 1
+        //immediateDownvote = 0
     }
 
     func downvote() {
-        immediateDownvote = immediateDownvote == 1 ? 0 : 1
-        immediateUpvote = 0
+        //immediateDownvote = immediateDownvote == 1 ? 0 : 1
+        //immediateUpvote = 0
     }
 }
 

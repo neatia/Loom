@@ -143,9 +143,8 @@ struct HeaderCardView: View {
         if Device.isExpandedLayout {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {
-            
             router.push(style: .customTrailing()) {
-                PostDisplayView()
+                PostDisplayView(updatedModel: postView)
                     .contentContext(.withPostModel(postView, context))
             }
             

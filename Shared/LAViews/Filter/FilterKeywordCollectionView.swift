@@ -23,12 +23,12 @@ struct FilterKeywordCollectionView: View {
                     addKeyword.perform(nil)
                 } label: {
                     Image(systemName: "plus")
-                        .font(.subheadline.bold())
+                        .font(.footnote.bold())
                 }
                 .buttonStyle(.plain)
                 .aspectRatio(1.0, contentMode: .fit)
                 .background(
-                    RoundedRectangle(cornerRadius: 6)
+                    RoundedRectangle(cornerRadius: 4)
                         .foregroundColor(Color.alternateBackground.opacity(0.7))
                 )
                 .padding(.layer1)
