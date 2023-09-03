@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "feedkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/FeedKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f216bcf2a76f63b11ecf98e7021120f2fa395cbb"
+      }
+    },
+    {
       "identity" : "ffmpegkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/FFmpegKit.git",

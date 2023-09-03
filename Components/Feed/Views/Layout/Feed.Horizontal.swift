@@ -43,7 +43,8 @@ extension Feed {
             .frame(width: 300)
             Divider()
             FeedMainView(location: state.location,
-                         communityView: state.communityView)
+                         communityView: state.communityView,
+                         feedStyle: config.state.feedStyle)
                 .attach({ community in
                     fetchCommunity(community, reset: true)
                 }, at: \.viewCommunity)

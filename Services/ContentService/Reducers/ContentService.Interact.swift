@@ -47,6 +47,7 @@ extension ContentService {
         
         struct Meta: GranitePayload {
             var kind: Interact.Kind
+            var context: ContentContext? = nil
         }
         
         struct ResponseMeta: GranitePayload {
@@ -87,7 +88,7 @@ extension ContentService {
                                                          score: myVote)
                 
                 guard let result else {
-                    showNotHomeError(post.ap_id)
+                    showNotHomeError(post.ap_id, context: meta.context)
                     return
                 }
                 
@@ -112,7 +113,7 @@ extension ContentService {
                                                          score: myVote)
                 
                 guard let result else {
-                    showNotHomeError(post.ap_id)
+                    showNotHomeError(post.ap_id, context: meta.context)
                     return
                 }
                 
@@ -136,7 +137,7 @@ extension ContentService {
                                                             score: myVote)
                 
                 guard let result else {
-                    showNotHomeError(comment.ap_id)
+                    showNotHomeError(comment.ap_id, context: meta.context)
                     return
                 }
                 state.allComments[result.id] = result
@@ -159,7 +160,7 @@ extension ContentService {
                                                             score: myVote)
                 
                 guard let result else {
-                    showNotHomeError(comment.ap_id)
+                    showNotHomeError(comment.ap_id, context: meta.context)
                     return
                 }
                 
@@ -169,7 +170,7 @@ extension ContentService {
                                                             post: model.post)
 
                 guard let result else {
-                    showNotHomeError(model.post.ap_id)
+                    showNotHomeError(model.post.ap_id, context: meta.context)
                     return
                 }
                 
@@ -185,7 +186,7 @@ extension ContentService {
                                                             parent: model.comment)
 
                 guard let result else {
-                    showNotHomeError(model.comment.ap_id)
+                    showNotHomeError(model.comment.ap_id, context: meta.context)
                     return
                 }
                 
@@ -204,22 +205,22 @@ extension ContentService {
                                                                          community: model.community))))
             case .savePost(let model):
                 guard let _ = await Federation.savePost(model.post, save: true) else {
-                    showNotHomeError(model.post.ap_id)
+                    showNotHomeError(model.post.ap_id, context: meta.context)
                     return
                 }
             case .unsavePost(let model):
                 guard let _ = await Federation.savePost(model.post, save: false) else {
-                    showNotHomeError(model.post.ap_id)
+                    showNotHomeError(model.post.ap_id, context: meta.context)
                     return
                 }
             case .saveComment(let model):
                 guard let _ = await Federation.saveComment(model.comment, save: true) else {
-                    showNotHomeError(model.comment.ap_id)
+                    showNotHomeError(model.comment.ap_id, context: meta.context)
                     return
                 }
             case .unsaveComment(let model):
                 guard let _ = await Federation.saveComment(model.comment, save: false) else {
-                    showNotHomeError(model.comment.ap_id)
+                    showNotHomeError(model.comment.ap_id, context: meta.context)
                     return
                 }
                 
@@ -253,8 +254,8 @@ extension ContentService {
             .task(.userInitiated)
         }
         
-        func showNotHomeError(_ actor: String? = nil) {
-            let host = actor?.host ?? FederationKit.host
+        func showNotHomeError(_ actor: String? = nil, context: ContentContext? = nil) {
+            let host = /*actor?.host ??*/ context?.location.host ?? FederationKit.host
             
             if FederationKit.canInteract(host) {
                 broadcast.send(

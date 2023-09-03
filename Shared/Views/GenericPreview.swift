@@ -19,50 +19,81 @@ struct GenericPreview: View {
     
     var isModal: Bool = true
     
+    enum FontSize {
+        case large
+        case medium
+        case small
+    }
+    
+    @State var currentFontSize: FontSize = .small
+    
+    var currentFontGroup: PostDisplayFontGroup {
+        switch currentFontSize {
+        case .large:
+            return .init(.title)
+        case .medium:
+            return .init(.title3)
+        case .small:
+            return .init()
+        }
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
-//                HStack(spacing: .layer4) {
-//                    VStack {
-//                        Spacer()
-//                        //TODO: localize
-//                        Text("Preview")
-//                            .font(.title.bold())
-//                    }
-//
-//                    Spacer()
-//
-//                    if isModal {
-//                        VStack {
-//                            Spacer()
-//
-//                            Button {
-//                                GraniteHaptic.light.invoke()
-//                                presentationMode.wrappedValue.dismiss()
-//                            } label: {
-//                                Image(systemName: Device.isMacOS ? "xmark" : "chevron.down")
-//                                    .renderingMode(.template)
-//                                    .font(.title2)
-//                                    .frame(width: 24, height: 24)
-//                                    .contentShape(Rectangle())
-//                                    .foregroundColor(.foreground)
-//                            }
-//                            .buttonStyle(PlainButtonStyle())
-//                            .padding(.bottom, 2)
-//                        }
-//                    }
-//                }
-//                .frame(height: 36)
-//                .padding(.bottom, .layer4)
-//                .padding(.horizontal, .layer5)
-//                .padding(.top, Device.isExpandedLayout == false ? .layer5 : 0)
-                
-//                Divider()
+                HStack(alignment: .bottom, spacing: .layer2) {
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        currentFontSize = .large
+                    } label: {
+                        Image(systemName: "textformat")
+                            .font(.title)
+                            .frame(width: 32, height: 32)
+                            .readability(padding: 0)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.layer1)
+                    .outlineIf(currentFontSize == .large)
+                    
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        currentFontSize = .medium
+                    } label: {
+                        Image(systemName: "textformat")
+                            .font(.title3)
+                            .frame(width: 32, height: 32)
+                            .readability(padding: 0)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.layer1)
+                    .outlineIf(currentFontSize == .medium)
+                    
+                    Button {
+                        GraniteHaptic.light.invoke()
+                        currentFontSize = .small
+                    } label: {
+                        Image(systemName: "textformat")
+                            .font(.subheadline)
+                            .frame(width: 32, height: 32)
+                            .readability(padding: 0)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.layer1)
+                    .outlineIf(currentFontSize == .small)
+                    
+                    Spacer()
+                }
+                .padding(.top, Device.isMacOS ? nil : .layer4)
+                .padding(.bottom, Device.isMacOS ? nil : .layer2)
+                .padding(.horizontal, .layer5)
                 
                 ScrollView {
                     MarkdownView(text: content)
                         .markdownViewRole(.editor)
-                        .fontGroup(PostDisplayFontGroup())
+                        .fontGroup(currentFontGroup)
                         .padding(.top, Device.isMacOS ? nil : .layer4)
                         .padding(.bottom, Device.isMacOS ? nil : .layer5)
                         .padding(.horizontal, .layer2)

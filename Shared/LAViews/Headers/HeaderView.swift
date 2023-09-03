@@ -83,6 +83,124 @@ struct HeaderView: View {
     }
     
     var body: some View {
+        Group {
+            switch context.feedStyle {
+            case .style3:
+                style3View
+            default:
+                defaultView
+            }
+        }
+    }
+    
+    func crumbColor(_ model: FederatedPerson) -> Color {
+        if context.postModel?.creator.equals(model) == true {
+            return .blue.opacity(0.8)
+        } else if model.admin {
+            return .red.opacity(0.8)
+        } else {
+            return .clear
+        }
+    }
+    
+    //TODO: duplicate with HeaderCardView, make reusable
+    func fetchFederatedPostResource() {
+        if let postView {
+            self.route(postView)
+            return
+        }
+        
+        let post = context.commentModel?.post ?? context.postModel?.post
+        guard let post else { return }
+        
+        Task.detached { @MainActor in
+            guard let postView = await ContentUpdater.fetchFederatedPostResource(post) else {
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.route(postView)
+            }
+        }
+    }
+    
+    @MainActor
+    func route(_ postView: FederatedPostResource) {
+        if Device.isExpandedLayout {
+            self.layout._state.feedContext.wrappedValue = .viewPost(postView)
+        } else {
+            self.postView = postView
+            
+            router.push(style: .customTrailing(Color.background)) {
+                PostDisplayView(updatedModel: postView)
+                    .contentContext(.withPostModel(postView, context))
+            }
+        }
+    }
+}
+
+extension HeaderView {
+    var style3View: some View {
+        VStack {
+            HStack {
+                HStack {
+                    AvatarView(context.postModel?.community.iconURL,
+                               size: .mini,
+                               isCommunity: true)
+                    
+                    Text("\(context.postModel?.community.displayName ?? "")")
+                        .font(.footnote)
+                    
+                    Text("•")
+                        .font(.footnote)
+                        .padding(.horizontal, .layer1)
+                        .foregroundColor(Color.foreground.opacity(0.5))
+                    
+                    HStack(alignment: .bottom, spacing: .layer1) {
+                        if context.isEdited {
+                            //TODO: localize
+                            Text("edited")
+                                .font(.caption2.italic())
+                                .foregroundColor(.foreground.opacity(0.5))
+                        }
+                        
+                        if let time = context.display.author.time {
+                            Text(time.timeAgoDisplay())
+                                .font(.caption)
+                                .foregroundColor(.foreground.opacity(0.5))
+                        }
+                    }
+                }
+                .scrollOnOverflow()
+                .frame(height: AvatarView.Size.mini.frame)
+                
+                Spacer()
+                
+                if showPostActions {
+                    PostActionsView(enableCommunityRoute: shouldRouteCommunity,
+                                    shouldRouteToPost: shouldRoutePost,
+                                    community: shouldRouteCommunity ? context.community : nil,
+                                    postView: shouldRoutePost ? context.postModel : nil,
+                                    person: context.person,
+                                    bookmarkKind: context.bookmarkKind)
+                    .attach({ community in
+                        viewCommunity.perform(community)
+                    }, at: \.viewCommunity)
+                    .attach({
+                        self.fetchFederatedPostResource()
+                    }, at: \.goToPost)
+                    .attach({
+                        goToThread.perform()
+                    }, at: \.goToThread)
+                    .attach({
+                        edit.perform()
+                    }, at: \.edit)
+                }
+            }
+        }
+    }
+    
+    var defaultView: some View {
         HStack(spacing: .layer2) {
             
             if crumbs.isNotEmpty {
@@ -188,51 +306,6 @@ struct HeaderView: View {
             }
         }
         .frame(minHeight: AvatarView.Size.small.frame)
-    }
-    
-    func crumbColor(_ model: FederatedPerson) -> Color {
-        if context.postModel?.creator.equals(model) == true {
-            return .blue.opacity(0.8)
-        } else if model.admin {
-            return .red.opacity(0.8)
-        } else {
-            return .clear
-        }
-    }
-    
-    //TODO: duplicate with HeaderCardView, make reusable
-    func fetchFederatedPostResource() {
-        if let postView {
-            self.route(postView)
-            return
-        }
-        
-        let post = context.commentModel?.post ?? context.postModel?.post
-        guard let post else { return }
-        
-        Task.detached { @MainActor in
-            guard let postView = await ContentUpdater.fetchFederatedPostResource(post) else {
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.route(postView)
-            }
-        }
-    }
-    
-    @MainActor
-    func route(_ postView: FederatedPostResource) {
-        if Device.isExpandedLayout {
-            self.layout._state.feedContext.wrappedValue = .viewPost(postView)
-        } else {
-            self.postView = postView
-            
-            router.push(style: .customTrailing(Color.background)) {
-                PostDisplayView(updatedModel: postView)
-                    .contentContext(.withPostModel(postView, context))
-            }
-        }
     }
 }
 

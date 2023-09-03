@@ -147,6 +147,7 @@ extension Settings: View {
                         .padding(.bottom, .layer2)
                         .padding(.leading, .layer4)
                     
+                
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
                             Toggle(isOn: config._state.manuallyFetchMoreContent) {
@@ -162,6 +163,34 @@ extension Settings: View {
     #endif
                     }
                     .padding(.horizontal, .layer4)
+                    
+                
+                    VStack {
+                        HStack {
+                            Text("Theme")
+                                .font(.body)
+                                .offset(x: 0, y: Device.isMacOS ? -1 : 0)
+                            
+                            Spacer()
+                        }
+                        .padding(.horizontal, .layer4)
+                        HStack {
+                            Picker("", selection: config._state.feedStyle) {
+                                //TODO: localize
+                                Text("Social").tag(FeedStyle.style2)
+                                //TODO: localize
+                                Text("Reader").tag(FeedStyle.style3)
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(maxWidth: Device.isExpandedLayout ? 240 : nil)
+                            
+                            if Device.isExpandedLayout {
+                                Spacer()
+                            }
+                        }
+                        .padding(.horizontal, .layer2)
+                        .padding(.leading, .layer2)
+                    }
                 }
                 
                 VStack(alignment: .leading, spacing: 0) {
@@ -214,6 +243,7 @@ extension Settings: View {
                             .padding(.top, .layer3)
                         }
                         .padding(.horizontal, .layer2)
+                        .padding(.leading, .layer2)
                     }
                     
                     /*
@@ -353,6 +383,7 @@ extension Settings: View {
                     }
                     .padding(.horizontal, .layer2)
                     .padding(.bottom, .layer4)
+                    .padding(.leading, .layer2)
                 }
                 
                 #if os(macOS)

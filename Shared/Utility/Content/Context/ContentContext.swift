@@ -24,7 +24,17 @@ extension EnvironmentValues {
 struct ContentContext {
     var postModel: FederatedPostResource?
     var commentModel: FederatedCommentResource?
-    var feedStyle: FeedStyle = .style2
+    
+    var feedStyle: FeedStyle {
+        switch postModel?.post.instanceType {
+        case .rss:
+            return .style3
+        default:
+            return preferredFeedStyle
+        }
+    }
+    
+    var preferredFeedStyle: FeedStyle = .style2
     var layoutStyle: LayoutService.Style = .compact
     var viewingContext: ViewingContext = .base
     
@@ -101,7 +111,7 @@ struct ContentContext {
     static func addPostModel(model: FederatedPostResource?, _ context: ContentContext) -> Self {
         return .init(postModel: model ?? context.postModel,
                      commentModel: context.commentModel,
-                     feedStyle: context.feedStyle,
+                     preferredFeedStyle: context.feedStyle,
                      viewingContext: context.viewingContext,
                      customLocation: context.customLocation)
     }
@@ -109,7 +119,7 @@ struct ContentContext {
     static func addCommentModel(model: FederatedCommentResource?, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: model ?? context.commentModel,
-                     feedStyle: context.feedStyle,
+                     preferredFeedStyle: context.feedStyle,
                      viewingContext: context.viewingContext,
                      customLocation: context.customLocation)
     }
@@ -117,7 +127,7 @@ struct ContentContext {
     static func withPostModel(_ model: FederatedPostResource?, _ context: ContentContext) -> Self {
         return .init(postModel: model,
                      commentModel: nil,
-                     feedStyle: context.feedStyle,
+                     preferredFeedStyle: context.feedStyle,
                      viewingContext: context.viewingContext,
                      customLocation: context.customLocation)
     }
@@ -128,7 +138,7 @@ struct ContentContext {
     static func withStyle(_ style: FeedStyle, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
-                     feedStyle: style,
+                     preferredFeedStyle: style,
                      viewingContext: context.viewingContext,
                      customLocation: context.customLocation)
     }
@@ -139,7 +149,7 @@ struct ContentContext {
     static func viewedIn(_ viewingContext: ViewingContext, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
-                     feedStyle: context.feedStyle,
+                     preferredFeedStyle: context.feedStyle,
                      viewingContext: viewingContext,
                      customLocation: context.customLocation)
     }
@@ -150,7 +160,7 @@ struct ContentContext {
     static func updateLocation(_ customLocation: FederatedLocationType, _ context: ContentContext) -> Self {
         return .init(postModel: context.postModel,
                      commentModel: context.commentModel,
-                     feedStyle: context.feedStyle,
+                     preferredFeedStyle: context.feedStyle,
                      viewingContext: context.viewingContext,
                      customLocation: customLocation)
     }

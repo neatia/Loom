@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Granite
 
-enum FeedStyle: String {
+enum FeedStyle: String, GraniteModel {
     case style1
     case style2
+    case style3
 }

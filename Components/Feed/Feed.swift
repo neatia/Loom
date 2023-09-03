@@ -26,7 +26,7 @@ struct Feed: GraniteComponent {
     
     let isCommunity: Bool
     
-    init(_ community: FederatedCommunity? = nil, federatedData: FederatedData? = nil) {
+    init(_ community: FederatedCommunity? = nil, federatedData: FederatedData? = nil, location: FederatedLocationType? = nil) {
         self.isCommunity = community != nil
         
         let location: FederatedLocationType?

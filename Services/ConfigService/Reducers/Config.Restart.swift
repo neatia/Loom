@@ -43,7 +43,9 @@ extension ConfigService {
             
             let server: FederationServer?
             if let host = meta.host {
-                if state.allowAutomaticFinding {
+                if host.includes([".rss"]) {
+                    server = .init(.rss, host: host)
+                } else if state.allowAutomaticFinding {
                     server = .init(host: host)
                 } else {//Default to lemmy
                     server = .init(.lemmy, host: host)

@@ -24,11 +24,13 @@ struct FilterKeywordCollectionView: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.footnote.bold())
+                        .frame(width: 24, height: 24)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .aspectRatio(1.0, contentMode: .fit)
                 .background(
-                    RoundedRectangle(cornerRadius: 4)
+                    RoundedRectangle(cornerRadius: 6)
                         .foregroundColor(Color.alternateBackground.opacity(0.7))
                 )
                 .padding(.layer1)
@@ -44,6 +46,8 @@ struct FilterKeywordCollectionView: View {
                         Image(systemName: "pencil")
                             .font(.headline)
                     }
+                    .frame(height: 24)
+                    .contentShape(Rectangle())
                     .buttonStyle(.plain)
                     .background(
                         RoundedRectangle(cornerRadius: 6)

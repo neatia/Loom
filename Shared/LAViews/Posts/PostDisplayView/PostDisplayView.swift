@@ -54,7 +54,7 @@ struct PostDisplayView: GraniteNavigationDestination {
                 contentHeader
                     .background(Color.background)
                     .id(currentModel?.post.updated)
-            case .style2:
+            case .style2, .style3:
                 contentHeaderStacked
                     .background(Color.background)
                     .id(currentModel?.post.updated)
@@ -141,7 +141,9 @@ extension PostDisplayView {
                     }
                 }
             }, at: \.edit)
-            .contentContext(.addPostModel(model: updatedModel, context))
+            .contentContext(
+                .addPostModel(model: updatedModel, context)
+                .withStyle(context.feedStyle == .style3 ? .style2 : context.feedStyle))
     }
     
     var contentView: some View {

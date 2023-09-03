@@ -54,9 +54,9 @@ extension Feed {
                     ModalService.shared.presentModal(GraniteToastView(error))
                 } else {
                     LoomLog("🟡 Restarting Feed")
+                    pager.reset()
                     _state.currentLoomManifest.wrappedValue = nil
                     loom._state.activeManifest.wrappedValue = nil
-                    pager.reset()
                 }
             }
         
@@ -87,11 +87,11 @@ extension Feed {
                 if let intent = value as? LoomService.Control {
                     switch intent {
                     case .activate(let manifest):
+                        pager.reset()
                         _state.currentLoomManifest.wrappedValue = manifest
-                        pager.reset()
                     case .deactivate:
-                        _state.currentLoomManifest.wrappedValue = nil
                         pager.reset()
+                        _state.currentLoomManifest.wrappedValue = nil
                     default:
                         break
                     }

@@ -29,9 +29,7 @@ public struct PostDisplayFontGroup: MarkdownFontGroup {
 //
 //    // Normal text
     
-    public var body: Font {
-        .subheadline
-    }
+    public let body: Font
     
     public var unorderedList: Font {
         .headline
@@ -43,6 +41,10 @@ public struct PostDisplayFontGroup: MarkdownFontGroup {
 //    // Tables
 //    var tableHeader: Font { get }
 //    var tableBody: Font { get }
+    
+    init(_ body: Font = .subheadline) {
+        self.body = body
+    }
 }
 
 extension MarkdownFontGroup where Self == DefaultFontGroup {

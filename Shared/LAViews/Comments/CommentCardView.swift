@@ -114,7 +114,7 @@ struct CommentCardView: View {
                         .padding(.trailing, padding.trailing)
                         .padding(.bottom, .layer3)
                 }
-            case .style2:
+            case .style2, .style3:
                 HeaderCardContainerView(.addCommentModel(model: currentModel,
                                                          context),
                                         showAvatar: showAvatar,

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FederationKit
 
 extension ContentContext {
     var viewbaleHosts: [String] {
@@ -18,5 +19,9 @@ extension ContentContext {
         }
         
         return hosts
+    }
+    
+    var canInteract: Bool {
+        return FederationKit.canInteract(location.host ?? FederationKit.host)
     }
 }

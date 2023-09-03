@@ -75,22 +75,39 @@ extension PostActionsView {
             if person?.isMe == false,
                let bookmarkKind {
                 Button {
-                    GraniteHaptic.light.invoke()
-                    switch bookmarkKind {
-                    case .post(let model):
-                        if bookmark.contains(bookmarkKind) {
-                            content.center.interact.send(ContentService.Interact.Meta(kind: .unsavePost(model)))
-                        } else {
-                            content.center.interact.send(ContentService.Interact.Meta(kind: .savePost(model)))
-                        }
-                    case .comment(let model, _):
-                        if bookmark.contains(bookmarkKind) {
-                            content.center.interact.send(ContentService.Interact.Meta(kind: .unsaveComment(model)))
-                        } else {
-                            content.center.interact.send(ContentService.Interact.Meta(kind: .saveComment(model)))
-                        }
+                    guard let bookmarkKind = context.bookmarkKind else { return }
+                    
+                    let shouldSave: Bool = bookmark.contains(bookmarkKind) == false
+                    let interaction: ContentService.Interact.Kind?
+                    
+                    if context.isPost, let model = context.postModel {
+                        interaction = shouldSave ? .savePost(model) : .unsavePost(model)
+                    } else if let model = context.commentModel {
+                        interaction = shouldSave ? .saveComment(model) : .unsaveComment(model)
+                    } else {
+                        interaction = nil
                     }
-                    bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
+                    
+                    guard let interaction else { return }
+                    GraniteHaptic.light.invoke()
+                    
+                    content
+                        .center
+                        .interact
+                        .send(
+                            ContentService
+                                .Interact
+                                .Meta(kind: interaction,
+                                      context: context))
+                    
+                    bookmark
+                        .center
+                        .modify
+                        .send(
+                            BookmarkService
+                                .Modify
+                                .Meta(kind: bookmarkKind,
+                                      remove: bookmark.contains(bookmarkKind)))
                 } label: {
                     Text(.init(bookmark.contains(bookmarkKind) ? "ACTIONS_REMOVE_BOOKMARK" : "MISC_BOOKMARK"))
                     Image(systemName: "bookmark\(bookmark.contains(bookmarkKind) ? ".fill" : "")")
