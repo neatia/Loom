@@ -86,7 +86,10 @@ extension ContentService {
                 let result = await Federation.upvotePost(post,
                                                          score: myVote)
                 
-                guard let result else { return }
+                guard let result else {
+                    showNotHomeError(post.ap_id)
+                    return
+                }
                 
                 state.allPosts[result.id] = result
                 
@@ -108,7 +111,10 @@ extension ContentService {
                 let result = await Federation.upvotePost(post,
                                                          score: myVote)
                 
-                guard let result else { return }
+                guard let result else {
+                    showNotHomeError(post.ap_id)
+                    return
+                }
                 
                 state.allPosts[result.id] = result
             case .upvoteComment(let commentView):
@@ -129,7 +135,10 @@ extension ContentService {
                 let result = await Federation.upvoteComment(comment,
                                                             score: myVote)
                 
-                guard let result else { return }
+                guard let result else {
+                    showNotHomeError(comment.ap_id)
+                    return
+                }
                 state.allComments[result.id] = result
             case .downvoteComment(let commentView):
                 let commentView = state.allComments[commentView.id] ?? commentView
@@ -149,13 +158,20 @@ extension ContentService {
                 let result = await Federation.upvoteComment(comment,
                                                             score: myVote)
                 
-                guard let result else { return }
+                guard let result else {
+                    showNotHomeError(comment.ap_id)
+                    return
+                }
+                
                 state.allComments[result.id] = result
             case .replyPost(let model, let content):
                 let result = await Federation.createComment(content,
                                                             post: model.post)
 
-                guard let result else { return }
+                guard let result else {
+                    showNotHomeError(model.post.ap_id)
+                    return
+                }
                 
                 broadcast.send(
                     ResponseMeta(notification: .init(title: "MISC_SUCCESS",
@@ -168,7 +184,10 @@ extension ContentService {
                                                             post: model.post,
                                                             parent: model.comment)
 
-                guard let result else { return }
+                guard let result else {
+                    showNotHomeError(model.comment.ap_id)
+                    return
+                }
                 
                 guard let user = FederationKit.user()?.resource.user.person else {
                     return
@@ -184,13 +203,25 @@ extension ContentService {
                                                                          post: model.post,
                                                                          community: model.community))))
             case .savePost(let model):
-                _ = await Federation.savePost(model.post, save: true)
+                guard let _ = await Federation.savePost(model.post, save: true) else {
+                    showNotHomeError(model.post.ap_id)
+                    return
+                }
             case .unsavePost(let model):
-                _ = await Federation.savePost(model.post, save: false)
+                guard let _ = await Federation.savePost(model.post, save: false) else {
+                    showNotHomeError(model.post.ap_id)
+                    return
+                }
             case .saveComment(let model):
-                _ = await Federation.saveComment(model.comment, save: true)
+                guard let _ = await Federation.saveComment(model.comment, save: true) else {
+                    showNotHomeError(model.comment.ap_id)
+                    return
+                }
             case .unsaveComment(let model):
-                _ = await Federation.saveComment(model.comment, save: false)
+                guard let _ = await Federation.saveComment(model.comment, save: false) else {
+                    showNotHomeError(model.comment.ap_id)
+                    return
+                }
                 
             /*
              TODO: the concept behind using reducers as proxies
@@ -204,7 +235,7 @@ extension ContentService {
             case .editCommentSubmit(let model, let content):
                 guard let updatedModel = await Federation.editComment(model.comment.id,
                                                                       content: content) else {
-                    //TODO: error  toast
+                    showNotHomeError(model.comment.ap_id)
                     return
                 }
                 
@@ -220,6 +251,23 @@ extension ContentService {
         
         var behavior: GraniteReducerBehavior {
             .task(.userInitiated)
+        }
+        
+        func showNotHomeError(_ actor: String? = nil) {
+            let host = actor?.host ?? FederationKit.host
+            
+            if FederationKit.canInteract(host) {
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "MISC_ERROR_2",
+                                      event: .error))
+            } else {
+                //TODO: localize
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "You need to login into a @\(host) account to do that.",
+                                      event: .error))
+            }
         }
     }
 }

@@ -78,7 +78,22 @@ extension AccountService {
             
             guard FederationKit.isAuthenticated() else {
                 //TODO: localize
-                broadcast.send(StandardErrorMeta(title: "MISC_ERROR", message: "You need to login to do that", event: .error))
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "You need to login to do that",
+                                      event: .error))
+                
+                return
+            }
+            
+            guard FederationKit.isHome() else {
+                //TODO: localize
+                let host = FederationKit.host
+                broadcast.send(
+                    StandardErrorMeta(title: "MISC_ERROR",
+                                      message: "You need to login into a @\(host) account to do that.",
+                                      event: .error))
+                
                 return
             }
             

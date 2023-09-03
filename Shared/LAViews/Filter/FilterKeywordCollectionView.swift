@@ -2,7 +2,7 @@
 //  FilterCollectionView.swift
 //  Loom
 //
-//  Created by Ritesh Pakala on 9/1/23.
+//  Created by PEXAVC on 9/1/23.
 //
 
 import Foundation
@@ -23,13 +23,13 @@ struct FilterKeywordCollectionView: View {
                     addKeyword.perform(nil)
                 } label: {
                     Image(systemName: "plus")
-                        .font(.headline.bold())
+                        .font(.footnote.bold())
                 }
                 .buttonStyle(.plain)
                 .aspectRatio(1.0, contentMode: .fit)
                 .background(
-                    RoundedRectangle(cornerRadius: 6)
-                        .foregroundColor(Color.alternateBackground)
+                    RoundedRectangle(cornerRadius: 4)
+                        .foregroundColor(Color.alternateBackground.opacity(0.7))
                 )
                 .padding(.layer1)
                 .outline(cornerRadius: 6)
@@ -47,7 +47,7 @@ struct FilterKeywordCollectionView: View {
                     .buttonStyle(.plain)
                     .background(
                         RoundedRectangle(cornerRadius: 6)
-                            .foregroundColor(Color.alternateBackground)
+                            .foregroundColor(Color.alternateBackground.opacity(0.7))
                     )
                     .padding(.vertical, .layer1)
                     .padding(.horizontal, .layer2)

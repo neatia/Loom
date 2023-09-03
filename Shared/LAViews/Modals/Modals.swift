@@ -217,7 +217,7 @@ extension ModalService {
             ThreadView(context: .addCommentModel(model: commentView,
                                                  context)
                                 .withStyle(.style2)
-                                .viewedIn(.thread))
+                                .viewedIn(.thread(context.location)))
                 .attach({
                     ModalService.shared.dismissSheet()
                 }, at: \.closeDrawer)

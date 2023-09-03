@@ -104,21 +104,11 @@ struct HeaderCardView: View {
                                     person: context.person,
                                     bookmarkKind: context.bookmarkKind,
                                     isCompact: isCompact)
-                        .attach({ community in
-                            viewCommunity.perform(community)
-                        }, at: \.viewCommunity)
-                        .attach({
-                            self.fetchFederatedPostResource()
-                        }, at: \.goToPost)
-                        .attach({
-                            goToThread.perform()
-                        }, at: \.goToThread)
-                        .attach({
-                            replyToContent.perform()
-                        }, at: \.replyToContent)
-                        .attach({
-                            edit.perform()
-                        }, at: \.edit)
+                        .attach(viewCommunity, at: \.viewCommunity)
+                        .attach(fetchFederatedPostResource, at: \.goToPost)
+                        .attach(goToThread, at: \.goToThread)
+                        .attach(replyToContent, at: \.replyToContent)
+                        .attach(edit, at: \.edit)
                 }
             }
         }
@@ -153,9 +143,8 @@ struct HeaderCardView: View {
         if Device.isExpandedLayout {
             self.layout._state.feedContext.wrappedValue = .viewPost(postView)
         } else {
-            
             router.push(style: .customTrailing()) {
-                PostDisplayView()
+                PostDisplayView(updatedModel: postView)
                     .contentContext(.withPostModel(postView, context))
             }
             

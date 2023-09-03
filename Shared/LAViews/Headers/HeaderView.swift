@@ -52,7 +52,7 @@ struct HeaderView: View {
     let showPostActions: Bool
     
     var avatarBorderColor: Color {
-        if context.isPostAdmin {
+        if context.isPostAdmin || context.isCommentAdmin {
             return .red.opacity(0.8)
         } else if context.isOP {
             return .blue.opacity(0.8)
@@ -229,7 +229,7 @@ struct HeaderView: View {
             self.postView = postView
             
             router.push(style: .customTrailing(Color.background)) {
-                PostDisplayView()
+                PostDisplayView(updatedModel: postView)
                     .contentContext(.withPostModel(postView, context))
             }
         }

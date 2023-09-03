@@ -161,8 +161,6 @@ struct ProfileSettingsView: View {
                                 showBotAccounts: config.state.showBotAccounts,
                                 sortType: config.state.sortType,
                                 listingType: config.state.listingType)
-        
-        config.silence(viewUpdatesOnly: true)
     }
     
     var body: some View {

@@ -42,19 +42,17 @@ extension AccountService {
                 return
             }
             
-            FederationKit.setAuth(token: token, user: accountMeta.resource)
+            FederationKit.setAuth(token, user: accountMeta.resource)
             
-            let result = await Federation.site()
+            let result = await Federation.getUserData()
             
-            guard let result else {
+            guard let resource = result else {
                 broadcast.send(StandardNotificationMeta(title: "MISC_ERROR",
                                                         message: "MISC_ERROR_2",
                                                         event: .error))
-                return
-            }
-            
-            guard let resource = result.my_user else {
+                
                 print("[AccountService] No user found")
+                FederationKit.logout()
                 state.meta = nil
                 return
             }

@@ -37,16 +37,18 @@ import GraniteUI
 
 extension PagerScrollView {
     
-    var chunks: [String: [Model]] {
+    var chunks: (ordering: [String], map: [String: [Model]]) {
         //10 is partition size, should be customizable
+        var ordering: [String] = []
         var map: [String: [Model]] = [:]
         pager.currentItems.chunked(into: 10)
             .forEach {
-                //not safe
-                map["\($0.first?.id.hashValue ?? -1)"] = $0
+                let id = "\($0.first?.id.hashValue ?? -1)"
+                ordering.append(id)
+                map[id] = $0
             }
         
-        return map
+        return (ordering, map)
     }
     
     //only iOS supported
@@ -63,9 +65,9 @@ extension PagerScrollView {
                 addContent()
             }
             LazyVStack(spacing: 0) {
-                ForEach(Array(partitions.keys), id: \.self) { id in
+                ForEach(partitions.ordering, id: \.self) { id in
                     VStack(spacing: 0) {
-                        ForEach(partitions[id] ?? [], id: \.id) { item in
+                        ForEach(partitions.map[id] ?? [], id: \.id) { item in
                             mainContent(item)
                                 .environment(\.pagerMetadata, pager.itemMetadatas[item.id])
                         }

@@ -97,18 +97,19 @@ struct PostDisplayView: GraniteNavigationDestination {
                  - Comment cards from search won't have postViews
                  - Updating your own post from a post card will update right away
                  */
-                let postId = context.postModel?.post.id ?? context.commentModel?.post.id
-                let postView = await Federation.post(postId)
+                let post = context.postModel?.post ?? context.commentModel?.post
+                let postView = await Federation.post(post)
                 self.updatedModel = postView
             }
             
             pager.hook { page in
                 return await Federation.comments(currentModel?.post,
-                                            community: currentModel?.community,
-                                            page: page,
-                                            type: listingType,
-                                            sort: sortingType[selectedSorting],
-                                            location: threadLocation)
+                                                 community: currentModel?.community,
+                                                 depth: 8,
+                                                 page: page,
+                                                 type: listingType,
+                                                 sort: sortingType[selectedSorting],
+                                                 location: threadLocation)
             }.fetch()
         }
         //This overlays
@@ -163,7 +164,8 @@ extension PostDisplayView {
             //Threadview's first comment is a "header" too
             FooterView(isHeader: true,
                        showScores: config.state.showScores,
-                       isComposable: true)
+                       isComposable: true,
+                       shouldLinkToPost: false)
                 .attach({ model in
                     ModalService
                         .shared

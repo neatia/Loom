@@ -10,11 +10,14 @@ struct CommentCardView: View {
     @Environment(\.graniteEvent) var interact
     
     /*
-     Due to the nature of threads having unlimited
-     nested comment cards. We do not want to environment
-     the context. Since they all have the potential
+     Threads can have unlimited nested comment cards.
+     We do not want to environment the context.
+     Since they all have the potential
      of accessing the same key/value leading to
      unforeseen crashes/malloc issues
+     
+     Another potential update in the future is using
+     Observed/EnvironmentObjects
      */
     var context: ContentContext
     
@@ -26,7 +29,11 @@ struct CommentCardView: View {
     @Relay var layout: LayoutService
     @Relay(.silence) var content: ContentService
     
-    @State var currentModel: FederatedCommentResource?
+    var currentModel: FederatedCommentResource? {
+        updatedModel ?? context.commentModel
+    }
+    
+    @State var updatedModel: FederatedCommentResource?
     @State var postView: FederatedPostResource? = nil
     
     //Viewing kind
@@ -108,49 +115,43 @@ struct CommentCardView: View {
                         .padding(.bottom, .layer3)
                 }
             case .style2:
-                HStack(spacing: .layer3) {
-                    HeaderCardAvatarView(showAvatar: showAvatar,
-                                         showThreadLine: (currentModel?.replyCount ?? 0) > 0,
-                                         shouldCollapse: collapseView)
-                        .attach({
-                            guard let currentModel,
-                                  currentModel.replyCount > 0 else { return }
-                            GraniteHaptic.light.invoke()
-                            expandReplies.toggle()
-                        }, at: \.tappedThreadLine)
-                        .attach({
-                            guard let currentModel,
-                                  currentModel.replyCount > 0 else { return }
-                            GraniteHaptic.light.invoke()
-                            showThreadDrawer(currentModel)
-                        }, at: \.longPressThreadLine)
-                    VStack(alignment: .leading, spacing: 2) {
-                        HeaderCardView(shouldRoutePost: self.shouldLinkToPost,
-                                       shouldCollapse: collapseView)
-                            .attach({ community in
-                                viewCommunity.perform(community)
-                            }, at: \.viewCommunity)
-                            .attach({
-                                replyModel()
-                            }, at: \.replyToContent)
-                            .attach({
-                                showThreadDrawer(currentModel)
-                            }, at: \.goToThread)
-                            .attach({
-                                editModel()
-                            }, at: \.edit)
-                            .attach({
-                                guard context.viewingContext == .postDisplay || context.viewingContext == .thread else { return }
-                                GraniteHaptic.light.invoke()
-                                collapseView.toggle()
-                            }, at: \.tapped)
-                            .graniteEvent(interact)
-                        
-                        if !collapseView {
-                            contentView
-                        }
-                    }
+                HeaderCardContainerView(.addCommentModel(model: currentModel,
+                                                         context),
+                                        showAvatar: showAvatar,
+                                        showThreadLine: (currentModel?.replyCount ?? 0) > 0,
+                                        shouldLinkToPost: shouldLinkToPost,
+                                        collapseView: collapseView) {
+                    contentView
                 }
+                .attach({
+                    guard let currentModel,
+                          currentModel.replyCount > 0 else { return }
+                    GraniteHaptic.light.invoke()
+                    expandReplies.toggle()
+                }, at: \.tappedThreadLine)
+                .attach({
+                    guard let currentModel,
+                          currentModel.replyCount > 0 else { return }
+                    GraniteHaptic.light.invoke()
+                    showThreadDrawer(currentModel)
+                }, at: \.longPressThreadLine)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
+                .attach({
+                    replyModel()
+                }, at: \.replyToContent)
+                .attach({
+                    showThreadDrawer(currentModel)
+                }, at: \.goToThread)
+                .attach({
+                    editModel()
+                }, at: \.edit)
+                .attach({
+                    guard context.viewingContext == .postDisplay || context.viewingContext.isThread else { return }
+                    GraniteHaptic.light.invoke()
+                    collapseView.toggle()
+                }, at: \.tappedHeader)
                 .padding(.trailing, padding.trailing)
             }
             
@@ -165,7 +166,8 @@ struct CommentCardView: View {
                  the environment of the passed in context to the commentcards
                  spawned within
                  */
-                ThreadView(context: context,
+                ThreadView(context: .addCommentModel(model: currentModel,
+                                                     context),
                            isModal: false,
                            isInline: true)
                     .attach({ model in
@@ -174,8 +176,6 @@ struct CommentCardView: View {
                     .id(refreshThread)
             }
         }
-        .contentContext(.addCommentModel(model: currentModel,
-                                         context))
         .padding(.top, padding.top)
         .padding(.bottom, padding.bottom)
         .padding(.leading, padding.leading)
@@ -188,7 +188,7 @@ struct CommentCardView: View {
             replyModel()
         }
         .task {
-            currentModel = context.commentModel
+            setupListeners()
         }
         /*
          A listener
@@ -234,7 +234,7 @@ struct CommentCardView: View {
             .shared
             .showEditCommentModal(currentModel,
                                   postView: context.postModel) { updatedModel in
-                self.currentModel = updatedModel
+                self.updatedModel = updatedModel
                 self.expandReplies = false
             }
     }
@@ -247,7 +247,7 @@ struct CommentCardView: View {
             .showReplyCommentModal(model: currentModel) { (updatedModel, replyModel) in
             
             DispatchQueue.main.async {
-                self.currentModel = self.currentModel?.incrementReplyCount()
+                self.updatedModel = self.currentModel?.incrementReplyCount()
                 if expandReplies == false {
                     expandReplies = true
                 } else {
@@ -258,6 +258,7 @@ struct CommentCardView: View {
     }
     
     func setupListeners() {
+        //Experimenting with this approach of event handling vs. graniteactions
         interact?
             .listen(.bubble(context.id)) { value in
                 if let interact = value as? AccountService.Interact.Meta {
@@ -268,8 +269,8 @@ struct CommentCardView: View {
                             return
                         }
                         LoomLog("Updating deleted state for bubbled event for deleted comment", level: .debug)
-                        self.currentModel = model.updateDeleted()
-                        expandReplies = false
+                        updatedModel = model.updateDeleted()
+                        //expandReplies = false
                     default:
                         break
                     }
@@ -293,9 +294,11 @@ extension CommentCardView {
             }
             
             FooterView(showScores: config.state.showScores)
-//                .attachAndClear({ model in
-//                    replyModel()
-//                }, at: \.replyComment)
+                .attachAndClear({ model in
+                    replyModel()
+                }, at: \.replyComment)
+                .contentContext(.addCommentModel(model: currentModel,
+                                                 context))
         }
         .censor(shouldCensor, kind: censorKind, isComment: true)
     }

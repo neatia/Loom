@@ -29,7 +29,7 @@ struct ThreadView: View {
     
     @State var breadCrumbs: [FederatedCommentResource] = []
     
-    var pager: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    @StateObject var pager: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var currentModel: FederatedCommentResource? {
         breadCrumbs.last ?? (updatedParentModel ?? context.commentModel)
@@ -45,11 +45,12 @@ struct ThreadView: View {
                     .attach({ id in
                         viewReplies(id)
                     }, at: \.tappedCrumb)
+                    .contentContext(context)
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer3)
                     .padding(.top, Device.isMacOS ? .layer4 : 0)
                 
-                content
+                contentView
                     .padding(.horizontal, .layer3)
                     .padding(.bottom, .layer4)
                 
@@ -63,9 +64,6 @@ struct ThreadView: View {
                     .offset(x: (Device.isExpandedLayout) ? -2 : 0, y: 0)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.layer4)
-//                sortMenuView
-//                    .fixedSize(horizontal: false, vertical: true)
-//                    .padding(.layer4)
             }
             
             PagerScrollView(FederatedCommentResource.self,
@@ -75,7 +73,7 @@ struct ThreadView: View {
                                                           context).withStyle(.style2),
                                 parentModel: currentModel,
                                 isInline: isInline)
-                    .attach({ model in
+                    .attachAndClear({ model in
                         if isModal {
                             breadCrumbs.append(model)
                             pager.reset()
@@ -100,6 +98,7 @@ struct ThreadView: View {
                 let comments = await Federation.comments(currentModel?.post,
                                                          comment: currentModel?.comment,
                                                          community: context.community,
+                                                         depth: 1,
                                                          page: page,
                                                          type: listingType,
                                                          location: threadLocation)
@@ -113,14 +112,17 @@ struct ThreadView: View {
         if let index = breadCrumbs.firstIndex(where: { $0.comment.id == id }) {
             breadCrumbs = Array(breadCrumbs.prefix(index + 1))
         } else {
+            print("breadCrumbs removed all")
             breadCrumbs.removeAll()
         }
+        
+        pager.reset()
     }
 }
 
 extension ThreadView {
     
-    var content: some View {
+    var contentView: some View {
         VStack(alignment: .leading, spacing: 0) {
             #if os(iOS)
             contentBody

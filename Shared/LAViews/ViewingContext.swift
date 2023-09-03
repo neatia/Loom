@@ -18,13 +18,22 @@ enum ViewingContext: Equatable {
     case profile
     case screenshot
     case postDisplay
-    case thread
+    case thread(FederatedLocationType)
 }
 
 extension ViewingContext {
     var isBookmark: Bool {
         switch self {
         case .bookmark, .bookmarkExpanded:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var isThread: Bool {
+        switch self {
+        case .thread:
             return true
         default:
             return false
@@ -56,6 +65,15 @@ extension ViewingContext {
             return .peer(host)
         default:
             return .source
+        }
+    }
+    
+    var threadLocation: FederatedLocationType {
+        switch self {
+        case .thread(let location):
+            return location
+        default:
+            return .base
         }
     }
 }

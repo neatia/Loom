@@ -13,9 +13,9 @@ struct Profile: GraniteComponent {
     
     let isMe: Bool
     
-    init(_ person: FederatedPerson? = nil) {
+    init(_ person: FederatedPerson? = nil, location: FederatedLocationType? = nil) {
         isMe = person?.isMe == true
-        _center = .init(.init(person: person ?? FederationKit.user()?.resource.user.person))
+        _center = .init(.init(person: person ?? FederationKit.user()?.resource.user.person, location: location))
         
         LoomLog("profile init")
     }

@@ -45,15 +45,15 @@ struct PostCardView: View {
     }
     
     var censorBlocked: Bool {
-        context.isBlocked
+        currentModel?.creator_blocked ?? context.isBlocked
     }
     
     var censorRemoved: Bool {
-        model?.post.removed ?? context.isRemoved
+        currentModel?.post.removed ?? context.isRemoved
     }
     //TODO: differentiate between removed
     var censorDeleted: Bool {
-        model?.post.deleted ?? context.isDeleted
+        currentModel?.post.deleted ?? context.isDeleted
     }
     
     var shouldCensor: Bool {
@@ -113,53 +113,46 @@ struct PostCardView: View {
                             editModel()
                         }, at: \.edit)
                     
-                    content
+                    contentView
                 }
                 .padding(.vertical, context.isPreview ? 0 : topPadding)
                 .padding(.horizontal, .layer4)
             case .style2:
-                HStack(spacing: .layer3) {
-                    if isCompact == false {
-                        HeaderCardAvatarView(showAvatar: showAvatar,
-                                             showThreadLine: (currentModel?.commentCount ?? 0) > 0)
-                        .attach({
-                            guard !shouldCensor,
-                                  let currentModel else { return }
-                            
-                            if Device.isExpandedLayout {
-                                layout._state.wrappedValue.feedContext = .viewPost(currentModel)
-                            } else {
-                                GraniteHaptic.light.invoke()
-                                router.push {
-                                    PostDisplayView(context: _context,
-                                                    updatedModel: currentModel)
-                                }
-                            }
-                            
-                        }, at: \.tappedThreadLine)
-                    }
-                    VStack(alignment: .leading, spacing: 0) {
-                        HeaderCardView(badge: .noBadge, isCompact: isCompact)
-                            .attach({ community in
-                                viewCommunity.perform(community)
-                            }, at: \.viewCommunity)
-                            .attach({
-                                editModel()
-                            }, at: \.edit)
-                            .attach({
-                                let model = self.model ?? self.context.postModel
-                                guard let model else { return }
-                                ModalService
-                                    .shared
-                                    .showReplyPostModal(model: model) { _ in
-                                }
-                            }, at: \.replyToContent)
-                            .graniteEvent(interact)
-                            .contentContext(.addPostModel(model: currentModel, context))
-                        
-                        content
-                    }
+                HeaderCardContainerView(.addPostModel(model: currentModel, context),
+                                        showAvatar: showAvatar,
+                                        showThreadLine: (currentModel?.commentCount ?? 0) > 0,
+                                        isCompact: isCompact) {
+                    contentView
                 }
+                .attach({
+                    guard !shouldCensor,
+                          let currentModel else { return }
+                    
+                    if Device.isExpandedLayout {
+                        layout._state.wrappedValue.feedContext = .viewPost(currentModel)
+                    } else {
+                        GraniteHaptic.light.invoke()
+                        router.push {
+                            PostDisplayView(context: _context,
+                                            updatedModel: currentModel)
+                        }
+                    }
+                    
+                }, at: \.tappedThreadLine)
+                .attach({ community in
+                    viewCommunity.perform(community)
+                }, at: \.viewCommunity)
+                .attach({
+                    editModel()
+                }, at: \.edit)
+                .attach({
+                    let model = self.model ?? self.context.postModel
+                    guard let model else { return }
+                    ModalService
+                        .shared
+                        .showReplyPostModal(model: model) { _ in
+                    }
+                }, at: \.replyToContent)
                 .padding(padding)
                 .overlayIf(isSelected,
                            overlay: Color.alternateBackground.opacity(0.3))
@@ -218,7 +211,7 @@ struct PostCardView: View {
 }
 
 extension PostCardView {
-    var content: some View {
+    var contentView: some View {
         Group {
             switch context.preferredStyle {
             case .style1:
