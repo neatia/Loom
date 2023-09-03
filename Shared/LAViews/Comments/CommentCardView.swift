@@ -10,11 +10,14 @@ struct CommentCardView: View {
     @Environment(\.graniteEvent) var interact
     
     /*
-     Due to the nature of threads having unlimited
-     nested comment cards. We do not want to environment
-     the context. Since they all have the potential
+     Threads can have unlimited nested comment cards.
+     We do not want to environment the context.
+     Since they all have the potential
      of accessing the same key/value leading to
      unforeseen crashes/malloc issues
+     
+     Another potential update in the future is using
+     Observed/EnvironmentObjects
      */
     var context: ContentContext
     
@@ -255,6 +258,7 @@ struct CommentCardView: View {
     }
     
     func setupListeners() {
+        //Experimenting with this approach of event handling vs. graniteactions
         interact?
             .listen(.bubble(context.id)) { value in
                 if let interact = value as? AccountService.Interact.Meta {
@@ -265,8 +269,8 @@ struct CommentCardView: View {
                             return
                         }
                         LoomLog("Updating deleted state for bubbled event for deleted comment", level: .debug)
-                        self.updatedModel = model.updateDeleted()
-                        expandReplies = false
+                        updatedModel = model.updateDeleted()
+                        //expandReplies = false
                     default:
                         break
                     }

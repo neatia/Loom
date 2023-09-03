@@ -169,7 +169,7 @@ extension PostActionsView {
             }
             
             //TODO: context should just have the shouldRouteToPost helper condition itself
-            if shouldRouteToPost && context.viewingContext.isThread {
+            if shouldRouteToPost && !context.viewingContext.isThread {
                 Button {
                     GraniteHaptic.light.invoke()
                     goToPost.perform()

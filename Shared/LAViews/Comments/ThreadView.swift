@@ -29,7 +29,7 @@ struct ThreadView: View {
     
     @State var breadCrumbs: [FederatedCommentResource] = []
     
-    var pager: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
+    @StateObject var pager: Pager<FederatedCommentResource> = .init(emptyText: "EMPTY_STATE_NO_COMMENTS")
     
     var currentModel: FederatedCommentResource? {
         breadCrumbs.last ?? (updatedParentModel ?? context.commentModel)
@@ -98,7 +98,7 @@ struct ThreadView: View {
                 let comments = await Federation.comments(currentModel?.post,
                                                          comment: currentModel?.comment,
                                                          community: context.community,
-                                                         depth: 8,
+                                                         depth: 1,
                                                          page: page,
                                                          type: listingType,
                                                          location: threadLocation)
