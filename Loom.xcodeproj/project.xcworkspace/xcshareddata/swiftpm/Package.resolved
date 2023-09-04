@@ -1,21 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "feedkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/FeedKit",
-      "state" : {
-        "branch" : "master",
-        "revision" : "f216bcf2a76f63b11ecf98e7021120f2fa395cbb"
-      }
-    },
-    {
       "identity" : "ffmpegkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/FFmpegKit.git",
       "state" : {
         "revision" : "89f71ccee33d1ff402201162f28b6400f349c873",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "granite",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/Granite.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ccfe8c650d37fc3ceb0ab0040b07e00a1ecc417c"
       }
     },
     {
@@ -46,15 +46,6 @@
       }
     },
     {
-      "identity" : "lemmykit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/LemmyKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "8e185744236de9a9f45d129fd3c3e955423f40ca"
-      }
-    },
-    {
       "identity" : "marblekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MarbleKit",
@@ -70,15 +61,6 @@
       "state" : {
         "branch" : "main",
         "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
-      }
-    },
-    {
-      "identity" : "mastodonkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/MastodonKit",
-      "state" : {
-        "branch" : "master",
-        "revision" : "b21dfbf6ae4c510d440d069b02bc9b07e627ed95"
       }
     },
     {

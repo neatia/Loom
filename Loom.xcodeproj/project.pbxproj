@@ -160,7 +160,6 @@
 		713129B92A82FC5000C6B31D /* GlobeScene.Objects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129B72A82FC5000C6B31D /* GlobeScene.Objects.swift */; };
 		713129BB2A83280A00C6B31D /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129BA2A83280A00C6B31D /* Instance.swift */; };
 		713129BC2A83280A00C6B31D /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713129BA2A83280A00C6B31D /* Instance.swift */; };
-		7141BC742A9FA77D00F8A2B8 /* FederationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7141BC732A9FA77D00F8A2B8 /* FederationKit */; };
 		7145EF0D28D43F1D00BFD19A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF0C28D43F1D00BFD19A /* Date.swift */; };
 		7145EF0E28D43F1D00BFD19A /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF0C28D43F1D00BFD19A /* Date.swift */; };
 		7145EF1928D44DEE00BFD19A /* UIApplication+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */; };
@@ -416,7 +415,6 @@
 		71B0A66E2AA249530091972D /* FilterKeywordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A66C2AA249530091972D /* FilterKeywordView.swift */; };
 		71B0A6712AA24B910091972D /* FilterKeywordCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */; };
 		71B0A6722AA24B910091972D /* FilterKeywordCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */; };
-		71B0A6742AA26B270091972D /* FederationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 71B0A6732AA26B270091972D /* FederationKit */; };
 		71B0A6772AA275600091972D /* StandardProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6762AA275600091972D /* StandardProgressView.swift */; };
 		71B0A6782AA275600091972D /* StandardProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6762AA275600091972D /* StandardProgressView.swift */; };
 		71B0A67A2AA2BB320091972D /* MarkdownContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B0A6792AA2BB320091972D /* MarkdownContainerView.swift */; };
@@ -810,7 +808,6 @@
 		713129B42A82FC2200C6B31D /* GlobeScene.Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobeScene.Helpers.swift; sourceTree = "<group>"; };
 		713129B72A82FC5000C6B31D /* GlobeScene.Objects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobeScene.Objects.swift; sourceTree = "<group>"; };
 		713129BA2A83280A00C6B31D /* Instance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
-		7141BC722A9FA72B00F8A2B8 /* FederationKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FederationKit; path = ../FederationKit; sourceTree = "<group>"; };
 		7145EF0C28D43F1D00BFD19A /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		7145EF1828D44DEE00BFD19A /* UIApplication+SafeArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+SafeArea.swift"; sourceTree = "<group>"; };
 		714B48772A816CF900AC6199 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
@@ -938,7 +935,6 @@
 		71AF14662A2E807300EEBD4B /* Disclaimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disclaimer.swift; sourceTree = "<group>"; };
 		71B0A66C2AA249530091972D /* FilterKeywordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterKeywordView.swift; sourceTree = "<group>"; };
 		71B0A6702AA24B910091972D /* FilterKeywordCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterKeywordCollectionView.swift; sourceTree = "<group>"; };
-		71B0A6752AA26FE60091972D /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		71B0A6762AA275600091972D /* StandardProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardProgressView.swift; sourceTree = "<group>"; };
 		71B0A6792AA2BB320091972D /* MarkdownContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownContainerView.swift; sourceTree = "<group>"; };
 		71B21B5C2A6C4D96005B3BFB /* Write.Generate.Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Write.Generate.Markdown.swift; sourceTree = "<group>"; };
@@ -1124,7 +1120,6 @@
 				71BE94F42A958DA8004A3AC3 /* KeyboardToolbar in Frameworks */,
 				71899E522A8977C00073158F /* MarbleKit in Frameworks */,
 				71AAD3C52A9DB0D500D133F4 /* ModerationKit in Frameworks */,
-				7141BC742A9FA77D00F8A2B8 /* FederationKit in Frameworks */,
 				715797702A7B833400B7FEC9 /* GraniteUI in Frameworks */,
 				71C5FF6E2A646BE100F99A84 /* Nuke in Frameworks */,
 				71C5FF702A646BE100F99A84 /* NukeExtensions in Frameworks */,
@@ -1143,7 +1138,6 @@
 				71C1776F2A64A0C800A11B03 /* NukeVideo in Frameworks */,
 				712C0D742A7C46F600DBDCC9 /* MarkdownView in Frameworks */,
 				71C1776D2A64A0C800A11B03 /* NukeUI in Frameworks */,
-				71B0A6742AA26B270091972D /* FederationKit in Frameworks */,
 				71C177692A64A0C800A11B03 /* Nuke in Frameworks */,
 				71C1776B2A64A0C800A11B03 /* NukeExtensions in Frameworks */,
 			);
@@ -1418,8 +1412,6 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
-				71B0A6752AA26FE60091972D /* Granite */,
-				7141BC722A9FA72B00F8A2B8 /* FederationKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,
@@ -2539,7 +2531,6 @@
 				71899E512A8977C00073158F /* MarbleKit */,
 				71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */,
 				71AAD3C42A9DB0D500D133F4 /* ModerationKit */,
-				7141BC732A9FA77D00F8A2B8 /* FederationKit */,
 			);
 			productName = "PEX (iOS)";
 			productReference = 711B3F792885D43B00F3080D /* Loom.app */;
@@ -2569,7 +2560,6 @@
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 				71899E4F2A8977AD0073158F /* MarbleKit */,
 				71AAD3C62A9DB0E200D133F4 /* ModerationKit */,
-				71B0A6732AA26B270091972D /* FederationKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
@@ -3920,10 +3910,6 @@
 			package = 715797772A7B843100B7FEC9 /* XCRemoteSwiftPackageReference "MarkdownView" */;
 			productName = MarkdownView;
 		};
-		7141BC732A9FA77D00F8A2B8 /* FederationKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FederationKit;
-		};
 		7157976D2A7B833400B7FEC9 /* Granite */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7157976C2A7B833400B7FEC9 /* XCRemoteSwiftPackageReference "Granite" */;
@@ -3963,10 +3949,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */;
 			productName = ModerationKit;
-		};
-		71B0A6732AA26B270091972D /* FederationKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FederationKit;
 		};
 		71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */ = {
 			isa = XCSwiftPackageProductDependency;
