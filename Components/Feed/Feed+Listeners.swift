@@ -11,11 +11,26 @@ import Granite
 import SwiftUI
 
 extension Feed {
+    var feedId: String {
+        if let id = state.community?.id {
+            return "feed-\(id)"
+        } else {
+            return "feed"
+        }
+    }
+    
     var listeners: Void {
+        //TODO: for mac, when a new window spawns, may want to set this again
+        if Device.isMacOS || isCommunity == false {
+            mainListeners
+        }
+    }
+    
+    var mainListeners: Void {
         account
             .center
             .auth
-            .listen(.broadcast("feed")) { value in
+            .listen(.broadcast(feedId)) { value in
                 if let response = value as? StandardNotificationMeta {
                     ModalService.shared.presentModal(GraniteToastView(response))
                 }
@@ -24,7 +39,7 @@ extension Feed {
         account
             .center
             .interact
-            .listen(.broadcast("feed")) { value in
+            .listen(.broadcast(feedId)) { value in
                 if let response = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(response))
                 } else if let response = value as? AccountService.Interact.ResponseMeta {
@@ -49,21 +64,23 @@ extension Feed {
         config
             .center
             .restart
-            .listen(.broadcast("feed")) { value in
+            .listen(.broadcast(feedId)) { value in
                 if let error = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(error))
                 } else {
                     LoomLog("🟡 Restarting Feed")
-                    pager.reset()
+                    _state.community.wrappedValue = nil
+                    _state.communityView.wrappedValue = nil
                     _state.currentLoomManifest.wrappedValue = nil
                     loom._state.activeManifest.wrappedValue = nil
+                    pager.reset()
                 }
             }
         
         content
             .center
             .interact
-            .listen(.broadcast("feed")) { value in
+            .listen(.broadcast(feedId)) { value in
                 if let meta = value as? StandardErrorMeta {
                     ModalService.shared.presentModal(GraniteToastView(meta))
                 } else if let meta = value as? ContentService.Interact.Meta {
@@ -83,15 +100,15 @@ extension Feed {
         loom
             .center
             .modify
-            .listen(.broadcast("feed")) { value in
+            .listen(.broadcast(feedId)) { value in
                 if let intent = value as? LoomService.Control {
                     switch intent {
                     case .activate(let manifest):
-                        pager.reset()
                         _state.currentLoomManifest.wrappedValue = manifest
-                    case .deactivate:
                         pager.reset()
+                    case .deactivate:
                         _state.currentLoomManifest.wrappedValue = nil
+                        pager.reset()
                     default:
                         break
                     }

@@ -63,11 +63,12 @@ extension LoomManifest {
         var cumulativePosts: [FederatedPostResource] = []
         for fc in data {
             let posts = await Federation.posts(fc.community?.community,
-                                          type: listing,
-                                          page: page,
-                                          limit: limit,
-                                          sort: sorting,
-                                          location: location)
+                                               type: listing,
+                                               page: page,
+                                               limit: limit,
+                                               sort: sorting,
+                                               location: location,
+                                               instanceType: fc.community?.community.instanceType)
             cumulativePosts.append(contentsOf: posts)
         }
         cumulativePosts.shuffle()

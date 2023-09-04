@@ -320,6 +320,7 @@ extension LoginView {
                 .buttonStyle(PlainButtonStyle())
                 .padding(.trailing, .layer2)
                 
+                /*
                 Button {
                     GraniteHaptic.light.invoke()
                     switch kind {
@@ -342,6 +343,7 @@ extension LoginView {
                         .font(.headline)
                 }
                 .buttonStyle(PlainButtonStyle())
+                 */
                 
                 Spacer()
             }

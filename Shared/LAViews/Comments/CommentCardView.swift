@@ -92,7 +92,7 @@ struct CommentCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            switch context.preferredStyle {
+            switch context.feedStyle {
             case .style1:
                 HeaderView(shouldRouteCommunity: shouldRouteCommunity,
                            shouldRoutePost: shouldLinkToPost)

@@ -89,7 +89,7 @@ struct FooterView: View {
         
         self.isHeader = isHeader
         
-        self.font = isHeader ? .title3 : .headline
+        self.font = isHeader ? .body : .headline
         self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
         
         self.showScores = showScores
@@ -99,7 +99,7 @@ struct FooterView: View {
     
     var body: some View {
         Group {
-            switch context.preferredStyle {
+            switch context.feedStyle {
             case .style1, .style3:
                 fullInline
             case .style2:
@@ -581,18 +581,7 @@ extension FooterView {
         Group {
             if context.isPost,
                let postView = context.postModel {
-                switch postView.post.instanceType {
-                case .mastodon:
-                    Text("mastodon")
-                        .font(.footnote)
-                        .foregroundColor(Brand.Colors.purple.opacity(0.8))
-                case .rss:
-                    Text("rss")
-                        .font(.footnote)
-                        .foregroundColor(Color.orange)
-                default:
-                    EmptyView()
-                }
+                InstanceSymbolView(postView.post.instanceType)
             }
         }
     }

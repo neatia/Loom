@@ -167,7 +167,8 @@ extension Settings: View {
                 
                     VStack {
                         HStack {
-                            Text("Theme")
+                            //TODO: localize
+                            Text("Style")
                                 .font(.body)
                                 .offset(x: 0, y: Device.isMacOS ? -1 : 0)
                             
@@ -192,6 +193,7 @@ extension Settings: View {
                         .padding(.leading, .layer2)
                     }
                 }
+                .padding(.bottom, .layer4)
                 
                 VStack(alignment: .leading, spacing: 0) {
                     Spacer()

@@ -45,6 +45,7 @@ extension Pageable {
 
 struct PageableMetadata: Hashable {
     static var fetchTimeout: Double = 5.0
+    static var fetchLPTimeout: Double = 2.5
     
     var linkMeta: LPLinkMetadata?
     var imageThumb: GraniteImage?
@@ -257,12 +258,23 @@ public class Pager<Model: Pageable>: ObservableObject {
             
             let results: [Model] = (await handler(self?.pageIndex))
             
+            //This used to occuer in insertModels(_:)
+            //Since pagination is disabled on RSS/mastodon
+            //this can result in duplicate entries when parsing
+            //thumbnails causing extra uneccessary load
+            let uniqueResults: [Model]
+            if force {
+                uniqueResults = results
+            } else {
+                uniqueResults = results.filter { self?.itemIDs.contains($0.id) == false }
+            }
+            
             let models: [Model]
             
             if PagerFilter.isEnabled {
-                models = results.filter { $0.shouldHide == false }
+                models = uniqueResults.filter { $0.shouldHide == false }
             } else {
-                models = results
+                models = uniqueResults
             }
             
             let extendedFilterEnabled: Bool = PagerFilter.enableForNSFWExtended
@@ -330,6 +342,8 @@ public class Pager<Model: Pageable>: ObservableObject {
                                     filterModelIDs.append(id)
                                 }
                             }
+                        } else {
+                            LoomLog("Rich Link Data failed/timed out \(CFAbsoluteTimeGetCurrent() - time) - isThumb: \(isThumb)", level: .info)
                         }
                         
                         completed += 1

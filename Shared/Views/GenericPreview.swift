@@ -42,53 +42,57 @@ struct GenericPreview: View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 HStack(alignment: .bottom, spacing: .layer2) {
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        currentFontSize = .large
-                    } label: {
-                        Image(systemName: "textformat")
-                            .font(.title)
-                            .frame(width: 32, height: 32)
-                            .readability(padding: 0)
-                            .contentShape(Rectangle())
+                    HStack(alignment: .bottom, spacing: .layer2) {
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            currentFontSize = .large
+                        } label: {
+                            Image(systemName: "textformat")
+                                .font(.title)
+                                .frame(width: 32, height: 32)
+                                .readability(padding: 0)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.layer1)
+                        .outlineIf(currentFontSize == .large)
+                        
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            currentFontSize = .medium
+                        } label: {
+                            Image(systemName: "textformat")
+                                .font(.title3)
+                                .frame(width: 32, height: 32)
+                                .readability(padding: 0)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.layer1)
+                        .outlineIf(currentFontSize == .medium)
+                        
+                        Button {
+                            GraniteHaptic.light.invoke()
+                            currentFontSize = .small
+                        } label: {
+                            Image(systemName: "textformat")
+                                .font(.subheadline)
+                                .frame(width: 32, height: 32)
+                                .readability(padding: 0)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.layer1)
+                        .outlineIf(currentFontSize == .small)
                     }
-                    .buttonStyle(.plain)
-                    .padding(.layer1)
-                    .outlineIf(currentFontSize == .large)
-                    
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        currentFontSize = .medium
-                    } label: {
-                        Image(systemName: "textformat")
-                            .font(.title3)
-                            .frame(width: 32, height: 32)
-                            .readability(padding: 0)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.layer1)
-                    .outlineIf(currentFontSize == .medium)
-                    
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        currentFontSize = .small
-                    } label: {
-                        Image(systemName: "textformat")
-                            .font(.subheadline)
-                            .frame(width: 32, height: 32)
-                            .readability(padding: 0)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .padding(.layer1)
-                    .outlineIf(currentFontSize == .small)
+                    .padding(.layer2)
+                    .outline()
                     
                     Spacer()
                 }
                 .padding(.top, Device.isMacOS ? nil : .layer4)
-                .padding(.bottom, Device.isMacOS ? nil : .layer2)
-                .padding(.horizontal, .layer5)
+                .padding(.bottom, Device.isMacOS ? nil : .layer4)
+                .padding(.horizontal, .layer4)
                 
                 ScrollView {
                     MarkdownView(text: content)

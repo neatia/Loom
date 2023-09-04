@@ -13,30 +13,6 @@ import SwiftUI
 extension Search {
     var headerMenuView: some View {
         HStack(spacing: 0) {
-            Menu {
-                ForEach(0..<state.searchType.count) { index in
-                    Button {
-                        GraniteHaptic.light.invoke()
-                        _state.selectedSearchType.wrappedValue = index
-                    } label: {
-                        Text(state.searchType[index].displayString)
-                        Image(systemName: "arrow.down.right.circle")
-                    }
-                }
-            } label: {
-                Text(selectedSearch.displayString)
-                    .padding(.trailing, .layer1)
-                #if os(iOS)
-                Image(systemName: "chevron.up.chevron.down")
-                #endif
-            }
-            .menuStyle(BorderlessButtonMenuStyle())
-            .frame(maxWidth: Device.isMacOS ? 80 : nil)
-            .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
-            
-            Divider()
-                .padding(.horizontal, .layer4)
-            
             Text("Sort: ")
                 .padding(.trailing, .layer1)
             
@@ -52,7 +28,6 @@ extension Search {
                 }
             } label: {
                 Text(selectedSort.displayString)
-                    .padding(.trailing, .layer1)
                 #if os(iOS)
                 Image(systemName: "chevron.up.chevron.down")
                 #endif
@@ -61,6 +36,8 @@ extension Search {
             .frame(maxWidth: Device.isMacOS ? 100 : nil)
             .padding(.trailing, .layer4)
             .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+            //Menus have odd interactions on iOS, effectively cancelling animations
+            .id(selectedSort)
             
             
             if state.sortingType[state.selectedSorting] == .topAll {
@@ -84,6 +61,8 @@ extension Search {
                 .menuStyle(BorderlessButtonMenuStyle())
                 .frame(maxWidth: Device.isMacOS ? 80 : nil)
                 .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+                //Menus have odd interactions on iOS, effectively cancelling animations
+                .id(selectedSort.rawValue + "\(state.selectedTimeCategory)")
                 
                 Divider()
                     .padding(.horizontal, .layer4)
@@ -109,6 +88,8 @@ extension Search {
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 80 : nil)
             .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+            //Menus have odd interactions on iOS, effectively cancelling animations
+            .id(selectedSort.rawValue + "\(state.selectedTimeCategory)" + selectedListing.rawValue)
             
             Spacer()
         }

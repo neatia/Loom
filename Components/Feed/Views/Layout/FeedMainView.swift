@@ -42,7 +42,7 @@ struct FeedMainView<Content: View>: View {
                         header: header) {
             EmptyView()
         } content: { postView in
-            PostCardView(topPadding: pager.firstItem?.id == postView.id ? .layer5 : nil,
+            PostCardView(topPadding: pager.firstItem?.id == postView.id ? topPadding : nil,
                          linkPreviewType: .largeNoMetadata)
                 .attach({ community in
                     viewCommunity.perform(community)
@@ -52,5 +52,14 @@ struct FeedMainView<Content: View>: View {
                                       preferredFeedStyle: feedStyle))
         }
         .environmentObject(pager)
+    }
+    
+    var topPadding: CGFloat? {
+        switch feedStyle {
+        case .style3:
+            return .layer4
+        default :
+            return .layer5
+        }
     }
 }

@@ -25,9 +25,11 @@ struct Feed: GraniteComponent {
     @StateObject var pager: Pager<FederatedPostResource> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
     
     let isCommunity: Bool
+    let listenerId: UUID
     
     init(_ community: FederatedCommunity? = nil, federatedData: FederatedData? = nil, location: FederatedLocationType? = nil) {
         self.isCommunity = community != nil
+        self.listenerId = .init()
         
         let location: FederatedLocationType?
         

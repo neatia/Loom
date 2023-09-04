@@ -102,7 +102,7 @@ struct PostCardView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            switch context.preferredStyle {
+            switch context.feedStyle {
             case .style1, .style3:
                 VStack(alignment: .leading, spacing: 0) {
                     HeaderView(badge: .noBadge)
@@ -218,7 +218,7 @@ struct PostCardView: View {
 extension PostCardView {
     var contentView: some View {
         Group {
-            switch context.preferredStyle {
+            switch context.feedStyle {
             case .style1:
                 contentBody
                     .padding(.bottom, .layer3)

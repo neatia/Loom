@@ -24,16 +24,6 @@ extension EnvironmentValues {
 struct ContentContext {
     var postModel: FederatedPostResource?
     var commentModel: FederatedCommentResource?
-    
-    var feedStyle: FeedStyle {
-        switch postModel?.post.instanceType {
-        case .rss:
-            return .style3
-        default:
-            return preferredFeedStyle
-        }
-    }
-    
     var preferredFeedStyle: FeedStyle = .style2
     var layoutStyle: LayoutService.Style = .compact
     var viewingContext: ViewingContext = .base
@@ -61,15 +51,6 @@ struct ContentContext {
     }
     
     var customLocation: FederatedLocationType?
-    
-    var preferredStyle: FeedStyle {
-        switch viewingContext {
-        case .search:
-            return .style1
-        default:
-            return feedStyle
-        }
-    }
     
     var person: FederatedPerson? {
         commentModel?.creator ?? postModel?.creator

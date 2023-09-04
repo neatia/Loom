@@ -144,12 +144,17 @@ extension HeaderView {
         VStack {
             HStack {
                 HStack {
-                    AvatarView(context.postModel?.community.iconURL,
-                               size: .mini,
-                               isCommunity: true)
-                    
-                    Text("\(context.postModel?.community.displayName ?? "")")
-                        .font(.footnote)
+                    HStack {
+                        AvatarView(context.postModel?.community.iconURL,
+                                   size: .mini,
+                                   isCommunity: true)
+                        
+                        Text("\(context.postModel?.community.displayName ?? "")")
+                            .font(.footnote)
+                    }
+                    .routeIf(context.postModel?.community != nil) {
+                        Feed(context.postModel?.community)
+                    } with: { router }
                     
                     Text("•")
                         .font(.footnote)

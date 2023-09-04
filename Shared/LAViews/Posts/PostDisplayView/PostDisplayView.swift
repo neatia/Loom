@@ -74,7 +74,8 @@ struct PostDisplayView: GraniteNavigationDestination {
                     CommentCardView(context:
                             .addCommentModel(model: commentView, context)
                             .viewedIn(.postDisplay)
-                            .updateLocation(threadLocation))
+                            .updateLocation(threadLocation)
+                            .withStyle(.style2))
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
@@ -105,7 +106,7 @@ struct PostDisplayView: GraniteNavigationDestination {
             pager.hook { page in
                 return await Federation.comments(currentModel?.post,
                                                  community: currentModel?.community,
-                                                 depth: 8,
+                                                 depth: 1,
                                                  page: page,
                                                  type: listingType,
                                                  sort: sortingType[selectedSorting],
