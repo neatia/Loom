@@ -217,7 +217,7 @@ extension AccountService {
                     
                     guard let result else { return }
                     
-                    broadcast.send(
+                    beam.send(
                         ResponseMeta(notification: .init(title: "MISC_SUCCESS",
                                                          message: "ALERT_SUBSCRIBED_SUCCESS \(model.community.title)",
                                                          event: .success),

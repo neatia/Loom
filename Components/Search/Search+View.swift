@@ -32,7 +32,7 @@ extension Search: View {
                                     Spacer()
                                     Text(selectedSearch.displayString)
                                         .font(.title3.bold())
-                                        .padding(.top, .layer2)
+                                        .padding(.top, 6)
                                 }
                                 
 //                                #if os(iOS)
