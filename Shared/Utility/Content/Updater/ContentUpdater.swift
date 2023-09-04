@@ -8,8 +8,17 @@
 import Foundation
 import SwiftUI
 import FederationKit
+import Nuke
 
 struct ContentUpdater {
+    static func clearCache() {
+        Nuke.ImageCache.shared.removeAll()
+        URLSession.shared.invalidateAndCancel()
+        URLSession.shared.configuration.urlCache?.removeAllCachedResponses()
+    }
+}
+
+extension ContentUpdater {
     @MainActor
     static func fetchFederatedPostResource(_ model: FederatedPost?,
                               commentModel: FederatedComment? = nil) async -> FederatedPostResource? {

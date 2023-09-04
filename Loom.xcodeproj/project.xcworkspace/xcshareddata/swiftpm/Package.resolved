@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "federationkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/neatia/FederationKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "ac21519fc1fc7d386a5e7cad7c58ae3bb1ec5145"
-      }
-    },
-    {
       "identity" : "feedkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/FeedKit",

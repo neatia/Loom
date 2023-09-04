@@ -135,9 +135,7 @@ struct CommentCardView: View {
                     GraniteHaptic.light.invoke()
                     showThreadDrawer(currentModel)
                 }, at: \.longPressThreadLine)
-                .attach({ community in
-                    viewCommunity.perform(community)
-                }, at: \.viewCommunity)
+                .attach(viewCommunity, at: \.viewCommunity)
                 .attach({
                     replyModel()
                 }, at: \.replyToContent)

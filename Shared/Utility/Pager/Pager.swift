@@ -264,6 +264,11 @@ public class Pager<Model: Pageable>: ObservableObject {
             //thumbnails causing extra uneccessary load
             let uniqueResults: [Model]
             if force {
+                if results.isNotEmpty {
+                    //covering forced fetches that dont clean
+                    //i.e. a refresh
+                    self?.clear(dontClean: true)
+                }
                 uniqueResults = results
             } else {
                 uniqueResults = results.filter { self?.itemIDs.contains($0.id) == false }
@@ -557,8 +562,10 @@ extension Pager{
         #endif
     }
     
-    func clear() {
-        self.clean()
+    func clear(dontClean: Bool = false) {
+        if dontClean == false {
+            self.clean()
+        }
         self.pageIndex = 1
         self.hasMore = isStatic == false
         self.lastItem = nil
@@ -566,6 +573,7 @@ extension Pager{
         self.itemMap = [:]
         self.blockedItemMap = [:]
         self.currentItems = []
+        self.itemMetadatas = [:]
     }
     
     func tryAgain() {

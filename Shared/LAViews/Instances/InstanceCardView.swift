@@ -35,7 +35,7 @@ struct InstanceCardView: View {
     let client: Federation
     
     var host: String {
-        "https://" + instance.domain
+        instance.domain
     }
     
     var sidebar: String? {
@@ -96,7 +96,8 @@ struct InstanceCardView: View {
                         Spacer()
                     }
                     
-                    if metadata != nil {
+                    //TODO: need to merge rss into a category that can include Atom etc.
+                    if metadata != nil || instance.instanceType == .rss {
                         HStack {
                             Text(instance.domain)
                                 .foregroundColor(.foreground)
@@ -109,7 +110,13 @@ struct InstanceCardView: View {
                 
                 Spacer()
                 
-                AvatarView(iconURL, size: .mini)
+                switch instance.instanceType {
+                case .rss:
+                    InstanceSymbolView(instance.instanceType)
+                        .padding(.trailing, .layer1)
+                default:
+                    AvatarView(iconURL, size: .mini)
+                }
             }
             .padding(.leading, .layer3)
             .padding(.trailing, .layer2)
@@ -230,7 +237,7 @@ struct InstanceCardView_Previews: PreviewProvider {
     static var previews: some View {
         InstanceCardView(.init(.lemmy,
                                id: "0",
-                               domain: "https://neatia.xyz",
+                               domain: "https://loom.nyc",
                                published: Date.now.asString))
         .padding(.layer2)
     }

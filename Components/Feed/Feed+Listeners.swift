@@ -69,6 +69,9 @@ extension Feed {
                     ModalService.shared.presentModal(GraniteToastView(error))
                 } else {
                     LoomLog("🟡 Restarting Feed")
+                    
+                    ContentUpdater.clearCache()
+                    
                     _state.community.wrappedValue = nil
                     _state.communityView.wrappedValue = nil
                     _state.currentLoomManifest.wrappedValue = nil

@@ -14,7 +14,7 @@ extension Search {
     var headerMenuView: some View {
         HStack(spacing: 0) {
             Text("Sort: ")
-                .padding(.trailing, .layer1)
+                .padding(.trailing, .layer2)
             
             Menu {
                 ForEach(0..<state.sortingType.count) { index in
@@ -34,7 +34,7 @@ extension Search {
             }
             .menuStyle(BorderlessButtonMenuStyle())
             .frame(maxWidth: Device.isMacOS ? 100 : nil)
-            .padding(.trailing, .layer4)
+            .padding(.trailing, state.sortingType[state.selectedSorting] == .topAll ? .layer4 : 0)
             .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
             //Menus have odd interactions on iOS, effectively cancelling animations
             .id(selectedSort)
@@ -63,10 +63,10 @@ extension Search {
                 .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
                 //Menus have odd interactions on iOS, effectively cancelling animations
                 .id(selectedSort.rawValue + "\(state.selectedTimeCategory)")
-                
-                Divider()
-                    .padding(.horizontal, .layer4)
             }
+            
+            Divider()
+                .padding(.horizontal, .layer4)
             
             Menu {
                 ForEach(0..<state.listingType.count) { index in

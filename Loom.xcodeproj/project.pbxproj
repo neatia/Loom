@@ -1100,6 +1100,7 @@
 		71FCDD162A75F254000A6309 /* CommunitySidebarCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySidebarCardView.swift; sourceTree = "<group>"; };
 		71FCDD402A760E32000A6309 /* Loom--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Loom--macOS--Info.plist"; sourceTree = "<group>"; };
 		71FF4D622A93F394005BF579 /* Modals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modals.swift; sourceTree = "<group>"; };
+		71FF51A72AA5CB2700CE40F3 /* FederationKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FederationKit; path = ../FederationKit; sourceTree = "<group>"; };
 		71FF5BEC2A9BDEDA00DD83EB /* MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
 		71FF5BF02A9C003D00DD83EB /* FilterConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterConfig.swift; sourceTree = "<group>"; };
 		71FF5BF32A9C046800DD83EB /* Pager.ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pager.ListView.swift; sourceTree = "<group>"; };
@@ -1416,6 +1417,7 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				71FF51A72AA5CB2700CE40F3 /* FederationKit */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,
 				719725FD28CC864400A64334 /* Loom--iOS--Info.plist */,

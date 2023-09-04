@@ -59,11 +59,11 @@ struct HeaderCardContainerView<Content: View>: View {
             VStack(alignment: .leading, spacing: context.isPost ? 0 : 2) {
                 HeaderCardView(shouldRoutePost: self.shouldLinkToPost,
                                shouldCollapse: collapseView)
-                .attach(viewCommunity, at: \.viewCommunity)
-                .attach(replyToContent, at: \.replyToContent)
-                .attach(goToThread, at: \.goToThread)
-                .attach(edit, at: \.edit)
-                .attach(tappedHeader, at: \.tapped)
+                    .attach(viewCommunity, at: \.viewCommunity)
+                    .attach(replyToContent, at: \.replyToContent)
+                    .attach(goToThread, at: \.goToThread)
+                    .attach(edit, at: \.edit)
+                    .attach(tappedHeader, at: \.tapped)
                 
                 if !collapseView {
                     content()

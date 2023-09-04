@@ -33,7 +33,7 @@ struct FooterView: View {
         }
     }
     var immediateUpvoteCount: Int {
-        upvoteCount + immediateUpvote
+        upvoteCount
     }
     var downvoteCount: Int {
         if let commentView = context.commentModel {
@@ -45,7 +45,7 @@ struct FooterView: View {
         }
     }
     var immediateDownvoteCount: Int {
-        downvoteCount + immediateDownvote
+        downvoteCount
     }
     var myVote: Int {
         if let commentView = context.commentModel {
@@ -56,15 +56,17 @@ struct FooterView: View {
             return 0
         }
     }
-    @State var immediateUpvote: Int = 0
-    @State var immediateDownvote: Int = 0
+    @State var immediateUpvote: Bool = false
+    @State var immediateDownvote: Bool = false
     
     var isUpvoted: Bool {
-        myVote == 1 || immediateUpvote == 1
+        (
+            myVote == 1 || immediateUpvote
+        ) && !immediateDownvote
     }
     
     var isDownvoted: Bool {
-        myVote == -1 || immediateDownvote == 1
+        ( myVote == -1 || immediateDownvote ) && !immediateUpvote
     }
     
     var routeTitle: String? {
@@ -107,7 +109,8 @@ struct FooterView: View {
             }
         }
         .task {
-            
+            immediateUpvote = isUpvoted
+            immediateDownvote = isDownvoted
         }
     }
 }
@@ -149,14 +152,14 @@ extension FooterView {
     
     func upvote() {
         guard context.canInteract else { return }
-        immediateUpvote = immediateUpvote == 1 ? 0 : 1
-        immediateDownvote = 0
+        immediateUpvote.toggle()
+        immediateDownvote = false
     }
 
     func downvote() {
         guard context.canInteract else { return }
-        immediateDownvote = immediateDownvote == 1 ? 0 : 1
-        immediateUpvote = 0
+        immediateDownvote.toggle()
+        immediateUpvote = false
     }
 }
 
@@ -433,7 +436,7 @@ extension FooterView {
                         .font(font.bold())
                     
                     if showScores {
-                        Text("\(immediateUpvoteCount)")
+                        Text("\(NumberFormatter.formatAbbreviated(immediateUpvoteCount))")
                             .font(font.smaller)
                     }
                 }
@@ -458,7 +461,7 @@ extension FooterView {
                         .font(font.bold())
                     
                     if showScores {
-                        Text("\(immediateDownvoteCount)")
+                        Text("\(NumberFormatter.formatAbbreviated(immediateDownvoteCount))")
                             .font(font.smaller)
                     }
                 }
@@ -516,7 +519,7 @@ extension FooterView {
 extension FooterView {
     var symbolsView: some View {
         HStack(spacing: 0) {
-            if isBase == false {
+            if FederationKit.canInteract(context.viewingContextHost) == false {
                 Text("•")
                     .font(.footnote)
                     .padding(.horizontal, .layer2)

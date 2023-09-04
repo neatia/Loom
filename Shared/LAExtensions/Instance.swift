@@ -14,9 +14,16 @@ extension FederatedInstance: GlobeNode {
     }
     
     public static var base: FederatedInstance {
-        .init(FederationKit.currentInstanceType,
+        let host: String
+        switch FederationKit.currentInstanceType {
+        case .rss:
+            host = FederationKit.currentServer?.baseUrl ?? FederationKit.host
+        default:
+            host = FederationKit.host
+        }
+        return .init(FederationKit.currentInstanceType,
               id: (FederationKit.metadata()?.site.instance_id ?? 0.randomBetween(100000)).asString,
-              domain: FederationKit.host,
+              domain: host,
               published: FederationKit.metadata()?.site.published ?? "")
     }
 }

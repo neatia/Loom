@@ -73,7 +73,7 @@ struct ThreadView: View {
                                                           context).withStyle(.style2),
                                 parentModel: currentModel,
                                 isInline: isInline)
-                    .attachAndClear({ model in
+                    .attach({ model in
                         if isModal {
                             breadCrumbs.append(model)
                             pager.reset()
