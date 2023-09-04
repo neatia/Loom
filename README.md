@@ -48,6 +48,19 @@
 | :-------- | -------: |
 | ![Image](https://gateway.ipfs.io/ipfs/QmXoHKNAo2RHYAd843Mv4tzxAvRKswT1U8zVrEMnj4UFDQ)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
 
+| Aggregation Sources (Aside from Lemmy)    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmZJibCj8KWHp55541epsWQ9rpv3czHJ6UXCtcXR66cSu2)  | RSS feeds can be pulled when setting the instance URL to a valid endpoint. Pagination is not currently supported, but will be in the future. Looking at supporting Atom/JSON streams as well.   |
+| ![Image](https://gateway.ipfs.io/ipfs/QmNqTdTswLR62J6ES3ap6DGcfgeUd3ifAkGGgwfMVy24rX)  | Mastodon feeds can be pulled when setting the instance URL to a valid mastodon instance. Pagination is not currently supported, but will be in the future. Interactions are disabled for the time being `2023-9-4`.   |
+
+| Safety    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmZqQePckASn8Xtd4d1Pp4m1meHm5GVnzozWQzs3MEfLJ8)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Extended` will remove posts that are detected as NSFW even if they are not flagged as so.     |
+
+| Styling    | |
+| :-------- | -------: |
+| ![Image](https://gateway.ipfs.io/ipfs/QmPFxEsXtDBJf8oSnAJihwv5FoCtugAqUPBhobtw275CpT)  |  Intended to allow full user customization in the future. Currently supports a "social app feel" and a "reddit-like reader".   |
+
 | MD helper  | |
 | :-------- | -------: |
 | ![Image](https://gateway.ipfs.io/ipfs/QmZ5H7u64ceJ6nvVkBpdtzWSc7FkHhih4SFnNo7HdgEB7B) | Keyboard toolbar provides easy to access shortcuts on iPhone/iPad to help with Markdown formatting. |
@@ -105,7 +118,7 @@ Mostly because of *Relays* and project organization. I'd say testing too, but on
 - [MarqueKit](https://github.com/pexavc/marquekit)
 - [MarbleKit](https://github.com/pexavc/marblekit)
 - [ModerationKit](https://github.com/pexavc/moderationkit)
-- [LemmyKit](https://github.com/pexavc/lemmykit)
+- [FederationKit](https://github.com/neatia/federationkit)
 - [IPFSKit](https://github.com/pexavc/ipfskit)
 - [NukeUI](https://github.com/kean/nuke) Thanks to [@kean](https://github.com/kean)
 - [MarkdownView](https://github.com/pexavc/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004)

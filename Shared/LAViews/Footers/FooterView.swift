@@ -89,7 +89,7 @@ struct FooterView: View {
         
         self.isHeader = isHeader
         
-        self.font = isHeader ? .title3 : .headline
+        self.font = isHeader ? .body : .headline
         self.secondaryFont = Device.isExpandedLayout ? (isHeader ? .title : .title2) : (isHeader ? .title2 : .title3)
         
         self.showScores = showScores
@@ -99,8 +99,8 @@ struct FooterView: View {
     
     var body: some View {
         Group {
-            switch context.preferredStyle {
-            case .style1:
+            switch context.feedStyle {
+            case .style1, .style3:
                 fullInline
             case .style2:
                 stacked
@@ -115,31 +115,48 @@ struct FooterView: View {
 extension FooterView {
     func modifyBookmark() {
         guard let bookmarkKind = context.bookmarkKind else { return }
-        switch bookmarkKind {
-        case .post(let model):
-            if bookmark.contains(bookmarkKind) {
-                content.center.interact.send(ContentService.Interact.Meta(kind: .unsavePost(model)))
-            } else {
-                content.center.interact.send(ContentService.Interact.Meta(kind: .savePost(model)))
-            }
-        case .comment(let model, _):
-            if bookmark.contains(bookmarkKind) {
-                content.center.interact.send(ContentService.Interact.Meta(kind: .unsaveComment(model)))
-            } else {
-                content.center.interact.send(ContentService.Interact.Meta(kind: .saveComment(model)))
-            }
+        let shouldSave: Bool = bookmark.contains(bookmarkKind) == false
+        let interaction: ContentService.Interact.Kind?
+        
+        if context.isPost, let model = context.postModel {
+            interaction = shouldSave ? .savePost(model) : .unsavePost(model)
+        } else if let model = context.commentModel {
+            interaction = shouldSave ? .saveComment(model) : .unsaveComment(model)
+        } else {
+            interaction = nil
         }
-        bookmark.center.modify.send(BookmarkService.Modify.Meta(kind: bookmarkKind, remove: bookmark.contains(bookmarkKind)))
+        
+        guard let interaction else { return }
+        
+        content
+            .center
+            .interact
+            .send(
+                ContentService
+                    .Interact
+                    .Meta(kind: interaction,
+                          context: context))
+        
+        bookmark
+            .center
+            .modify
+            .send(
+                BookmarkService
+                    .Modify
+                    .Meta(kind: bookmarkKind,
+                          remove: bookmark.contains(bookmarkKind)))
     }
     
     func upvote() {
-        //immediateUpvote = immediateUpvote == 1 ? 0 : 1
-        //immediateDownvote = 0
+        guard context.canInteract else { return }
+        immediateUpvote = immediateUpvote == 1 ? 0 : 1
+        immediateDownvote = 0
     }
 
     func downvote() {
-        //immediateDownvote = immediateDownvote == 1 ? 0 : 1
-        //immediateUpvote = 0
+        guard context.canInteract else { return }
+        immediateDownvote = immediateDownvote == 1 ? 0 : 1
+        immediateUpvote = 0
     }
 }
 
@@ -151,40 +168,13 @@ extension FooterView {
             }
             
             HStack(spacing: 0) {
-                HStack(spacing: 0) {
-                    if showScores {
-                        Text("\(NumberFormatter.formatAbbreviated(immediateUpvoteCount)) LABEL_UPVOTE")
-                            .font(font.smaller)
-                            .padding(.trailing, .layer4)
-                        
-                        Text("\(NumberFormatter.formatAbbreviated(immediateDownvoteCount)) LABEL_DOWNVOTE")
-                            .font(font.smaller)
-                        
-                        Text("•")
-                            .font(.footnote)
-                            .padding(.horizontal, .layer2)
-                    }
-                    
-                    if let replyCount = context.replyCount {
-                        if replyCount != 1 {
-                            Text("\(String(replyCount)) CONTENT_CARD_REPLIES")
-                                .font(font.smaller)
-                        } else {
-                            Text("\(String(replyCount)) CONTENT_CARD_REPLY")
-                                .font(font.smaller)
-                        }
-                    } else {
-                        if context.commentCount != 1 {
-                            Text("\(String(context.commentCount)) CONTENT_CARD_REPLIES")
-                                .font(font.smaller)
-                        } else {
-                            Text("\(String(context.commentCount)) CONTENT_CARD_REPLY")
-                                .font(font.smaller)
-                        }
-                    }
-                }.foregroundColor(.foreground.opacity(0.5))
-                
-                symbols
+                switch context.postModel?.post.instanceType {
+                case .rss:
+                    instanceTypeView
+                default:
+                    votingStackedView
+                    symbolsView
+                }
                 
                 Spacer()
                 
@@ -220,9 +210,9 @@ extension FooterView {
                 GraniteHaptic.light.invoke()
                 switch bookmarkKind {
                 case .post(let postView):
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView), context: context))
                 case .comment(let commentView, _):
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView), context: context))
                 }
                 
                 upvote()
@@ -240,9 +230,9 @@ extension FooterView {
                 GraniteHaptic.light.invoke()
                 switch bookmarkKind {
                 case .post(let postView):
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView)))
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView), context: context))
                 case .comment(let commentView, _):
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView)))
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView), context: context))
                 }
                 
                 downvote()
@@ -303,102 +293,53 @@ extension FooterView {
         }
         .frame(height: 20)
     }
+    
+    var votingStackedView: some View {
+        HStack(spacing: 0) {
+            if showScores {
+                Text("\(NumberFormatter.formatAbbreviated(immediateUpvoteCount)) LABEL_UPVOTE")
+                    .font(font.smaller)
+                    .padding(.trailing, .layer4)
+                
+                Text("\(NumberFormatter.formatAbbreviated(immediateDownvoteCount)) LABEL_DOWNVOTE")
+                    .font(font.smaller)
+                
+                Text("•")
+                    .font(.footnote)
+                    .padding(.horizontal, .layer2)
+            }
+            
+            if let replyCount = context.replyCount {
+                if replyCount != 1 {
+                    Text("\(String(replyCount)) CONTENT_CARD_REPLIES")
+                        .font(font.smaller)
+                } else {
+                    Text("\(String(replyCount)) CONTENT_CARD_REPLY")
+                        .font(font.smaller)
+                }
+            } else {
+                if context.commentCount != 1 {
+                    Text("\(String(context.commentCount)) CONTENT_CARD_REPLIES")
+                        .font(font.smaller)
+                } else {
+                    Text("\(String(context.commentCount)) CONTENT_CARD_REPLY")
+                        .font(font.smaller)
+                }
+            }
+        }.foregroundColor(.foreground.opacity(0.5))
+    }
 }
 
 //TODO: clean up / make reusable
 extension FooterView {
     var fullInline: some View {
         HStack(spacing: 0) {
-            Button {
-                GraniteHaptic.light.invoke()
-                
-                if let commentView = context.commentModel {
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView)))
-                } else if let postView = context.postModel {
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView)))
-                }
-                
-                upvote()
-            } label : {
-                HStack(spacing: .layer2) {
-                    Image(systemName: "arrow.up")
-                        .font(font.bold())
-                    
-                    if showScores {
-                        Text("\(immediateUpvoteCount)")
-                            .font(font.smaller)
-                    }
-                }
-                .padding(.trailing, .layer4)
-                .foregroundColor(isUpvoted ? .orange : .foreground)
-                .contentShape(Rectangle())
-            }.buttonStyle(PlainButtonStyle())
-            
-            Button {
-                GraniteHaptic.light.invoke()
-                
-                if let commentView = context.commentModel {
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView)))
-                } else if let postView = context.postModel {
-                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView)))
-                }
-                
-                downvote()
-            } label : {
-                HStack(spacing: .layer2) {
-                    Image(systemName: "arrow.down")
-                        .font(font.bold())
-                    
-                    if showScores {
-                        Text("\(immediateDownvoteCount)")
-                            .font(font.smaller)
-                    }
-                }
-                .padding(.trailing, .layer4)
-                .foregroundColor(isDownvoted ? .blue : .foreground)
-                .contentShape(Rectangle())
-            }.buttonStyle(PlainButtonStyle())
-            
-            if let replyCount = context.replyCount {
-                if replyCount > 0 {
-                    Button {
-                        if let commentView = context.commentModel {
-                            GraniteHaptic.light.invoke()
-                            
-                            ModalService
-                                .shared
-                                .showThreadDrawer(commentView: commentView,
-                                                  context: context)
-                        }
-                    } label: {
-                        HStack(spacing: 0) {
-                            if replyCount != 1 {
-                                Text("\(String(replyCount)) CONTENT_CARD_REPLIES")
-                                    .font(font)
-                            } else {
-                                Text("\(String(replyCount)) CONTENT_CARD_REPLY")
-                                    .font(font)
-                            }
-                        }.contentShape(Rectangle())
-                    }.buttonStyle(PlainButtonStyle())
-                        .foregroundColor(.foreground)
-                }
-            } else {
-                HStack(spacing: .layer2) {
-                    Image(systemName: "bubble.left")
-                        .font(font)
-                    Text("\(context.commentCount) ")
-                        .font(font.smaller)
-                }
-                .textCase(.lowercase)
-                .foregroundColor(.foreground)
-                .routeIf(context.isPostAvailable && shouldLinkToPost,
-                         title: routeTitle ?? "",
-                         window: .resizable(600, 500)) {
-                    //This won't be able to pull in an edited model from the card view
-                    //it should possibly forward the call instead
-                    PostDisplayView(context: _context)
-                } with : { router }
+            switch context.postModel?.post.instanceType {
+            case .rss:
+                instanceTypeView
+            default:
+                votingInlineView
+                symbolsView
             }
             
             Spacer()
@@ -473,11 +414,107 @@ extension FooterView {
         }
         .frame(height: 20)
     }
+    
+    var votingInlineView: some View {
+        Group {
+            Button {
+                GraniteHaptic.light.invoke()
+                
+                if let commentView = context.commentModel {
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvoteComment(commentView), context: context))
+                } else if let postView = context.postModel {
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .upvotePost(postView), context: context))
+                }
+                
+                upvote()
+            } label : {
+                HStack(spacing: .layer2) {
+                    Image(systemName: "arrow.up")
+                        .font(font.bold())
+                    
+                    if showScores {
+                        Text("\(immediateUpvoteCount)")
+                            .font(font.smaller)
+                    }
+                }
+                .padding(.trailing, .layer4)
+                .foregroundColor(isUpvoted ? .orange : .foreground)
+                .contentShape(Rectangle())
+            }.buttonStyle(PlainButtonStyle())
+            
+            Button {
+                GraniteHaptic.light.invoke()
+                
+                if let commentView = context.commentModel {
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvoteComment(commentView), context: context))
+                } else if let postView = context.postModel {
+                    content.center.interact.send(ContentService.Interact.Meta(kind: .downvotePost(postView), context: context))
+                }
+                
+                downvote()
+            } label : {
+                HStack(spacing: .layer2) {
+                    Image(systemName: "arrow.down")
+                        .font(font.bold())
+                    
+                    if showScores {
+                        Text("\(immediateDownvoteCount)")
+                            .font(font.smaller)
+                    }
+                }
+                .padding(.trailing, .layer4)
+                .foregroundColor(isDownvoted ? .blue : .foreground)
+                .contentShape(Rectangle())
+            }.buttonStyle(PlainButtonStyle())
+            
+            if let replyCount = context.replyCount {
+                if replyCount > 0 {
+                    Button {
+                        if let commentView = context.commentModel {
+                            GraniteHaptic.light.invoke()
+                            
+                            ModalService
+                                .shared
+                                .showThreadDrawer(commentView: commentView,
+                                                  context: context)
+                        }
+                    } label: {
+                        HStack(spacing: 0) {
+                            if replyCount != 1 {
+                                Text("\(String(replyCount)) CONTENT_CARD_REPLIES")
+                                    .font(font)
+                            } else {
+                                Text("\(String(replyCount)) CONTENT_CARD_REPLY")
+                                    .font(font)
+                            }
+                        }.contentShape(Rectangle())
+                    }.buttonStyle(PlainButtonStyle())
+                        .foregroundColor(.foreground)
+                }
+            } else {
+                HStack(spacing: .layer2) {
+                    Image(systemName: "bubble.left")
+                        .font(font)
+                    Text("\(context.commentCount) ")
+                        .font(font.smaller)
+                }
+                .textCase(.lowercase)
+                .foregroundColor(.foreground)
+                .routeIf(context.isPostAvailable && shouldLinkToPost,
+                         title: routeTitle ?? "",
+                         window: .resizable(600, 500)) {
+                    //This won't be able to pull in an edited model from the card view
+                    //it should possibly forward the call instead
+                    PostDisplayView(context: _context)
+                } with : { router }
+            }
+        }
+    }
 }
 
 //MARK: Symbols
 extension FooterView {
-    var symbols: some View {
+    var symbolsView: some View {
         HStack(spacing: 0) {
             if isBase == false {
                 Text("•")
@@ -526,16 +563,25 @@ extension FooterView {
                         .foregroundColor(.yellow.opacity(0.8))
                 }
                 
-                if postView.post.instanceType == .mastodon {
+                switch postView.post.instanceType {
+                case .lemmy:
+                    EmptyView()
+                default:
                     Text("•")
                         .font(.footnote)
                         .padding(.horizontal, .layer2)
                         .foregroundColor(.foreground.opacity(0.5))
-                    
-                    Text("mastodon")
-                        .font(.caption)
-                        .foregroundColor(Brand.Colors.purple.opacity(0.8))
+                    instanceTypeView
                 }
+            }
+        }
+    }
+    
+    var instanceTypeView: some View {
+        Group {
+            if context.isPost,
+               let postView = context.postModel {
+                InstanceSymbolView(postView.post.instanceType)
             }
         }
     }

@@ -42,12 +42,8 @@ struct LoomCollectionsView: View {
                             .attach({ manifest in
                                 service.center.modify.send(LoomService.Modify.Intent.toggle(manifest))
                             }, at: \.toggle)
-                            .attach({ manifest in
-                                edit.perform(manifest)
-                            }, at: \.edit)
-                            .attach({ manifest in
-                                add.perform(manifest)
-                            }, at: \.add)
+                            .attach(edit, at: \.edit)
+                            .attach(add, at: \.add)
                             .id(manifest)
                             .opacity(intent.isAdding ? 0.7 : 1.0)
                             .allowsHitTesting(intent.isAdding == false)

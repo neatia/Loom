@@ -87,16 +87,7 @@ extension Loom: View {
                 case .looms:
                     LoomCollectionsView()
                         .attach({ manifest in
-                            ModalService.shared.presentSheet {
-                                CommunityPickerView()
-                                    .attach({ (communityView, _) in
-                                        GraniteHaptic.light.invoke()
-                                        
-                                        service.center.modify.send(LoomService.Modify.Intent.add(communityView, manifest))
-                                        
-                                    }, at: \.pickedCommunity)
-                                    .frame(width: Device.isMacOS ? 400 : nil, height: Device.isMacOS ? 400 : nil)
-                            }
+                            addToLoom(manifest)
                         }, at: \.add)
                         .attach({ model in
                             ModalService.shared.presentSheet {

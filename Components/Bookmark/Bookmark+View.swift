@@ -161,7 +161,7 @@ extension Bookmark: View {
             ForEach(commentViews) { commentView in
                 CommentCardView(context: .init(postModel: postForComment(commentView),
                                                commentModel: commentView,
-                                               feedStyle: .style2,
+                                               preferredFeedStyle: .style2,
                                                viewingContext: .bookmark(state.selectedBookmarkCommentKey.host)),
                                 shouldLinkToPost: true)
                 

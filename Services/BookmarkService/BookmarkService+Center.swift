@@ -28,6 +28,7 @@ extension BookmarkService {
         
         switch kind {
         case .post(let model):
+            //TODO: is using creator.domain correct here?
             guard let domain = model.creator.domain else {
                 return false
             }

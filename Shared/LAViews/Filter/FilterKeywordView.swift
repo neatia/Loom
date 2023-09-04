@@ -111,53 +111,44 @@ extension FilterKeywordView {
     var keywordForm: some View {
         VStack(spacing: 0) {
             //TODO: localize
-            TextField("Keyword", text: $keyword)
-                .textFieldStyle(.plain)
-                .correctionDisabled()
-                .frame(height: 60)
-                .padding(.horizontal, .layer4)
-                .font(.title3.bold())
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundColor(Color.alternateBackground.opacity(0.3))
-                )
+            StandardTextField(text: $keyword, placeholder: "Keyword")
             
             ScrollView(showsIndicators: false) {
-                VStack(spacing: .layer3) {
+                VStack(spacing: .layer4) {
                     Toggle(isOn: $filterTitle) {
                         //TODO: localize
                         Text("Post Title")
-                            .font(.body)
+                            .font(.headline)
                     }
                     
                     Toggle(isOn: $filterLink) {
                         //TODO: localize
                         Text("Post URL")
-                            .font(.body)
+                            .font(.headline)
                     }
                     
                     Toggle(isOn: $filterBody) {
                         //TODO: localize
                         Text("Post/Comment Content")
-                            .font(.body)
+                            .font(.headline)
                     }
                     
                     Toggle(isOn: $filterCommunityName) {
                         //TODO: localize
                         Text("Community Name")
-                            .font(.body)
+                            .font(.headline)
                     }
                     
                     Toggle(isOn: $filterCreator) {
                         //TODO: localize
                         Text("Creator")
-                            .font(.body)
+                            .font(.headline)
                     }
                     
                     Toggle(isOn: $filterInstanceLink) {
                         //TODO: localize
                         Text("Instance")
-                            .font(.body)
+                            .font(.headline)
                     }
                 }
                 .padding(.horizontal, .layer2)

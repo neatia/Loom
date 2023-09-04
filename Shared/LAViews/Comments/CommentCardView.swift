@@ -92,7 +92,7 @@ struct CommentCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             
-            switch context.preferredStyle {
+            switch context.feedStyle {
             case .style1:
                 HeaderView(shouldRouteCommunity: shouldRouteCommunity,
                            shouldRoutePost: shouldLinkToPost)
@@ -114,7 +114,7 @@ struct CommentCardView: View {
                         .padding(.trailing, padding.trailing)
                         .padding(.bottom, .layer3)
                 }
-            case .style2:
+            case .style2, .style3:
                 HeaderCardContainerView(.addCommentModel(model: currentModel,
                                                          context),
                                         showAvatar: showAvatar,

@@ -31,8 +31,8 @@ struct PostCardView: View {
         model ?? context.postModel
     }
     
-    var topPadding: CGFloat = .layer6
-    var bottomPadding: CGFloat = .layer6
+    var topPadding: CGFloat? = nil
+    var bottomPadding: CGFloat? = nil
     
     var linkPreviewType: LinkPreviewType = .large
     
@@ -102,9 +102,9 @@ struct PostCardView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            switch context.preferredStyle {
-            case .style1:
-                VStack(alignment: .leading, spacing: .layer3) {
+            switch context.feedStyle {
+            case .style1, .style3:
+                VStack(alignment: .leading, spacing: 0) {
                     HeaderView(badge: .noBadge)
                         .attach({ community in
                             viewCommunity.perform(community)
@@ -112,10 +112,12 @@ struct PostCardView: View {
                         .attach({
                             editModel()
                         }, at: \.edit)
+                        .padding(.bottom, .layer2)
                     
                     contentView
                 }
-                .padding(.vertical, context.isPreview ? 0 : topPadding)
+                .padding(.top, context.isPreview ? 0 : padding.top)
+                .padding(.bottom, context.isPreview ? 0 : padding.bottom)
                 .padding(.horizontal, .layer4)
             case .style2:
                 HeaderCardContainerView(.addPostModel(model: currentModel, context),
@@ -187,6 +189,9 @@ struct PostCardView: View {
             bottom = .layer4
             trailing = .layer4
         } else {
+            let topPadding: CGFloat = self.topPadding ?? (context.feedStyle == .style3 ? .layer4 : .layer6)
+            let bottomPadding: CGFloat = self.bottomPadding ?? (context.feedStyle == .style3 ? .layer4 : .layer6)
+            
             top = context.isPreview ? (isCompact ? .layer3 : 0) : topPadding
             leading = .layer4
             bottom = context.isPreview ? (isCompact ? .layer3 : 0) : bottomPadding
@@ -213,11 +218,11 @@ struct PostCardView: View {
 extension PostCardView {
     var contentView: some View {
         Group {
-            switch context.preferredStyle {
+            switch context.feedStyle {
             case .style1:
                 contentBody
                     .padding(.bottom, .layer3)
-            case .style2:
+            case .style2, .style3:
                 contentBodyStacked
                     .censor(shouldCensor, kind: censorKind)
                     .padding(.bottom, shouldCensor ? .layer5 : 0)
@@ -312,7 +317,7 @@ extension PostCardView {
                     }, at: \.showContent)
                     .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
                     .padding(.top, .layer2)
-                    .padding(.bottom, .layer6)
+                    .padding(.bottom, context.feedStyle == .style3 ? .layer4 : .layer6)
             }
         }
     }

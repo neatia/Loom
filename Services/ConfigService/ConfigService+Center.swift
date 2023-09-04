@@ -11,6 +11,7 @@ extension ConfigService {
             
             //Feed
             var linkPreviewMetaData: Bool = false
+            var feedStyle: FeedStyle = .style2
             var manuallyFetchMoreContent: Bool = false {
                 didSet {
                     PagerConfig.manuallyFetchMoreContent = manuallyFetchMoreContent

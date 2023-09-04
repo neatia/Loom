@@ -25,8 +25,4 @@ extension FederatedCommunity {
     func asView(isBlocked: Bool) -> FederatedCommunityResource {
         .init(community: self, subscribed: .notSubscribed, blocked: isBlocked, counts: .mock)
     }
-    
-    var displayName: String {
-        "!"+self.name+"@"+self.actor_id.host
-    }
 }

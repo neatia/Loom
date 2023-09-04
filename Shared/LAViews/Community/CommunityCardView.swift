@@ -27,6 +27,19 @@ struct CommunityCardView: View {
     var style: CardStyle = .style1
     var federatedData: FederatedData? = nil
     
+    var instanceType: FederatedInstanceType {
+        model.community.instanceType
+    }
+    
+    var hasSubCommunities: Bool {
+        switch instanceType {
+        case .rss, .mastodon:
+            return false
+        default:
+            return true
+        }
+    }
+    
     var peerHost: String? {
         if federatedData?.host == FederationKit.host {
             return nil
@@ -75,15 +88,28 @@ struct CommunityCardView: View {
             AvatarView(model.iconURL, size: .mini, isCommunity: true)
             Group {
                 HStack(spacing: .layer1) {
-                    Text("!"+model.community.name)
-                        .font(.subheadline)
-                        .cornerRadius(4)
-                    Text("\(peerHost ?? "")@" + model.community.actor_id.host)
-                        .font(.caption2)
-                        .lineLimit(1)
-                        .padding(.horizontal, .layer1)
-                        .background(Color.tertiaryBackground)
-                        .cornerRadius(4)
+                    
+                    if hasSubCommunities {
+                        Text("!"+model.community.name)
+                            .font(.subheadline)
+                            .cornerRadius(4)
+                        Text("\(peerHost ?? "")@" + model.community.actor_id.host)
+                            .font(.caption2)
+                            .lineLimit(1)
+                            .padding(.horizontal, .layer1)
+                            .background(Color.tertiaryBackground)
+                            .cornerRadius(4)
+                    } else {
+                        Text(model.community.name)
+                            .font(.subheadline)
+                            .cornerRadius(4)
+                        Text("•")
+                            .font(.footnote)
+                            .padding(.horizontal, .layer1)
+                            .foregroundColor(.foreground.opacity(0.5))
+                        InstanceSymbolView(instanceType)
+                    }
+                    
                 }
                 .padding(.top, 2)//nitpick
                 
@@ -129,11 +155,13 @@ struct CommunityCardView: View {
                 AvatarView(model.iconURL, size: .large, isCommunity: true)
                 
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text("\(subscribers) COMMUNITY_SUBSCRIBERS")
-                            .font(.headline.bold())
-                        
-                        Spacer()
+                    if hasSubCommunities {
+                        HStack {
+                            Text("\(subscribers) COMMUNITY_SUBSCRIBERS")
+                                .font(.headline.bold())
+                            
+                            Spacer()
+                        }
                     }
                     
                     HStack(spacing: .layer1) {
@@ -145,21 +173,28 @@ struct CommunityCardView: View {
                         Spacer()
                     }//.scrollOnOverflow()
                     
-                    Group {
-                        HStack(spacing: .layer1) {
-                            Text("!"+model.community.name)
-                                .font(.subheadline)
-                                .cornerRadius(4)
-                            Text("\(peerHost ?? "")@" + model.community.actor_id.host)
-                                .font(.caption2)
-                                .lineLimit(1)
-                                .padding(.vertical, .layer1)
-                                .padding(.horizontal, .layer1)
-                                .background(Color.tertiaryBackground)
-                                .cornerRadius(4)
+                    if hasSubCommunities {
+                        Group {
+                            HStack(spacing: .layer1) {
+                                Text("!"+model.community.name)
+                                    .font(.subheadline)
+                                Text("\(peerHost ?? "")@" + model.community.actor_id.host)
+                                    .font(.caption2)
+                                    .lineLimit(1)
+                                    .padding(.vertical, .layer1)
+                                    .padding(.horizontal, .layer1)
+                                    .background(Color.tertiaryBackground)
+                                    .cornerRadius(4)
+                            }
+                            
+                            Spacer()
                         }
-                        
-                        Spacer()
+                    } else {
+                        HStack(spacing: .layer1) {
+                            Text(model.community.name)
+                                .font(.subheadline)
+                        }
+                        InstanceSymbolView(instanceType)
                     }
                 }
                 .offset(y: .layer1)

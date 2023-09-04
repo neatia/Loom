@@ -13,7 +13,7 @@ import Combine
 import FederationKit
 
 struct SearchScrollView: View {
-    var query: String
+    @Binding var query: String
     @Binding var response: FederatedSearchResult?
     
     @StateObject var pagerPosts: Pager<FederatedPostResource> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
@@ -32,13 +32,13 @@ struct SearchScrollView: View {
          sortType: FederatedSortType,
          listingType: FederatedListingType,
          response: Binding<FederatedSearchResult?>,
-         query: String) {
+         query: Binding<String>) {
         self.searchType = searchType
         self.community = community
         self.selectedSort = sortType
         self.selectedListing = listingType
         self._response = response
-        self.query = query
+        self._query = query
     }
     
     var body: some View {

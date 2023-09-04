@@ -9,6 +9,24 @@ import Foundation
 import FederationKit
 
 extension ContentContext {
+    var feedStyle: FeedStyle {
+        switch viewingContext {
+        case .search:
+            return .style1
+        default:
+            if isPost {
+                switch postModel?.post.instanceType {
+                case .rss:
+                    return .style3
+                default:
+                    return preferredFeedStyle
+                }
+            } else {
+                return preferredFeedStyle
+            }
+        }
+    }
+    
     var display: Display {
         .init(self)
     }

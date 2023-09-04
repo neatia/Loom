@@ -8,11 +8,42 @@ extension Search: View {
         VStack(spacing: 0) {
             VStack(spacing: 0) {
                 HStack(spacing: .layer4) {
-                    VStack {
-                        Spacer()
-                        Text("TITLE_SEARCH \(community?.name ?? "")")
-                            .font(.title.bold())
-                    }
+                    
+                        HStack(spacing: .layer2) {
+                            VStack {
+                                Spacer()
+                                Text("TITLE_SEARCH \(community?.name ?? "")")
+                                    .font(.title.bold())
+                            }
+                            
+                            Menu {
+                                ForEach(0..<state.searchType.count) { index in
+                                    Button {
+                                        GraniteHaptic.light.invoke()
+                                        _state.selectedSearchType.wrappedValue = index
+                                    } label: {
+                                        Text(state.searchType[index].displayString)
+                                        Image(systemName: "arrow.down.right.circle")
+                                    }
+                                }
+                            } label: {
+                                VStack {
+                                    //this VStack setup is resolving alignment issues
+                                    Spacer()
+                                    Text(selectedSearch.displayString)
+                                        .font(.title3.bold())
+                                }
+                                
+                                #if os(iOS)
+                                Image(systemName: "chevron.up.chevron.down")
+                                    .padding(.top, .layer3)
+                                #endif
+                            }
+                            .menuStyle(BorderlessButtonMenuStyle())
+                            .frame(maxWidth: Device.isMacOS ? 80 : nil)
+                            .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
+                            .id(state.selectedSearchType)//Menus have odd interactions on iOS
+                        }
                     
                     Spacer()
                     
@@ -57,9 +88,11 @@ extension Search: View {
                     .attach({
                         conductor.clean()
                     }, at: \.clean)
+                    .ignoresSafeArea(.keyboard)
                 
                 Divider()
             }
+            .ignoresSafeArea(.keyboard)
             
             //GraniteTab could supply a feature that removes views from the hierarchy like this
             //performance seems to get hurt when switching between tabs from search
@@ -69,7 +102,7 @@ extension Search: View {
                                  sortType: selectedSort,
                                  listingType: selectedListing,
                                  response: $conductor.response,
-                                 query: conductor.lastQuery)
+                                 query: $conductor.lastQuery)
                 .background(Color.alternateBackground)
             } else if conductor.isSearching && conductor.isEmpty {
                 StandardLoadingView()

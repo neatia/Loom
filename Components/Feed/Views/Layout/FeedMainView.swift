@@ -21,13 +21,16 @@ struct FeedMainView<Content: View>: View {
     let header: () -> Content
     let isViewingCommunity: Bool
     let communityView: FederatedCommunityResource?
+    let feedStyle: FeedStyle
     init(location: FederatedLocationType,
          communityView: FederatedCommunityResource? = nil,
+         feedStyle: FeedStyle = .style2,
          @ViewBuilder header: @escaping (() -> Content) = { EmptyView() }) {
         self.location = location
         self.header = header
         self.isViewingCommunity = communityView != nil
         self.communityView = communityView
+        self.feedStyle = feedStyle
     }
     
     var body: some View {
@@ -39,14 +42,24 @@ struct FeedMainView<Content: View>: View {
                         header: header) {
             EmptyView()
         } content: { postView in
-            PostCardView(topPadding: pager.firstItem?.id == postView.id ? .layer5 : .layer6,
+            PostCardView(topPadding: pager.firstItem?.id == postView.id ? topPadding : nil,
                          linkPreviewType: .largeNoMetadata)
                 .attach({ community in
                     viewCommunity.perform(community)
                 }, at: \.viewCommunity)
                 .graniteEvent(interact)
-                .contentContext(.init(postModel: postView))
+                .contentContext(.init(postModel: postView,
+                                      preferredFeedStyle: feedStyle))
         }
         .environmentObject(pager)
+    }
+    
+    var topPadding: CGFloat? {
+        switch feedStyle {
+        case .style3:
+            return .layer4
+        default :
+            return .layer5
+        }
     }
 }

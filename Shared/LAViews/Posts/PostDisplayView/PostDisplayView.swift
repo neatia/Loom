@@ -54,7 +54,7 @@ struct PostDisplayView: GraniteNavigationDestination {
                 contentHeader
                     .background(Color.background)
                     .id(currentModel?.post.updated)
-            case .style2:
+            case .style2, .style3:
                 contentHeaderStacked
                     .background(Color.background)
                     .id(currentModel?.post.updated)
@@ -74,7 +74,8 @@ struct PostDisplayView: GraniteNavigationDestination {
                     CommentCardView(context:
                             .addCommentModel(model: commentView, context)
                             .viewedIn(.postDisplay)
-                            .updateLocation(threadLocation))
+                            .updateLocation(threadLocation)
+                            .withStyle(.style2))
                         .attach({ community in
                             viewCommunity.perform(community)
                         }, at: \.viewCommunity)
@@ -105,7 +106,7 @@ struct PostDisplayView: GraniteNavigationDestination {
             pager.hook { page in
                 return await Federation.comments(currentModel?.post,
                                                  community: currentModel?.community,
-                                                 depth: 8,
+                                                 depth: 1,
                                                  page: page,
                                                  type: listingType,
                                                  sort: sortingType[selectedSorting],
@@ -141,7 +142,9 @@ extension PostDisplayView {
                     }
                 }
             }, at: \.edit)
-            .contentContext(.addPostModel(model: updatedModel, context))
+            .contentContext(
+                .addPostModel(model: updatedModel, context)
+                .withStyle(context.feedStyle == .style3 ? .style2 : context.feedStyle))
     }
     
     var contentView: some View {
