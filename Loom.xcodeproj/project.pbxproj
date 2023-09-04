@@ -275,6 +275,8 @@
 		717855A12AA55ABA006BBB20 /* Loom.Add.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178559F2AA55ABA006BBB20 /* Loom.Add.swift */; };
 		717855A32AA55DA1006BBB20 /* InstanceSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717855A22AA55DA1006BBB20 /* InstanceSymbolView.swift */; };
 		717855A42AA55DA1006BBB20 /* InstanceSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717855A22AA55DA1006BBB20 /* InstanceSymbolView.swift */; };
+		717855A72AA57EF5006BBB20 /* FederationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 717855A62AA57EF5006BBB20 /* FederationKit */; };
+		717855A92AA57F0D006BBB20 /* FederationKit in Frameworks */ = {isa = PBXBuildFile; productRef = 717855A82AA57F0D006BBB20 /* FederationKit */; };
 		7178FCBF2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */; };
 		7178FCC02A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCBE2A9E598100E9BA96 /* Pager.ScrollView.HidingHeader.swift */; };
 		7178FCC32A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7178FCC22A9E8E0D00E9BA96 /* GraniteScrollView+Proxy.swift */; };
@@ -1118,6 +1120,7 @@
 				71C5FF742A646BE100F99A84 /* NukeVideo in Frameworks */,
 				71C5FF722A646BE100F99A84 /* NukeUI in Frameworks */,
 				71BE94F42A958DA8004A3AC3 /* KeyboardToolbar in Frameworks */,
+				717855A72AA57EF5006BBB20 /* FederationKit in Frameworks */,
 				71899E522A8977C00073158F /* MarbleKit in Frameworks */,
 				71AAD3C52A9DB0D500D133F4 /* ModerationKit in Frameworks */,
 				715797702A7B833400B7FEC9 /* GraniteUI in Frameworks */,
@@ -1138,6 +1141,7 @@
 				71C1776F2A64A0C800A11B03 /* NukeVideo in Frameworks */,
 				712C0D742A7C46F600DBDCC9 /* MarkdownView in Frameworks */,
 				71C1776D2A64A0C800A11B03 /* NukeUI in Frameworks */,
+				717855A92AA57F0D006BBB20 /* FederationKit in Frameworks */,
 				71C177692A64A0C800A11B03 /* Nuke in Frameworks */,
 				71C1776B2A64A0C800A11B03 /* NukeExtensions in Frameworks */,
 			);
@@ -2531,6 +2535,7 @@
 				71899E512A8977C00073158F /* MarbleKit */,
 				71BE94F32A958DA8004A3AC3 /* KeyboardToolbar */,
 				71AAD3C42A9DB0D500D133F4 /* ModerationKit */,
+				717855A62AA57EF5006BBB20 /* FederationKit */,
 			);
 			productName = "PEX (iOS)";
 			productReference = 711B3F792885D43B00F3080D /* Loom.app */;
@@ -2560,6 +2565,7 @@
 				71EB91C22A8037D40091EE5B /* GraniteUI */,
 				71899E4F2A8977AD0073158F /* MarbleKit */,
 				71AAD3C62A9DB0E200D133F4 /* ModerationKit */,
+				717855A82AA57F0D006BBB20 /* FederationKit */,
 			);
 			productName = "PEX (macOS)";
 			productReference = 711B3F7F2885D43B00F3080D /* Loom.app */;
@@ -2671,6 +2677,7 @@
 				71899E4E2A8977AD0073158F /* XCRemoteSwiftPackageReference "MarbleKit" */,
 				71BE94F22A958DA8004A3AC3 /* XCRemoteSwiftPackageReference "KeyboardToolbar" */,
 				71AAD3C32A9DB0D500D133F4 /* XCRemoteSwiftPackageReference "ModerationKit" */,
+				717855A52AA57EF5006BBB20 /* XCRemoteSwiftPackageReference "FederationKit" */,
 			);
 			productRefGroup = 711B3F7A2885D43B00F3080D /* Products */;
 			projectDirPath = "";
@@ -3870,6 +3877,14 @@
 				kind = branch;
 			};
 		};
+		717855A52AA57EF5006BBB20 /* XCRemoteSwiftPackageReference "FederationKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/neatia/FederationKit";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 		71899E4E2A8977AD0073158F /* XCRemoteSwiftPackageReference "MarbleKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pexavc/MarbleKit";
@@ -3929,6 +3944,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 715797772A7B843100B7FEC9 /* XCRemoteSwiftPackageReference "MarkdownView" */;
 			productName = MarkdownView;
+		};
+		717855A62AA57EF5006BBB20 /* FederationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 717855A52AA57EF5006BBB20 /* XCRemoteSwiftPackageReference "FederationKit" */;
+			productName = FederationKit;
+		};
+		717855A82AA57F0D006BBB20 /* FederationKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 717855A52AA57EF5006BBB20 /* XCRemoteSwiftPackageReference "FederationKit" */;
+			productName = FederationKit;
 		};
 		71899E4F2A8977AD0073158F /* MarbleKit */ = {
 			isa = XCSwiftPackageProductDependency;
