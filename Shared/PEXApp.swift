@@ -16,8 +16,7 @@ struct PEXApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     #endif
     
-    var config: ConfigService = .init()
-    
+    @Relay(.silence) var config: ConfigService
     
     init() {
         config.restore(wait: true)
@@ -37,6 +36,22 @@ struct PEXApp: App {
         WindowGroup {
             #if os(iOS)
             Home()
+                .onReceive(
+                    NotificationCenter
+                        .default
+                        .publisher(
+                            for: UIApplication.willEnterForegroundNotification)) { _ in
+                    if let instanceURL = Actions.SetInstance.retrieveURL() {
+                        LoomLog("Setting instance from action extension: \(instanceURL.absoluteString)", level: .debug)
+                        config
+                            .center
+                            .restart
+                            .send(
+                                ConfigService
+                                    .Restart
+                                    .Meta(host: instanceURL.absoluteString))
+                    }
+                }
             
             #elseif os(macOS)
             WindowComponent(backgroundColor: .background) {

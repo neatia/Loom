@@ -68,12 +68,13 @@ struct ThreadView: View {
             
             PagerScrollView(FederatedCommentResource.self,
                             properties: .init(hideLastDivider: true,
+                                              performant: Device.isMacOS == false,
                                               showFetchMore: false)) { commentView in
                 CommentCardView(context: .addCommentModel(model: commentView,
                                                           context).withStyle(.style2),
                                 parentModel: currentModel,
                                 isInline: isInline)
-                    .attachAndClear({ model in
+                    .attach({ model in
                         if isModal {
                             breadCrumbs.append(model)
                             pager.reset()

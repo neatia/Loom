@@ -22,7 +22,7 @@ struct Clipboard {
         #if os(macOS)
         let pasteboard = NSPasteboard.general
         pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
-
+        
         var clipboardItems: [String] = []
         for element in pasteboard.pasteboardItems! {
             if let str = element.string(forType: NSPasteboard.PasteboardType(rawValue: "public.utf8-plain-text")) {
@@ -33,6 +33,16 @@ struct Clipboard {
         return clipboardItems[0]
         #else
         return UIPasteboard.general.string
+        #endif
+    }
+    
+    static func copyToClipboard(_ value: String) {
+        #if os(macOS)
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
+        pasteboard.setString(value, forType: .string)
+        #else
+        UIPasteboard.general.string = value
         #endif
     }
 }

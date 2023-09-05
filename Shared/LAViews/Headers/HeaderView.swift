@@ -144,7 +144,7 @@ extension HeaderView {
         VStack {
             HStack {
                 HStack {
-                    HStack {
+                    HStack(spacing: .layer2) {
                         AvatarView(context.postModel?.community.iconURL,
                                    size: .mini,
                                    isCommunity: true)
@@ -156,25 +156,28 @@ extension HeaderView {
                         Feed(context.postModel?.community)
                     } with: { router }
                     
-                    Text("•")
-                        .font(.footnote)
-                        .padding(.horizontal, .layer1)
-                        .foregroundColor(Color.foreground.opacity(0.5))
                     
                     HStack(alignment: .bottom, spacing: .layer1) {
-                        if context.isEdited {
-                            //TODO: localize
-                            Text("edited")
-                                .font(.caption2.italic())
-                                .foregroundColor(.foreground.opacity(0.5))
-                        }
                         
                         if let time = context.display.author.time {
+                            Text("•")
+                                .font(.footnote)
+                                .padding(.trailing, .layer1)
+                                .foregroundColor(Color.foreground.opacity(0.5))
+                            
+                            if context.isEdited {
+                                //TODO: localize
+                                Text("edited")
+                                    .font(.caption2.italic())
+                                    .foregroundColor(.foreground.opacity(0.5))
+                            }
+                            
                             Text(time.timeAgoDisplay())
                                 .font(.caption)
                                 .foregroundColor(.foreground.opacity(0.5))
                         }
                     }
+                    .frame(height: AvatarView.Size.mini.frame)
                 }
                 .scrollOnOverflow()
                 .frame(height: AvatarView.Size.mini.frame)
@@ -188,18 +191,12 @@ extension HeaderView {
                                     postView: shouldRoutePost ? context.postModel : nil,
                                     person: context.person,
                                     bookmarkKind: context.bookmarkKind)
-                    .attach({ community in
-                        viewCommunity.perform(community)
-                    }, at: \.viewCommunity)
+                    .attach(viewCommunity, at: \.viewCommunity)
                     .attach({
                         self.fetchFederatedPostResource()
                     }, at: \.goToPost)
-                    .attach({
-                        goToThread.perform()
-                    }, at: \.goToThread)
-                    .attach({
-                        edit.perform()
-                    }, at: \.edit)
+                    .attach(goToThread, at: \.goToThread)
+                    .attach(edit, at: \.edit)
                 }
             }
         }

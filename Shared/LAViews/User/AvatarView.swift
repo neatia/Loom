@@ -124,6 +124,7 @@ struct AvatarView: View {
         .frame(width: size.frame, height: size.frame)
         .cornerRadius(size.frame / 2)
         .clipped()
+        .contentShape(Rectangle())
         .routeIf(person != nil, window: .resizable(600, 500)) {
             Profile(person, location: context.location)
         } with : { router }

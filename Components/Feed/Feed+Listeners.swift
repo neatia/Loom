@@ -22,11 +22,12 @@ extension Feed {
     var listeners: Void {
         //TODO: for mac, when a new window spawns, may want to set this again
         if Device.isMacOS || isCommunity == false {
-            mainListeners
+            broadcastListeners
         }
+        beamListeners
     }
     
-    var mainListeners: Void {
+    var broadcastListeners: Void {
         account
             .center
             .auth
@@ -50,9 +51,6 @@ extension Feed {
                         pager.updateBlockFromPerson(item: model)
                     case .deletePost(let model):
                         pager.update(item: model)
-                    case .subscribe(let model):
-                        _state.community.wrappedValue = model.community
-                        _state.communityView.wrappedValue = model
                     default:
                         break
                     }
@@ -69,6 +67,9 @@ extension Feed {
                     ModalService.shared.presentModal(GraniteToastView(error))
                 } else {
                     LoomLog("🟡 Restarting Feed")
+                    
+                    ContentUpdater.clearCache()
+                    
                     _state.community.wrappedValue = nil
                     _state.communityView.wrappedValue = nil
                     _state.currentLoomManifest.wrappedValue = nil
@@ -112,6 +113,33 @@ extension Feed {
                     default:
                         break
                     }
+                }
+            }
+    }
+    
+    //TODO: since relays are now single instances
+    //beaming will be replaced not restored.
+    var beamListeners: Void {
+        account
+            .center
+            .interact
+            .listen(.beam) { value in
+                if let response = value as? StandardErrorMeta {
+                    ModalService.shared.presentModal(GraniteToastView(response))
+                } else if let response = value as? AccountService.Interact.ResponseMeta {
+                    switch response.intent {
+                    case .subscribe(let model):
+                        _state.community.wrappedValue = model.community
+                        _state.communityView.wrappedValue = model
+                    default:
+                        break
+                    }
+                    
+                    ModalService
+                        .shared
+                        .presentModal(
+                            GraniteToastView(response.notification)
+                        )
                 }
             }
     }

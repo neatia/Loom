@@ -20,6 +20,19 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         return true
     }
+    
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        if let scheme = url.scheme,
+           scheme.caseInsensitiveCompare("nycLoom://") == .orderedSame,
+           let page = url.host {
+            
+            let userDefault = UserDefaults(suiteName: "group.nyc.loom")
+        }
+        print(url)
+        return true
+    }
 }
 #elseif os(macOS)
 class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {

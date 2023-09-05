@@ -32,12 +32,9 @@ extension Search: View {
                                     Spacer()
                                     Text(selectedSearch.displayString)
                                         .font(.title3.bold())
+                                        //nitpick
+                                        .padding(.top, 5)
                                 }
-                                
-                                #if os(iOS)
-                                Image(systemName: "chevron.up.chevron.down")
-                                    .padding(.top, .layer3)
-                                #endif
                             }
                             .menuStyle(BorderlessButtonMenuStyle())
                             .frame(maxWidth: Device.isMacOS ? 80 : nil)

@@ -206,35 +206,48 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                 if status != .idle {
                     Color.clear
                         .frame(height: status == .loading ? style.threshold : style.threshold * CGFloat(progress))
+                        .overlayIf(!hidingHeader, alignment: .top) {
+                            Group {
+                                if onRefresh != nil {
+                                    progressBody
+                                }
+                            }
+                        }
+                    
                 }
                 
-                ZStack(alignment: .top) {
-                    if onRefresh != nil {
-                        progressBody
-                            .zIndex(0)
+                if hidingHeader {
+                    ZStack(alignment: .top) {
+                        if onRefresh != nil {
+                            progressBody
+                                .zIndex(0)
+                        }
+                        
+                        VStack(spacing: 0) {
+                            content
+                                .frame(maxHeight: .infinity)
+                        }
+                        
                     }
-                    
-                    VStack(spacing: 0) {
-                        content
-                            .frame(maxHeight: .infinity)
-                    }
-                    
+                    .readingScrollViewIf(hidingHeader,
+                                         from: "granite.scrollview",
+                                         into: .init(get: {
+                        return .init(directionBox.offset)
+                    }, set: { value in
+                        directionBox.offset = value.offset
+                        
+                        let lastState = directionBox.reachedBottom
+                        directionBox.reachedBottom = value.contentHeight <= frameHeight
+                        //reached bottom, fire once
+                        if lastState != directionBox.reachedBottom,
+                           directionBox.reachedBottom {
+                            onReachedEdge?(.bottom)
+                        }
+                    }))
+                } else {
+                    content
+                        .frame(maxHeight: .infinity)
                 }
-                .readingScrollViewIf(hidingHeader,
-                                     from: "granite.scrollview",
-                                     into: .init(get: {
-                    return .init(directionBox.offset)
-                }, set: { value in
-                    directionBox.offset = value.offset
-                    
-                    let lastState = directionBox.reachedBottom
-                    directionBox.reachedBottom = value.contentHeight <= frameHeight
-                    //reached bottom, fire once
-                    if lastState != directionBox.reachedBottom,
-                       directionBox.reachedBottom {
-                        onReachedEdge?(.bottom)
-                    }
-                }))
             }
         }
         .coordinateSpace(name: "granite.scrollview")

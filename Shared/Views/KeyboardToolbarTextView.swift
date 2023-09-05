@@ -362,6 +362,7 @@ struct StyleTextKeyboardTool: KeyboardTool {
         case bold = "**"
         case italic = "*"
         case strikethrough = "~~"
+        case code = "`"
         
         var symbolName: String {
             switch self {
@@ -371,6 +372,8 @@ struct StyleTextKeyboardTool: KeyboardTool {
                 return "italic"
             case .strikethrough:
                 return "strikethrough"
+            case .code:
+                return "chevron.left.forwardslash.chevron.right"
             }
         }
         
@@ -507,6 +510,7 @@ extension KeyboardViewController {
             ]),
             KeyboardToolGroupItem(representativeTool: StyleFormatKeyboardTool(.quote, textView: textView), tools: [
                 StyleFormatKeyboardTool(.quote, textView: textView),
+                StyleTextKeyboardTool(.code, textView: textView),
                 StyleFormatKeyboardTool(.link, textView: textView),
                 StyleFormatKeyboardTool(.image, textView: textView),
                 //StyleFormatKeyboardTool(.table, textView: textView),

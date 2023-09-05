@@ -65,7 +65,7 @@ struct InstanceMetaView: View {
     }
     
     var host: String {
-        "https://" + title
+        instance.domain
     }
     
     @State var metadata: FederationMetadata?

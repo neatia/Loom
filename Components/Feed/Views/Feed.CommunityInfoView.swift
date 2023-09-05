@@ -69,6 +69,17 @@ struct FeedCommunityInfoMenuView: View {
                             Text("COMMUNITY_SUBSCRIBE")
                         }
                     }
+                    
+                    if communityView.subscribed == .pending {
+                        Button(role: .destructive) {
+                            GraniteHaptic.light.invoke()
+                            interact.perform(.subscribe(communityView))
+
+                        } label: {
+                            Text("MISC_CANCEL")
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
                 
                 Divider()

@@ -1,6 +1,24 @@
 {
   "pins" : [
     {
+      "identity" : "federationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/neatia/FederationKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "426c5b0dfae5beade434d5af9ceb5f0a4756f895"
+      }
+    },
+    {
+      "identity" : "feedkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/FeedKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "f216bcf2a76f63b11ecf98e7021120f2fa395cbb"
+      }
+    },
+    {
       "identity" : "ffmpegkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/FFmpegKit.git",
@@ -46,6 +64,15 @@
       }
     },
     {
+      "identity" : "lemmykit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/LemmyKit",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8e185744236de9a9f45d129fd3c3e955423f40ca"
+      }
+    },
+    {
       "identity" : "marblekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MarbleKit",
@@ -61,6 +88,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "541741eb819c4ce404390afb5120ba082c1e4187"
+      }
+    },
+    {
+      "identity" : "mastodonkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pexavc/MastodonKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "b21dfbf6ae4c510d440d069b02bc9b07e627ed95"
       }
     },
     {

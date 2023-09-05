@@ -24,6 +24,7 @@ struct PostActionsView: View {
     @Environment(\.contentContext) var context
     
     @Environment(\.pagerMetadata) var metadata
+    @Environment(\.openURL) var openURL
     
     var enableCommunityRoute: Bool
     var shouldRouteToPost: Bool = true
@@ -135,6 +136,37 @@ extension PostActionsView {
             #endif
             
             Divider()
+            
+            if let postAP_id = context.postModel?.post.ap_id {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    
+                    Clipboard.copyToClipboard(postAP_id)
+                } label: {
+                    //TODO: localize
+                    Text("Copy to clipboard")
+                    Image(systemName: "doc.on.clipboard")
+                }
+                .buttonStyle(PlainButtonStyle())
+                
+                Button {
+                    GraniteHaptic.light.invoke()
+                    
+                    guard let url = URL(string: postAP_id) else {
+                        return
+                    }
+                    
+                    openURL(url)
+                } label: {
+                    //TODO: localize
+                    Text("Open in Safari")
+                    Image(systemName: "safari")
+                }
+                .buttonStyle(PlainButtonStyle())
+                
+                Divider()
+            }
+            
             if person?.isMe == true {
                 
                 Button {
