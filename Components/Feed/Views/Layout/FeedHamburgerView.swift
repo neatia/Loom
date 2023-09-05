@@ -78,6 +78,7 @@ struct FeedHamburgerView: View {
     @GraniteAction<Void> var login
     
     @Relay var account: AccountService
+    @Relay var config: ConfigService
     
     //ExpandedView Only
     @GraniteAction<FederatedLocationType> var changeLocation
@@ -196,6 +197,7 @@ struct FeedHamburgerView: View {
                     
                     Spacer()
                     
+                    setInstanceView
                     settingsView
                 }
                 .padding(.top, .layer6)
@@ -475,12 +477,53 @@ extension FeedHamburgerView {
         }
     }
     
+    var setInstanceView: some View {
+        Group {
+            HStack {
+                Button {
+                    GraniteHaptic.light.invoke()
+                    
+                    ModalService.shared.presentSheet {
+                        //TODO: localize
+                        GraniteStandardModalView(title: "Set Instance URL", maxHeight: 210) {
+                            SetInstanceView()
+                                .attach({ value in
+                                    config
+                                        .center
+                                        .restart
+                                        .send(
+                                            ConfigService
+                                                .Restart
+                                                .Meta(host: value))
+                                    ModalService.shared.dismissSheet()
+                                }, at: \.commit)
+                        }
+                    }
+                } label : {
+                    Image(systemName: "server.rack")
+                        .font(.title3)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.foreground)
+                    
+                    //TODO: localize
+                    Text("Set Instance")
+                        .font(.title3.bold())
+                        .foregroundColor(.foreground)
+                }
+                .buttonStyle(.plain)
+                
+                Spacer()
+            }
+        }
+    }
+    
     var settingsView: some View {
         Group {
             HStack {
                 Group {
                     Image(systemName: "gearshape")
                         .font(.title3)
+                        .frame(width: 24, height: 24)
                         .foregroundColor(.foreground)
                     
                     Text("TITLE_SETTINGS")

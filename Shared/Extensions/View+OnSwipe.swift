@@ -21,6 +21,8 @@ struct OnSwipe: ViewModifier {
     @State var contentWidth: CGFloat = 0.0
     @State var willDeleteIfReleased = false
     
+    var startThreshold: CGFloat = 32
+    
     var directionCoeff: CGFloat {
         switch edge {
         case .trailing:
@@ -61,12 +63,12 @@ struct OnSwipe: ViewModifier {
                         switch edge {
                         case .trailing:
                             guard gesture.location.x > contentWidth / 2,
-                                  abs(gesture.location.x - gesture.startLocation.x) > 32 else {
+                                  abs(gesture.location.x - gesture.startLocation.x) > startThreshold else {
                                 return
                             }
                             
                             if gesture.translation.width + initialOffset.width <= 0 {
-                                self.offset.width = gesture.translation.width + initialOffset.width
+                                self.offset.width = (gesture.translation.width + initialOffset.width) + (initialOffset.width == 0 ? startThreshold : -startThreshold)
                             }
                             if self.offset.width < -deletionDistance && !willDeleteIfReleased {
                                 hapticFeedback()
@@ -77,11 +79,11 @@ struct OnSwipe: ViewModifier {
                             }
                         default:
                             guard gesture.location.x < contentWidth / 2,
-                                  abs(gesture.location.x - gesture.startLocation.x) > 32 else {
+                                  abs(gesture.location.x - gesture.startLocation.x) > startThreshold else {
                                 return
                             }
                             if gesture.translation.width + initialOffset.width >= 0 {
-                                self.offset.width = gesture.translation.width + initialOffset.width
+                                self.offset.width = (gesture.translation.width + initialOffset.width) + (initialOffset.width == 0 ? -startThreshold : startThreshold)
                             }
                             if self.offset.width > deletionDistance && !willDeleteIfReleased {
                                 hapticFeedback()

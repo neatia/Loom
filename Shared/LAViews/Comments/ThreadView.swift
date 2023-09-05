@@ -68,6 +68,7 @@ struct ThreadView: View {
             
             PagerScrollView(FederatedCommentResource.self,
                             properties: .init(hideLastDivider: true,
+                                              performant: Device.isMacOS == false,
                                               showFetchMore: false)) { commentView in
                 CommentCardView(context: .addCommentModel(model: commentView,
                                                           context).withStyle(.style2),

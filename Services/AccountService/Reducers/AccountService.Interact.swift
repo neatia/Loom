@@ -213,17 +213,32 @@ extension AccountService {
             case .subscribe(let model):
                 _ = Task.detached {
                     let result = await Federation.follow(community: model.community,
-                                                         follow: model.subscribed == .subscribed ? false : true)
+                                                         follow: model.subscribed != .notSubscribed ? false : true)
                     
                     guard let result else { return }
                     
-                    beam.send(
-                        ResponseMeta(notification: .init(title: "MISC_SUCCESS",
-                                                         message: "ALERT_SUBSCRIBED_SUCCESS \(model.community.title)",
-                                                         event: .success),
-                                     intent: .subscribe(result)))
-                    
-//                    response.send(InteractResponse.Meta(kind: .community(result.community_view)))
+                    switch model.subscribed {
+                    case .subscribed:
+                        beam.send(
+                            ResponseMeta(notification: .init(title: "MISC_SUCCESS",
+                                                             //TODO: localize
+                                                             message: "Unsubscribed from \(model.community.title)",
+                                                             event: .success),
+                                         intent: .subscribe(result)))
+                    case .notSubscribed:
+                        beam.send(
+                            ResponseMeta(notification: .init(title: "MISC_SUCCESS",
+                                                             message: "ALERT_SUBSCRIBED_SUCCESS \(model.community.title)",
+                                                             event: .success),
+                                         intent: .subscribe(result)))
+                    case .pending:
+                        beam.send(
+                            ResponseMeta(notification: .init(title: "MISC_SUCCESS",
+                                                             //TODO: localize
+                                                             message: "Cancelled subscription for \(model.community.title)",
+                                                             event: .success),
+                                         intent: .subscribe(result)))
+                    }
                 }
                 
             //MARK: Remove

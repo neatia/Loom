@@ -206,6 +206,14 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                 if status != .idle {
                     Color.clear
                         .frame(height: status == .loading ? style.threshold : style.threshold * CGFloat(progress))
+                        .overlayIf(!hidingHeader, alignment: .top) {
+                            Group {
+                                if onRefresh != nil {
+                                    progressBody
+                                }
+                            }
+                        }
+                    
                 }
                 
                 if hidingHeader {
@@ -237,12 +245,8 @@ public struct GraniteScrollView<Content : View, ContentHeader : View> : View {
                         }
                     }))
                 } else {
-                    if onRefresh != nil {
-                        progressBody
-                            .zIndex(0)
-                    }
-                    
                     content
+                        .frame(maxHeight: .infinity)
                 }
             }
         }
