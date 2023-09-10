@@ -84,7 +84,7 @@ extension ContentContext {
     }
     
     var hasBody: Bool {
-        postModel?.post.body != nil
+        postModel?.post.body != nil && postModel?.post.body?.isEmpty == false
     }
     
     var hasURL: Bool {

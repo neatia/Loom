@@ -170,6 +170,8 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     var isStatic: Bool
     
+    let id: UUID = .init()
+    
     init(emptyText: LocalizedStringKey,
          showBlocked: Bool = false,
          isStatic: Bool = false) {
@@ -202,7 +204,6 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     func refresh(_ handler: GraniteScrollView.CompletionHandler?) {
         self.onRefreshHandler = handler
-        
         DispatchQueue.main.async { [weak self] in
             self?.fetch(force: true)
         }

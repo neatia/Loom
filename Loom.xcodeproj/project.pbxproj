@@ -755,6 +755,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		710043452AABC78C00984BF1 /* FederationKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FederationKit; path = ../FederationKit; sourceTree = "<group>"; };
+		710043462AABC9AD00984BF1 /* Granite */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Granite; path = ../../../pexavc/repositories/Granite; sourceTree = "<group>"; };
 		710283342A2A54C300010877 /* PointTrackConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointTrackConfiguration.swift; sourceTree = "<group>"; };
 		710283352A2A54C300010877 /* EnvironmentValues+PointTrackConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+PointTrackConfiguration.swift"; sourceTree = "<group>"; };
 		710283362A2A54C300010877 /* EnvironmentValues+TrackPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EnvironmentValues+TrackPoint.swift"; sourceTree = "<group>"; };
@@ -1461,6 +1463,8 @@
 		711B3F6C2885D43700F3080D = {
 			isa = PBXGroup;
 			children = (
+				710043462AABC9AD00984BF1 /* Granite */,
+				710043452AABC78C00984BF1 /* FederationKit */,
 				71C147F82AA6F11600B18C70 /* Loom (iOS).entitlements */,
 				7157977B2A7B86F000B7FEC9 /* .gitignore */,
 				7157977A2A7B86D600B7FEC9 /* README.md */,

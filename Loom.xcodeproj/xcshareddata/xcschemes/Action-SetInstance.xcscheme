@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "71C147FC2AA6F3A900B18C70"
-               BuildableName = "Action.appex"
-               BlueprintName = "Action"
+               BuildableName = "Action-SetInstance.appex"
+               BlueprintName = "Action-SetInstance"
                ReferencedContainer = "container:Loom.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

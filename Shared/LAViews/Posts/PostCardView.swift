@@ -275,6 +275,7 @@ extension PostCardView {
                 .frame(width: 60, height: 60)
                 .cornerRadius(8.0)
                 .clipped()
+                .contentShape(Rectangle())
                 .onTapGesture {
                     let model = model ?? context.postModel
                     guard let model,
@@ -318,6 +319,8 @@ extension PostCardView {
                     .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
                     .padding(.top, .layer2)
                     .padding(.bottom, context.feedStyle == .style3 ? .layer4 : .layer6)
+                    .clipped()
+                    .contentShape(Rectangle())
             }
         }
     }

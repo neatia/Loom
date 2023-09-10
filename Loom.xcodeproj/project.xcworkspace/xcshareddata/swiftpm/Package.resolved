@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "federationkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/neatia/FederationKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "426c5b0dfae5beade434d5af9ceb5f0a4756f895"
-      }
-    },
-    {
       "identity" : "feedkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/FeedKit",
@@ -25,15 +16,6 @@
       "state" : {
         "revision" : "89f71ccee33d1ff402201162f28b6400f349c873",
         "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "granite",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/Granite.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "ccfe8c650d37fc3ceb0ab0040b07e00a1ecc417c"
       }
     },
     {
