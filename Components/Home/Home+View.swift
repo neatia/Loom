@@ -125,6 +125,7 @@ extension Home: View {
                 .font(.title2)
                 .contentShape(Rectangle())
         }
+        //.graniteDebugOverlay()
     }
     
     var edgesToEdgesToIgnore: Edge.Set {

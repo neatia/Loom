@@ -41,7 +41,7 @@ extension Settings: View {
                                 .font(.title2.bold())
                         }
                         //TODO: Localize
-                        .addInfoIcon(text: "Filter content via various offline inference strategies and/or keywords.")
+                        .addInfoIcon(text: "Block content from appearingin the feed via various offline inference strategies and/or keywords.")
                         
                         Spacer()
                     }

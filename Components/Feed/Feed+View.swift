@@ -25,7 +25,7 @@ extension Feed: GraniteNavigationDestination {
             }
         }
         .background(Color.background)
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
 //        //Careful of expanded layout
 //        .graniteNavigationDestinationIf(isCommunity,
 //                                        fullWidth: true) {

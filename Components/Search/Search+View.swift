@@ -89,7 +89,7 @@ extension Search: View {
                 
                 Divider()
             }
-            .ignoresSafeArea(.keyboard)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             
             //GraniteTab could supply a feature that removes views from the hierarchy like this
             //performance seems to get hurt when switching between tabs from search

@@ -88,6 +88,7 @@ struct PostDisplayView: GraniteNavigationDestination {
             }
         }
         .padding(.top, Device.isExpandedLayout ? .layer4 : .layer2)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(Color.background)
         .foregroundColor(.foreground)
         .task {

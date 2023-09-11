@@ -22,7 +22,7 @@ struct Feed: GraniteComponent {
      Instead use a reducer to reset with the relay initialized within
      */
     
-    @StateObject var pager: Pager<FederatedPostResource> = .init(emptyText: "EMPTY_STATE_NO_POSTS")
+    @StoreObject(String(reflecting: Self.self)) var pager: Pager<FederatedPostResource>
     
     let isCommunity: Bool
     
@@ -30,6 +30,9 @@ struct Feed: GraniteComponent {
          federatedData: FederatedData? = nil) {
         
         self.isCommunity = community != nil
+        if let community {
+            _pager = .init("\(community.id)_feed")
+        }
         
         let location: FederatedLocationType?
         

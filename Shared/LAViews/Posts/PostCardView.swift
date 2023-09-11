@@ -305,7 +305,8 @@ extension PostCardView {
             if contentMetadata != nil || context.hasURL {
                 ContentMetadataView(metadata: contentMetadata,
                                     urlToOpen: context.postModel?.postURL,
-                                    shouldLoad: context.hasURL)
+                                    shouldLoad: context.hasURL,
+                                    cornerRadius: context.feedStyle == .style3 ? 8 : 12)
                     .attach({
                         let model = model ?? context.postModel
                         guard let model,
@@ -317,7 +318,7 @@ extension PostCardView {
                         }
                     }, at: \.showContent)
                     .frame(maxWidth: Device.isExpandedLayout ? 350 : nil)
-                    .padding(.top, .layer2)
+                    .padding(.top, context.feedStyle == .style3 ? .layer3 : .layer2)
                     .padding(.bottom, context.feedStyle == .style3 ? .layer4 : .layer6)
                     .clipped()
                     .contentShape(Rectangle())

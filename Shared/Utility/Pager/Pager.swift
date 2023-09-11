@@ -64,11 +64,19 @@ public class PagerFilter {
     }
 }
 
+public class PagerOptions {
+    static var prefetchRLP: Bool = true
+    static var prefetchOnlyThumbs: Bool = false
+}
+
 public class PagerConfig {
     static var manuallyFetchMoreContent: Bool = false
 }
 
-public class Pager<Model: Pageable>: ObservableObject {
+final class Pager<Model: Pageable>: ObservableObject, StoreableObject {
+    public static var initialValue: Pager<Model> {
+        .init()
+    }
     
     let insertionQueue: OperationQueue = .init()
     
@@ -172,6 +180,16 @@ public class Pager<Model: Pageable>: ObservableObject {
     
     let id: UUID = .init()
     
+    init() {
+        self.emptyText = .init("")
+        self.showBlocked = false
+        self.isStatic = false
+        self.itemIDs = []
+        self.handler = nil
+        insertionQueue.maxConcurrentOperationCount = 1
+        insertionQueue.underlyingQueue = .main
+    }
+    
     init(emptyText: LocalizedStringKey,
          showBlocked: Bool = false,
          isStatic: Bool = false) {
@@ -257,6 +275,7 @@ public class Pager<Model: Pageable>: ObservableObject {
                 return
             }
             
+            
             let results: [Model] = (await handler(self?.pageIndex))
             
             //This used to occuer in insertModels(_:)
@@ -289,9 +308,9 @@ public class Pager<Model: Pageable>: ObservableObject {
             
             LoomLog("🟢 Fetch succeeded | \(models.count) items", level: .debug)
             
-            let thumbURLs: [(String, URL?, Bool)] = models.compactMap { ($0.id, $0.thumbURL ?? $0.postURL, $0.thumbURL != nil) }
+            let thumbURLs: [(String, URL?, Bool)] = models.compactMap { ($0.id, $0.thumbURL ?? (PagerOptions.prefetchOnlyThumbs ? nil : $0.postURL), $0.thumbURL != nil) }
                 
-            if thumbURLs.isEmpty {
+            if thumbURLs.isEmpty || PagerOptions.prefetchRLP == false {
                 insertModels(models, force: force)
             } else {
                 let count = CGFloat(thumbURLs.count)
@@ -355,12 +374,21 @@ public class Pager<Model: Pageable>: ObservableObject {
                         completed += 1
                         
                         let progress = completed / count
-                        DispatchQueue.main.async { [weak self] in
-                            self?.progressHandler?(progress)
+                        if completed <= count - 1 {
+                            DispatchQueue.main.async { [weak self] in
+                                self?.progressHandler?(progress)
+                            }
                         }
                     }
                     
-                    this.insertModels(models.filter { filterModelIDs.contains($0.id) == false }, force: force)
+                    /*
+                     Simply prevents the animation from hanging and object updates
+                     from skipping
+                     */
+                    DispatchQueue.main.async { [weak self] in
+                        self?.progressHandler?(1.0)
+                        self?.insertModels(models.filter { filterModelIDs.contains($0.id) == false }, force: force)
+                    }
                 }
             }
         }

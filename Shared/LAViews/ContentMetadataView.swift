@@ -24,11 +24,16 @@ struct ContentMetadataView: View {
     @State var image: GraniteImage?
     var urlToOpen: URL?
     var shouldLoad: Bool
-    init(metadata: PageableMetadata?, urlToOpen: URL? = nil, shouldLoad: Bool = false) {
+    let cornerRadius: CGFloat
+    init(metadata: PageableMetadata?,
+         urlToOpen: URL? = nil,
+         shouldLoad: Bool = false,
+         cornerRadius: CGFloat = 12) {
         self.meta = metadata?.linkMeta
         self._image = .init(initialValue: metadata?.imageThumb)
         self.urlToOpen = urlToOpen
         self.shouldLoad = shouldLoad && metadata == nil
+        self.cornerRadius = cornerRadius
     }
     
     var body: some View {
@@ -115,7 +120,8 @@ struct ContentMetadataView: View {
                     
                 }
             }
-            .cornerRadius(12)
+            .outline(cornerRadius: cornerRadius, opacity: 0.15)
+            .cornerRadius(cornerRadius)
         }
         .buttonStyle(LinkButton())
         .task {
