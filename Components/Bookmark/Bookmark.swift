@@ -4,6 +4,7 @@ import SwiftUI
 struct Bookmark: GraniteComponent {
     @Command var center: Center
     
+    @Relay var config: ConfigService
     @Relay var service: BookmarkService
     
     let showHeader: Bool

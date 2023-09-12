@@ -19,13 +19,12 @@ extension BookmarkService {
         
         @Event var boot: Boot.Reducer
         @Event var modify: Modify.Reducer
+        @Event var remove: Remove.Reducer
         
         @Store(persist: "persistence.bookmark.Loom.0010", autoSave: true) public var state: State
     }
     
     func contains(_ kind: Kind) -> Bool {
-        let key: BookmarkKey = .current ?? .local
-        
         switch kind {
         case .post(let model):
             //TODO: is using creator.domain correct here?
@@ -33,12 +32,12 @@ extension BookmarkService {
                 return false
             }
             
-            return state.posts[key]?[domain]?.map[model.id] != nil
+            return state.datesPosts[domain + model.id] != nil
         case .comment(let model, _):
             guard let domain = model.creator.domain else {
                 return false
             }
-            return state.comments[key]?[domain]?.map[model.id] != nil
+            return state.datesComments[domain + model.id] != nil
         }
     }
     

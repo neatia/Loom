@@ -11,6 +11,27 @@ import SwiftUI
 
 
 extension BookmarkService {
+    struct Remove: GraniteReducer {
+        typealias Center = BookmarkService.Center
+        
+        struct Meta: GranitePayload {
+            var key: BookmarkKey
+            var isPost: Bool
+        }
+        
+        @Payload var meta: Meta?
+        
+        func reduce(state: inout Center.State) {
+            guard let key = meta?.key else { return }
+            
+            if meta?.isPost == true {
+                state.posts[key] = nil
+            } else {
+                state.comments[key] = nil
+            }
+        }
+    }
+    
     struct Modify: GraniteReducer {
         typealias Center = BookmarkService.Center
         
@@ -28,7 +49,19 @@ extension BookmarkService {
             
             switch meta.kind {
             case .post(let model):
-                guard let domain = model.creator.domain else {
+                let domain = model.creator.domain ?? model.creator.actor_id
+                
+                guard meta.remove == false else {
+                    for key in state.posts.keys {
+                        if let value = state.posts[key] {
+                            if let posts = value[domain] {
+                                posts.map[model.id] = nil
+                                state.posts[key]?[domain] = posts
+                            }
+                        }
+                    }
+                    
+                    state.datesPosts[domain+model.id] = nil
                     return
                 }
                 
@@ -40,11 +73,7 @@ extension BookmarkService {
                     bookmarkPost = .init(domain)
                 }
                 
-                if meta.remove {
-                    bookmarkPost.map[model.id] = nil
-                } else {
-                    bookmarkPost.map[model.id] = model
-                }
+                bookmarkPost.map[model.id] = model
                 
                 //state update
                 if state.posts[key] == nil {
@@ -56,7 +85,21 @@ extension BookmarkService {
                 state.postDomains.insert(domain)
                 state.datesPosts[domain+model.id] = .init()
             case .comment(let model, let postView):
-                guard let domain = model.creator.domain else {
+                let domain = model.creator.domain ?? model.creator.actor_id
+                
+                guard meta.remove == false else {
+                    for key in state.comments.keys {
+                        if let value = state.comments[key] {
+                            if var comments = value[domain] {
+                                comments.map[model.id] = nil
+                                //There could be other comments with the same post linked
+                                //comments.postMap[model.post.id] = nil
+                                state.comments[key]?[domain] = comments
+                            }
+                        }
+                    }
+                    
+                    state.datesComments[domain+model.id] = nil
                     return
                 }
                 
@@ -68,11 +111,7 @@ extension BookmarkService {
                     bookmarkComment = .init(domain)
                 }
                 
-                if meta.remove {
-                    bookmarkComment.map[model.id] = nil
-                } else {
-                    bookmarkComment.map[model.id] = model
-                }
+                bookmarkComment.map[model.id] = model
                 
                 bookmarkComment.postMap[model.post.id] = postView
                 

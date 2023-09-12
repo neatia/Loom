@@ -88,10 +88,48 @@ extension Bookmark: View {
 #if os(iOS)
                         Image(systemName: "chevron.up.chevron.down")
 #endif
+
                     }
                     .menuStyle(BorderlessButtonMenuStyle())
                     
                     Spacer()
+                    
+                    if postViews.isEmpty {
+                        Button(role: .destructive) {
+                            GraniteHaptic.light.invoke()
+                            switch state.kind {
+                            case .posts:
+                                service
+                                    .center
+                                    .remove
+                                    .send(
+                                        BookmarkService
+                                            .Remove
+                                            .Meta(key: state.selectedBookmarkPostKey,
+                                                  isPost: true)
+                                    )
+                                _state.selectedBookmarkPostKey.wrappedValue = service.state.posts.keys.first ?? .local
+                            case .comments:
+                                service
+                                    .center
+                                    .remove
+                                    .send(
+                                        BookmarkService
+                                            .Remove
+                                            .Meta(key: state.selectedBookmarkCommentKey,
+                                                  isPost: false)
+                                    )
+                                _state.selectedBookmarkCommentKey.wrappedValue = service.state.comments.keys.first ?? .local
+                            default:
+                                break
+                            }
+                        } label : {
+                            Image(systemName: "trash")
+                                .font(.subheadline)
+                                .foregroundColor(.red)
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
                 .foregroundColor(Device.isMacOS ? .foreground : .accentColor)
                 .padding(.vertical, .layer4)
@@ -143,9 +181,9 @@ extension Bookmark: View {
     func postCardViews() -> some View {
         LazyVStack(spacing: 0) {
             ForEach(postViews) { postView in
-                PostCardView(topPadding: postViews.first?.id == postView.id ? .layer5 : .layer6,
-                             linkPreviewType: .largeNoMetadata)
+                PostCardView(linkPreviewType: .largeNoMetadata)
                     .contentContext(.init(postModel: postView,
+                                          preferredFeedStyle: config.state.feedStyle,
                                           viewingContext: showHeader ? .bookmark(state.selectedBookmarkPostKey.host) : .bookmarkExpanded(state.selectedBookmarkPostKey.host)))
                 
                 
