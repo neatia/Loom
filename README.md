@@ -4,15 +4,12 @@
 
 <p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
 
-<a href="https://testflight.apple.com/join/owwIagmV"><h2 align="center">Testflight (iOS)</h2></a>
-<p align="center">https://testflight.apple.com/join/owwIagmV</p>
-
 <p align="center">Aggregating aggregation. Providing everyone with a premium experience when interacting with federated servers. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
 ![Platform Compatibility](https://img.shields.io/badge/Platform-iOS%20%7C%20macOS-blue)
-[![License](https://img.shields.io/badge/License-GPL_3.0--Clause-orange.svg)](https://opensource.org/license/gpl-3-0/)
+[![License](https://img.shields.io/badge/License-MIT--Clause-orange.svg)](https://opensource.org/license/mit/)
 
 > My local environment: Xcode 14.2 or later // macOS (Intel) 12.6 or later // iOS 15.4 or later
 
@@ -25,15 +22,6 @@
 - Bookmarks are locally stored for offline viewing
 - IPFS Content generation (Add your own config, gateway, etc)
 - Login, Create Posts, Comments, Interact, update profiles as normal
-- *Engravings* (Coming Soon / iOS only), protect your OC against unwarranted reposts
-- *Advanced Search* (Coming Soon), turn any thread/post into a searchable interface powered by [BERT](https://arxiv.org/abs/1810.04805)
-- *and much more…*
-
-### [Changelog // Developer updates](https://loom.nyc/post/1)
-
-## Component Previews
-
-> WIP previews of major components
 
 | Expanded Layout (iPad/macOS)   | |
 | :-------- | -------: |
@@ -124,12 +112,6 @@ Mostly because of *Relays* and project organization. I'd say testing too, but on
 - [MarkdownView](https://github.com/pexavc/MarkdownView) Thanks to [@LiYanan2004](https://github.com/LiYanan2004)
 - [KeyboardToolbar](https://github.com/simonbs/KeyboardToolbar) Thanks to [@simonbs](https://github.com/simonbs)
 
-## Discussion
-
-- [@lemmy.world](https://lemmy.world/c/loom)
-- [@loom.nyc](https://loom.nyc/c/meta)
-
 ### Contact
 
 - [Twitter @pexavc](https://twitter.com/pexavc)
-- Discord: @pexavc
