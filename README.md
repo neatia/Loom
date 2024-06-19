@@ -1,4 +1,4 @@
-<p align="center"><img src="https://gateway.ipfs.io/ipfs/QmUR5vx55UVCeo1gWSk5zmoc5hKh4XXf1mrFrU3pBQpy2r" height="120px" /></p>
+<p align="center"><img src="Resources/logo.png" height="120px" /></p>
 
 <h1 align="center">Loom (iOS & macOS) Beta</h1>
 
@@ -98,7 +98,7 @@
 
 
 
-## Contributing 
+## Contributing
 
 Loom uses [Granite](https://github.com/pexavc/Granite) as a backing for components and services. The Components folder in this repo serves as a good example for many future components that may be needed. Any suggestions on Granite or other component layouts as a whole is greatly appreciated. Always feel free to open a PR and/or Issue.
 
