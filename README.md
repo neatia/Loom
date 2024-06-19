@@ -2,7 +2,7 @@
 
 <h1 align="center">Loom (iOS & macOS) Beta</h1>
 
-<p align="center"><img src="https://gateway.ipfs.io/ipfs/QmZ46tDJLuGcnggQSWUwi3tKUdTq5upsX8S1YNeevT6jqx" width="90%" /></p>
+<p align="center"><img src="Resources/README/header.gif" width="90%" /></p>
 
 <p align="center">Aggregating aggregation. Providing everyone with a premium experience when interacting with federated servers. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
@@ -25,21 +25,21 @@
 
 | Expanded Layout (iPad/macOS)   | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmXjYReP9dcu2jiW52yUNTNZdZTYqEvVEoNsohSjzaXMnC) | [Granite](https://github.com/pexavc/Granite) supports macOS. Same navigation API can direct window spawning or navigation stack pushing. |
-| ![Image](https://gateway.ipfs.io/ipfs/QmcaJEm7Mq4qsgnKbLUe8TcoYJxP2m6b9SSiEwazdXe7hv) | Spawn multiple windows of entire feed layouts with multiple communities to observe. Will be helpful in the case of moderating multiple communities for instance. |
+| ![Image](Resources/README/1.gif) | [Granite](https://github.com/pexavc/Granite) supports macOS. Same navigation API can direct window spawning or navigation stack pushing. |
+| ![Image](Resources/README/2.png) | Spawn multiple windows of entire feed layouts with multiple communities to observe. Will be helpful in the case of moderating multiple communities for instance. |
 
 | Looms    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmbkjKBrrmnxoo28rc1xuxqJDHoz4P2LdMLctyQATu8HC2) | Create "Looms" of any group of communities from any instance. Merging their content into a singular feed.|
+| ![Image](Resources/README/3.gif) | Create "Looms" of any group of communities from any instance. Merging their content into a singular feed.|
 
 | Explore    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmXoHKNAo2RHYAd843Mv4tzxAvRKswT1U8zVrEMnj4UFDQ)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
+| ![Image](Resources/README/4.gif)  | Visit linked instances when connected to a lemmy server. View small snippets of each and their ping response time.   |
 
 | Aggregation Sources (Aside from Lemmy)    | |
 | :-------- | -------: |
 | ![Image](https://gateway.ipfs.io/ipfs/QmZJibCj8KWHp55541epsWQ9rpv3czHJ6UXCtcXR66cSu2)  | RSS feeds can be pulled when setting the instance URL to a valid endpoint. Pagination is not currently supported, but will be in the future. Looking at supporting Atom/JSON streams as well.   |
-| ![Image](https://gateway.ipfs.io/ipfs/QmNqTdTswLR62J6ES3ap6DGcfgeUd3ifAkGGgwfMVy24rX)  | Mastodon feeds can be pulled when setting the instance URL to a valid mastodon instance. Pagination is not currently supported, but will be in the future. Interactions are disabled for the time being `2023-9-4`.   |
+| ![Image](Resources/README/6.gif  | Mastodon feeds can be pulled when setting the instance URL to a valid mastodon instance. Pagination is not currently supported, but will be in the future. Interactions are disabled for the time being `2023-9-4`.   |
 
 | Safety    | |
 | :-------- | -------: |
