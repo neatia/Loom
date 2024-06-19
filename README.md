@@ -39,7 +39,7 @@
 | Aggregation Sources (Aside from Lemmy)    | |
 | :-------- | -------: |
 | ![Image](Resources/README/5.gif)  | RSS feeds can be pulled when setting the instance URL to a valid endpoint. Pagination is not currently supported, but will be in the future. Looking at supporting Atom/JSON streams as well.   |
-| ![Image](Resources/README/6.gif  | Mastodon feeds can be pulled when setting the instance URL to a valid mastodon instance. Pagination is not currently supported, but will be in the future. Interactions are disabled for the time being `2023-9-4`.   |
+| ![Image](Resources/README/6.gif)  | Mastodon feeds can be pulled when setting the instance URL to a valid mastodon instance. Pagination is not currently supported, but will be in the future. Interactions are disabled for the time being `2023-9-4`.   |
 
 | Safety    | |
 | :-------- | -------: |
