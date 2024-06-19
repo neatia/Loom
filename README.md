@@ -38,50 +38,50 @@
 
 | Aggregation Sources (Aside from Lemmy)    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmZJibCj8KWHp55541epsWQ9rpv3czHJ6UXCtcXR66cSu2)  | RSS feeds can be pulled when setting the instance URL to a valid endpoint. Pagination is not currently supported, but will be in the future. Looking at supporting Atom/JSON streams as well.   |
+| ![Image](Resources/README/5.gif)  | RSS feeds can be pulled when setting the instance URL to a valid endpoint. Pagination is not currently supported, but will be in the future. Looking at supporting Atom/JSON streams as well.   |
 | ![Image](Resources/README/6.gif  | Mastodon feeds can be pulled when setting the instance URL to a valid mastodon instance. Pagination is not currently supported, but will be in the future. Interactions are disabled for the time being `2023-9-4`.   |
 
 | Safety    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmZqQePckASn8Xtd4d1Pp4m1meHm5GVnzozWQzs3MEfLJ8)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Extended` will remove posts that are detected as NSFW even if they are not flagged as so.     |
+| ![Image](Resources/README/6.gif)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Extended` will remove posts that are detected as NSFW even if they are not flagged as so.     |
 
 | Styling    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmPFxEsXtDBJf8oSnAJihwv5FoCtugAqUPBhobtw275CpT)  |  Intended to allow full user customization in the future. Currently supports a "social app feel" and a "reddit-like reader".   |
+| ![Image](Resources/README/7.gif)  |  Intended to allow full user customization in the future. Currently supports a "social app feel" and a "reddit-like reader".   |
 
 | MD helper  | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmZ5H7u64ceJ6nvVkBpdtzWSc7FkHhih4SFnNo7HdgEB7B) | Keyboard toolbar provides easy to access shortcuts on iPhone/iPad to help with Markdown formatting. |
+| ![Image](Resources/README/8.gif) | Keyboard toolbar provides easy to access shortcuts on iPhone/iPad to help with Markdown formatting. |
 
 | Travelling Modals    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmdXUT8RbYT6orPhHQMQig6TMMyg6crUhssmbC96bT266s)  | Writing modals can travel with your viewing context. Allowing you to browse content in any stack prior to publishing.   |
+| ![Image](Resources/README/9.gif)  | Writing modals can travel with your viewing context. Allowing you to browse content in any stack prior to publishing.   |
 
 | Bookmark Syncing    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmVeqWMZZ2TipxVK5aRfbFxtQBTsvJ1snYDaVCs16jRmK7)  | All your saved posts and comments can be switched between accounts in a dedicated component.   |
+| ![Image](Resources/README/10.gif)  | All your saved posts and comments can be switched between accounts in a dedicated component.   |
 
 | Sharing    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmYykQW876J2pa1kL935TTifAEnyFqF6inUwhMJqJz3piA) | Share posts or comments as images. With the intention of supporting QR codes and *Engravings* in the future. |
+| ![Image](Resources/README/11.gif) | Share posts or comments as images. With the intention of supporting QR codes and *Engravings* in the future. |
 
 | Search    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmV6HpHVvRaEeJRBJAtQZC2mefBEKw4Lgj3TJXBtqsxQP4) | Either search all, a specific subcategory with sort support. View expanded contents within the view, interacting with content as normal. |
+| ![Image](Resources/README/12.gif) | Either search all, a specific subcategory with sort support. View expanded contents within the view, interacting with content as normal. |
 
 | Profile    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmYgVViPqKpYJttMeK32C5uLQy88HWqRJRjLAxjVU48tpL) | Dynamic threads, despite viewing context. Swipe to reply to comments or tap the more button, to modify, remove, block, etc.  |
-| ![Image](https://gateway.ipfs.io/ipfs/QmbcEyh6qHqJt3sfEF2CL8Xjhjbcd2wLXUd27GNro7pgCD) | Deleting and restoring with toast reactions. |
-| ![Image](https://gateway.ipfs.io/ipfs/Qmf1NCciupPPGFsqnza2F9QMVE8fSYUyqDqMcTT7pdiozw) | Switch accounts, view their profiles, and their scores. |
+| ![Image](Resources/README/13.gif) | Dynamic threads, despite viewing context. Swipe to reply to comments or tap the more button, to modify, remove, block, etc.  |
+| ![Image](Resources/README/14.gif) | Deleting and restoring with toast reactions. |
+| ![Image](Resources/README/15.gif) | Switch accounts, view their profiles, and their scores. |
 
 | Embedded Webview    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmV7Wo17wdB2vueyYiXeDxeLX2LLd8tS1JKgrFrAhcQ1M2) | Custom JS insertion supported, customizing how webpages are viewed via direct user input is a possibility. |
+| ![Image](Resources/README/16.gif) | Custom JS insertion supported, customizing how webpages are viewed via direct user input is a possibility. |
 
 | Light Mode    | |
 | :-------- | -------: |
-| ![Image](https://gateway.ipfs.io/ipfs/QmUtjSKkYmvJ1erK4eQpwuMpqLPBHZWTUGH2V658Td3u6W) | Light mode and Dark mode supported. Refer to the color group in `Assets` to define your own preferences for each. |
+| ![Image](Resources/README/17.gif) | Light mode and Dark mode supported. Refer to the color group in `Assets` to define your own preferences for each. |
 
 
 
