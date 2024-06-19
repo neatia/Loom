@@ -1,4 +1,4 @@
-<p align="center"><img src="Resources/logo.png" height="120px" /></p>
+<p align="center"><img src="Resources/README/logo.png" height="120px" /></p>
 
 <h1 align="center">Loom (iOS & macOS) Beta</h1>
 
