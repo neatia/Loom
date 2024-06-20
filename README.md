@@ -43,23 +43,23 @@
 
 | Safety    | |
 | :-------- | -------: |
-| ![Image](Resources/README/6.gif)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Extended` will remove posts that are detected as NSFW even if they are not flagged as so.     |
+| ![Image](Resources/README/7.gif)  | On-device CoreML models + keyword filtering to remove posts from the feed. `NSFW Extended` will remove posts that are detected as NSFW even if they are not flagged as so.     |
 
 | Styling    | |
 | :-------- | -------: |
-| ![Image](Resources/README/7.gif)  |  Intended to allow full user customization in the future. Currently supports a "social app feel" and a "reddit-like reader".   |
+| ![Image](Resources/README/8.gif)  |  Intended to allow full user customization in the future. Currently supports a "social app feel" and a "reddit-like reader".   |
 
 | MD helper  | |
 | :-------- | -------: |
-| ![Image](Resources/README/8.gif) | Keyboard toolbar provides easy to access shortcuts on iPhone/iPad to help with Markdown formatting. |
+| ![Image](Resources/README/9.gif) | Keyboard toolbar provides easy to access shortcuts on iPhone/iPad to help with Markdown formatting. |
 
 | Travelling Modals    | |
 | :-------- | -------: |
-| ![Image](Resources/README/9.gif)  | Writing modals can travel with your viewing context. Allowing you to browse content in any stack prior to publishing.   |
+| ![Image](Resources/README/10.gif)  | Writing modals can travel with your viewing context. Allowing you to browse content in any stack prior to publishing.   |
 
 | Bookmark Syncing    | |
 | :-------- | -------: |
-| ![Image](Resources/README/10.gif)  | All your saved posts and comments can be switched between accounts in a dedicated component.   |
+| ![Image]()  | All your saved posts and comments can be switched between accounts in a dedicated component.   |
 
 | Sharing    | |
 | :-------- | -------: |
