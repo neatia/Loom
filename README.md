@@ -6,9 +6,9 @@
 
 <p align="center">Aggregating aggregation. Providing everyone with a premium experience when interacting with federated servers. Meanwhile, providing view libraries and solutions for others to implement their own interpretations in the Apple ecosystem.</p>
 
-## NOTE
+## WARNING
 
-- If Loom requests for "Local Network Access" it is because a neighboring server is using a localhost equivalent address. It is not because of the application itself. So please Do not allow access. (unless you are expecting it).
+- If Loom requests for "Local Network Access" it is because a neighboring server is using a localhost equivalent address. It is not because of the application itself. So please DO NOT ALLOW ACCESS. (unless you are expecting it).
 
 ## Requirements
 ![Swift Compatibility](https://img.shields.io/badge/Swift-5.9%20%7C%205.8%20%7C%205.7-orange?logo=swift)
