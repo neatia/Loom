@@ -64,15 +64,6 @@
       }
     },
     {
-      "identity" : "lemmykit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pexavc/LemmyKit",
-      "state" : {
-        "branch" : "main",
-        "revision" : "8e185744236de9a9f45d129fd3c3e955423f40ca"
-      }
-    },
-    {
       "identity" : "marblekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pexavc/MarbleKit",
