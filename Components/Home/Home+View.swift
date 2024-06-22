@@ -103,11 +103,11 @@ extension Home: View {
                 }
             }
             
-            GraniteTab {
-                Globe()
-            } icon: {
-                GraniteTabIcon(name: "globe.americas", larger: Device.isExpandedLayout == false)
-            }
+//            GraniteTab {
+//                Globe()
+//            } icon: {
+//                GraniteTabIcon(name: "globe.americas", larger: Device.isExpandedLayout == false)
+//            }
             
             if Device.isExpandedLayout {
                 GraniteTab(split: Device.isExpandedLayout,

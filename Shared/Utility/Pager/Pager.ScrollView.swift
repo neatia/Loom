@@ -82,7 +82,9 @@ struct PagerScrollView<Model: Pageable, Header: View, AddContent: View, Content:
                 } else if Device.isMacOS == false && properties.listView {
                     listView
                 } else if properties.hidingHeader {
-                    hidingHeaderScrollView
+                    // TODO: bruh
+                    // hidingHeaderScrollView
+                    normalScrollView
                 } else {
                     normalScrollView
                 }
