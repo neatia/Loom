@@ -11,6 +11,7 @@ import Granite
 import GraniteUI
 
 extension PagerScrollView {
+    //TODO: fix generics
     //Does not take addContent
     var hidingHeaderScrollView: some View {
         //TODO: bruh
